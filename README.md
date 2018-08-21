@@ -1,4 +1,2 @@
-# .emacs.d
-# .emacs.d
-# .emacs.d
-# .emacs.d
+# Emacs config files
+
