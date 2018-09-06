@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/cppm/" "~/")
+("~/.emacs.d/" "~/nlpo/" "~/cppm/" "~/nieel/" "~/cppm/cppm_packages/" "~/")
