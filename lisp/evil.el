@@ -23,6 +23,7 @@
         (evil-leader/set-key
             "<SPC>" 'helm-M-x
             "er"    'eval-buffer
+            "b"     'switch-to-buffer
             "f"     'find-file
             "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/init.el"))
             "wh"    'shrink-window-horizontally

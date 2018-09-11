@@ -10,6 +10,8 @@
             (setq-default neo-window-width 30)
             (setq-default neo-smart-open t)
             (setq-default neo-dont-be-alone t)
+            (setq neo-force-change-root t)
+            (setq projectile-switch-project-action 'neotree-projectile-action)
             (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
         )
         (add-hook 'neotree-mode-hook
@@ -29,6 +31,5 @@
     :config
         (setq neo-show-hidden-files t)
         (evil-leader/set-key "n" 'neotree-toggle)
-        (neotree-show)
 )
 

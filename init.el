@@ -27,6 +27,24 @@
 
 (load "~/.emacs.d/lisp/paren.el")
 
+;; gdb setting
+;(setq gdb-many-windows t)
+;(defun gdb-in-new-frame
+;    "gdb window crash patch"
+;    (interactive)
+;    (select-frame-set-input-focus (make-frame))
+;    (call-interactively 'gdb)
+;)
+;(evil-leader/set-key "gd" 'gdb-in-new-frame)
+(setq gdb-show-main t)
+(evil-leader/set-key "gb" 'gud-break)
+(evil-leader/set-key "gn" 'gud-next)
+(evil-leader/set-key "gi" 'gud-step)
+(evil-leader/set-key "gf" 'gud-finish)
+(evil-leader/set-key "gt" '(lambda () (interactive)
+                                         (call-interactively 'gud-tbreak)
+                                         (call-interactively 'gud-cont)))
+
 (use-package multi-term
     :ensure t
     :init 
@@ -57,6 +75,7 @@
             "w1" 'eyebrowse-switch-to-window-config-1
             "w2" 'eyebrowse-switch-to-window-config-2
             "w3" 'eyebrowse-switch-to-window-config-3
+            "w4" 'eyebrowse-switch-to-window-config-4
         )
 )
 
@@ -66,12 +85,21 @@
 (use-package org :ensure t
   :init
   (add-to-list 'auto-mode-alist '("'\\.org\\'" . org-mode))
-  (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+  ;(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
   (setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
   (evil-leader/set-key
     "o l" 'org-store-link
     "o a" 'org-agenda
-    "o c" 'org-captur 
+ ;
+;
+;
+;
+;
+;
+;
+;
+;
+;   "o c" 'org-captur 
     "o b" 'org-iswitchb
   )
 )
@@ -82,19 +110,6 @@
 ;        (global-whitespace-mode)
 ;)
 
-(use-package git-gutter
-  :ensure t
-  :init  (global-git-gutter-mode t)
-  :config
-    (setq git-gutter:lighter " gg")
-    (setq git-gutter:window-width 1)
-    (setq git-gutter:modified-sign ".")
-    (setq git-gutter:added-sign "+")
-    (setq git-gutter:deleted-sign "-")
-    (set-face-foreground 'git-gutter:added "#daefa3")
-    (set-face-foreground 'git-gutter:deleted "#FA8072")
-    (set-face-foreground 'git-gutter:modified "#b18cce")
-)
 
 ;(use-package prodigy
 ;    :ensure t
@@ -114,6 +129,7 @@
 (use-package rainbow-mode
     :ensure t
     :init
+        (add-hook 'prog-mode-hook       'rainbow-mode)
         (add-hook 'html-mode-hook       'rainbow-mode)
         (add-hook 'css-mode-hook        'rainbow-mode)
         (add-hook 'c++-mode-hook        'rainbow-mode)
@@ -214,7 +230,6 @@
         (add-hook 'lisp-mode-hook       'flyspell-mode-hook)
         (add-hook 'emacs-lisp-mode-hook 'flyspell-mode-hook)
     )
-    
     :config
         (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-corrent-word)
         (define-key flyspell-mode-map  (kbd "<C-tab>")  #'flyspell-correct-word)
@@ -258,9 +273,13 @@
     :config (helm-descbinds-mode)
 )
 
-(use-package cmake-mode   :ensure t)
-(use-package yaml-mode    :ensure t)
-(use-package haskell-mode :ensure t)
+(use-package cmake-mode      :ensure t)
+(use-package yaml-mode       :ensure t)
+(use-package haskell-mode    :ensure t)
+(use-package docker          :ensure t :config (evil-leader/set-key "d" 'docker)) 
+(use-package dockerfile-mode :ensure t 
+    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+)  
 
 (use-package elisp-slime-nav
     :ensure t
@@ -285,13 +304,13 @@
 )
 
 
-(use-package yasnippet
-    :ensure t
-    :config
-        (yas-global-mode t)
-        (setq yas-indent-line nil)
-    :diminish yas-minor-mode
-)
+;(use-package yasnippet
+;    :ensure t
+;    :config
+;        (yas-global-mode t)
+;        (setq yas-indent-line nil)
+;    :diminish yas-minor-mode
+;)
 
 (require 'server)
 (server-start)
@@ -303,8 +322,8 @@
  ;; If there is more than one, they won't work right.
  '(irony-cdb-search-directory-list (quote ("." "build" "bin")))
  '(package-selected-packages
-   (quote
-    (python-mode indent-guide eyebrowse multi-term git-gutter rg god-mode hlinum-mode linum-highlight-current-line-number doom-themes doom-modeline neotree nyan-mode boxquote evil-smartparens smartparens spaceline-all-the-icons nlinum clang-format flycheck-irony company-c-headers yaml-mode zenburn-theme company-irony-c-headers flycheck-pos-tip magit discover-my-major spacemacs-theme helm-descbinds use-package helm-company flycheck evil company-irony cmake-mode))))
+    (quote
+        (git-gutter-fringe dockerfile-mode docker python-mode indent-guide eyebrowse multi-term git-gutter rg god-mode hlinum-mode linum-highlight-current-line-number doom-themes doom-modeline neotree nyan-mode boxquote evil-smartparens smartparens spaceline-all-the-icons nlinum clang-format flycheck-irony company-c-headers yaml-mode zenburn-theme company-irony-c-headers flycheck-pos-tip magit discover-my-major spacemacs-theme helm-descbinds use-package helm-company flycheck evil company-irony cmake-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

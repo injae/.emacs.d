@@ -24,32 +24,33 @@
        (setq indent-guide-recursive t)
 )
 
-(setq-default indent-tabs-mode nil)
 ;(use-package python :ensure t
 ;    :init 
 ;        (define-key python-mode-map (kbd "<tab>")     'python-indent-shift-right)
 ;        (define-key python-mode-map (kbd "<backtab>") 'python-indent-shift-left)
 ;)
 
-;(defun my-set-indent (n)
-;    (setq-default tab-width n)
-;    (electric-indent-mode -1)
-;    (setq c-basic-offset n)
-;    (setq lisp-indent-offset n)
-;    (setq indent-line-function 'insert-tab)
-;)
-;(my-set-indent 4)
-;
-;(global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
-;(defun un-indent-by-removing-4-spaces ()
-;    (interactive)
-;    (save-excursion
-;    (save-match-data
-;    (beginning-of-line)
-;        ;; get rid of tabs at beginning of line
-;    (when (looking-at "^\\s-+")
-;    (untabify (match-beginning 0) (match-end 0)))
-;        (when (looking-at "^    ")
-;            (replace-match "")))
-;        )
-;)
+(defun my-set-indent (n)
+    (setq-default tab-width n)
+    (electric-indent-mode -1)
+    (setq c-basic-offset n)
+    (setq lisp-indent-offset n)
+    (setq indent-line-function 'insert-tab)
+)
+(my-set-indent 4)
+(setq-default indent-tabs-mode nil)
+
+(global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
+(defun un-indent-by-removing-4-spaces ()
+    "back tab"
+    (interactive)
+    (save-excursion
+    (save-match-data
+    (beginning-of-line)
+        ;; get rid of tabs at beginning of line
+    (when (looking-at "^\\s-+")
+    (untabify (match-beginning 0) (match-end 0)))
+        (when (looking-at "^    ")
+            (replace-match "")))
+        )
+)

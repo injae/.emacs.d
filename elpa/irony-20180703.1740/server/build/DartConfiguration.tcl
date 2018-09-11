@@ -36,7 +36,7 @@ ScpCommand: /usr/bin/scp
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/local/bin/cmake" "/home/nieel/.emacs.d/elpa/irony-20180703.1740/server"
+ConfigureCommand: "/usr/bin/cmake" "/home/nieel/.emacs.d/elpa/irony-20180703.1740/server"
 MakeCommand: /usr/local/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}" -- -i
 DefaultCTestConfigurationType: Release
 
