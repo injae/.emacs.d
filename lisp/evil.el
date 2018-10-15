@@ -25,6 +25,7 @@
             "er"    'eval-buffer
             "b"     'switch-to-buffer
             "f"     'find-file
+            "t"     'eshell
             "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/init.el"))
             "wh"    'shrink-window-horizontally
             "wj"    'enlarge-window

@@ -38,16 +38,16 @@
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 
-
 ;; # backup file auto make option 
 (setq backup-inhibited t)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 한글 글꼴 설정              ;;
-;; 1234 5678 9012345678901234  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; +------------+------------+
+;; | 일이삼사오 | 일이삼사오 |
+;; |------------+------------|
+;; | 1234567890 | 1234567890 |
+;; +------------+------------+
 
 ;; text utf-8 setting
 (set-language-environment "Korean")
@@ -58,24 +58,24 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(set-face-attribute 'default nil        :family "DejaVu Sans Mono" :height 100)
+(set-face-attribute   'default nil        :family "DejaVu Sans Mono" :height 110)
 (set-fontset-font nil 'hangul (font-spec :family "D2Coding" :pixelsize 18))
 (setq face-font-rescale-alist '(("D2coding" . 1.2)))
-(setq-default line-spacing 6)
+(setq-default line-spacing 3)
 (global-font-lock-mode t)
 
-;; emacs backround 
+;; emacs 배경 투명하게 
 (set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
-
-(set-variable 'cursor-type 'bar)
+(set-variable 'cursor-type '(hbar . 10))
 ;; No popup frame
 (setq pop-up-frames nil)
 
 (setq ring-bell-function 'ignore)
 
-; 버퍼 스위치
+; layout save setting
 (winner-mode t)
+;(desktop-save-mode 1)
 
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message t)
@@ -90,3 +90,5 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+;;

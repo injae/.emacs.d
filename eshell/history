@@ -1,0 +1,128 @@
+cd build
+ls
+rm -rf *
+ls
+cppm build
+cppm build
+cd ../config/ls
+cd ..
+ls
+cd ../build
+cppm build
+cppm build
+cppm build
+./cppm build
+cppm build
+./cppm build -r
+cppm
+./cppm
+./cppm -h
+./cppm build -h
+cd ../../
+cd ../nlpo
+ls
+cppm build install
+cd ../test/cppm/
+cppm build
+cd build
+./cppm build
+./cppm build -r
+./cppm build -h
+./cppm build -r
+cd ../../../
+ls
+d nlpo
+cd nlpo
+ls
+git add *
+git add .
+git status
+git commit -m "bug fix"
+git push
+ls
+cd ../test/cppm/
+ls
+ls
+cd build
+cd build
+cppm build
+./cppm build
+cppm build
+./cppm build
+cppm build
+./cppm build
+cppm build
+./cppm build
+./cppm build
+cppm build
+./cppm build
+ls
+cppm build
+./cppm build
+cppm build
+./cppm build
+cppm build
+./cppm build
+cppm build
+./cppm build
+./cppm build
+cppm build
+./cppm build
+./cppm build
+./cppm build
+cppm build
+./cppm build
+cd ../../../
+ls
+cd cppm build
+cd build
+ls
+cd cppm/build/
+cppm build
+./cppm build
+ls
+ls
+./cppm build install
+cppm build
+cppm build -r
+./cppm build -r
+cppm build
+cppm build -r
+cppm build
+cppm build -r
+cppm build install
+cppm build -r
+ls
+cppm build -h                        //                        //                        //
+cpm build -r
+cpm build -h
+ls
+cd ~/dev/test/cppm/
+cppm build -h
+ls
+gitadd .
+git add .
+git status
+git commit -m "now can use but install function and init function not workgin:"
+git push
+ls
+ls
+cppm build 
+cppm build
+cppm build install
+cppm build -r install
+cppm build
+ls
+cd build
+./cppm build
+cppm build
+./cppm build
+cppm build
+cd ../../
+ls
+cd ../nlpo/
+ls
+cppm build install
+ls
+cat cppm.yaml
+cppm build
