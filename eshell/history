@@ -1,73 +1,3 @@
-cd build
-ls
-rm -rf *
-ls
-cppm build
-cppm build
-cd ../config/ls
-cd ..
-ls
-cd ../build
-cppm build
-cppm build
-cppm build
-./cppm build
-cppm build
-./cppm build -r
-cppm
-./cppm
-./cppm -h
-./cppm build -h
-cd ../../
-cd ../nlpo
-ls
-cppm build install
-cd ../test/cppm/
-cppm build
-cd build
-./cppm build
-./cppm build -r
-./cppm build -h
-./cppm build -r
-cd ../../../
-ls
-d nlpo
-cd nlpo
-ls
-git add *
-git add .
-git status
-git commit -m "bug fix"
-git push
-ls
-cd ../test/cppm/
-ls
-ls
-cd build
-cd build
-cppm build
-./cppm build
-cppm build
-./cppm build
-cppm build
-./cppm build
-cppm build
-./cppm build
-./cppm build
-cppm build
-./cppm build
-ls
-cppm build
-./cppm build
-cppm build
-./cppm build
-cppm build
-./cppm build
-cppm build
-./cppm build
-./cppm build
-cppm build
-./cppm build
 ./cppm build
 ./cppm build
 cppm build
@@ -126,3 +56,73 @@ cppm build install
 ls
 cat cppm.yaml
 cppm build
+ls
+ls
+ls
+cd ../dev/cppm
+ls
+cppm build
+cd ..
+ls
+cd test/cppm/
+ls
+cd build
+ls
+rm compile_commands.json 
+cppm build
+ls
+cd ..
+ls
+cd build
+ls
+cmake ..
+ninja install
+ninja -j4
+sudo ninja install 
+ls
+cppm build
+ls
+cppm build
+./cppm build
+cmake ..
+ninja -j4
+sudo make install
+sudo ninja install
+cppm build
+cppm -h
+cppm --help
+cppm build
+cmake ..
+ninja -j4
+sudo ninja install
+cppm build
+sudo cppm build
+cppm build
+sudo cppm build
+sudo cppm build installl
+sudo cppm build install
+cppm build
+sudo cppm build
+sudo cppm build install
+cppm build
+sudo cppm build
+sudo cppm build install
+ls
+ls
+ls
+cd lisp
+ls
+rm emacs-options.el evil.el neotree.el paren.el spaceline.el tab.el themes.el toggle.el use-package.el 
+ls
+cd ..
+ls
+cd lisp/
+ls
+cd linum/
+ls
+cd ..
+ls
+cd ..
+ls
+mkdir org
+ls
