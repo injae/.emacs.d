@@ -77,15 +77,59 @@
 (global-font-lock-mode t)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-(use-package which-key :ensure t 
-:init   (which-key-mode t) 
-:config (which-key-enable-god-mode-support t))
+(defun launch-separate-emacs-in-terminal ()
+(suspend-emacs "fg ; emacs -nw"))
+
+(defun launch-separate-emacs-under-x ()
+(call-process "sh" nil nil nil "-c" "emacs &"))
+
+(defun restart-emacs ()
+    (interactive)
+    ;; We need the new emacs to be spawned after all kill-emacs-hooks
+    ;; have been processed and there is nothing interesting left
+    (let ((kill-emacs-hook (append kill-emacs-hook (list (if (display-graphic-p) #'launch-separate-emacs-under-x
+                                                                                 #'launch-separate-emacs-in-terminal)))))
+         (save-buffers-kill-emacs))
+)
+
+(use-package beacon :ensure t :init (beacon-mode t)) 
+(use-package git-gutter :ensure t
+:init 
+    (setq-default display-line-numbers-width 2)
+    (global-git-gutter-mode t)
+    (global-display-line-numbers-mode t)
+    (global-hl-line-mode t)
+:config
+    (setq git-gutter:lighter " gg")
+    (setq git-gutter:window-width 1)
+    (setq git-gutter:modified-sign ".")
+    (setq git-gutter:added-sign    "+")
+    (setq git-gutter:deleted-sign  "-")
+    (set-face-foreground 'git-gutter:added    "#daefa3")
+    (set-face-foreground 'git-gutter:deleted  "#FA8072")
+    (set-face-foreground 'git-gutter:modified "#b18cce")
+)
+
+(use-package doom-themes
+:init (load-theme 'doom-one t)
+:config
+    (doom-themes-neotree-config)
+    (doom-themes-org-config)
+)
+
+(load-library "hideshow")
+    (global-set-key (kbd "<C-l>") 'hs-show-block)
+    (global-set-key (kbd "<C-h>")  'hs-hide-block)
+    (add-hook 'c-mode-common-hook     'hs-minor-mode)
+    (add-hook 'emacs-lisp-mode-hook   'hs-minor-mode)
+    (add-hook 'java-mode-hook         'hs-minor-mode)
+    (add-hook 'lisp-mode-hook         'hs-minor-mode)
+    (add-hook 'perl-mode-hook         'hs-minor-mode)
+    (add-hook 'sh-mode-hook           'hs-minor-mode)
 
 (use-package indent-guide :ensure t
-:init (indent-guide-global-mode)
+:init ;(indent-guide-global-mode)
 :config
     (setq indent-guide-char      "|")
     (setq indent-guide-recursive t)
@@ -94,7 +138,7 @@
 )
 (defun my-set-indent (n)
     (setq-default tab-width n)
-    (electric-indent-mode t)
+    ;(electric-indent-mode t)
     (setq c-basic-offset n)
     (setq lisp-indent-offset n)
     (setq indent-line-function 'insert-tab)
@@ -125,15 +169,25 @@
 ;       ;(set-face-background 'highlight-indent-guides-character-face "dimgray" )
 ;)
 
-(load-library "hideshow")
-    (global-set-key (kbd "<C-right>") 'hs-show-block)
-    (global-set-key (kbd "<C-left>")  'hs-hide-block)
-    (add-hook 'c-mode-common-hook     'hs-minor-mode)
-    (add-hook 'emacs-lisp-mode-hook   'hs-minor-mode)
-    (add-hook 'java-mode-hook         'hs-minor-mode)
-    (add-hook 'lisp-mode-hook         'hs-minor-mode)
-    (add-hook 'perl-mode-hook         'hs-minor-mode)
-    (add-hook 'sh-mode-hook           'hs-minor-mode)
+(use-package paren :ensure t 
+:init   (show-paren-mode 1)
+:config (setq show-paren-delay 0)
+)
+
+(use-package rainbow-delimiters :ensure t
+:hook ((prog-mode text-mode) . rainbow-delimiters-mode)
+)
+
+(use-package smartparens :ensure t
+:init (smartparens-global-mode)
+:config 
+    (use-package evil-smartparens :ensure t
+    :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+)
+
+(use-package which-key :ensure t 
+:init   (which-key-mode t) 
+:config (which-key-enable-god-mode-support t))
 
 (use-package evil :ensure t
     :init (evil-mode t)
@@ -151,41 +205,17 @@
     (setq evil-leader/leader "<SPC>")
     (evil-leader/set-key
         "<SPC>" 'helm-M-x
-        "er"    'eval-buffer
+        "er"    'restart-emacs
         "b"     'switch-to-buffer
         "f"     'find-file
         "t"     'eshell
+        "p"     'list-processes
         "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
         "wh"    'shrink-window-horizontally
         "wj"    'enlarge-window
         "wk"    'shrink-window
         "wl"    'enlarge-window-horizontally
     )
-)
-
-(use-package beacon :ensure t :init (beacon-mode t)) 
-(use-package git-gutter :ensure t
-:init 
-    (setq-default display-line-numbers-width 2)
-    (global-git-gutter-mode t)
-    (global-display-line-numbers-mode t)
-    (global-hl-line-mode t)
-:config
-    (setq git-gutter:lighter " gg")
-    (setq git-gutter:window-width 1)
-    (setq git-gutter:modified-sign ".")
-    (setq git-gutter:added-sign    "+")
-    (setq git-gutter:deleted-sign  "-")
-    (set-face-foreground 'git-gutter:added    "#daefa3")
-    (set-face-foreground 'git-gutter:deleted  "#FA8072")
-    (set-face-foreground 'git-gutter:modified "#b18cce")
-)
-
-(use-package doom-themes
-:init (load-theme 'doom-one t)
-:config
-    (doom-themes-neotree-config)
-    (doom-themes-org-config)
 )
 
 (use-package all-the-icons :ensure t)
@@ -293,22 +323,6 @@
 :init (helm-descbinds-mode)
 )
 
-(use-package paren :ensure t 
-:init   (show-paren-mode 1)
-:config (setq show-paren-delay 0)
-)
-
-(use-package rainbow-delimiters :ensure t
-:hook ((prog-mode text-mode) . rainbow-delimiters-mode)
-)
-
-(use-package smartparens :ensure t
-:init (smartparens-global-mode)
-:config 
-    (use-package evil-smartparens :ensure t
-    :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
-)
-
 (use-package projectile :defer t :ensure t
 :init (projectile-mode t)
 :config (evil-leader/set-key "p" 'projectile-command-map)
@@ -357,6 +371,9 @@
         "w2" 'eyebrowse-switch-to-window-config-2
         "w3" 'eyebrowse-switch-to-window-config-3
         "w4" 'eyebrowse-switch-to-window-config-4
+        "w5" 'eyebrowse-switch-to-window-config-5
+        "w6" 'eyebrowse-switch-to-window-config-6
+        "w7" 'eyebrowse-switch-to-window-config-7
     )
 )
 
@@ -367,6 +384,42 @@
 (evil-leader/set-key "gf" 'gud-finish)
 (evil-leader/set-key "gt" '(lambda () (call-interactively 'gud-tbreak)
                                       (call-interactively 'gud-cont  )))
+
+(use-package magit :ensure t :diminish auto-revert-mode
+:init   (evil-leader/set-key "gs" 'magit-status)
+:config (setq vc-handled-backends nil)
+)
+
+(use-package undo-tree :ensure t :diminish undo-tree-mode
+:init
+    (evil-leader/set-key "u" 'undo-tree-undo)
+    (evil-leader/set-key "r" 'undo-tree-undo)
+    (defalias 'redo 'undo-tree-redo)
+    (defalias 'undo 'undo-tree-undo)
+    (global-undo-tree-mode)
+)
+
+(evil-leader/set-key "oe" 'org-edit-src-code)    
+(evil-leader/set-key "ok" 'org-edit-src-exit)
+
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+(use-package rainbow-mode :ensure t
+    :hook (prog-mode
+           text-mode
+           html-mode
+           css-mode
+           c++-mode
+           c-mode
+           lisp-mode
+           emacs-lisp-mode)
+    :init (rainbow-mode)
+)
+
+(use-package docker          :ensure t :init (evil-leader/set-key "d" 'docker)) 
+(use-package dockerfile-mode :ensure t 
+    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 (use-package company :ensure t
 :init (global-company-mode 1)
@@ -383,23 +436,79 @@
     (add-hook 'c++-mode-hook        'company-mode)
     (add-hook 'c-mode-hook          'company-mode)
     (add-hook 'racer-mode-hook      'company-mode)
+    (add-hook 'org-mode-hook        'company-mode)
     (add-hook 'emacs-lisp-mode-hook 'company-mode)
-    (add-hook 'org-mode-hook 'company-mode)
+)
+(use-package company-c-headers :ensure t
+:after company
+:init (add-to-list 'company-backends 'company-c-headers)
 )
 
 (use-package flycheck :ensure t 
-:init (global-flycheck-mode t))
+:init (global-flycheck-mode t)
+      (setq flycheck-clang-language-standard "c++17")
+)
 (use-package flycheck-pos-tip :ensure t 
 :after flycheck
 :init (flycheck-pos-tip-mode))
 
-(use-package irony :ensure t 
+(use-package yasnippet :ensure t
+:init
+(setq yas-snippet-dirs '("~/.emacs.d/yas/"))
+(use-package yasnippet-snippets :ensure t)
+(yas-global-mode)
+(yas-reload-all)
+)
+
+(use-package clang-format :ensure t
+:init (evil-leader/set-key "cf" 'clang-format-regieon)
+)
+
+(use-package rtags :ensure t
+:after (helm flycheck)
+:init
+    (setq rtags-autostart-diagnostics t)
+    (rtags-diagnostics)
+    (setq rtags-completions-enabled t) (rtags-enable-standard-keybindings)
+    (evil-leader/set-key "cs" 'rtags-find-symbol
+                         "cr" 'rtags-find-references)
+)
+(use-package helm-rtags :ensure t :after (helm rtags)
+:init (setq rtags-display-result-backend 'helm))
+
+(use-package company-rtags :ensure t :after (company rtags)
+:init (add-to-list 'company-backend 'company-rtags))
+(use-package flycheck-rtags :ensure t
+    :init
+    (defun my-flycheck-rtags-setup ()
+        (flycheck-select-checker 'rtags)
+        (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+        (setq-local flycheck-check-syntax-automatically nil))
+    (add-hook 'c-mode-hook    #'my-flycheck-rtags-setup)
+    (add-hook 'c++-mode-hook  #'my-flycheck-rtags-setup)
+    (add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
+    (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
+    (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
+)
+
+(use-package cmake-ide :ensure t
+:init
+    (cmake-ide-setup)
+    (setq cmake-ide-flags-c++ (append '("-std=c++17")))
+    (evil-leader/set-key "cc" 'cmake-ide-compile)
+)
+
+(use-package irony :ensure t :diminish irony-mode
 :init 
+    (setq irony-additional-clang-options '("-std=c++17"))
+    (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
     (add-hook 'c++-mode-hook   'irony-mode)
     (add-hook 'c-mode-hook     'irony-mode)
     (add-hook 'objc-mode-hook  'irony-mode)
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-:config (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
+)
+(use-package irony-eldoc :ensure t :after (irony eldoc)
+    :hook irony-mode
 )
 (use-package company-irony :ensure t :after company
 :init (add-to-list 'company-backends 'company-irony)
@@ -409,39 +518,136 @@
 )
 (use-package company-irony-c-headers :ensure t
 :after company
-:init (add-to-list 'company-backends '(company-irony-c-headers))
+:init (add-to-list 'company-backends 'company-irony-c-headers)
 )
-(use-package company-c-headers :ensure t
-:after company
-:init (add-to-list 'company-backends 'company-c-headers)
+
+;;; cmake-ide + gdb/exec.
+(defun run-process-in-comint (cmd)
+(let* ((name (format "Process: %s" cmd))
+        (buf (set-buffer (generate-new-buffer name)))
+        (proc nil)
+        (line-- (make-string 80 ?-))
+        (proc-sentinal-fn (lambda (proc evt)
+                            (insert (format "%s\n%s -- %s\n%s\n" line-- evt (current-time-string) line--))))
+        (comint-mode-result (comint-mode)))
+    ;;
+    (switch-to-buffer-other-window buf)
+    ;;
+    (insert (format "Starting: %s\n%s\n" (current-time-string) line--))
+    (setq proc (start-process-shell-command name buf cmd))
+    (set-process-sentinel proc (lambda (proc evt)
+                                (insert (format "==========\n%s -- (%s) %s\n"
+                                                evt
+                                                (process-exit-status proc)
+                                                evt (current-time-string)))))
+    ;;
+    proc))
+(defun cmake-ide-find-exe-file ()
+(interactive)
+(let* ((exec-files (seq-filter 'file-executable-p 
+                                (directory-files-recursively
+                                (cide--build-dir)
+                                ".*")))
+        (base-buffer-name (file-name-base (buffer-name)))
+        (calc-dist (lambda (fn) (cons fn
+                                    (levenshtein-distance
+                                        base-buffer-name
+                                        (file-name-base fn)))))
+        (cdr-< (lambda (a b) (< (cdr a) (cdr b))))
+        (distances (sort (mapcar calc-dist exec-files) cdr-<))
+        ;;(---- (message distances))
+        (nearest (car (first distances))))
+    (cons nearest exec-files)))
+
+(defun cmake-ide-gdb-files-source ()
+"http://kitchingroup.cheme.cmu.edu/blog/2015/01/24/Anatomy-of-a-helm-source/"
+(interactive)
+(require 'seq)
+`((name . "Executable file to debug")
+    (candidates . ,(cmake-ide-find-exe-file))
+    (action . (lambda (sel)
+                (gdb (read-from-minibuffer
+                    "Cmd: " (format "%s %s" gud-gdb-command-name sel)))))))
+
+(defun cmake-ide-helm-run-gdb ()
+(interactive)
+(helm :sources (cmake-ide-gdb-files-source)))
+
+(define-key c-mode-base-map (kbd "C-c d")
+(function cmake-ide-helm-run-gdb))
+
+(defun cmake-ide-run-files-source ()
+(interactive)
+(require 'seq)
+`((name . "Executable file")
+    (candidates . ,(cmake-ide-find-exe-file))
+    (action . (lambda (sel)
+                (run-process-in-comint (read-from-minibuffer "Cmd: " sel))))))
+
+(defun cmake-ide-helm-run-exe ()
+(interactive)
+(helm :sources (cmake-ide-run-files-source)))
+
+(define-key c-mode-base-map (kbd "C-c x") (function cmake-ide-helm-run-exe))
+
+(use-package eldoc :ensure t :diminish eldoc-mode
+:after rtags
 )
-(use-package clang-format :ensure t
-:init (global-set-key [C-M-tab] 'clang-format-regieon)
+
+(defun fontify-string (str mode)
+    "Return STR fontified according to MODE."
+    (with-temp-buffer
+        (insert str)
+        (delay-mode-hooks (funcall mode))
+        (font-lock-default-function mode)
+        (font-lock-default-fontify-region
+        (point-min) (point-max) nil)
+        (buffer-string)
+    )
 )
+
+(defun rtags-eldoc-function ()
+(let ((summary (rtags-get-summary-text)))
+    (and summary
+        (fontify-string
+        (replace-regexp-in-string
+        "{[^}]*$" ""
+        (mapconcat
+            (lambda (str) (if (= 0 (length str)) "//" (string-trim str)))
+            (split-string summary "\r?\n")
+            " "))
+        major-mode))))
+
+(defun rtags-eldoc-mode ()
+    (interactive)
+    (setq-local eldoc-documentation-function #'rtags-eldoc-function)
+    (eldoc-mode 1)
+)
+
+(add-hook 'c-mode-hook 'rtags-eldoc-mode)
+(add-hook 'c++-mode-hook 'rtags-eldoc-mode)
 
 (use-package elisp-slime-nav :ensure t :diminish elisp-slime-nav-mode
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
-;:init
-;    (dolist (i '(emacs-lisp-mode-hook ielm-mode-hook))
-;        (add-hook i 'elisp-slime-nav-mode)
-;    )
 )
 
-(use-package magit :ensure t :diminish auto-revert-mode
-:init   (evil-leader/set-key "gs" 'magit-status)
-:config (setq vc-handled-backends nil)
-)
-
-(use-package undo-tree :ensure t :diminish undo-tree-mode
-:bind (("C-u"   . undo-tree-undo)
-       ("C-r"   . undo-tree-redo))
+(use-package rust-mode :ensure t)
+(use-package flymake-rust :ensure t)
+(use-package racer :ensure t 
 :init
-    (global-undo-tree-mode)
-    (defalias 'redo 'undo-tree-redo)
-    (defalias 'undo 'undo-tree-undo)
+(add-hook 'racer-mode-hook #'racer-mode) 
+(add-hook 'racer-mode-hook #'eldoc-mode)
+)
+(use-package cargo :ensure t
+:init (add-hook 'rust-mode-hook 'cargo-minor-mode)
 )
 
-(evil-leader/set-key "oe" 'org-edit-src-code)    
-(evil-leader/set-key "ok" 'org-edit-src-exit)
+(use-package haskell-mode :ensure t)
+
+(use-package yaml-mode :ensure t)
+
+(use-package cmake-mode :ensure t
+:init (cmake-mode)
+)
 
 

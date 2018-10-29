@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/dev/test/cppm/" "~/dev/test/cppm/thirdparty/nlpo/" "~/dev/nlpo/" "~/dev/nieel/" "~/dev/cppm/" "~/dev/cppm/cppm_packages/" "~/dev/hello_cargo/" "~/")
+("~/dev/nlpo/" "~/dev/test/cppm/" "~/.emacs.d/" "~/dev/test/cppm/thirdparty/nlpo/" "~/dev/nieel/" "~/dev/cppm/" "~/dev/cppm/cppm_packages/" "~/dev/hello_cargo/" "~/")

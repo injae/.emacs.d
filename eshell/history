@@ -1,128 +1,128 @@
-./cppm build
-./cppm build
-cppm build
-./cppm build
-cd ../../../
 ls
-cd cppm build
-cd build
+cd rtags-2.19/
 ls
-cd cppm/build/
-cppm build
-./cppm build
+cmake .
+cat .con
+cat ./configure 
+./configure 
+sudo make -j2 install
 ls
+cd ..
 ls
-./cppm build install
-cppm build
-cppm build -r
-./cppm build -r
-cppm build
-cppm build -r
-cppm build
-cppm build -r
-cppm build install
-cppm build -r
+make
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
 ls
-cppm build -h                        //                        //                        //
-cpm build -r
-cpm build -h
+./configure 
+make
 ls
-cd ~/dev/test/cppm/
-cppm build -h
+cd CMakeFiles/
 ls
-gitadd .
-git add .
-git status
-git commit -m "now can use but install function and init function not workgin:"
-git push
+cd ..
 ls
+clear
 ls
+clear
+ls
+./configure 
+./configure 
+make 
+ls
+cd ..
+ls
+clang -version
+clang -v
+ls
+clear
+lsclear
+ls
+clear
+ldd rtags
+cd ../../../.emacs.d/elpa/rtags-20180814.1713/rtags-2.19/
+ls
+cd bin/
+ls
+lld ./rc
+ldd ./rc
+ldd ./rdm
+ldd ./rp
+cppm build/
 cppm build 
 cppm build
-cppm build install
-cppm build -r install
 cppm build
+sudo cppm build
+cppm build
+sudo cppm build
 ls
-cd build
-./cppm build
-cppm build
-./cppm build
-cppm build
+cd ..
+ls
 cd ../../
 ls
-cd ../nlpo/
+cd ../
 ls
+cd ../.emacs.d/
+ls
+git add .
+git status
+git commit -m "update"
+git push 
+ls
+ls
+ls -a
+touch .gitignore
+git add .
+git status
+git commit -m "rtags is too big"
+git push
+git remove elpa/rtags-20180814.1713/
+git remove elpa/rtags-20180814.1713/
+git -h
+git --help
+git rm elpa/rtags-20180814.1713/
+git rm -r elpa/rtags-20180814.1713/
+git commit -m "update"
+git push
+ delete mode 100755 elpa/rtags-20180814.1713/rtags-2.19/web/youtube/imenu.png
+git add .
+git status
+ls elpa | grep rtags
+ls
+cd ..
+ls
+cd dev/nlpo/src/
+ls
+cd ..
+ls
+cppm build
+ls
+cppm build
 cppm build install
+sudo cppm build install
 ls
-cat cppm.yaml
-cppm build
-ls
-ls
-ls
-cd ../dev/cppm
-ls
-cppm build
 cd ..
 ls
 cd test/cppm/
 ls
+sudo cppm build install
+cd ../../nlpo/
+ls
+sudo cppm build install
+cd ../test/cppm/
+cppm build 
+sudo cppm build install
+cppm build
+sudo cppm build
+cd ../../nlpo/
+sudo cppm build install
+cd ../test/cppm/
+sudo cppm build
+cd ../../
+ls
+cd nlpo/
+ls
 cd build
-ls
-rm compile_commands.json 
-cppm build
-ls
-cd ..
-ls
-cd build
-ls
 cmake ..
-ninja install
-ninja -j4
-sudo ninja install 
-ls
-cppm build
-ls
-cppm build
-./cppm build
-cmake ..
-ninja -j4
-sudo make install
 sudo ninja install
-cppm build
-cppm -h
-cppm --help
-cppm build
-cmake ..
-ninja -j4
-sudo ninja install
-cppm build
-sudo cppm build
-cppm build
-sudo cppm build
-sudo cppm build installl
+cd ../../test/cppm/
 sudo cppm build install
 cppm build
 sudo cppm build
-sudo cppm build install
-cppm build
-sudo cppm build
-sudo cppm build install
-ls
-ls
-ls
-cd lisp
-ls
-rm emacs-options.el evil.el neotree.el paren.el spaceline.el tab.el themes.el toggle.el use-package.el 
-ls
-cd ..
-ls
-cd lisp/
-ls
-cd linum/
-ls
-cd ..
-ls
-cd ..
-ls
-mkdir org
-ls
