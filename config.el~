@@ -16,19 +16,19 @@
     (tooltip-mode -1)
     ;; 마우스 사용가능
     (xterm-mouse-mode)
-    ;; default window size options
+    ; default window size options
     ;(if (display-graphic-p)
-    ;    (progn
-    ;    (setq initial-frame-alist
-    ;            '(
-    ;            (tool-bar-lines . 0)
-    ;            (width . 200) ; chars
-    ;            (height . 60) ; lines
-    ;            (left . 100)
-    ;            (top . 60)))
-    ;    (setq default-frame-alist
-    ;            '(
-    ;            (tool-bar-lines . 0)
+    ;   (progn
+    ;   (setq initial-frame-alist
+    ;           '(
+    ;           (tool-bar-lines . 0)
+    ;           (width . 200) ; chars
+    ;           (height . 60) ; lines
+    ;           (left . 100)
+    ;           (top . 60)))
+    ;   (setq default-frame-alist
+    ;           '(
+    ;           (tool-bar-lines . 0)
     ;            (width . 200)
     ;            (height . 60)
     ;            (left . 100)
@@ -82,7 +82,7 @@
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
 
-;(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (defun launch-separate-emacs-in-terminal ()
 (suspend-emacs "fg ; emacs -nw"))
@@ -136,10 +136,6 @@
     (add-hook 'perl-mode-hook         'hs-minor-mode)
     (add-hook 'sh-mode-hook           'hs-minor-mode)
 
-;(use-package aggressive-indent :ensure t :pin melpa
-;:init (global-aggressive-indent-mode)
-;)
-
 (use-package indent-guide :ensure t
 :init ;(indent-guide-global-mode)
 :config
@@ -158,6 +154,7 @@
 (my-set-indent 4)
 (setq-default indent-tabs-mode nil)
 
+(global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
 (defun un-indent-by-removing-4-spaces ()
     "back tab"
     (interactive)
@@ -171,7 +168,6 @@
             (replace-match "")))
         )
 )
-(global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
 ;(use-package highlight-indent-guides :ensure t
 ;    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 ;    :config 
@@ -190,10 +186,10 @@
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package smartparens :ensure t :pin melpa
+(use-package smartparens :ensure t
 :init (smartparens-global-mode)
 :config 
-    (use-package evil-smartparens :ensure t :pin melpa
+    (use-package evil-smartparens :ensure t
     :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 )
 
@@ -201,43 +197,32 @@
 :init   (which-key-mode t) 
 :config (which-key-enable-god-mode-support t))
 
-(use-package evil :ensure t :pin melpa
-:init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
+(use-package evil :ensure t
+    :init (evil-mode t)
+    :config
     (setq evil-want-C-u-scroll t)
+    (evil-set-initial-state 'calender-mode    'emacs)
+    (evil-set-initial-state 'calculater-mode  'emacs)
+    (evil-set-initial-state 'git-rebase-mode  'emacs)
+    (evil-set-initial-state 'magit-blame-mode 'emacs)
     (setq-default evil-symbol-word-search t)
-    (evil-mode t)
 )
-(use-package evil-collection :ensure t :pin melpa
-:after evil
-:init 
-    (setq evil-collection-setup-minibuffer t)
-    (evil-collection-helm-setup)
-    (evil-collection-magit-setup)
-    (evil-collection-neotree-setup)
-    (evil-collection-which-key-setup)
-    (evil-collection-buff-menu-setup)
-    (evil-collection-package-menu-setup)
-    (evil-collection-init)
-)
-(use-package evil-leader :ensure t :defer t :pin melpa
+(use-package evil-leader :ensure t :defer t
 :init (global-evil-leader-mode t)
 :config
     (setq evil-leader/leader "<SPC>")
     (evil-leader/set-key
         "<SPC>" 'helm-M-x
         "er"    'restart-emacs
-        "ff"    'find-file
-        "pl"    'list-processes
+        "f"     'find-file
+        "p"     'list-processes
         "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
-        "wf"    'toggle-frame-fullscreen
         "wh"    'shrink-window-horizontally
         "wj"    'enlarge-window
         "wk"    'shrink-window
         "wl"    'enlarge-window-horizontally
-        )
     )
+)
 
 (use-package all-the-icons :ensure t)
 (use-package spaceline :ensure t)
@@ -257,7 +242,7 @@
     (spaceline-toggle-flycheck-info-on)
     (spaceline-toggle-flycheck-warning-on)
     (spaceline-toggle-major-mode-on)
-    (spaceline-toggle-minor-modes-off)
+    (spaceline-toggle-minor-modes-on)
     (spaceline-toggle-line-column-on)
     (spaceline-toggle-window-number-on)
     (spaceline-toggle-buffer-encoding-on)
@@ -302,19 +287,22 @@
 ;)
 
 (use-package nyan-mode :ensure t
-    :init (nyan-mode)
-    :config
+:init (nyan-mode)
+:config
     (setq-default nyan-wavy-trail t)
     (nyan-start-animation)
-    (nyan-refresh))
+    (nyan-refresh)
+)
 (when window-system
     (use-package mode-icons :ensure t
-        :init  
-        (setq mode-icons-desaturate-active t)
-        (mode-icons-mode)))
+    :init   (mode-icons-mode)
+    :config (setq mode-icons-change-mode-name nil)
+    )
+)
 (use-package fancy-battery :ensure t
-    :init   (fancy-battery-mode)
-    :config (setq fancy-battery-show-percentage t))
+:init   (fancy-battery-mode)
+:config (setq fancy-battery-show-percentage t)
+)
 
 (use-package helm :defer t :ensure t :diminish helm-mode
 :bind ("M-x" . helm-M-x)
@@ -325,11 +313,11 @@
                     (display-buffer-in-side-window)
                     (inhibit-same-window . t)
                     (window-height . 0.4)))
-
+)
 (use-package helm-projectile :ensure t 
 :after projectile
 :init (helm-projectile-on)
-))
+)
 (use-package helm-company :ensure t
 :after helm company
 :init
@@ -340,10 +328,6 @@
 :after helm
 :init (helm-descbinds-mode)
 )
-(use-package helm-swoop :ensure t :pin melpa
-:after helm
-:init (evil-leader/set-key "fw" 'helm-swoop)
-)
 
 (use-package projectile :defer t :ensure t
 :init (projectile-mode t)
@@ -352,8 +336,20 @@
 
 (use-package neotree :ensure t
 :init 
-    (setq projectile-switch-project-action 'neotree-projectile-action)
-    (evil-leader/set-key "n" #'neotree-toggle)
+    ;(add-hook 'neotree-mode-hook (lambda () (linum-mode nil)))
+    (add-hook 'neotree-mode-hook 
+        (lambda ()
+            (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+            (define-key evil-normal-state-local-map (kbd "q")   'neotree-hide)
+            (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "g")   'neotree-refresh)
+            (define-key evil-normal-state-local-map (kbd "n")   'neotree-next-line)
+            (define-key evil-normal-state-local-map (kbd "p")   'neotree-previous-line)
+            (define-key evil-normal-state-local-map (kbd "A")   'neotree-stretch-toggle)
+            (define-key evil-normal-state-local-map (kbd "H")   'neotree-hidden-file-toggle)
+        ))
+    (evil-leader/set-key "n" #'neotree-toggle);(lambda ()(interactive)((neotree-toggle)(linum-mode nil)))
 :config
     (progn
         (setq-default neo-window-width 30)
@@ -363,6 +359,7 @@
         (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     )
     (setq neo-show-hidden-files t)
+    (setq projectile-switch-project-action 'neotree-projectile-action)
 )
 
 (use-package ace-window :ensure t
@@ -387,37 +384,22 @@
 )
 
 (setq gdb-show-main t)
-(evil-leader/set-key "db" 'gud-break)
-(evil-leader/set-key "dn" 'gud-next)
-(evil-leader/set-key "di" 'gud-step)
-(evil-leader/set-key "df" 'gud-finish)
-(evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
+(evil-leader/set-key "gb" 'gud-break)
+(evil-leader/set-key "gn" 'gud-next)
+(evil-leader/set-key "gi" 'gud-step)
+(evil-leader/set-key "gf" 'gud-finish)
+(evil-leader/set-key "gt" '(lambda () (call-interactively 'gud-tbreak)
                                       (call-interactively 'gud-cont  )))
 
-(use-package magit :ensure t  :pin melpa
+(use-package magit :ensure t :diminish auto-revert-mode
 :init   (evil-leader/set-key "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
-)
-(use-package evil-magit :ensure t :pin melpa
-:after (evil magit)
-:init (evil-magit-init)
-)
-;(use-package magithub :ensure t :pin melpa
-;:after magit
-;:init (magithub-feature-autoinject t)
-;      (setq magithub-clone-default-directory "~/github")   
-;)
-
-(use-package evil-ediff :ensure t :pin melpa
-    :init (evil-ediff-init)
 )
 
 (use-package undo-tree :ensure t :diminish undo-tree-mode
 :init
-    (global-set-key (kbd "C-u") #'undo-tree-undo)
-    [global-set-key (kbd "C-r") #'undo-tree-redo]
-    (evil-leader/set-key "uu"    'undo-tree-undo)
-    (evil-leader/set-key "ur"    'undo-tree-undo)
+    (evil-leader/set-key "u" 'undo-tree-undo)
+    (evil-leader/set-key "r" 'undo-tree-undo)
     (defalias 'redo 'undo-tree-redo)
     (defalias 'undo 'undo-tree-undo)
     (global-undo-tree-mode)
@@ -425,6 +407,9 @@
 
 (evil-leader/set-key "oe" 'org-edit-src-code)    
 (evil-leader/set-key "ok" 'org-edit-src-exit)
+
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 (use-package rainbow-mode :ensure t
     :hook (prog-mode
@@ -438,7 +423,7 @@
     :init (rainbow-mode)
 )
 
-(use-package docker          :ensure t :init (evil-leader/set-key "ud" 'docker)) 
+(use-package docker          :ensure t :init (evil-leader/set-key "d" 'docker)) 
 (use-package dockerfile-mode :ensure t 
     :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
@@ -464,56 +449,52 @@
 :after helm dash
 )
 
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (defvar my-eshell " *BOTTOM-TERMINAL*" "my shell name,use eshell.")
 (defun get-current-directory (&optional buffer)
   "get current directory."
   (if (not buffer)
       (file-name-directory (or (buffer-file-name) default-directory))
-      (with-current-buffer buffer
+    (with-current-buffer buffer
       (file-name-directory (or (buffer-file-name) default-directory)))))
 
-  (defun get-parent-dir (name)
+(defun get-parent-dir (name)
   "Get the parent name dir."
   (locate-dominating-file default-directory name))
 
-  (defun get-project-root-directory (buffer)
+(defun get-project-root-directory (buffer)
   "find current project root,for git or gradle."
-      (with-current-buffer buffer
+    (with-current-buffer buffer
       (if (setq parent (cl-some #'get-parent-dir pop-find-parent-directory))
       parent
-      (get-current-directory))))
+    (get-current-directory))))
 
-  (defun eshell-pop-bottom()
+(defun eshell-pop-bottom()
   "pop eshell at bottom"
   (interactive)
   (let ((pos-buffer (current-buffer))
-      (tmp-eshell (get-buffer my-eshell))
-      (dir (get-current-directory)))
-      ;;check if my-eshell exist,if not create one.
-      (unless tmp-eshell
+    (tmp-eshell (get-buffer my-eshell))
+    (dir (get-current-directory)))
+    ;;check if my-eshell exist,if not create one.
+    (unless tmp-eshell
       (setq tmp-eshell (eshell 100))
       (with-current-buffer tmp-eshell
-      (eshell/clear-scrollback)
-      (rename-buffer my-eshell)
-      (switch-to-buffer pos-buffer)))
-      (setq window
+    (eshell/clear-scrollback)
+    (rename-buffer my-eshell)
+    (switch-to-buffer pos-buffer)))
+    (setq window
       (select-window
-      (display-buffer-in-side-window tmp-eshell '((side . bottom))) t))
-      (set-window-dedicated-p window t)
-      (when (not (equal pre-path dir))
+       (display-buffer-in-side-window tmp-eshell '((side . bottom))) t))
+    (set-window-dedicated-p window t)
+    (when (not (equal pre-path dir))
       (eshell/cd dir)
       (eshell-send-input)
-      (setq pre-path dir)))
-      )
-   (evil-leader/set-key "ut" 'eshell-pop-bottom)
+      (setq pre-path dir))))
+(evil-leader/set-key "t" (lambda () ((eshell-pop-bottom) (company-mode))):
 
 
 
 (use-package company :ensure t
-;:init (global-company-mode 1)
-:init (company-mode)
+:init (global-company-mode 1)
 :config 
     (setq company-idle-delay 0)
     (setq company-minimum-prefix-length 1)
@@ -527,14 +508,13 @@
     (add-hook 'c++-mode-hook        'company-mode)
     (add-hook 'c-mode-hook          'company-mode)
     (add-hook 'racer-mode-hook      'company-mode)
-    (add-hook 'lisp-mode-hook       'company-mode)
+    (add-hook 'org-mode-hook        'company-mode)
     (add-hook 'emacs-lisp-mode-hook 'company-mode)
 )
-;(use-package company-quickhelp :ensure t :pin melpa
-;:init
-;    ;(evil-leader/set-key "c h" 'company-quickhelp-manual-begin)
-;    (company-quickhelp-mode)
-;)
+(use-package company-c-headers :ensure t
+:after company
+:init (add-to-list 'company-backends 'company-c-headers)
+)
 
 (use-package flycheck :ensure t :pin melpa
 :init (global-flycheck-mode t)
@@ -552,10 +532,6 @@
 (yas-reload-all)
 )
 
-(use-package company-c-headers :ensure t
-:after company
-:init (add-to-list 'company-backends 'company-c-headers)
-)
 (use-package clang-format :ensure t
 :init (evil-leader/set-key "cf" 'clang-format-regieon)
 )
@@ -724,8 +700,6 @@
 (use-package elisp-slime-nav :ensure t :diminish elisp-slime-nav-mode
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
-(add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
-(add-hook 'lisp-mode-hook       'prettify-symbols-mode)
 
 (use-package rust-mode :ensure t)
 ;(use-package flymake-rust :ensure t)

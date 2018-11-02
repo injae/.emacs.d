@@ -41,9 +41,9 @@ MY EMACS CONFIG -*- mode: org -*-
         ;            (height . 60)
         ;            (left . 100)
         ;            (top . 60))))
-        ;(progn
-        ;    (setq initial-frame-alist '( (tool-bar-lines . 0)))
-        ;    (setq default-frame-alist '( (tool-bar-lines . 0)))))
+        (progn
+            (setq initial-frame-alist '( (tool-bar-lines . 0)))
+            (setq default-frame-alist '( (tool-bar-lines . 0)))))
     )
 
     (setq scroll-step 1)
@@ -100,7 +100,7 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** ESC 눌러서 버퍼 탈출 
     #+BEGIN_SRC emacs-lisp
-    ;(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
     #+END_SRC
 ** Emacs restart function
     #+BEGIN_SRC emacs-lisp
@@ -120,29 +120,29 @@ MY EMACS CONFIG -*- mode: org -*-
       )
     #+END_SRC
 ** TODO 
- #+BEGIN_SRC emacs-lisp
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    #+END_SRC
 * Emacs Mode Settings    
 ** Line Number and Hilighting
- #+BEGIN_SRC emacs-lisp
-   (use-package beacon :ensure t :init (beacon-mode t)) 
-   (use-package git-gutter :ensure t
-   :init 
-       (setq-default display-line-numbers-width 2)
-       (global-git-gutter-mode t)
-       (global-display-line-numbers-mode t)
-       (global-hl-line-mode t)
-   :config
-       (setq git-gutter:lighter " gg")
-       (setq git-gutter:window-width 1)
-       (setq git-gutter:modified-sign ".")
-       (setq git-gutter:added-sign    "+")
-       (setq git-gutter:deleted-sign  "-")
-       (set-face-foreground 'git-gutter:added    "#daefa3")
-       (set-face-foreground 'git-gutter:deleted  "#FA8072")
-       (set-face-foreground 'git-gutter:modified "#b18cce")
-   )
-  #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    (use-package beacon :ensure t :init (beacon-mode t)) 
+    (use-package git-gutter :ensure t
+    :init 
+        (setq-default display-line-numbers-width 2)
+        (global-git-gutter-mode t)
+        (global-display-line-numbers-mode t)
+        (global-hl-line-mode t)
+    :config
+        (setq git-gutter:lighter " gg")
+        (setq git-gutter:window-width 1)
+        (setq git-gutter:modified-sign ".")
+        (setq git-gutter:added-sign    "+")
+        (setq git-gutter:deleted-sign  "-")
+        (set-face-foreground 'git-gutter:added    "#daefa3")
+        (set-face-foreground 'git-gutter:deleted  "#FA8072")
+        (set-face-foreground 'git-gutter:modified "#b18cce")
+    )
+    #+END_SRC
 ** Theme Setting
     #+BEGIN_SRC emacs-lisp
     (use-package doom-themes
@@ -166,69 +166,65 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** Emacs Indent Setting
     #+BEGIN_SRC emacs-lisp
-      ;(use-package aggressive-indent :ensure t :pin melpa
-      ;:init (global-aggressive-indent-mode)
-      ;)
+    (use-package indent-guide :ensure t
+    :init ;(indent-guide-global-mode)
+    :config
+        (setq indent-guide-char      "|")
+        (setq indent-guide-recursive t)
+        ;(set-face-background 'indent-guide-face "dimgray")
+        ;(setq indent-guide-delay     0.1)
+    )
+    (defun my-set-indent (n)
+        (setq-default tab-width n)
+        ;(electric-indent-mode t)
+        (setq c-basic-offset n)
+        (setq lisp-indent-offset n)
+        (setq indent-line-function 'insert-tab)
+    )
+    (my-set-indent 4)
+    (setq-default indent-tabs-mode nil)
 
-      (use-package indent-guide :ensure t
-      :init ;(indent-guide-global-mode)
-      :config
-          (setq indent-guide-char      "|")
-          (setq indent-guide-recursive t)
-          ;(set-face-background 'indent-guide-face "dimgray")
-          ;(setq indent-guide-delay     0.1)
-      )
-      (defun my-set-indent (n)
-          (setq-default tab-width n)
-          ;(electric-indent-mode t)
-          (setq c-basic-offset n)
-          (setq lisp-indent-offset n)
-          (setq indent-line-function 'insert-tab)
-      )
-      (my-set-indent 4)
-      (setq-default indent-tabs-mode nil)
-
-      (defun un-indent-by-removing-4-spaces ()
-          "back tab"
-          (interactive)
-          (save-excursion
-          (save-match-data
-          (beginning-of-line)
-              ;; get rid of tabs at beginning of line
-          (when (looking-at "^\\s-+")
-          (untabify (match-beginning 0) (match-end 0)))
-              (when (looking-at "^    ")
-                  (replace-match "")))
-              )
-      )
-      (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
-      ;(use-package highlight-indent-guides :ensure t
-      ;    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-      ;    :config 
-      ;       (setq highlight-indent-guides-method 'character)
-      ;       ;(set-face-background 'highlight-indent-guides-odd-face       "darkgray")
-      ;       ;(set-face-background 'highlight-indent-guides-even-face      "dimgray" )
-      ;       ;(set-face-background 'highlight-indent-guides-character-face "dimgray" )
-      ;)
+    (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
+    (defun un-indent-by-removing-4-spaces ()
+        "back tab"
+        (interactive)
+        (save-excursion
+        (save-match-data
+        (beginning-of-line)
+            ;; get rid of tabs at beginning of line
+        (when (looking-at "^\\s-+")
+        (untabify (match-beginning 0) (match-end 0)))
+            (when (looking-at "^    ")
+                (replace-match "")))
+            )
+    )
+    ;(use-package highlight-indent-guides :ensure t
+    ;    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+    ;    :config 
+    ;       (setq highlight-indent-guides-method 'character)
+    ;       ;(set-face-background 'highlight-indent-guides-odd-face       "darkgray")
+    ;       ;(set-face-background 'highlight-indent-guides-even-face      "dimgray" )
+    ;       ;(set-face-background 'highlight-indent-guides-character-face "dimgray" )
+    ;)
 
     #+END_SRC
 ** TODO Paren Mode
     #+BEGIN_SRC emacs-lisp
-      (use-package paren :ensure t 
-      :init   (show-paren-mode 1)
-      :config (setq show-paren-delay 0)
-      )
+    (use-package paren :ensure t 
+    :init   (show-paren-mode 1)
+    :config (setq show-paren-delay 0)
+    )
 
-      (use-package rainbow-delimiters :ensure t
-      :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
-      )
+    (use-package rainbow-delimiters :ensure t
+    :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
+    )
 
-      (use-package smartparens :ensure t :pin melpa
-      :init (smartparens-global-mode)
-      :config 
-          (use-package evil-smartparens :ensure t :pin melpa
-          :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
-      )
+    (use-package smartparens :ensure t
+    :init (smartparens-global-mode)
+    :config 
+        (use-package evil-smartparens :ensure t
+        :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+    )
     #+END_SRC
 ** Key map buffer make
     #+BEGIN_SRC emacs-lisp
@@ -238,169 +234,169 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** Vim KeyMap (Evil-mode)
     #+BEGIN_SRC emacs-lisp
-      (use-package evil :ensure t :pin melpa
-      :init
-          (setq evil-want-integration t)
-          (setq evil-want-keybinding nil)
+      (use-package evil :ensure t
+          :init (evil-mode t)
+          :config
           (setq evil-want-C-u-scroll t)
+          (evil-set-initial-state 'calender-mode    'emacs)
+          (evil-set-initial-state 'calculater-mode  'emacs)
+          (evil-set-initial-state 'git-rebase-mode  'emacs)
+          (evil-set-initial-state 'magit-blame-mode 'emacs)
           (setq-default evil-symbol-word-search t)
-          (evil-mode t)
       )
-      (use-package evil-collection :ensure t :pin melpa
-      :after evil
-      :init 
-          (setq evil-collection-setup-minibuffer t)
-          (evil-collection-helm-setup)
-          (evil-collection-magit-setup)
-          (evil-collection-neotree-setup)
-          (evil-collection-which-key-setup)
-          (evil-collection-buff-menu-setup)
-          (evil-collection-package-menu-setup)
-          (evil-collection-init)
-      )
-      (use-package evil-leader :ensure t :defer t :pin melpa
+      (use-package evil-leader :ensure t :defer t
       :init (global-evil-leader-mode t)
       :config
           (setq evil-leader/leader "<SPC>")
           (evil-leader/set-key
               "<SPC>" 'helm-M-x
               "er"    'restart-emacs
-              "ff"    'find-file
-              "pl"    'list-processes
+              "f"     'find-file
+              "p"     'list-processes
               "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
-              "wf"    'toggle-frame-fullscreen
               "wh"    'shrink-window-horizontally
               "wj"    'enlarge-window
               "wk"    'shrink-window
               "wl"    'enlarge-window-horizontally
-              )
           )
+      )
     #+END_SRC
-** Modeline Setting
- #+BEGIN_SRC emacs-lisp
-   (use-package all-the-icons :ensure t)
-   (use-package spaceline :ensure t)
-   (use-package spaceline-config :ensure spaceline
-   :init (spaceline-spacemacs-theme)
-   :config
-       (custom-set-faces '(mode-line-buffer-id ((t nil)))) ;; blend well with tango-dark
-       (setq powerline-default-separator 'arrow)   ;; bar arrow wave utf-8
-       (spaceline-toggle-buffer-id-on)
-       (spaceline-toggle-input-method-on)
-       (spaceline-toggle-buffer-modified-on)
-       (spaceline-toggle-buffer-encoding-on)
-       (spaceline-toggle-process-on)
-       (spaceline-toggle-projectile-root-on)
-       (spaceline-toggle-version-control-on)
-       (spaceline-toggle-flycheck-error-on)
-       (spaceline-toggle-flycheck-info-on)
-       (spaceline-toggle-flycheck-warning-on)
-       (spaceline-toggle-major-mode-on)
-       (spaceline-toggle-minor-modes-off)
-       (spaceline-toggle-line-column-on)
-       (spaceline-toggle-window-number-on)
-       (spaceline-toggle-buffer-encoding-on)
-       (spaceline-toggle-evil-state-on)
-       (spaceline-toggle-nyan-cat-on)
-       (spaceline-helm-mode 1)
-       (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-       (setq evil-normal-state-tag   (propertize "COMMAND "))
-       (setq evil-emacs-state-tag    (propertize "EMACS   "))
-       (setq evil-insert-state-tag   (propertize "INSERT  "))
-       (setq evil-replace-state-tag  (propertize "REPLACE "))
-       (setq evil-motion-state-tag   (propertize "MOTION  "))
-       (setq evil-visual-state-tag   (propertize "VISUAL  "))
-       (setq evil-operator-state-tag (propertize "OPERATE "))
-   )
+** TODO Modeline Setting
+    #+BEGIN_SRC emacs-lisp
+    (use-package all-the-icons :ensure t)
+    (use-package spaceline :ensure t)
+    (use-package spaceline-config :ensure spaceline
+    :init (spaceline-spacemacs-theme)
+    :config
+        (custom-set-faces '(mode-line-buffer-id ((t nil)))) ;; blend well with tango-dark
+        (setq powerline-default-separator 'arrow)   ;; bar arrow wave utf-8
+        (spaceline-toggle-buffer-id-on)
+        (spaceline-toggle-input-method-on)
+        (spaceline-toggle-buffer-modified-on)
+        (spaceline-toggle-buffer-encoding-on)
+        (spaceline-toggle-process-on)
+        (spaceline-toggle-projectile-root-on)
+        (spaceline-toggle-version-control-on)
+        (spaceline-toggle-flycheck-error-on)
+        (spaceline-toggle-flycheck-info-on)
+        (spaceline-toggle-flycheck-warning-on)
+        (spaceline-toggle-major-mode-on)
+        (spaceline-toggle-minor-modes-on)
+        (spaceline-toggle-line-column-on)
+        (spaceline-toggle-window-number-on)
+        (spaceline-toggle-buffer-encoding-on)
+        (spaceline-toggle-evil-state-on)
+        (spaceline-toggle-nyan-cat-on)
+        (spaceline-helm-mode 1)
+        (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+        (setq evil-normal-state-tag   (propertize "COMMAND "))
+        (setq evil-emacs-state-tag    (propertize "EMACS   "))
+        (setq evil-insert-state-tag   (propertize "INSERT  "))
+        (setq evil-replace-state-tag  (propertize "REPLACE "))
+        (setq evil-motion-state-tag   (propertize "MOTION  "))
+        (setq evil-visual-state-tag   (propertize "VISUAL  "))
+        (setq evil-operator-state-tag (propertize "OPERATE "))
+    )
 
-   ;(use-package spaceline-all-the-icons :ensure t
-   ;    :after spaceline
-   ;    :config
-   ;    ;(spaceline-all-the-icons-theme)
-   ;    ;(spaceline-all-the-icons--setup-package-updates)
-   ;    ;(spaceline-all-the-icons--setup-neotree)
-   ;    ;(spaceline-all-the-icons--setup-git-ahead)
-   ;    ;(spaceline-toggle-all-the-icons-eyebrowse-workspace-on)
-   ;    ;(spaceline-toggle-all-the-icons-sunrise-on)
-   ;    ;(spaceline-toggle-all-the-icons-sunset-on)
-   ;    ;(spaceline-toggle-all-the-icons-time-on)
-   ;    ;(spaceline-toggle-all-the-icons-weather-on)
-   ;    ;(spaceline-toggle-all-the-icons-flycheck-status-on)
-   ;    ;(spaceline-toggle-all-the-icons-flycheck-status-info-on)
-   ;    ;(spaceline-toggle-all-the-icons-buffer-id-on)
-   ;    ;(spaceline-toggle-all-the-icons-git-status-on)
-   ;    ;(spaceline-toggle-all-the-icons-nyan-cat-on)
-   ;    ;(spaceline-toggle-all-the-icons-narrowed-on)
-   ;    ;(spaceline-toggle-all-the-icons-git-ahead-on)
-   ;    ;(spaceline-toggle-all-the-icons-bookmark-on)
-   ;    ;(spaceline-toggle-all-the-icons-projectile-on)
-   ;    ;(spaceline-toggle-all-the-icons-window-number-on)
-   ;    ;(spaceline-toggle-all-the-icons-mode-icon-on)
-   ;    ;(spaceline-toggle-all-the-icons-battery-status-on)
-   ;    ;(setq inhibit-compacting-font-caches t)
-   ;)
- #+END_SRC
-** Modeline Minor Mode
- #+BEGIN_SRC emacs-lisp
-   (use-package nyan-mode :ensure t
-       :init (nyan-mode)
-       :config
-       (setq-default nyan-wavy-trail t)
-       (nyan-start-animation)
-       (nyan-refresh))
-   (when window-system
-       (use-package mode-icons :ensure t
-           :init  
-           (setq mode-icons-desaturate-active t)
-           (mode-icons-mode)))
-   (use-package fancy-battery :ensure t
-       :init   (fancy-battery-mode)
-       :config (setq fancy-battery-show-percentage t))
- #+END_SRC
+    ;(use-package spaceline-all-the-icons :ensure t
+    ;    :after spaceline
+    ;    :config
+    ;    ;(spaceline-all-the-icons-theme)
+    ;    ;(spaceline-all-the-icons--setup-package-updates)
+    ;    ;(spaceline-all-the-icons--setup-neotree)
+    ;    ;(spaceline-all-the-icons--setup-git-ahead)
+    ;    ;(spaceline-toggle-all-the-icons-eyebrowse-workspace-on)
+    ;    ;(spaceline-toggle-all-the-icons-sunrise-on)
+    ;    ;(spaceline-toggle-all-the-icons-sunset-on)
+    ;    ;(spaceline-toggle-all-the-icons-time-on)
+    ;    ;(spaceline-toggle-all-the-icons-weather-on)
+    ;    ;(spaceline-toggle-all-the-icons-flycheck-status-on)
+    ;    ;(spaceline-toggle-all-the-icons-flycheck-status-info-on)
+    ;    ;(spaceline-toggle-all-the-icons-buffer-id-on)
+    ;    ;(spaceline-toggle-all-the-icons-git-status-on)
+    ;    ;(spaceline-toggle-all-the-icons-nyan-cat-on)
+    ;    ;(spaceline-toggle-all-the-icons-narrowed-on)
+    ;    ;(spaceline-toggle-all-the-icons-git-ahead-on)
+    ;    ;(spaceline-toggle-all-the-icons-bookmark-on)
+    ;    ;(spaceline-toggle-all-the-icons-projectile-on)
+    ;    ;(spaceline-toggle-all-the-icons-window-number-on)
+    ;    ;(spaceline-toggle-all-the-icons-mode-icon-on)
+    ;    ;(spaceline-toggle-all-the-icons-battery-status-on)
+    ;    ;(setq inhibit-compacting-font-caches t)
+    ;)
+    #+END_SRC
+** TODO Modeline Minor Mode
+    #+BEGIN_SRC emacs-lisp
+    (use-package nyan-mode :ensure t
+    :init (nyan-mode)
+    :config
+        (setq-default nyan-wavy-trail t)
+        (nyan-start-animation)
+        (nyan-refresh)
+    )
+    (when window-system
+        (use-package mode-icons :ensure t
+        :init   (mode-icons-mode)
+        :config (setq mode-icons-change-mode-name nil)
+        )
+    )
+    (use-package fancy-battery :ensure t
+    :init   (fancy-battery-mode)
+    :config (setq fancy-battery-show-percentage t)
+    )
+    #+END_SRC
 ** TODO Helm Mode
     #+BEGIN_SRC emacs-lisp
-      (use-package helm :defer t :ensure t :diminish helm-mode
-      :bind ("M-x" . helm-M-x)
-      :init (helm-mode 1)
-      ;; helm always bottom
-      (add-to-list 'display-buffer-alist
-                  `(,(rx bos "*helm" (* not-newline) "*" eos)
-                          (display-buffer-in-side-window)
-                          (inhibit-same-window . t)
-                          (window-height . 0.4)))
-
-      (use-package helm-projectile :ensure t 
-      :after projectile
-      :init (helm-projectile-on)
-      ))
-      (use-package helm-company :ensure t
-      :after helm company
-      :init
-          (define-key company-mode-map   (kbd "C-q") 'helm-company)
-          (define-key company-active-map (kbd "C-q") 'helm-company)
-      )
-      (use-package helm-descbinds :ensure t 
-      :after helm
-      :init (helm-descbinds-mode)
-      )
-      (use-package helm-swoop :ensure t :pin melpa
-      :after helm
-      :init (evil-leader/set-key "fw" 'helm-swoop)
-      )
+    (use-package helm :defer t :ensure t :diminish helm-mode
+    :bind ("M-x" . helm-M-x)
+    :init (helm-mode 1)
+    ;; helm always bottom
+    (add-to-list 'display-buffer-alist
+                `(,(rx bos "*helm" (* not-newline) "*" eos)
+                        (display-buffer-in-side-window)
+                        (inhibit-same-window . t)
+                        (window-height . 0.4)))
+    )
+    (use-package helm-projectile :ensure t 
+    :after projectile
+    :init (helm-projectile-on)
+    )
+    (use-package helm-company :ensure t
+    :after helm company
+    :init
+        (define-key company-mode-map   (kbd "C-q") 'helm-company)
+        (define-key company-active-map (kbd "C-q") 'helm-company)
+    )
+    (use-package helm-descbinds :ensure t 
+    :after helm
+    :init (helm-descbinds-mode)
+    )
     #+END_SRC
 ** TODO Projectile Mode
- #+BEGIN_SRC emacs-lisp
- (use-package projectile :defer t :ensure t
- :init (projectile-mode t)
- :config (evil-leader/set-key "p" 'projectile-command-map)
- )
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package projectile :defer t :ensure t
+      :init (projectile-mode t)
+      :config (evil-leader/set-key "p" 'projectile-command-map)
+      )
+    #+END_SRC
 ** TODO File Manager
     #+BEGIN_SRC emacs-lisp
     (use-package neotree :ensure t
     :init 
-        (setq projectile-switch-project-action 'neotree-projectile-action)
-        (evil-leader/set-key "n" #'neotree-toggle)
+        ;(add-hook 'neotree-mode-hook (lambda () (linum-mode nil)))
+        (add-hook 'neotree-mode-hook 
+            (lambda ()
+                (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+                (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+                (define-key evil-normal-state-local-map (kbd "q")   'neotree-hide)
+                (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+                (define-key evil-normal-state-local-map (kbd "g")   'neotree-refresh)
+                (define-key evil-normal-state-local-map (kbd "n")   'neotree-next-line)
+                (define-key evil-normal-state-local-map (kbd "p")   'neotree-previous-line)
+                (define-key evil-normal-state-local-map (kbd "A")   'neotree-stretch-toggle)
+                (define-key evil-normal-state-local-map (kbd "H")   'neotree-hidden-file-toggle)
+            ))
+        (evil-leader/set-key "n" #'neotree-toggle);(lambda ()(interactive)((neotree-toggle)(linum-mode nil)))
     :config
         (progn
             (setq-default neo-window-width 30)
@@ -410,6 +406,7 @@ MY EMACS CONFIG -*- mode: org -*-
             (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
         )
         (setq neo-show-hidden-files t)
+        (setq projectile-switch-project-action 'neotree-projectile-action)
     )
     #+END_SRC
 ** TODO Widow Manager
@@ -437,44 +434,28 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** TODO GDB Setting
     #+BEGIN_SRC emacs-lisp
-      (setq gdb-show-main t)
-      (evil-leader/set-key "db" 'gud-break)
-      (evil-leader/set-key "dn" 'gud-next)
-      (evil-leader/set-key "di" 'gud-step)
-      (evil-leader/set-key "df" 'gud-finish)
-      (evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
-                                            (call-interactively 'gud-cont  )))
+    (setq gdb-show-main t)
+    (evil-leader/set-key "gb" 'gud-break)
+    (evil-leader/set-key "gn" 'gud-next)
+    (evil-leader/set-key "gi" 'gud-step)
+    (evil-leader/set-key "gf" 'gud-finish)
+    (evil-leader/set-key "gt" '(lambda () (call-interactively 'gud-tbreak)
+                                          (call-interactively 'gud-cont  )))
     #+END_SRC
+
 ** TODO Magit
- #+BEGIN_SRC emacs-lisp
-   (use-package magit :ensure t  :pin melpa
-   :init   (evil-leader/set-key "gs" 'magit-status)
-   :config (setq vc-handled-backends nil)
-   )
-   (use-package evil-magit :ensure t :pin melpa
-   :after (evil magit)
-   :init (evil-magit-init)
-   )
-   ;(use-package magithub :ensure t :pin melpa
-   ;:after magit
-   ;:init (magithub-feature-autoinject t)
-   ;      (setq magithub-clone-default-directory "~/github")   
-   ;)
- #+END_SRC
-** TODO Ediff
- #+BEGIN_SRC emacs-lisp
-     (use-package evil-ediff :ensure t :pin melpa
-         :init (evil-ediff-init)
-     )
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    (use-package magit :ensure t :diminish auto-revert-mode
+    :init   (evil-leader/set-key "gs" 'magit-status)
+    :config (setq vc-handled-backends nil)
+    )
+    #+END_SRC
 ** TODO Undo Redo
     #+BEGIN_SRC emacs-lisp
       (use-package undo-tree :ensure t :diminish undo-tree-mode
       :init
-          (global-set-key (kbd "C-u") #'undo-tree-undo)
-          [global-set-key (kbd "C-r") #'undo-tree-redo]
-          (evil-leader/set-key "uu"    'undo-tree-undo)
-          (evil-leader/set-key "ur"    'undo-tree-undo)
+          (evil-leader/set-key "u" 'undo-tree-undo)
+          (evil-leader/set-key "r" 'undo-tree-undo)
           (defalias 'redo 'undo-tree-redo)
           (defalias 'undo 'undo-tree-undo)
           (global-undo-tree-mode)
@@ -484,6 +465,11 @@ MY EMACS CONFIG -*- mode: org -*-
     #+BEGIN_SRC emacs-lisp
     (evil-leader/set-key "oe" 'org-edit-src-code)    
     (evil-leader/set-key "ok" 'org-edit-src-exit)
+    #+END_SRC
+** Shell 
+    #+BEGIN_SRC emacs-lisp
+    (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+    (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
     #+END_SRC
 ** TODO Color Code Paint(Rainbow mode)
     #+BEGIN_SRC emacs-lisp
@@ -501,7 +487,7 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** TODO Docker
     #+BEGIN_SRC emacs-lisp
-    (use-package docker          :ensure t :init (evil-leader/set-key "ud" 'docker)) 
+    (use-package docker          :ensure t :init (evil-leader/set-key "d" 'docker)) 
     (use-package dockerfile-mode :ensure t 
         :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
     #+END_SRC
@@ -533,82 +519,76 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** TODO Terminal
     #+BEGIN_SRC emacs-lisp
-      (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-      (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
       (defvar my-eshell " *BOTTOM-TERMINAL*" "my shell name,use eshell.")
       (defun get-current-directory (&optional buffer)
         "get current directory."
         (if (not buffer)
             (file-name-directory (or (buffer-file-name) default-directory))
-            (with-current-buffer buffer
+          (with-current-buffer buffer
             (file-name-directory (or (buffer-file-name) default-directory)))))
 
-        (defun get-parent-dir (name)
+      (defun get-parent-dir (name)
         "Get the parent name dir."
         (locate-dominating-file default-directory name))
 
-        (defun get-project-root-directory (buffer)
+      (defun get-project-root-directory (buffer)
         "find current project root,for git or gradle."
-            (with-current-buffer buffer
+          (with-current-buffer buffer
             (if (setq parent (cl-some #'get-parent-dir pop-find-parent-directory))
             parent
-            (get-current-directory))))
+          (get-current-directory))))
 
-        (defun eshell-pop-bottom()
+      (defun eshell-pop-bottom()
         "pop eshell at bottom"
         (interactive)
         (let ((pos-buffer (current-buffer))
-            (tmp-eshell (get-buffer my-eshell))
-            (dir (get-current-directory)))
-            ;;check if my-eshell exist,if not create one.
-            (unless tmp-eshell
+          (tmp-eshell (get-buffer my-eshell))
+          (dir (get-current-directory)))
+          ;;check if my-eshell exist,if not create one.
+          (unless tmp-eshell
             (setq tmp-eshell (eshell 100))
             (with-current-buffer tmp-eshell
-            (eshell/clear-scrollback)
-            (rename-buffer my-eshell)
-            (switch-to-buffer pos-buffer)))
-            (setq window
+          (eshell/clear-scrollback)
+          (rename-buffer my-eshell)
+          (switch-to-buffer pos-buffer)))
+          (setq window
             (select-window
-            (display-buffer-in-side-window tmp-eshell '((side . bottom))) t))
-            (set-window-dedicated-p window t)
-            (when (not (equal pre-path dir))
+             (display-buffer-in-side-window tmp-eshell '((side . bottom))) t))
+          (set-window-dedicated-p window t)
+          (when (not (equal pre-path dir))
             (eshell/cd dir)
             (eshell-send-input)
-            (setq pre-path dir)))
-            )
-         (evil-leader/set-key "ut" 'eshell-pop-bottom)
+            (setq pre-path dir))))
+      (evil-leader/set-key "t" (lambda () ((eshell-pop-bottom) (company-mode))))
     #+END_SRC
-** TODO Ialign #+BEGIN_SRC emacs-lisp (use-package ialign :ensure t :pin melpa :init (evil-leader/set-key "ta" 'ialign)) #+END_SRC
 ** TODO
- #+BEGIN_SRC emacs-lisp
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    #+END_SRC
 * Emacs IDE Settings
 ** TODO Company mode
     #+BEGIN_SRC emacs-lisp
-      (use-package company :ensure t
-      ;:init (global-company-mode 1)
-      :init (company-mode)
-      :config 
-          (setq company-idle-delay 0)
-          (setq company-minimum-prefix-length 1)
-          (setq company-show-numbers t)
-          (define-key company-active-map (kbd "M-n") 0)
-          (define-key company-active-map (kbd "M-p") 0)
-          (define-key company-active-map (kbd "C-n") 'company-select-next)
-          (define-key company-active-map (kbd "C-p") 'company-select-previous)
-      )
-      (with-eval-after-load 'company
-          (add-hook 'c++-mode-hook        'company-mode)
-          (add-hook 'c-mode-hook          'company-mode)
-          (add-hook 'racer-mode-hook      'company-mode)
-          (add-hook 'lisp-mode-hook       'company-mode)
-          (add-hook 'emacs-lisp-mode-hook 'company-mode)
-      )
-      ;(use-package company-quickhelp :ensure t :pin melpa
-      ;:init
-      ;    ;(evil-leader/set-key "c h" 'company-quickhelp-manual-begin)
-      ;    (company-quickhelp-mode)
-      ;)
+    (use-package company :ensure t
+    :init (global-company-mode 1)
+    :config 
+        (setq company-idle-delay 0)
+        (setq company-minimum-prefix-length 1)
+        (setq company-show-numbers t)
+        (define-key company-active-map (kbd "M-n") 0)
+        (define-key company-active-map (kbd "M-p") 0)
+        (define-key company-active-map (kbd "C-n") 'company-select-next)
+        (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    )
+    (with-eval-after-load 'company
+        (add-hook 'c++-mode-hook        'company-mode)
+        (add-hook 'c-mode-hook          'company-mode)
+        (add-hook 'racer-mode-hook      'company-mode)
+        (add-hook 'org-mode-hook        'company-mode)
+        (add-hook 'emacs-lisp-mode-hook 'company-mode)
+    )
+    (use-package company-c-headers :ensure t
+    :after company
+    :init (add-to-list 'company-backends 'company-c-headers)
+    )
     #+END_SRC
 ** TODO Flycheck mode
     #+BEGIN_SRC emacs-lisp
@@ -632,10 +612,6 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** TODO C++ Mode
     #+BEGIN_SRC emacs-lisp
-      (use-package company-c-headers :ensure t
-      :after company
-      :init (add-to-list 'company-backends 'company-c-headers)
-      )
       (use-package clang-format :ensure t
       :init (evil-leader/set-key "cf" 'clang-format-regieon)
       )
@@ -807,11 +783,9 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** TODO Lisp Mode
     #+BEGIN_SRC emacs-lisp
-      (use-package elisp-slime-nav :ensure t :diminish elisp-slime-nav-mode
-      :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
-      )
-      (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
-      (add-hook 'lisp-mode-hook       'prettify-symbols-mode)
+    (use-package elisp-slime-nav :ensure t :diminish elisp-slime-nav-mode
+    :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
+    )
     #+END_SRC
 ** TODO Rust Mode
     #+BEGIN_SRC emacs-lisp
@@ -841,5 +815,5 @@ MY EMACS CONFIG -*- mode: org -*-
       )
     #+END_SRC
 ** TODO
- #+BEGIN_SRC emacs-lisp
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    #+END_SRC

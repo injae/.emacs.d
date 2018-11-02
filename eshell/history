@@ -1,72 +1,3 @@
-ls
-cd rtags-2.19/
-ls
-cmake .
-cat .con
-cat ./configure 
-./configure 
-sudo make -j2 install
-ls
-cd ..
-ls
-make
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
-ls
-./configure 
-make
-ls
-cd CMakeFiles/
-ls
-cd ..
-ls
-clear
-ls
-clear
-ls
-./configure 
-./configure 
-make 
-ls
-cd ..
-ls
-clang -version
-clang -v
-ls
-clear
-lsclear
-ls
-clear
-ldd rtags
-cd ../../../.emacs.d/elpa/rtags-20180814.1713/rtags-2.19/
-ls
-cd bin/
-ls
-lld ./rc
-ldd ./rc
-ldd ./rdm
-ldd ./rp
-cppm build/
-cppm build 
-cppm build
-cppm build
-sudo cppm build
-cppm build
-sudo cppm build
-ls
-cd ..
-ls
-cd ../../
-ls
-cd ../
-ls
-cd ../.emacs.d/
-ls
-git add .
-git status
-git commit -m "update"
-git push 
-ls
-ls
 ls -a
 touch .gitignore
 git add .
@@ -81,7 +12,7 @@ git rm elpa/rtags-20180814.1713/
 git rm -r elpa/rtags-20180814.1713/
 git commit -m "update"
 git push
- delete mode 100755 elpa/rtags-20180814.1713/rtags-2.19/web/youtube/imenu.png
+delete mode 100755 elpa/rtags-20180814.1713/rtags-2.19/web/youtube/imenu.png
 git add .
 git status
 ls elpa | grep rtags
@@ -126,3 +57,72 @@ cd ../../test/cppm/
 sudo cppm build install
 cppm build
 sudo cppm build
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+clear
+ls
+ls
+ls
+ls
+ls
+ls
+wols
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+git -h
+git --help
+git config --global user.name "INJAE"
+git config --global user.email 8687lee@gmail.com
+ls
+git config github.user INJAE
+git config --global github.user INJAE
+ls
+cd ..
+ls
+ls -a
+ls
+ls -a
+cd ~/
+ls
+cd .emacs.d/
+cd ..
+ls
+cat .gitconfig 
+ls
+ls -a
+cd ~/.
+ls
+cd .emacs.d/
+cd ~/.
+ls
+cd em
+s
+cd .emacs.d/
+ls
+ls -a
+cd mgi
+cd magithub/
+ls
+ls -
+ls -a
+ls
+cd ..
+ls
