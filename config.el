@@ -400,7 +400,7 @@
 )
 (use-package evil-magit :ensure t :pin melpa
 :after (evil magit)
-:init (evil-magit-init)
+:init  (evil-magit-init)
 )
 ;(use-package magithub :ensure t :pin melpa
 ;:after magit
