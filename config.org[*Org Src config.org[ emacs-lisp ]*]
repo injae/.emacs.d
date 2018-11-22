@@ -1,0 +1,55 @@
+(use-package org
+:init (setq org-directory          (expand-file-name "~/Dropbox/org"))
+      (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
+      (setq org-agenda-files       '((concat org-directory "/agenda")))
+      (setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+      (evil-leader/set-key
+          "oa" 'org-agenda
+          "ob" 'org-iswitchb
+          "oc" 'org-capture
+          "oe" 'org-edit-src-code
+          "ok" 'org-edit-src-exit
+          "ol" 'org-store-link
+      )
+)
+
+(use-package org-journal :ensure t :pin melpa
+:init (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal"))
+)
+
+(use-package org-capture
+:after org
+:init (setq org-reverse-note-order t)
+      (setq org-capture-templates
+          '(("t" "Todo" entry (file+headline "~/Dropbox/org/notes/notes.org" "Todos")
+             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
+            ("l" "Link" entry (file+headline "~/Dropbox/org/notes/notes.org" "Links")
+             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t))
+      )
+)
+
+
+(use-package org-babel
+:init (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t)
+            (python . t)
+            (org . t)
+            (shell  . t)
+            (C   . t)))
+)
+;; 스펠체크 넘어가는 부분 설정
+(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
+
+(use-package org-agenda 
+:init (use-package evil-org :ensure t :pin melpa
+      :after (org evil)
+      :init (add-hook 'org-mode-hook 'evil-org-mode)
+            (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
+            (require 'evil-org-agenda)
+            (evil-org-agenda-set-keys)
+      )
+)
+

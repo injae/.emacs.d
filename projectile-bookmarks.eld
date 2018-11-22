@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/")
+("~/.emacs.d/" "~/dev/injae.github.io/" "~/dev/minimal-mistakes-master/test/" "~/dev/minimal-mistakes-master/" "~/dev/cppm/" "~/dev/vcpkg/" "~/dev/cppm/thirdparty/nlpo/" "~/dev/cppm/thirdparty/nieel/" "~/dev/example/build/" "~/dev/cppm/thirdparty/cpptoml/" "~/")

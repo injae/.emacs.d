@@ -1,128 +1,128 @@
-ls -a
-touch .gitignore
-git add .
-git status
-git commit -m "rtags is too big"
-git push
-git remove elpa/rtags-20180814.1713/
-git remove elpa/rtags-20180814.1713/
-git -h
-git --help
-git rm elpa/rtags-20180814.1713/
-git rm -r elpa/rtags-20180814.1713/
-git commit -m "update"
-git push
-delete mode 100755 elpa/rtags-20180814.1713/rtags-2.19/web/youtube/imenu.png
-git add .
-git status
-ls elpa | grep rtags
+cd ..
+ls
+cd injae.github.io/
+ls
+ls
+ls
 ls
 cd ..
 ls
-cd dev/nlpo/src/
+cd minimal-mistakes-master/
+ls
+cp -rf * ../injae.github.io/
+cd ..
+cd injae.github.io/
+ls
+jekyll serve
+jekyll serve
+jekyll serve
+k           Source: /home/nieel/dev/injae.github.io
+ls
+rm -rf *
 ls
 cd ..
 ls
-cppm build
+cd minimal-mistakes-master/
 ls
-cppm build
-cppm build install
-sudo cppm build install
+cp ../injae.github.io/
+ls
+cp -rf * ../injae.github.io/
+cd ..
+ls
+cd injae.github.io/ls
+cd injae.github.io/
+ls
+rm README.md 
+jekyll serve
+jekyll serve
+bundle exec jekyll serve
+bundle exec jekyll serve
+ls
+bundle install
+bundle update
+ls
 ls
 cd ..
 ls
-cd test/cppm/
+rm -rf injae.github.io/
+jekyll new injae.github.io
+cd injae.github.io/
 ls
-sudo cppm build install
-cd ../../nlpo/
+bundle install
+bundle update
+bundle install
+bundle install
+jekyll serve
+bundle exec jekyll serve
+git init
+git add *
+git remote add origin https://github.com/INJAE/injae.github.io.gitgit push -u origin master                                     #                                     #                                     #                                     #                                     #                                     #                                     #                                     #                                     #
+jekyll serve
+bundle exec jekyll serve
 ls
-sudo cppm build install
-cd ../test/cppm/
-cppm build 
-sudo cppm build install
-cppm build
-sudo cppm build
-cd ../../nlpo/
-sudo cppm build install
-cd ../test/cppm/
-sudo cppm build
-cd ../../
+mv index.md index.html
 ls
-cd nlpo/
-ls
-cd build
-cmake ..
-sudo ninja install
-cd ../../test/cppm/
-sudo cppm build install
-cppm build
-sudo cppm build
+jekyll serve
+bundle exec jekyll serve
+bundle install
+bundle exec jekyll serve
 ls
 ls
+bundle exec jekyll serve
+bundle install
+bundle update
+bundle exec jekyll serve
+jekyll build
+ls ../minimal-mistakes-master/_layouts/
+cd ..
 ls
+cd minimal-mistakes-master/
 ls
+bundle exec jekyll serve
+bundle exec jekyll serve
+bundle exec jekyll serve
+bundle exec jekyll serve
 ls
-ls
-ls
-ls
-clear
-ls
-ls
-ls
-ls
-ls
-ls
-wols
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-ls
-git -h
-git --help
-git config --global user.name "INJAE"
-git config --global user.email 8687lee@gmail.com
-ls
-git config github.user INJAE
-git config --global github.user INJAE
+cd _layouts/
 ls
 cd ..
 ls
-ls -a
-ls
-ls -a
-cd ~/
-ls
-cd .emacs.d/
 cd ..
 ls
-cat .gitconfig 
+cd injae.github.io/
 ls
-ls -a
-cd ~/.
-ls
-cd .emacs.d/
-cd ~/.
-ls
-cd em
-s
-cd .emacs.d/
-ls
-ls -a
-cd mgi
-cd magithub/
-ls
-ls -
-ls -a
+bundle exec jekyll serve
 ls
 cd ..
 ls
+cd minimal-mistakes-master/
+ls
+cp -rf _data/ _includes/ _layouts/ _sass/ _site/ assets/ ../injae.github.io/
+cd ..
+ls
+cd injae.github.io/
+ls
+bundle exec jekyll serve
+ls
+cat ~/.Xresources
+ls
+xrdb ~/.Xresources 
+xrdb -merge ~/.Xresources 
+Als
+cd ..
+cd Dropbox/
+ls
+mkdir www
+mkdir notes
+rm www
+rm -r www
+rm -r notes/
+ls
+mkdir org
+cd org/
+ls
+mkdir notes
+mkdir www
+ls
+touch notes/notes.org
+touch www/index.org

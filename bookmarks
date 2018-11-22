@@ -1,0 +1,25 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("org-capture-last-stored"
+    (filename . "~/.emacs.d/org/note/organizer.org")
+    (front-context-string . "** TODO First\n  ")
+    (rear-context-string)
+    (position . 9))
+("RTags_1"
+    (filename . "~/dev/cppm/src/config/cmake.cpp")
+    (front-context-string . "Cmake::generate(")
+    (rear-context-string . "    std::string ")
+    (position . 637))
+("RTags_0"
+    (filename . "~/dev/cppm/src/config/cmake.cpp")
+    (front-context-string . "Cmake::parse(tab")
+    (rear-context-string . "cppm\n{\n    void ")
+    (position . 78))
+("config.org"
+    (filename . "~/.emacs.d/config.org")
+    (front-context-string . "\nMY EMACS CONFIG")
+    (rear-context-string)
+    (position . 1))
+)

@@ -67,6 +67,8 @@
 ;; |------------+------------|
 ;; | 1234567890 | 1234567890 |
 ;; +------------+------------+
+;; | abcdefghij | abcdefghij |
+;; +------------+------------+
 ;; text utf-8 setting
 (set-language-environment "Korean")
 (prefer-coding-system 'utf-8)
@@ -82,7 +84,13 @@
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
 
-;(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+;; 한글입력할때 완성전까지 안보이는 문제 해결을 위해 내장 한글입력기 사용
+; Linux 내장 한글입력기 사용법 
+; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
+; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
+(setq default-korean-keyboard 'korean-hangul2)
+(global-set-key [?\S- ] 'toggle-input-method)
+;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
 
 (defun launch-separate-emacs-in-terminal ()
 (suspend-emacs "fg ; emacs -nw"))
@@ -98,6 +106,14 @@
                                                                                  #'launch-separate-emacs-in-terminal)))))
          (save-buffers-kill-emacs))
 )
+
+(defun sudo-find-file (file-name)
+  "sudo open"
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
+ (use-package sudo :after evil-leader
+ :init (evil-leader/set-key "fs" #'sudo-find-file))
 
 
 
@@ -126,15 +142,15 @@
     (doom-themes-org-config)
 )
 
-(load-library "hideshow")
-    (global-set-key (kbd "<C-l>") 'hs-show-block)
-    (global-set-key (kbd "<C-h>")  'hs-hide-block)
-    (add-hook 'c-mode-common-hook     'hs-minor-mode)
-    (add-hook 'emacs-lisp-mode-hook   'hs-minor-mode)
-    (add-hook 'java-mode-hook         'hs-minor-mode)
-    (add-hook 'lisp-mode-hook         'hs-minor-mode)
-    (add-hook 'perl-mode-hook         'hs-minor-mode)
-    (add-hook 'sh-mode-hook           'hs-minor-mode)
+;(load-library "hideshow")
+;    (global-set-key (kbd "<C-l>") 'hs-show-block)
+;    (global-set-key (kbd "<C-h>") 'hs-hide-block)
+;    (add-hook 'c-mode-common-hook     'hs-minor-mode)
+;    (add-hook 'emacs-lisp-mode-hook   'hs-minor-mode)
+;    (add-hook 'java-mode-hook         'hs-minor-mode)
+;    (add-hook 'lisp-mode-hook         'hs-minor-mode)
+;    (add-hook 'perl-mode-hook         'hs-minor-mode)
+;    (add-hook 'sh-mode-hook           'hs-minor-mode)
 
 ;(use-package aggressive-indent :ensure t :pin melpa
 ;:init (global-aggressive-indent-mode)
@@ -222,11 +238,12 @@
     (evil-collection-init)
 )
 (use-package evil-leader :ensure t :defer t :pin melpa
+:after which-key
 :init (global-evil-leader-mode t)
 :config
     (setq evil-leader/leader "<SPC>")
     (evil-leader/set-key
-        "<SPC>" 'helm-M-x
+        "<SPC>" 'helm-smex
         "er"    'restart-emacs
         "ff"    'find-file
         "pl"    'list-processes
@@ -237,84 +254,104 @@
         "wk"    'shrink-window
         "wl"    'enlarge-window-horizontally
         )
+    (which-key-declare-prefixes "SPC b" "Buffer")
+    (which-key-declare-prefixes "SPC d" "Debug")
+    (which-key-declare-prefixes "SPC e" "Emacs")
+    (which-key-declare-prefixes "SPC f" "Find")
+    (which-key-declare-prefixes "SPC g" "Git")
+    (which-key-declare-prefixes "SPC o" "Org")
+    (which-key-declare-prefixes "SPC p" "Projectile")
+    (which-key-declare-prefixes "SPC t" "Tabbar")
+    (which-key-declare-prefixes "SPC u" "Utils")
+    (which-key-declare-prefixes "SPC w" "Windows")
     )
 
 (use-package all-the-icons :ensure t)
-(use-package spaceline :ensure t)
+(use-package spaceline :ensure t :after powerline
+:init (setq spaceline-responsive nil)
+      (set-face-attribute 'mode-line nil :box nil)
+)
 (use-package spaceline-config :ensure spaceline
-:init (spaceline-spacemacs-theme)
-:config
-    (custom-set-faces '(mode-line-buffer-id ((t nil)))) ;; blend well with tango-dark
-    (setq powerline-default-separator 'arrow)   ;; bar arrow wave utf-8
-    (spaceline-toggle-buffer-id-on)
-    (spaceline-toggle-input-method-on)
-    (spaceline-toggle-buffer-modified-on)
-    (spaceline-toggle-buffer-encoding-on)
-    (spaceline-toggle-process-on)
-    (spaceline-toggle-projectile-root-on)
-    (spaceline-toggle-version-control-on)
-    (spaceline-toggle-flycheck-error-on)
-    (spaceline-toggle-flycheck-info-on)
-    (spaceline-toggle-flycheck-warning-on)
-    (spaceline-toggle-major-mode-on)
-    (spaceline-toggle-minor-modes-off)
-    (spaceline-toggle-line-column-on)
-    (spaceline-toggle-window-number-on)
-    (spaceline-toggle-buffer-encoding-on)
-    (spaceline-toggle-evil-state-on)
-    (spaceline-toggle-nyan-cat-on)
-    (spaceline-helm-mode 1)
-    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-    (setq evil-normal-state-tag   (propertize "COMMAND "))
-    (setq evil-emacs-state-tag    (propertize "EMACS   "))
-    (setq evil-insert-state-tag   (propertize "INSERT  "))
-    (setq evil-replace-state-tag  (propertize "REPLACE "))
-    (setq evil-motion-state-tag   (propertize "MOTION  "))
-    (setq evil-visual-state-tag   (propertize "VISUAL  "))
-    (setq evil-operator-state-tag (propertize "OPERATE "))
+:init
+(use-package spaceline-all-the-icons :ensure t
+    :init
+    (spaceline-all-the-icons-theme)
+    :config
+    (spaceline-all-the-icons--setup-git-ahead)
+    (spaceline-all-the-icons--setup-neotree)
+    (spaceline-all-the-icons--setup-package-updates)
+    (spaceline-all-the-icons--window-number)
+    (spaceline-toggle-all-the-icons-battery-status-on)
+    (spaceline-toggle-all-the-icons-bookmark-on)
+    (spaceline-toggle-all-the-icons-buffer-id-on)
+    (spaceline-toggle-all-the-icons-flycheck-status-info-on)
+    (spaceline-toggle-all-the-icons-flycheck-status-on)
+    (spaceline-toggle-all-the-icons-git-ahead-on)
+    (spaceline-toggle-all-the-icons-git-status-on)
+    (spaceline-toggle-all-the-icons-mode-icon-on)
+    (spaceline-toggle-all-the-icons-nyan-cat-on)
+    (spaceline-toggle-all-the-icons-org-clock-current-task-on)
+    (spaceline-toggle-all-the-icons-projectile-on)
+    (spaceline-toggle-all-the-icons-sunrise-on)
+    (spaceline-toggle-all-the-icons-sunset-on)
+    (spaceline-toggle-all-the-icons-time-on)
+    (spaceline-toggle-all-the-icons-weather-on)
+    (spaceline-toggle-all-the-icons-vc-icon-on)
+    (spaceline-toggle-all-the-icons-window-number-on)
+    ;(setq inhibit-compacting-font-caches t)
+)
+;:init (spaceline-spacemacs-theme)
+;:config
+;    (custom-set-faces '(mode-line-buffer-id ((t nil)))) ;; blend well with tango-dark
+;    (setq powerline-default-separator 'arrow)   ;; bar arrow wave utf-8
+;    (spaceline-toggle-buffer-id-on)
+;    (spaceline-toggle-input-method-on)
+;    (spaceline-toggle-buffer-modified-on)
+;    (spaceline-toggle-buffer-encoding-on)
+;    (spaceline-toggle-process-on)
+;    (spaceline-toggle-projectile-root-on)
+;    (spaceline-toggle-version-control-on)
+;    (spaceline-toggle-flycheck-error-on)
+;    (spaceline-toggle-flycheck-info-on)
+;    (spaceline-toggle-flycheck-warning-on)
+;    (spaceline-toggle-major-mode-on)
+;    (spaceline-toggle-minor-modes-off)
+;    (spaceline-toggle-line-column-on)
+;    (spaceline-toggle-window-number-on)
+;    (spaceline-toggle-buffer-encoding-on)
+;    (spaceline-toggle-evil-state-on)
+;    (spaceline-toggle-nyan-cat-on)
+;    (spaceline-helm-mode 1)
+;    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+;    (setq evil-normal-state-tag   (propertize "COMMAND "))
+;    (setq evil-emacs-state-tag    (propertize "EMACS   "))
+;    (setq evil-insert-state-tag   (propertize "INSERT  "))
+;    (setq evil-replace-state-tag  (propertize "REPLACE "))
+;    (setq evil-motion-state-tag   (propertize "MOTION  "))
+;    (setq evil-visual-state-tag   (propertize "VISUAL  "))
+;    (setq evil-operator-state-tag (propertize "OPERATE "))
 )
 
-;(use-package spaceline-all-the-icons :ensure t
-;    :after spaceline
-;    :config
-;    ;(spaceline-all-the-icons-theme)
-;    ;(spaceline-all-the-icons--setup-package-updates)
-;    ;(spaceline-all-the-icons--setup-neotree)
-;    ;(spaceline-all-the-icons--setup-git-ahead)
-;    ;(spaceline-toggle-all-the-icons-eyebrowse-workspace-on)
-;    ;(spaceline-toggle-all-the-icons-sunrise-on)
-;    ;(spaceline-toggle-all-the-icons-sunset-on)
-;    ;(spaceline-toggle-all-the-icons-time-on)
-;    ;(spaceline-toggle-all-the-icons-weather-on)
-;    ;(spaceline-toggle-all-the-icons-flycheck-status-on)
-;    ;(spaceline-toggle-all-the-icons-flycheck-status-info-on)
-;    ;(spaceline-toggle-all-the-icons-buffer-id-on)
-;    ;(spaceline-toggle-all-the-icons-git-status-on)
-;    ;(spaceline-toggle-all-the-icons-nyan-cat-on)
-;    ;(spaceline-toggle-all-the-icons-narrowed-on)
-;    ;(spaceline-toggle-all-the-icons-git-ahead-on)
-;    ;(spaceline-toggle-all-the-icons-bookmark-on)
-;    ;(spaceline-toggle-all-the-icons-projectile-on)
-;    ;(spaceline-toggle-all-the-icons-window-number-on)
-;    ;(spaceline-toggle-all-the-icons-mode-icon-on)
-;    ;(spaceline-toggle-all-the-icons-battery-status-on)
-;    ;(setq inhibit-compacting-font-caches t)
-;)
-
 (use-package nyan-mode :ensure t
-    :init (nyan-mode)
-    :config
-    (setq-default nyan-wavy-trail t)
-    (nyan-start-animation)
-    (nyan-refresh))
-(when window-system
-    (use-package mode-icons :ensure t
-        :init  
-        (setq mode-icons-desaturate-active t)
-        (mode-icons-mode)))
+:init   (nyan-mode)
+:config (setq-default nyan-wavy-trail t)
+        (nyan-start-animation)
+        (nyan-refresh))
+;; mode-icons has bug with spaceline-all-the-icons
+;(when window-system
+;    (use-package mode-icons :ensure t
+;    :init  
+;        (setq mode-icons-desaturate-active t)
+;        (mode-icons-mode)))
 (use-package fancy-battery :ensure t
-    :init   (fancy-battery-mode)
-    :config (setq fancy-battery-show-percentage t))
+:init   (fancy-battery-mode)
+:config (setq fancy-battery-show-percentage t))
+
+(use-package diminish :ensure t :pin melpa
+:init 
+    (diminish 'c++-mode "C++ Mode")
+    (diminish 'c-mode   "C Mode"  )
+)
 
 (use-package helm :defer t :ensure t :diminish helm-mode
 :bind ("M-x" . helm-M-x)
@@ -345,6 +382,15 @@
 :init (evil-leader/set-key "fw" 'helm-swoop)
 )
 
+(use-package smex :ensure t :pin melpa
+:init (smex-initialize)
+)
+(use-package helm-smex :ensure t :pin melpa
+:bind ("M-x" . #'helm-smex-major-mode-commands)
+:init (global-set-key [remap execute-extended-command] #'helm-smex)
+      (evil-leader/set-key "fm" #'helm-smex-major-mode-commands)
+)
+
 (use-package projectile :defer t :ensure t
 :init (projectile-mode t)
 :config (evil-leader/set-key "p" 'projectile-command-map)
@@ -353,12 +399,13 @@
 (use-package neotree :ensure t
 :init 
     (setq projectile-switch-project-action 'neotree-projectile-action)
+    (setq-default neo-smart-open t)
     (evil-leader/set-key "n" #'neotree-toggle)
 :config
     (progn
         (setq-default neo-window-width 30)
-        (setq-default neo-smart-open t)
         (setq-default neo-dont-be-alone t)
+        (setq-local display-line-numbers 0)
         (setq neo-force-change-root t)
         (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     )
@@ -386,14 +433,6 @@
     )
 )
 
-(setq gdb-show-main t)
-(evil-leader/set-key "db" 'gud-break)
-(evil-leader/set-key "dn" 'gud-next)
-(evil-leader/set-key "di" 'gud-step)
-(evil-leader/set-key "df" 'gud-finish)
-(evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
-                                      (call-interactively 'gud-cont  )))
-
 (use-package magit :ensure t  :pin melpa
 :init   (evil-leader/set-key "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
@@ -402,20 +441,20 @@
 :after (evil magit)
 :init  (evil-magit-init)
 )
-;(use-package magithub :ensure t :pin melpa
+;(use-package magithub :ensure t
 ;:after magit
 ;:init (magithub-feature-autoinject t)
 ;      (setq magithub-clone-default-directory "~/github")   
 ;)
 
 (use-package evil-ediff :ensure t :pin melpa
-    :init (evil-ediff-init)
+:init (evil-ediff-init)
 )
 
 (use-package undo-tree :ensure t :diminish undo-tree-mode
 :init
-    (global-set-key (kbd "C-u") #'undo-tree-undo)
-    [global-set-key (kbd "C-r") #'undo-tree-redo]
+    ;(global-set-key (kbd "C-u") #'undo-tree-undo)
+    ;(global-set-key (kbd "C-r") #'undo-tree-redo)
     (evil-leader/set-key "uu"    'undo-tree-undo)
     (evil-leader/set-key "ur"    'undo-tree-undo)
     (defalias 'redo 'undo-tree-redo)
@@ -423,8 +462,64 @@
     (global-undo-tree-mode)
 )
 
-(evil-leader/set-key "oe" 'org-edit-src-code)    
-(evil-leader/set-key "ok" 'org-edit-src-exit)
+(use-package org
+:init (setq org-directory            (expand-file-name "~/Dropbox/org"))
+      (setq org-default-notes-file   (concat org-directory "/notes/notes.org"))
+      (setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+      (evil-leader/set-key
+          "oa" 'org-agenda
+          "ob" 'org-iswitchb
+          "oc" 'org-capture
+          "oe" 'org-edit-src-code
+          "ok" 'org-edit-src-exit
+          "ol" 'org-store-link
+      )
+)
+
+(use-package org-journal :ensure t :pin melpa
+:after org
+:init (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal"))
+      (setq org-journal-file-format "%Y%m%d.org")
+      (setq org-journal-date-format "%e %b %Y (%A)")
+      (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/journal"))
+)
+
+(use-package org-capture
+:after org
+:init (setq org-reverse-note-order t)
+      (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/notes"))
+      (setq org-capture-templates
+          '(("t" "Todo" entry (file+headline "~/Dropbox/org/notes/notes.org" "Todos")
+             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
+            ("l" "Link" entry (file+headline "~/Dropbox/org/notes/notes.org" "Links")
+             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t))
+      )
+)
+
+(use-package org-agenda 
+:init (use-package evil-org :ensure t :pin melpa
+      :after (org evil)
+      :init (add-hook 'org-mode-hook 'evil-org-mode)
+            (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
+            (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/agenda"))
+            (require 'evil-org-agenda)
+            (evil-org-agenda-set-keys)
+      )
+)
+
+(use-package org-babel
+:init (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t)
+            (python . t)
+            (org . t)
+            (shell  . t)
+            (C   . t)))
+)
+;; 스펠체크 넘어가는 부분 설정
+(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 
 (use-package rainbow-mode :ensure t
     :hook (prog-mode
@@ -442,16 +537,70 @@
 (use-package dockerfile-mode :ensure t 
     :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
-(use-package buffer-move :ensure t
+(use-package exec-path-from-shell :ensure t :pin melpa
+:init ;(exec-path-from-shell-copy-env "PATH")
+      (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
+)
+
+(use-package eshell-prompt-extras :ensure t :pin melpa
+:init
+    (use-package virtualenvwrapper :ensure t :pin melpa
+    :init (venv-initialize-eshell))
+    (autoload 'epe-theme-lambda "eshell-prompt-extras")
+    (setq eshell-highlight-prompt nil
+          eshell-prompt-function 'epe-theme-lambda)
+)
+
+(use-package esh-autosuggest :ensure t :pin melpa
+:hook (eshell-mode .  esh-autosuggest-mode)
+)
+
+(use-package eshell-up :ensure t :pin melpa
+:init (require 'eshell-up)
+      (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
+                                        (eshell/alias "pk" "eshell-up-peek $1")))
+)
+
+(use-package shell-pop :ensure t :pin melpa
+:init (setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
+      (evil-leader/set-key "ut" 'shell-pop)
+      ;(global-set-key (kbd "<C-t>") 'shell-pop)
+)
+
+
+
+(use-package buffer-move :ensure t :pin melpa
 :init
     (evil-leader/set-key
-        "bs" 'switch-to-buffer
+        "bs" 'ibuffer
+        "br" 'eval-buffer
         "bh" 'buf-move-left
         "bj" 'buf-move-down
         "bk" 'buf-move-up
         "bl" 'buf-move-right
     )
 )
+
+(setq ibuffer-saved-filter-groups
+    '(("home"
+          ("emacs-config" (or (filename . ".emacs.d")
+                              (filename . "emacs-config")))
+          ("org-mode"     (or (mode . org-mode)
+                              (filename ."OrgMode")))
+          ("code"         (or (mode . prog-mode)
+                              (mode . c++-mode)
+                              (mode . c-mode)
+                              (mode . yaml-mode)
+                              (mode . toml-mode)
+                              (mode . lisp-mode)
+                              (mode . emacs-lisp-mode)))
+          ("magit"        (or (name . "\*magit")))
+          ("Help"         (or (name . "\*Help\*")
+                              (name . "\*Apropos\*")
+                              (name . "\*info\*")))
+     ))
+)
+(add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 
 (use-package dash :ensure t :pin melpa
 :init (dash-enable-font-lock)
@@ -464,56 +613,67 @@
 :after helm dash
 )
 
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(defvar my-eshell " *BOTTOM-TERMINAL*" "my shell name,use eshell.")
-(defun get-current-directory (&optional buffer)
-  "get current directory."
-  (if (not buffer)
-      (file-name-directory (or (buffer-file-name) default-directory))
-      (with-current-buffer buffer
-      (file-name-directory (or (buffer-file-name) default-directory)))))
+(use-package ialign :ensure t :pin melpa 
+:init (evil-leader/set-key "ta" 'ialign))
 
-  (defun get-parent-dir (name)
-  "Get the parent name dir."
-  (locate-dominating-file default-directory name))
+(use-package page-break-lines :ensure t :pin melpa)
+(use-package dashboard :ensure t :pin melpa
+:init (dashboard-setup-startup-hook)
+:config 
+    (setq dashboard-banner-logo-title "Happy Hacking")
+    ;(setq dashboard-startup-banner "") ;banner image change
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    (setq show-week-agenda-p t)
+    (setq dashboard-items '((recents   . 5)
+                            (bookmarks . 5)
+                            (projects  . 5)
+                            (agenda    . 5)))
+)
 
-  (defun get-project-root-directory (buffer)
-  "find current project root,for git or gradle."
-      (with-current-buffer buffer
-      (if (setq parent (cl-some #'get-parent-dir pop-find-parent-directory))
-      parent
-      (get-current-directory))))
+(use-package tabbar :ensure t :pin melpa
+:after (powerline evil-leader)
+:init 
+      (defvar my/tabbar-left  "/"  "Separator on left side of tab")
+      (defvar my/tabbar-right "\\" "Separator on right side of tab")
+      (defun my/tabbar-tab-label-function (tab)
+          (powerline-render (list my/tabbar-left (format " %s  " (car tab)) my/tabbar-right)))
+      (require 'tabbar)
+      (setq my/tabbar-left  (powerline-wave-right 'tabbar-default nil 24))
+      (setq my/tabbar-right (powerline-wave-left  nil 'tabbar-default 24))
+      (tabbar-mode 1)
+      (setq tabbar-tab-label-function 'my/tabbar-tab-label-function)
+:config
+      (setq tabbar-use-images nil)
+      (setq tabbar-scroll-left-button  nil)
+      (setq tabbar-scroll-right-button nil)
+      (setq tabbar-home-button nil)
+      (evil-leader/set-key "th" 'tabbar-forward-tab)
+      (evil-leader/set-key "tl" 'tabbar-backward-tab)
+)
 
-  (defun eshell-pop-bottom()
-  "pop eshell at bottom"
-  (interactive)
-  (let ((pos-buffer (current-buffer))
-      (tmp-eshell (get-buffer my-eshell))
-      (dir (get-current-directory)))
-      ;;check if my-eshell exist,if not create one.
-      (unless tmp-eshell
-      (setq tmp-eshell (eshell 100))
-      (with-current-buffer tmp-eshell
-      (eshell/clear-scrollback)
-      (rename-buffer my-eshell)
-      (switch-to-buffer pos-buffer)))
-      (setq window
-      (select-window
-      (display-buffer-in-side-window tmp-eshell '((side . bottom))) t))
-      (set-window-dedicated-p window t)
-      (when (not (equal pre-path dir))
-      (eshell/cd dir)
-      (eshell-send-input)
-      (setq pre-path dir)))
-      )
-   (evil-leader/set-key "ut" 'eshell-pop-bottom)
+(use-package symon :ensure t :pin melpa
+:init (symon-mode)
+)
+
+(use-package google-translate :ensure t :pin melpa
+:init (require 'google-translate-smooth-ui)
+      ;(require 'google-translate-default-ui)
+      ;(evil-leader/set-key "ft" 'google-translate-at-point)
+      ;(evil-leader/set-key "fT" 'google-translate-query-translate)
+      (setq google-translate-translation-directions-alist
+          '(("en" . "ko")
+              ("ko" . "en")
+              ("jp" . "ko")
+              ("ko" . "jp")))
+      (evil-leader/set-key "ft" 'google-translate-smooth-translate)
+:config
+
+)
 
 
 
 (use-package company :ensure t
-;:init (global-company-mode 1)
-:init (company-mode)
+:init (global-company-mode 1)
 :config 
     (setq company-idle-delay 0)
     (setq company-minimum-prefix-length 1)
@@ -523,17 +683,14 @@
     (define-key company-active-map (kbd "C-n") 'company-select-next)
     (define-key company-active-map (kbd "C-p") 'company-select-previous)
 )
-(with-eval-after-load 'company
-    (add-hook 'c++-mode-hook        'company-mode)
-    (add-hook 'c-mode-hook          'company-mode)
-    (add-hook 'racer-mode-hook      'company-mode)
-    (add-hook 'lisp-mode-hook       'company-mode)
-    (add-hook 'emacs-lisp-mode-hook 'company-mode)
-)
 ;(use-package company-quickhelp :ensure t :pin melpa
 ;:init
 ;    ;(evil-leader/set-key "c h" 'company-quickhelp-manual-begin)
 ;    (company-quickhelp-mode)
+;)
+
+;(use-package company-tabnine :ensure t :pin melpa
+;:init (add-to-list 'company-backend #'company-tabnine)
 ;)
 
 (use-package flycheck :ensure t :pin melpa
@@ -583,7 +740,7 @@
     (add-hook 'c-mode-hook    #'my-flycheck-rtags-setup)
     (add-hook 'c++-mode-hook  #'my-flycheck-rtags-setup)
     (add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
-    (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
+    (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 )
 
@@ -617,74 +774,18 @@
 :init (add-to-list 'company-backends 'company-irony-c-headers)
 )
 
-;;; cmake-ide + gdb/exec.
-(defun run-process-in-comint (cmd)
-(let* ((name (format "Process: %s" cmd))
-        (buf (set-buffer (generate-new-buffer name)))
-        (proc nil)
-        (line-- (make-string 80 ?-))
-        (proc-sentinal-fn (lambda (proc evt)
-                            (insert (format "%s\n%s -- %s\n%s\n" line-- evt (current-time-string) line--))))
-        (comint-mode-result (comint-mode)))
-    ;;
-    (switch-to-buffer-other-window buf)
-    ;;
-    (insert (format "Starting: %s\n%s\n" (current-time-string) line--))
-    (setq proc (start-process-shell-command name buf cmd))
-    (set-process-sentinel proc (lambda (proc evt)
-                                (insert (format "==========\n%s -- (%s) %s\n"
-                                                evt
-                                                (process-exit-status proc)
-                                                evt (current-time-string)))))
-    ;;
-    proc))
-(defun cmake-ide-find-exe-file ()
-(interactive)
-(let* ((exec-files (seq-filter 'file-executable-p 
-                                (directory-files-recursively
-                                (cide--build-dir)
-                                ".*")))
-        (base-buffer-name (file-name-base (buffer-name)))
-        (calc-dist (lambda (fn) (cons fn
-                                    (levenshtein-distance
-                                        base-buffer-name
-                                        (file-name-base fn)))))
-        (cdr-< (lambda (a b) (< (cdr a) (cdr b))))
-        (distances (sort (mapcar calc-dist exec-files) cdr-<))
-        ;;(---- (message distances))
-        (nearest (car (first distances))))
-    (cons nearest exec-files)))
-
-(defun cmake-ide-gdb-files-source ()
-"http://kitchingroup.cheme.cmu.edu/blog/2015/01/24/Anatomy-of-a-helm-source/"
-(interactive)
-(require 'seq)
-`((name . "Executable file to debug")
-    (candidates . ,(cmake-ide-find-exe-file))
-    (action . (lambda (sel)
-                (gdb (read-from-minibuffer
-                    "Cmd: " (format "%s %s" gud-gdb-command-name sel)))))))
-
-(defun cmake-ide-helm-run-gdb ()
-(interactive)
-(helm :sources (cmake-ide-gdb-files-source)))
-
-(define-key c-mode-base-map (kbd "C-c d")
-(function cmake-ide-helm-run-gdb))
-
-(defun cmake-ide-run-files-source ()
-(interactive)
-(require 'seq)
-`((name . "Executable file")
-    (candidates . ,(cmake-ide-find-exe-file))
-    (action . (lambda (sel)
-                (run-process-in-comint (read-from-minibuffer "Cmd: " sel))))))
-
-(defun cmake-ide-helm-run-exe ()
-(interactive)
-(helm :sources (cmake-ide-run-files-source)))
-
-(define-key c-mode-base-map (kbd "C-c x") (function cmake-ide-helm-run-exe))
+(setq gdb-show-main t)
+(evil-leader/set-key "db" 'gud-break)
+(evil-leader/set-key "dn" 'gud-next)
+(evil-leader/set-key "di" 'gud-step)
+(evil-leader/set-key "df" 'gud-finish)
+(evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
+                                   (call-interactively 'gud-cont  )))
+(use-package gdb-mi
+:load-path "lisp/emacs-gdb"
+:init (fmakunbound 'gdb)
+      (fmakunbound 'gdb-enable-debug)
+)
 
 (use-package eldoc :ensure t :diminish eldoc-mode :after rtags)
 
@@ -742,8 +843,20 @@
 
 (use-package yaml-mode :ensure t)
 
+(use-package toml-mode :ensure t :pin melpa
+:mode ("\\.toml\\'" . toml-mode))
+
 (use-package cmake-mode :ensure t
-:init (cmake-mode)
+:mode (("\\.cmake\\'"    . cmake-mode)
+       ("CMakeLists.txt" . cmake-mode))
+)
+
+(use-package markdown-mode :ensure t :pin melpa
+:commands (markdown-mode gfm-mode)
+:mode ("\\README.md\\'" . gfm-mode)
+      ("\\.md\\'"       . markdown-mode)
+      ("\\.markdown\\'" . markdown-mode)
+:init (setq markdown-command "multimarkdown")
 )
 
 

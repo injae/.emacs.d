@@ -1,0 +1,50 @@
+
+;; ----- smex-history -----
+(
+ org-journal-new-entry
+ emacs-lisp-mode
+ org-mode
+ org-journal-mode
+ package-install
+ sort-lines
+ org-indent-mode
+)
+
+;; ----- smex-data -----
+(
+ (eval-buffer . 4)
+ (customize-group . 19)
+ (spaceline-all-the-icons-theme . 6)
+ (powerline-default-theme . 1)
+ (all-the-icons-install-fonts . 1)
+ (customize . 3)
+ (sort-lines . 3)
+ (company-mode . 4)
+ (flycheck-mode . 4)
+ (font-show-log . 1)
+ (c++-mode . 1)
+ (exec-path-from-shell-initialize . 1)
+ (exec-path-from-shell-copy-env . 1)
+ (eshell . 11)
+ (package-install . 3)
+ (gfm-mode . 1)
+ (gfm-view-mode . 2)
+ (markdown-other-window . 1)
+ (html-mode . 1)
+ (markdown-mode . 1)
+ (sudo-find-file . 2)
+ (org-mode . 3)
+ (org-clock-in . 1)
+ (org-clock-display . 1)
+ (org-clock-menu . 1)
+ (org-org-menu . 1)
+ (org-columns . 2)
+ (org-clock-report . 3)
+ (org-set-effort . 1)
+ (org-set-tags-command . 1)
+ (org-time-stamp . 1)
+ (org-indent-mode . 1)
+ (org-journal-mode . 1)
+ (org-journal-new-entry . 3)
+ (emacs-lisp-mode . 1)
+)

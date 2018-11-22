@@ -1,6 +1,5 @@
 
 
-
 ;; gdb setting
 ;(setq gdb-many-windows t)
 ;(defun gdb-in-new-frame
