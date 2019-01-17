@@ -1,128 +1,128 @@
-cd ..
+cat Boost/1.58.0/Boost.cmake.in
+cd ../cppm
+sudo cppm build -c install
 ls
-cd injae.github.io/
+cd ../cppm
+ls
+cd ../test
+ls
+cppm cppkg init -u http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -v 1.58.0 -m Boost::filesystem --global Boost
+ls
+rm -r Boost/ Boost.toml 
+cppm cppkg init -u http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -v 1.58.0 -m Boost::filesystem --global Boost
+cat Boost/1.58.0/Boost.cmake.in
+ls
+rm -r Boost/ Boost.toml
+cd ../cppm
+sudo cppm build -c install
+cd ../test
+cppm cppkg init -u http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -v 1.58.0 -m Boost::filesystem --global Boost
+ls
+cat Boost/1.58.0/Boost.cmake.in
+ls
+cppm cppkg init -u https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.gz -m Boost::filesystem -v 1.65.1 --global Boost
 ls
 ls
+cd ../
+ls
+cd cppkg
+ls
+rm -r Boost/
 ls
 ls
-cd ..
+cat OpenSSL/lastest/OpenSSL.cmake.in
 ls
-cd minimal-mistakes-master/
+rm -r OpenSSL/
 ls
-cp -rf * ../injae.github.io/
-cd ..
-cd injae.github.io/
+cat GTest/lastest/GTest.cmake.in
 ls
-jekyll serve
-jekyll serve
-jekyll serve
-k           Source: /home/nieel/dev/injae.github.io
+cat GTest/lastest/cppkg.toml
+cppm cppkg init -g https://github.com/google/googletest.git -m gtest --global GTest
+ls
+rm -r GTest.toml GTest/
+cppm cppkg init -g https://github.com/google/googletest.git -m gtest --global GTest
+ls
+cat cppfs/lastest/cppfs.cmake.in
+ls
+cat cpptoml/lastest/cppkg.toml
+rm -r cpptoml/
+cppm cppkg init -g https://github.com/skystrife/cpptoml.git -m cpptoml cpptoml
+ls
+cat fmt/lastest/cppkg.toml
+cppm cppkg init -g https://github.com/fmtlib/fmt.git -m fmt::fmt fmt
+rm -r fmt/
+cppm cppkg init -g https://github.com/fmtlib/fmt.git -m fmt::fmt fmt
+ls
+rm fmt.toml 
+cat nlpo/lastest/cppkg.toml
+rm -r nlpo/
+cppm cppkg init -g https://github.com/injae/nlpo.git -m nlpo::nlpo nlpo
+ls
+cd ../
+ls
+cd cppkg
+ls
+ls
+cd ../
+ls
+cppm
+ls
+cd cppm
+ls
+ls
+cd thirdparty/
 ls
 rm -rf *
 ls
+cppm build
+sudo cppm build
 cd ..
 ls
-cd minimal-mistakes-master/
 ls
-cp ../injae.github.io/
+cppm cppkg update
 ls
-cp -rf * ../injae.github.io/
-cd ..
-ls
-cd injae.github.io/ls
-cd injae.github.io/
-ls
-rm README.md 
-jekyll serve
-jekyll serve
-bundle exec jekyll serve
-bundle exec jekyll serve
-ls
-bundle install
-bundle update
+cppm cppkg search
 ls
 ls
-cd ..
+cd cmake/
 ls
-rm -rf injae.github.io/
-jekyll new injae.github.io
-cd injae.github.io/
+rm :w
 ls
-bundle install
-bundle update
-bundle install
-bundle install
-jekyll serve
-bundle exec jekyll serve
-git init
-git add *
-git remote add origin https://github.com/INJAE/injae.github.io.gitgit push -u origin master                                     #                                     #                                     #                                     #                                     #                                     #                                     #                                     #                                     #
-jekyll serve
-bundle exec jekyll serve
+cd ../
 ls
-mv index.md index.html
+git push
+git push --set-upstream origin dev
 ls
-jekyll serve
-bundle exec jekyll serve
-bundle install
-bundle exec jekyll serve
+cd ../
+ls
+mkdir backup
+cp -r cppm backup/
+ls
+cd ppm
+cd cppm
+ls
+git pull
+git pull 
 ls
 ls
-bundle exec jekyll serve
-bundle install
-bundle update
-bundle exec jekyll serve
-jekyll build
-ls ../minimal-mistakes-master/_layouts/
-cd ..
+sudo cppm build install
 ls
-cd minimal-mistakes-master/
+cd thr
+cd thirdparty/
 ls
-bundle exec jekyll serve
-bundle exec jekyll serve
-bundle exec jekyll serve
-bundle exec jekyll serve
+rm cppfs.cmake.in
 ls
-cd _layouts/
+cd ../
 ls
-cd ..
+sudo cppm build -c install
+sudo cppm build -c install 
+sudo cppm build -c install 
+sudo cppm build -c install 
+sudo cppm build -c install 
 ls
-cd ..
-ls
-cd injae.github.io/
-ls
-bundle exec jekyll serve
-ls
-cd ..
-ls
-cd minimal-mistakes-master/
-ls
-cp -rf _data/ _includes/ _layouts/ _sass/ _site/ assets/ ../injae.github.io/
-cd ..
-ls
-cd injae.github.io/
-ls
-bundle exec jekyll serve
-ls
-cat ~/.Xresources
-ls
-xrdb ~/.Xresources 
-xrdb -merge ~/.Xresources 
-Als
-cd ..
-cd Dropbox/
-ls
-mkdir www
-mkdir notes
-rm www
-rm -r www
-rm -r notes/
-ls
-mkdir org
-cd org/
-ls
-mkdir notes
-mkdir www
-ls
-touch notes/notes.org
-touch www/index.org
+sudo chown -R nieel.nieel build
+cppm build -c
+cd build
+sudo make install
+cppm build -c
+cppm build -c

@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
-    (filename . "~/.emacs.d/org/note/organizer.org")
-    (front-context-string . "** TODO First\n  ")
-    (rear-context-string)
-    (position . 9))
+    (filename . "~/Dropbox/org/journal/2018-12-16.org")
+    (front-context-string . "** 18:20 후쿠오카여행\n")
+    (rear-context-string . "** 생년월일: 711214\n")
+    (position . 625))
 ("RTags_1"
     (filename . "~/dev/cppm/src/config/cmake.cpp")
     (front-context-string . "Cmake::generate(")

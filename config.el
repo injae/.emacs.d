@@ -61,6 +61,7 @@
 (setq echo-keystrokes 0.5)
 (setq global-hl-line-mode +1)
 (defalias 'yes-or-no-p 'y-or-n-p)
+(global-auto-revert-mode)
 
 ;; +------------+------------+
 ;; | 일이삼사오 | 일이삼사오 |
@@ -78,8 +79,9 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(set-face-attribute   'default nil       :family "DejaVu Sans Mono" :height 110)
-(set-fontset-font nil 'hangul (font-spec :family "D2Coding" :pixelsize 18))
+(set-face-attribute   'default            nil       :family "DejaVu Sans Mono" :height 110)
+(set-fontset-font nil 'hangul            (font-spec :family "D2Coding" :pixelsize 18))
+(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding" :pixelsize 18))
 (setq face-font-rescale-alist '(("D2coding" . 1.2)))
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
@@ -166,13 +168,14 @@
 )
 (defun my-set-indent (n)
     (setq-default tab-width n)
-    ;(electric-indent-mode t)
+    ;(electric-indent-mode n)
     (setq c-basic-offset n)
     (setq lisp-indent-offset n)
     (setq indent-line-function 'insert-tab)
 )
 (my-set-indent 4)
 (setq-default indent-tabs-mode nil)
+(electric-indent-mode nil)
 
 (defun un-indent-by-removing-4-spaces ()
     "back tab"
@@ -258,22 +261,37 @@
     (which-key-declare-prefixes "SPC d" "Debug")
     (which-key-declare-prefixes "SPC e" "Emacs")
     (which-key-declare-prefixes "SPC f" "Find")
+    (which-key-declare-prefixes "SPC n" "File Manager")
     (which-key-declare-prefixes "SPC g" "Git")
     (which-key-declare-prefixes "SPC o" "Org")
     (which-key-declare-prefixes "SPC p" "Projectile")
     (which-key-declare-prefixes "SPC t" "Tabbar")
     (which-key-declare-prefixes "SPC u" "Utils")
     (which-key-declare-prefixes "SPC w" "Windows")
+    (which-key-declare-prefixes "SPC h" "Hacking")
     )
 
 (use-package all-the-icons :ensure t)
-(use-package spaceline :ensure t :after powerline
+(use-package doom-modeline :ensure t :pin melpa
+:hook (after-init . doom-modeline-init)
+:init (setq doom-modeline-height 20)
+      (setq doom-modeline-icon t)
+      (setq doom-modeline-persp-name t)
+      (setq doom-modeline-major-mode-icon t)
+      (setq doom-modeline-lsp t)
+      (setq doom-modeline-python-executable "python")
+      (setq doom-modeline--flycheck-icon t)
+      (setq doom-modeline-github t)
+      (setq doom-modeline-current-window t)
+)
+
+(use-package spaceline :ensure t :after powerline :disabled
 :init (setq spaceline-responsive nil)
       (set-face-attribute 'mode-line nil :box nil)
 )
 (use-package spaceline-config :ensure spaceline
 :init
-(use-package spaceline-all-the-icons :ensure t
+(use-package spaceline-all-the-icons :ensure t 
     :init
     (spaceline-all-the-icons-theme)
     :config
@@ -392,7 +410,7 @@
 )
 
 (use-package projectile :defer t :ensure t
-:init (projectile-mode t)
+:init   (projectile-mode t)
 :config (evil-leader/set-key "p" 'projectile-command-map)
 )
 
@@ -441,11 +459,11 @@
 :after (evil magit)
 :init  (evil-magit-init)
 )
-;(use-package magithub :ensure t
-;:after magit
-;:init (magithub-feature-autoinject t)
-;      (setq magithub-clone-default-directory "~/github")   
-;)
+(use-package magithub :ensure t :disabled
+:after magit
+:init (magithub-feature-autoinject t)
+      (setq magithub-clone-default-directory "~/github")   
+)
 
 (use-package evil-ediff :ensure t :pin melpa
 :init (evil-ediff-init)
@@ -478,11 +496,21 @@
 
 (use-package org-journal :ensure t :pin melpa
 :after org
-:init (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal"))
-      (setq org-journal-file-format "%Y%m%d.org")
-      (setq org-journal-date-format "%e %b %Y (%A)")
+:init (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal")
+            org-journal-file-format "%Y-%m-%d.org"
+            org-journal-date-format "%Y-%m-%d (%A)"
+      )
       (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/journal"))
+:config
+    (setq org-journal-enable-agenda-integration t
+          org-icalendar-store-UID t
+          org-icalendar-include0tidi "all"
+          org-icalendar-conbined-agenda-file "~/calendar/org-journal.ics")
+      (org-journal-update-org-agenda-files)
+      (org-icalendar-combine-agenda-files)
 )
+
+(defun org-journal-find-location () (org-journal-new-entry t) (goto-char (point-min)))
 
 (use-package org-capture
 :after org
@@ -492,7 +520,10 @@
           '(("t" "Todo" entry (file+headline "~/Dropbox/org/notes/notes.org" "Todos")
              "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
             ("l" "Link" entry (file+headline "~/Dropbox/org/notes/notes.org" "Links")
-             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t))
+             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
+            ("j" "Journal" entry (function org-journal-find-location)
+             "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+           )
       )
 )
 
@@ -526,8 +557,6 @@
            text-mode
            html-mode
            css-mode
-           c++-mode
-           c-mode
            lisp-mode
            emacs-lisp-mode)
     :init (rainbow-mode)
@@ -587,7 +616,8 @@
                               (filename . "emacs-config")))
           ("org-mode"     (or (mode . org-mode)
                               (filename ."OrgMode")))
-          ("code"         (or (mode . prog-mode)
+          ("code"         (or (directory . "~/dev/")
+                              (mode . prog-mode)
                               (mode . c++-mode)
                               (mode . c-mode)
                               (mode . yaml-mode)
@@ -652,7 +682,7 @@
 )
 
 (use-package symon :ensure t :pin melpa
-:init (symon-mode)
+:init ;(symon-mode)
 )
 
 (use-package google-translate :ensure t :pin melpa
@@ -670,7 +700,32 @@
 
 )
 
+(use-package esup :ensure t :pin melpa)
 
+(use-package flyspell :ensure t :pin melpa
+:init
+    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+    (add-hook 'text-mode-hook 'flyspell-mode)
+    (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+)
+
+(use-package helm-flyspell :ensure t :pin melpa
+:after (helm flyspell)
+:init (evil-leader/set-key "s" 'helm-flyspell-correct)
+)
+
+(use-package helm-ag :ensure t :pin melpa
+    :init (evil-leader/set-key "fgt" 'helm-do-ag-this-file
+                               "fgb" 'helm-do-ag-buffers
+                               "fgr" 'helm-do-ag-project-root))
+(use-package wgrep :ensure t :pin melpa
+:config (setq wgrep-auto-save buffer t)
+       ;(setq wgrep-enable-key "r")
+)
+
+(use-package iedit :ensure t :pin melpa
+:init (evil-leader/set-key "fi" 'iedit-mode)
+)
 
 (use-package company :ensure t
 :init (global-company-mode 1)
@@ -685,7 +740,7 @@
 )
 ;(use-package company-quickhelp :ensure t :pin melpa
 ;:init
-;    ;(evil-leader/set-key "c h" 'company-quickhelp-manual-begin)
+;    ;(evil-leader/set-key "hch" 'company-quickhelp-manual-begin)
 ;    (company-quickhelp-mode)
 ;)
 
@@ -697,24 +752,39 @@
 :init (global-flycheck-mode t)
       (setq flycheck-clang-language-standard "c++17")
 )
-(use-package flycheck-pos-tip :ensure t 
-:after flycheck
+(use-package flycheck-pos-tip :ensure t :pin melpa
+:commands flycheck
 :init (flycheck-pos-tip-mode))
+
+(use-package flycheck-inline :ensure t :pin melpa
+:commands flycheck
+:init (global-flycheck-inline-mode)
+:config
+      (setq flycheck-inline-display-function
+          (lambda (msg pos)
+              (let* ((ov (quick-peek-overlay-ensure-at pos))
+                  (contents (quick-peek-overlay-contents ov)))
+              (setf (quick-peek-overlay-contents ov)
+                      (concat contents (when contents "\n") msg))
+              (quick-peek-update ov)))
+          flycheck-inline-clear-function #'quick-peek-hide)
+)
 
 (use-package yasnippet :ensure t
 :init
-(use-package yasnippet-snippets :ensure t)
-(setq yas-snippet-dirs '("~/.emacs.d/yas/"))
-(yas-global-mode)
-(yas-reload-all)
+  (use-package yasnippet-snippets :ensure t)
+  (setq yas-snippet-dirs '("~/.emacs.d/yas/"))
+  (yas-global-mode)
+  (yas-reload-all)
 )
 
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (use-package company-c-headers :ensure t
 :after company
 :init (add-to-list 'company-backends 'company-c-headers)
 )
 (use-package clang-format :ensure t
-:init (evil-leader/set-key "cf" 'clang-format-regieon)
+:init (evil-leader/set-key "hcf" 'clang-format-regieon)
 )
 
 (use-package rtags :ensure t
@@ -723,8 +793,8 @@
     (setq rtags-autostart-diagnostics t)
     (rtags-diagnostics)
     (setq rtags-completions-enabled t) (rtags-enable-standard-keybindings)
-    (evil-leader/set-key "cs" 'rtags-find-symbol
-                         "cr" 'rtags-find-references)
+    (evil-leader/set-key "hcs" 'rtags-find-symbol
+                         "hcr" 'rtags-find-references)
 )
 (use-package helm-rtags :ensure t :after (helm rtags)
 :init (setq rtags-display-result-backend 'helm))
@@ -744,11 +814,10 @@
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 )
 
-(use-package cmake-ide :ensure t
+(use-package cmake-ide :ensure t 
 :init
     (cmake-ide-setup)
     (setq cmake-ide-flags-c++ (append '("-std=c++17")))
-    (evil-leader/set-key "cc" 'cmake-ide-compile)
 )
 
 (use-package irony :ensure t :diminish irony-mode
@@ -828,20 +897,38 @@
 (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
 (add-hook 'lisp-mode-hook       'prettify-symbols-mode)
 
-(use-package rust-mode :ensure t)
-;(use-package flymake-rust :ensure t)
-(use-package racer :ensure t 
-:init
-(add-hook 'racer-mode-hook #'racer-mode) 
-(add-hook 'racer-mode-hook #'eldoc-mode)
+(use-package rust-mode :ensure t :pin melpa
+:mode (("\\.rs\\'" . rust-mode))
+:init (evil-leader/set-key "hrf" 'rust-format-buffer)
+;:config (setq rust-format-on-save t)
+;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
-(use-package cargo :ensure t
+(use-package flycheck-rust :ensure t :pin melpa :after flycheck
+:init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+)
+(use-package racer :ensure t :pin melpa
+:init
+    (add-hook 'rust-mode-hook  #'racer-mode)
+    (add-hook 'racer-mode-hook #'company-mode) 
+    (add-hook 'racer-mode-hook #'eldoc-mode) 
+)
+(use-package company-racer :ensure t :pin melpa
+:init (add-to-list 'company-backends 'company-racer)
+)
+
+(use-package cargo :ensure t :pin melpa
 :init (add-hook 'rust-mode-hook 'cargo-minor-mode)
+      (evil-leader/set-key "hrb" 'cargo-process-build
+                           "hrr" 'cargo-process-run
+                           "hrt" 'cargo-process-test)
 )
 
 (use-package haskell-mode :ensure t)
 
-(use-package yaml-mode :ensure t)
+(use-package yaml-mode :ensure t
+:mode (("\\.yaml\\'" . yaml-mode)
+       ("\\.yml\\'"  . yaml-mode))
+)
 
 (use-package toml-mode :ensure t :pin melpa
 :mode ("\\.toml\\'" . toml-mode))
@@ -853,10 +940,51 @@
 
 (use-package markdown-mode :ensure t :pin melpa
 :commands (markdown-mode gfm-mode)
-:mode ("\\README.md\\'" . gfm-mode)
-      ("\\.md\\'"       . markdown-mode)
-      ("\\.markdown\\'" . markdown-mode)
+:mode (("\\README.md\\'" . gfm-mode)
+       ("\\.md\\'"       . markdown-mode)
+       ("\\.markdown\\'" . markdown-mode))
 :init (setq markdown-command "multimarkdown")
 )
+
+(use-package markdown-preview-mode :ensure t :pin melpa)
+
+(use-package easy-jekyll :ensure t :pin melpa
+:init (setq easy-jekyll-basedir "~/dev/blog/")
+      (setq easy-jekyll-url "https://injae.github.io")
+      (setq easy-jekyll-sshdomain "blogdomain")
+      (setq easy-jekyll-root "/")
+      (setq easy-jekyll-previewtime "300")
+)
+
+(use-package pyenv-mode :ensure t :pin melpa
+:init
+    (defun projectile-pyenv-mode-set ()
+        "Set pyenv version matching project name."
+        (let ((project (projectile-project-name)))
+            (if (member project (pyenv-mode-versions))
+                (pyenv-mode-set project)
+                (pyenv-mode-unset)
+            )
+        )
+    )
+    (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
+    (add-hook 'python-mode-hook 'pyenv-mode)
+)
+(use-package pyenv-mode-auto :ensure t :pin melpa)
+(use-package python-mode
+:interpreter ("python" . python-mode)
+:mode   ("\\.py\\'" . python-mode)
+        ("\\.wsgi$" . python-mode)
+:init   (setq-default indent-tabs-mode nil)
+:config (setq python-indent-offset 4)
+)
+
+(use-package anaconda-mode :ensure t :pin melpa
+:init   (add-hook 'python-mode-hook 'anaconda-mode)
+        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+
+(use-package company-anaconda :ensure t :pin melpa :after (company-mode anaconda-mode)
+:init (add-hook 'python-mode-hook 'anaconda-mode)
+      (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 
 

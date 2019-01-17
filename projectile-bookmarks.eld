@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/dev/injae.github.io/" "~/dev/minimal-mistakes-master/test/" "~/dev/minimal-mistakes-master/" "~/dev/cppm/" "~/dev/vcpkg/" "~/dev/cppm/thirdparty/nlpo/" "~/dev/cppm/thirdparty/nieel/" "~/dev/example/build/" "~/dev/cppm/thirdparty/cpptoml/" "~/")
+("~/.emacs.d/" "~/dev/cppm/" "~/dev/nlpo/" "~/dev/cppkg/" "~/Dropbox/org/notes/" "~/dev/test/cppm/" "~/dev/rex/" "~/dev/rlex/" "~/dev/vcpkg/" "~/dev/nieel/" "~/dev/blog/" "~/dev/minimal-mistakes-master/" "~/dev/example/build/" "~/")
