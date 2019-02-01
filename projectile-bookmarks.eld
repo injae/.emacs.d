@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/dev/cppm/" "~/dev/nlpo/" "~/dev/cppkg/" "~/Dropbox/org/notes/" "~/dev/test/cppm/" "~/dev/rex/" "~/dev/rlex/" "~/dev/vcpkg/" "~/dev/nieel/" "~/dev/blog/" "~/dev/minimal-mistakes-master/" "~/dev/example/build/" "~/")
+("~/.emacs.d/" "~/Dropbox/org/notes/" "~/dev/cppm/" "~/dev/nlpo/" "~/dev/ccls/" "~/dev/cppkg/" "~/dev/test/cppm/" "~/dev/nieel/" "~/dev/blog/" "~/dev/example/build/" "~/")

@@ -2,7 +2,7 @@
 (setq-default custom-file (expand-file-name ".config.el" user-emacs-directory))
 (when (file-exists-p custom-file) (load custom-file))
 
-(setq *is-mac*     (eq system-type 'darwin))
+(setq *is-mac* (eq system-type 'darwin))
 (setq *is-windows* (eq system-type 'windows-nt))
 (setq *is-cygwin*  (eq system-type 'cygwin))
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
@@ -117,7 +117,26 @@
  (use-package sudo :after evil-leader
  :init (evil-leader/set-key "fs" #'sudo-find-file))
 
+(use-package paradox :ensure t :pin melpa
+;https://github.com/Malabarba/paradox
+:init (setq paradox-github-token "e1a1518b1f89990587ec97b601a1d0801c5a40c6")
+)
 
+(use-package move-text :ensure t :pin melpa
+;https://github.com/emacsfodder/move-text
+:init (move-text-default-bindings)
+)
+
+(use-package goto-last-change :ensure t :pin melpa
+;https://github.com/camdez/goto-last-change.el
+:init (evil-leader/set-key "fl" 'goto-last-change)
+)
+
+(use-package esup :ensure t :pin melpa
+:init 
+)
+
+(server-start)
 
 (use-package beacon :ensure t :init (beacon-mode t)) 
 (use-package git-gutter :ensure t
@@ -137,7 +156,7 @@
     (set-face-foreground 'git-gutter:modified "#b18cce")
 )
 
-(use-package doom-themes
+(use-package doom-themes :ensure t :pin melpa
 :init (load-theme 'doom-one t)
 :config
     (doom-themes-neotree-config)
@@ -155,7 +174,10 @@
 ;    (add-hook 'sh-mode-hook           'hs-minor-mode)
 
 ;(use-package aggressive-indent :ensure t :pin melpa
+;https://github.com/Malabarba/aggressive-indent-mode
 ;:init (global-aggressive-indent-mode)
+      ;exclud mode
+      ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 ;)
 
 (use-package indent-guide :ensure t
@@ -240,8 +262,19 @@
     (evil-collection-package-menu-setup)
     (evil-collection-init)
 )
+
+(use-package evil-numbers :ensure t :pin melpa 
+:after evil
+;https://github.com/cofi/evil-numbers
+:init
+    (global-set-key (kbd "C-c +") 'evil-number/inc-at-pt)
+    (global-set-key (kbd "C-c -") 'evil-number/dec-at-pt)
+    (evil-leader/set-key "+" 'evil-number/inc-at-pt)
+    (evil-leader/set-key "-" 'evil-number/dec-at-pt)
+)
+
 (use-package evil-leader :ensure t :defer t :pin melpa
-:after which-key
+:after (evil which-key)
 :init (global-evil-leader-mode t)
 :config
     (setq evil-leader/leader "<SPC>")
@@ -269,6 +302,9 @@
     (which-key-declare-prefixes "SPC u" "Utils")
     (which-key-declare-prefixes "SPC w" "Windows")
     (which-key-declare-prefixes "SPC h" "Hacking")
+    (which-key-declare-prefixes "SPC h r" "Rust")
+    (which-key-declare-prefixes "SPC h c" "C/C++")
+    (which-key-declare-prefixes "SPC h y" "Yasnippet")
     )
 
 (use-package all-the-icons :ensure t)
@@ -451,6 +487,41 @@
     )
 )
 
+(use-package exwm :ensure t :pin melpa
+:if window-system
+:commands (exwm-init)
+:config
+    (use-package exwm-config 
+    :init (exwm-config-default))
+
+    (setq exwm-workspace-number 0)
+    (exwm-input-set-key (kbd "s-h") 'windmove-left)
+    (exwm-input-set-key (kbd "s-j") 'windmove-down)
+    (exwm-input-set-key (kbd "s-k") 'windmove-up)
+    (exwm-input-set-key (kbd "s-l") 'windmove-right)
+    (exwm-input-set-key (kbd "s-s") 'split-window-right)
+    (exwm-input-set-key (kbd "s-v") 'split-window-vertically)
+    (exwm-input-set-key (kbd "s-d") 'delete-window)
+    (exwm-input-set-key (kbd "s-q") '(lambda () (interactive) (kill-buffer (current-buffer))))
+    (exwm-input-set-key (kbd "s-e") 'exwm-exit)
+    (advice-add 'split-window-right :after 'windmove-right)
+    (advice-add 'split-window-vertically :after 'windmove-down)
+
+
+    ;; 's-N': Switch to certain workspace
+    (dotimes (i 10)
+        (exwm-input-set-key (kbd (format "s-%d" i))
+                            `(lambda ()
+                            (interactive)
+                            (exwm-workspace-switch-create ,i))))
+    ;; 's-r': Launch application
+    (exwm-input-set-key (kbd "s-r")
+                        (lambda (command)
+                            (interactive (list (read-shell-command "$ ")))
+                            (start-process-shell-command command nil command)))
+
+)
+
 (use-package magit :ensure t  :pin melpa
 :init   (evil-leader/set-key "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
@@ -459,7 +530,7 @@
 :after (evil magit)
 :init  (evil-magit-init)
 )
-(use-package magithub :ensure t :disabled
+(use-package magithub :ensure t
 :after magit
 :init (magithub-feature-autoinject t)
       (setq magithub-clone-default-directory "~/github")   
@@ -523,6 +594,8 @@
              "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
             ("j" "Journal" entry (function org-journal-find-location)
              "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+            ("a" "Appointment" entry (file "~/Dropbox/org/agenda/gcal.org")
+             "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
            )
       )
 )
@@ -532,11 +605,29 @@
       :after (org evil)
       :init (add-hook 'org-mode-hook 'evil-org-mode)
             (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
-            (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/agenda"))
+            (setq org-agenda-files '("~/Dropbox/org/agenda"))
             (require 'evil-org-agenda)
             (evil-org-agenda-set-keys)
       )
 )
+
+(use-package org-gcal :ensure t :pin melpa
+:after org-agenda
+:init (setq org-gcal-client-id "354752650679-2rrgv1qctk75ceg0r9vtaghi4is7iad4.apps.googleusercontent.com"
+            org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4"
+            org-gcal-file-alist '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
+      (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync)))
+      (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
+)
+
+;(use-package calfw :ensure t :pin melpa 
+;:commands cfw:open-calendar-buffer
+;:config (use-package calfw-org
+;        :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp))
+;        )
+;)
+;(use-package calfw-gcal :ensure t :pin melpa
+;:init (require 'calfw-gcal))
 
 (use-package org-babel
 :init (org-babel-do-load-languages
@@ -565,6 +656,10 @@
 (use-package docker          :ensure t :init (evil-leader/set-key "ud" 'docker)) 
 (use-package dockerfile-mode :ensure t 
     :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+(use-package eshell
+:init (setq eshell-buffer-maximum-lines 1000)
+)
 
 (use-package exec-path-from-shell :ensure t :pin melpa
 :init ;(exec-path-from-shell-copy-env "PATH")
@@ -727,6 +822,12 @@
 :init (evil-leader/set-key "fi" 'iedit-mode)
 )
 
+(use-package helm-system-packages :ensure t :pin melpa
+:init (require 'em-tramp)
+      (setq password-cache t)
+      (setq password-cache-expiry 3600)
+      (evil-leader/set-key "up" 'helm-system-packages))
+
 (use-package company :ensure t
 :init (global-company-mode 1)
 :config 
@@ -738,15 +839,34 @@
     (define-key company-active-map (kbd "C-n") 'company-select-next)
     (define-key company-active-map (kbd "C-p") 'company-select-previous)
 )
-;(use-package company-quickhelp :ensure t :pin melpa
-;:init
-;    ;(evil-leader/set-key "hch" 'company-quickhelp-manual-begin)
-;    (company-quickhelp-mode)
-;)
+(use-package company-quickhelp :ensure t :pin melpa
+:init
+    ;(evil-leader/set-key "hch" 'company-quickhelp-manual-begin)
+    (company-quickhelp-mode)
+)
+
+(use-package company-statistics :ensure t :pin melpa
+:init (company-statistics-mode)
+)
 
 ;(use-package company-tabnine :ensure t :pin melpa
 ;:init (add-to-list 'company-backend #'company-tabnine)
 ;)
+
+(use-package lsp-mode :ensure t :pin melpa
+:init 
+)
+
+(use-package lsp-ui :ensure t :pin melpa
+:after lsp-mode
+:config (require 'lsp-clients)
+)
+
+
+(use-package company-lsp :ensure t :pin melpa
+:after (company lsp-mode)
+:init  (add-to-list 'company-backends #'company-lsp)
+)
 
 (use-package flycheck :ensure t :pin melpa
 :init (global-flycheck-mode t)
@@ -770,12 +890,20 @@
           flycheck-inline-clear-function #'quick-peek-hide)
 )
 
-(use-package yasnippet :ensure t
+(use-package yasnippet :ensure t :pin melpa
+;https://github.com/joaotavora/yasnippet
 :init
   (use-package yasnippet-snippets :ensure t)
+  (evil-leader/set-key "hyl" 'company-yasnippet)
   (setq yas-snippet-dirs '("~/.emacs.d/yas/"))
-  (yas-global-mode)
-  (yas-reload-all)
+  (yas-global-mode t)
+  (yas-reload-all t)
+)
+(use-package auto-yasnippet :ensure t :pin melpa
+;https://github.com/abo-abo/auto-yasnippet
+:after yasnippet
+:init (evil-leader/set-key "hyc" 'aya-create)
+      (evil-leader/set-key "hye" 'aya-expand)
 )
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -816,8 +944,17 @@
 
 (use-package cmake-ide :ensure t 
 :init
+    (require 'subr-x)
     (cmake-ide-setup)
     (setq cmake-ide-flags-c++ (append '("-std=c++17")))
+    (defadvice cmake-ide--run-cmake-impl
+      (after copy-compile-commands-to-project-dir activate)
+      (if (file-exists-p (concat project-dir "/compile_commands.json"))
+      (progn 
+      (cmake-ide--message "[advice] found compile_commands.json" )
+      (copy-file (concat project-dir "compile_commands.json") cmake-dir)
+      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
+      (cmake-ide--message "[advice] couldn't find compile_commands.json" )))
 )
 
 (use-package irony :ensure t :diminish irony-mode
@@ -842,6 +979,14 @@
 :after company
 :init (add-to-list 'company-backends 'company-irony-c-headers)
 )
+
+(use-package dap-mode :ensure t :pin melpa
+:init (evil-leader/set-key "dr" 'dap-debug)
+      (evil-leader/set-key "de" 'dap-debug)
+:config (require 'dap-lldb)
+)
+
+
 
 (setq gdb-show-main t)
 (evil-leader/set-key "db" 'gud-break)
@@ -933,9 +1078,10 @@
 (use-package toml-mode :ensure t :pin melpa
 :mode ("\\.toml\\'" . toml-mode))
 
-(use-package cmake-mode :ensure t
+(use-package cmake-mode :ensure t :pin melpa
 :mode (("\\.cmake\\'"    . cmake-mode)
        ("CMakeLists.txt" . cmake-mode))
+:init (setq cmake-tab-width 4)      
 )
 
 (use-package markdown-mode :ensure t :pin melpa
@@ -947,6 +1093,9 @@
 )
 
 (use-package markdown-preview-mode :ensure t :pin melpa)
+(use-package gh-md :ensure t :pin melpa
+:init (evil-leader/set-key "hmr" 'gh-md-render-buffer)
+)
 
 (use-package easy-jekyll :ensure t :pin melpa
 :init (setq easy-jekyll-basedir "~/dev/blog/")
@@ -987,4 +1136,4 @@
 :init (add-hook 'python-mode-hook 'anaconda-mode)
       (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 
-
+(use-package i3wm :ensure t :pin melpa)

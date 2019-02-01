@@ -1,128 +1,128 @@
-cat Boost/1.58.0/Boost.cmake.in
-cd ../cppm
-sudo cppm build -c install
-ls
-cd ../cppm
-ls
-cd ../test
-ls
-cppm cppkg init -u http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -v 1.58.0 -m Boost::filesystem --global Boost
-ls
-rm -r Boost/ Boost.toml 
-cppm cppkg init -u http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -v 1.58.0 -m Boost::filesystem --global Boost
-cat Boost/1.58.0/Boost.cmake.in
-ls
-rm -r Boost/ Boost.toml
-cd ../cppm
-sudo cppm build -c install
-cd ../test
-cppm cppkg init -u http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -v 1.58.0 -m Boost::filesystem --global Boost
-ls
-cat Boost/1.58.0/Boost.cmake.in
-ls
-cppm cppkg init -u https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.gz -m Boost::filesystem -v 1.65.1 --global Boost
-ls
 ls
 cd ../
 ls
-cd cppkg
-ls
-rm -r Boost/
-ls
-ls
-cat OpenSSL/lastest/OpenSSL.cmake.in
-ls
-rm -r OpenSSL/
-ls
-cat GTest/lastest/GTest.cmake.in
-ls
-cat GTest/lastest/cppkg.toml
-cppm cppkg init -g https://github.com/google/googletest.git -m gtest --global GTest
-ls
-rm -r GTest.toml GTest/
-cppm cppkg init -g https://github.com/google/googletest.git -m gtest --global GTest
-ls
-cat cppfs/lastest/cppfs.cmake.in
-ls
-cat cpptoml/lastest/cppkg.toml
-rm -r cpptoml/
-cppm cppkg init -g https://github.com/skystrife/cpptoml.git -m cpptoml cpptoml
-ls
-cat fmt/lastest/cppkg.toml
-cppm cppkg init -g https://github.com/fmtlib/fmt.git -m fmt::fmt fmt
-rm -r fmt/
-cppm cppkg init -g https://github.com/fmtlib/fmt.git -m fmt::fmt fmt
-ls
-rm fmt.toml 
-cat nlpo/lastest/cppkg.toml
-rm -r nlpo/
-cppm cppkg init -g https://github.com/injae/nlpo.git -m nlpo::nlpo nlpo
+cd meta/
 ls
 cd ../
 ls
-cd cppkg
-ls
+cat cmake.lock 
 ls
 cd ../
+s
 ls
-cppm
+cd Download/
 ls
-cd cppm
+cd Hunter/
 ls
+cd 0.23.89/
 ls
-cd thirdparty/
+cd a370290/
 ls
-rm -rf *
-ls
-cppm build
-sudo cppm build
-cd ..
-ls
-ls
-cppm cppkg update
-ls
-cppm cppkg search
-ls
+cd Unpacked/
 ls
 cd cmake/
 ls
-rm :w
+cd find/
 ls
 cd ../
 ls
-git push
-git push --set-upstream origin dev
+cd modules/
+ls
+cd ..
+ls
+cd projects/
+ls
 ls
 cd ../
 ls
-mkdir backup
-cp -r cppm backup/
+pwd
+ls schemes/
 ls
-cd ppm
-cd cppm
+ls templates/
 ls
-git pull
-git pull 
+cd ../
+sl
+ls
+cd gate/
+ls
+cd ../
+ls
+cd maintenance/
+ls
+cd ../
+ls
+cd cmake/
+ls
+cd templates/
+ls
+cd ../
+ls
+cd projects/
+ls
+cd eos/
+ls
+cat hunter.cmake 
+ls
+cd ../
+ls
+cat boost-pba/hunter.cmake 
+ls
+cat fmt/hunter.cmake 
 ls
 ls
-sudo cppm build install
+cd ../../
 ls
-cd thr
+cd ../cppkg/
+ls
+git branch nightly
+ls
+ls
+git checkout nightly
+ls
+ls
+cppm init -h
+cppm cppkg init -h
+cppm cppkg init -g https://github.com/catchorg/Catch2.git -m Catch2::Catch2 -d "modern, C++-native, header-only, test framework for unit-tests" -p Catch2
+ls
+cd ../cppm
+ls
+cppm cppkg search
+cppm build 
+cppm build 
+ls
+l
+ls
 cd thirdparty/
 ls
-rm cppfs.cmake.in
+ls
+cd ../cppm build
+cppm build
+cppm build
+cppm build
+cppm build
+cppm build -c
+ls
+cd ../build
+ls
+rm -rf *
+cppm build -c
+cppm build -c
+cppm build -c
+cppm build -c
+cppm build -c
+ls
+ls
+cppm build 
+ls
+ls
+cppm build 
+cppm build 
+cppm build 
+ls
+rm session.*
+ls
+ls
+cd magithub/
 ls
 cd ../
 ls
-sudo cppm build -c install
-sudo cppm build -c install 
-sudo cppm build -c install 
-sudo cppm build -c install 
-sudo cppm build -c install 
-ls
-sudo chown -R nieel.nieel build
-cppm build -c
-cd build
-sudo make install
-cppm build -c
-cppm build -c
