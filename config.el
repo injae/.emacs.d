@@ -533,6 +533,7 @@
 (use-package magithub :ensure t
 :after magit
 :init (magithub-feature-autoinject t)
+      (evil-leader/set-key "gd" 'magithub-dashboard)
       (setq magithub-clone-default-directory "~/github")   
 )
 

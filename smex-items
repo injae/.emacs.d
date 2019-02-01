@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ magithub-dashboard
+ magithub-refresh
  helm-system-packages
  paradox-list-packages
  org-agenda
  esup
  org-edit-inline-src-code
- org-src-mode
- company-yasnippet
 )
 
 ;; ----- smex-data -----
@@ -138,4 +138,6 @@
  (org-edit-inline-src-code . 3)
  (org-src-mode . 1)
  (helm-system-packages . 1)
+ (magithub-refresh . 1)
+ (magithub-dashboard . 3)
 )

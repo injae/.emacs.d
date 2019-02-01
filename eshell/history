@@ -1,13 +1,5 @@
 ls
 cd ../
-ls
-cd meta/
-ls
-cd ../
-ls
-cat cmake.lock 
-ls
-cd ../
 s
 ls
 cd Download/
@@ -125,4 +117,12 @@ ls
 cd magithub/
 ls
 cd ../
+ls
+ls
+cd ../
+ls
+ls -a
+cd .emacs.d/
+ls
+ls -a
 ls
