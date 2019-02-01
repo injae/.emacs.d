@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: include guard
+# key: incgd
+# --
+
+#ifndef $1
+#define $1
+
+
+#endif

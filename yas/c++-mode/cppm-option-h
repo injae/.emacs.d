@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: cppm option snippet
+# key: cppmopt
+# --
+#ifndef $1
+#define $1
+
+#include "option/base_option.h"
+
+namespace cppm::option
+{
+    class $2 : public base_option
+    {
+    public:
+        $2();
+    private:
+    };
+}
+
+#endif
