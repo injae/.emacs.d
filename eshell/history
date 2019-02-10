@@ -1,128 +1,128 @@
-ls
-cd ../
-s
-ls
-cd Download/
-ls
-cd Hunter/
-ls
-cd 0.23.89/
-ls
-cd a370290/
-ls
-cd Unpacked/
-ls
-cd cmake/
-ls
-cd find/
-ls
-cd ../
-ls
-cd modules/
-ls
-cd ..
-ls
-cd projects/
-ls
-ls
-cd ../
-ls
-pwd
-ls schemes/
-ls
-ls templates/
-ls
-cd ../
-sl
-ls
-cd gate/
-ls
-cd ../
-ls
-cd maintenance/
-ls
-cd ../
-ls
-cd cmake/
-ls
-cd templates/
-ls
-cd ../
-ls
-cd projects/
-ls
-cd eos/
-ls
-cat hunter.cmake 
-ls
-cd ../
-ls
-cat boost-pba/hunter.cmake 
-ls
-cat fmt/hunter.cmake 
-ls
-ls
-cd ../../
-ls
-cd ../cppkg/
-ls
-git branch nightly
-ls
-ls
-git checkout nightly
-ls
-ls
-cppm init -h
-cppm cppkg init -h
-cppm cppkg init -g https://github.com/catchorg/Catch2.git -m Catch2::Catch2 -d "modern, C++-native, header-only, test framework for unit-tests" -p Catch2
-ls
-cd ../cppm
-ls
 cppm cppkg search
-cppm build 
-cppm build 
+cppm build install
+cppm cppkg search
+cppm cppkg search
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+ls ~/.hunter/_Base/Download/Hunter/0.23.98/bf539cb/Unpacked/cmake/projects/
+ls ~/.hunter/_Base/Download/Hunter/0.23.98/bf539cb/Unpacked/cmake/
+cppm cppkg search
+cppm build install
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm cppkg search
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm build install
+cppm cppkg search
+cppm build install
+cppm build install
+cppm build install
+cppm cppkg search
+ls 
+ls ~/.hunter/_Base/Download/Hunter/0.23.98/bf539cb/Unpacked/cmake/
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm build install
+cppm cppkg search
+cppm cppkg search Android-Apk
+cppm build install
+cppm cppkg search Android-Apk
+cppm cppkg search Android
+cppm cppkg search And
+cppm cppkg search cpptoml
+cppm cppkg search 
+cppm build install
+cppm cppkg search
+cppm cppkg search Android
+cppm cppkg search
 ls
+rm -rf ~/.cppm/tool/
+cppm build
+rm -rf ~/.cppm/tool/
+cppm build --ntc
+ls
+cd build
+ls
+ls
+cmake --build . --warn-uninitialized -Werror=dev --target install
+cmake --warn-uninitialized -Werror=dev --build . --target install
+cmake --trace-expand --build . --target install
+ cmake --trace-expand ..
+rm -rf ~/.cppm/tool/
+cppm build --ntc
+rm -rf ~/.cppm/tool/
+ls
+cmake --trace-expand ..
+git branch nightly
+git checkout nightly
 l
 ls
-cd thirdparty/
 ls
-ls
-cd ../cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build -c
-ls
-cd ../build
-ls
-rm -rf *
-cppm build -c
-cppm build -c
-cppm build -c
-cppm build -c
-cppm build -c
-ls
-ls
+git checkout master
+git branch -D master
+git branch -D nightly
+git branch nightly
+git branch -D nightly
+git fetch
+git pull
+git checkout nightly
 cppm build 
+cppm cppkg search
+cd ../../
+ls
+mkdir docker
+ls
+cd docker
 ls
 ls
-cppm build 
-cppm build 
-cppm build 
-ls
-rm session.*
+cd docker
 ls
 ls
-cd magithub/
+mkdir kakaotalk
 ls
-cd ../
+cd kakaotalk/
 ls
-ls
-cd ../
-ls
-ls -a
-cd .emacs.d/
-ls
-ls -a
+touch Dockerfile
 ls

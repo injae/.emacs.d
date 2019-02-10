@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ jedi:install-server
+ company-yasnippet
+ revert-buffer
  magithub-dashboard
- magithub-refresh
  helm-system-packages
  paradox-list-packages
  org-agenda
- esup
- org-edit-inline-src-code
 )
 
 ;; ----- smex-data -----
@@ -68,7 +68,7 @@
  (rtags-install . 15)
  (magit-log-all-branches . 1)
  (rtags-is-running . 6)
- (revert-buffer . 20)
+ (revert-buffer . 21)
  (yank . 1)
  (server-edit . 1)
  (easy-jekyll-newpost . 1)
@@ -114,7 +114,7 @@
  (helm-multi-swoop . 1)
  (gh-md-render-region . 1)
  (gh-md-render-buffer . 1)
- (company-yasnippet . 17)
+ (company-yasnippet . 19)
  (paradox-list-packages . 7)
  (paradox-sort-by-★ . 1)
  (aya-open-line . 1)
@@ -139,5 +139,7 @@
  (org-src-mode . 1)
  (helm-system-packages . 1)
  (magithub-refresh . 1)
- (magithub-dashboard . 3)
+ (magithub-dashboard . 4)
+ (magithub-dashboard-popup . 1)
+ (jedi:install-server . 1)
 )

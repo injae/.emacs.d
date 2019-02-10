@@ -8,42 +8,45 @@
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
 (setq *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
-(when window-system
-    (tool-bar-mode -1)
-    (menu-bar-mode -1)
-    (if (boundp 'fringe-mode)     (fringe-mode -1))
-    (if (boundp 'scroll-bar-mode) (scroll-bar-mode -1))
-    (tooltip-mode -1)
-    ;; 마우스 사용가능
-    (xterm-mouse-mode)
-    ;; default window size options
-    ;(if (display-graphic-p)
-    ;    (progn
-    ;    (setq initial-frame-alist
-    ;            '(
-    ;            (tool-bar-lines . 0)
-    ;            (width . 200) ; chars
-    ;            (height . 60) ; lines
-    ;            (left . 100)
-    ;            (top . 60)))
-    ;    (setq default-frame-alist
-    ;            '(
-    ;            (tool-bar-lines . 0)
-    ;            (width . 200)
-    ;            (height . 60)
-    ;            (left . 100)
-    ;            (top . 60))))
-    ;(progn
-    ;    (setq initial-frame-alist '( (tool-bar-lines . 0)))
-    ;    (setq default-frame-alist '( (tool-bar-lines . 0)))))
+(use-package scroll-bar :ensure nil 
+:if window-system
+:init (scroll-bar-mode -1)
+:config
+    (setq scroll-step 1)
+    (setq scroll-conservatively 10000)
 )
 
-(setq scroll-step 1)
-(setq scroll-conservatively 10000)
+(use-package tool-bar :ensure nil 
+:if window-system
+:init (tool-bar-mode -1)
+)
 
-(setq backup-inhibited t)
-(setq auto-save-default nil)
-(setq make-backup-files nil)
+(use-package menu-bar :ensure nil 
+:if window-system
+:init (menu-bar-mode -1)
+)
+
+(use-package tooltip-mode :ensure nil 
+:if window-system
+:init (tooltip-mode -1)
+)
+
+(use-package fringe-mode :ensure nil 
+:if window-system
+:init (fringe-mode -1)
+)
+
+(use-package mouse :ensure nil
+:if window-system
+:init (xterm-mouse-mode)
+)
+
+(use-package backup-mode :ensure nil
+:init 
+    (setq backup-inhibited t)
+    (setq auto-save-default nil)
+    (setq make-backup-files nil) 
+)
 
 (set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
@@ -438,6 +441,9 @@
 
 (use-package smex :ensure t :pin melpa
 :init (smex-initialize)
+:bind ("M-x" . #'smex)
+:init (global-set-key [remap execute-extended-command] #'helm-smex)
+      (evil-leader/set-key "fm" #'smex-major-mode-commands)
 )
 (use-package helm-smex :ensure t :pin melpa
 :bind ("M-x" . #'helm-smex-major-mode-commands)
@@ -1040,8 +1046,18 @@
 (use-package elisp-slime-nav :ensure t :diminish elisp-slime-nav-mode
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
+
 (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
 (add-hook 'lisp-mode-hook       'prettify-symbols-mode)
+
+(use-package paredit :ensure t :pin melpa
+:init
+(add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+;; enable in the *scratch* buffer
+(add-hook 'lisp-interaction-mode-hook #'paredit-mode)
+(add-hook 'ielm-mode-hook #'paredit-mode)
+(add-hook 'lisp-mode-hook #'paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
 
 (use-package rust-mode :ensure t :pin melpa
 :mode (("\\.rs\\'" . rust-mode))
@@ -1106,6 +1122,14 @@
       (setq easy-jekyll-previewtime "300")
 )
 
+(use-package python-mode
+:interpreter ("python" . python-mode)
+:mode   ("\\.py\\'" . python-mode)
+        ("\\.wsgi$" . python-mode)
+:init   (setq-default indent-tabs-mode nil)
+:config (setq python-indent-offset 4)
+)
+
 (use-package pyenv-mode :ensure t :pin melpa
 :init
     (defun projectile-pyenv-mode-set ()
@@ -1121,20 +1145,18 @@
     (add-hook 'python-mode-hook 'pyenv-mode)
 )
 (use-package pyenv-mode-auto :ensure t :pin melpa)
-(use-package python-mode
-:interpreter ("python" . python-mode)
-:mode   ("\\.py\\'" . python-mode)
-        ("\\.wsgi$" . python-mode)
-:init   (setq-default indent-tabs-mode nil)
-:config (setq python-indent-offset 4)
-)
 
 (use-package anaconda-mode :ensure t :pin melpa
 :init   (add-hook 'python-mode-hook 'anaconda-mode)
         (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 (use-package company-anaconda :ensure t :pin melpa :after (company-mode anaconda-mode)
-:init (add-hook 'python-mode-hook 'anaconda-mode)
-      (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+:init (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+
+(use-package company-jedi :ensure t :pin melpa
+:init   (add-hook 'python-mode 'jedi:setup)
+        (add-to-list 'company-backends 'company-jedi)
+;:config (jedi:complete-on-dot t)
+)
 
 (use-package i3wm :ensure t :pin melpa)
