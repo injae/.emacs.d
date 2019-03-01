@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- jedi:install-server
- company-yasnippet
- revert-buffer
- magithub-dashboard
- helm-system-packages
+ text-scale-decrease
+ text-scale-increase
+ gud-gdb
+ gdb-script-mode
  paradox-list-packages
- org-agenda
+ package-install
+ command-log-mode
 )
 
 ;; ----- smex-data -----
@@ -25,8 +25,8 @@
  (c++-mode . 6)
  (exec-path-from-shell-initialize . 1)
  (exec-path-from-shell-copy-env . 1)
- (eshell . 24)
- (package-install . 5)
+ (eshell . 26)
+ (package-install . 8)
  (gfm-mode . 1)
  (gfm-view-mode . 2)
  (markdown-other-window . 1)
@@ -115,7 +115,7 @@
  (gh-md-render-region . 1)
  (gh-md-render-buffer . 1)
  (company-yasnippet . 19)
- (paradox-list-packages . 7)
+ (paradox-list-packages . 8)
  (paradox-sort-by-★ . 1)
  (aya-open-line . 1)
  (aya-create-one-line . 1)
@@ -141,5 +141,51 @@
  (magithub-refresh . 1)
  (magithub-dashboard . 4)
  (magithub-dashboard-popup . 1)
- (jedi:install-server . 1)
+ (jedi:install-server . 5)
+ (eyebrowse-mode . 4)
+ (evil-escape-mode . 4)
+ (ibuffer . 2)
+ (avy-isearch . 1)
+ (evil-mc-mode . 4)
+ (evil-mc-make-all-cursors . 4)
+ (evil-mc-undo-all-cursors . 3)
+ (evil-mc-make-and-goto-next-match . 1)
+ (evil-multiedit-next . 1)
+ (evil-mc-pause-cursors . 3)
+ (evil-mc-make-cursor-here . 2)
+ (evil-mc-resume-cursors . 1)
+ (evil-mc-make-and-goto-last-cursor . 3)
+ (evil-mc-make-and-goto-first-cursor . 1)
+ (shell-command . 2)
+ (eshell-command . 3)
+ (async-shell-command . 1)
+ (rust-install . 1)
+ (shell-command-run . 1)
+ (test-sh-run . 9)
+ (background-shell-command-run . 5)
+ (text-scale-increase . 2)
+ (text-scale-decrease . 2)
+ (-reload-emacs . 1)
+ (command-log-mode . 6)
+ (clm/open-command-log-buffer . 7)
+ (clm/toggle-command-log-buffer . 3)
+ (sp-join-sexp . 1)
+ (sp-backward-sexp . 1)
+ (sp-forward-barf-sexp . 6)
+ (sp-backward-barf-sexp . 2)
+ (sp-slurp-hybrid-sexp . 1)
+ (sp-backward-slurp-sexp . 4)
+ (sp-rewrap-sexp . 2)
+ (sp-unwrap-sexp . 2)
+ (sp-splice-sexp . 5)
+ (sp-forward-slurp-sexp . 8)
+ (helm-projectile-find-file . 1)
+ (projectile-find-file . 1)
+ (use-package-lint . 1)
+ (use-package-report . 1)
+ (emojify-insert-emoji . 5)
+ (emojify-mode . 2)
+ (global-emojify-mode . 2)
+ (gud-gdb . 6)
+ (gdb-script-mode . 1)
 )

@@ -9,7 +9,7 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** set os finder 
 #+BEGIN_SRC emacs-lisp 
-  (setq *is-mac* (eq system-type 'darwin))
+  (setq *is-mac*     (eq system-type 'darwin))
   (setq *is-windows* (eq system-type 'windows-nt))
   (setq *is-cygwin*  (eq system-type 'cygwin))
   (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
@@ -115,27 +115,32 @@ MY EMACS CONFIG -*- mode: org -*-
       (global-set-key [?\S- ] 'toggle-input-method)
       ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
     #+END_SRC
-** Emacs restart function
+** Emacs restart 
     #+BEGIN_SRC emacs-lisp
-            (defun launch-separate-emacs-in-terminal ()
-            (suspend-emacs "fg ; emacs -nw"))
+      (use-package restart-emacs :ensure t :pin melpa
+      :init
+      )
 
-            (defun launch-separate-emacs-under-x ()
-            (call-process "sh" nil nil nil "-c" "emacs &"))
 
-            (defun restart-emacs ()
-                (interactive)
-                ;; We need the new emacs to be spawned after all kill-emacs-hooks
-                ;; have been processed and there is nothing interesting left
-                (let ((kill-emacs-hook (append kill-emacs-hook (list (if (display-graphic-p) #'launch-separate-emacs-under-x
-                                                                                             #'launch-separate-emacs-in-terminal)))))
-                     (save-buffers-kill-emacs))
-            )
-    
-            (defun reload-emacs ()
-                (interactive)
-                (load-file (expand-file-name "~/.emacs.d/config.el"))
-            )
+      (defun launch-separate-emacs-in-terminal ()
+      (suspend-emacs "fg ; emacs -nw"))
+
+      (defun launch-separate-emacs-under-x ()
+      (call-process "sh" nil nil nil "-c" "emacs &"))
+
+      (defun -restart-emacs ()
+          (interactive)
+          ;; We need the new emacs to be spawned after all kill-emacs-hooks
+          ;; have been processed and there is nothing interesting left
+          (let ((kill-emacs-hook (append kill-emacs-hook (list (if (display-graphic-p) #'launch-separate-emacs-under-x
+                                                                                          #'launch-separate-emacs-in-terminal)))))
+                  (save-buffers-kill-emacs))
+      )
+
+      (defun -reload-emacs ()
+          (interactive)
+          (load-file (expand-file-name "~/.emacs.d/config.el"))
+      )
     #+END_SRC
 ** Sudo file open
  #+BEGIN_SRC emacs-lisp
@@ -170,9 +175,7 @@ MY EMACS CONFIG -*- mode: org -*-
    #+END_SRC
 ** Emacs Profiler
 #+BEGIN_SRC emacs-lisp
-  (use-package esup :ensure t :pin melpa
-  :init 
-  )
+  (use-package esup :ensure t :pin melpa)
 #+END_SRC
 ** Emacs Server 
 #+BEGIN_SRC emacs-lisp
@@ -182,6 +185,21 @@ MY EMACS CONFIG -*- mode: org -*-
    #+BEGIN_SRC emacs-lisp
    ;https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
      (setq warning-minimum-level :error)
+   #+END_SRC
+** Emacs Buffer Zoom 
+#+BEGIN_SRC emacs-lisp
+  (use-package buffer-zoom 
+  :init (evil-leader/set-key "tu" 'text-scale-increase
+                             "td" 'text-scale-decrease)
+  )
+#+END_SRC
+
+** Text Editing
+   #+BEGIN_SRC emacs-lisp
+     (use-package hungry-delete :ensure t :pin melpa
+     ; 공백 지울때 한꺼번에 다지워짐 
+     :init (global-hungry-delete-mode)
+     )
    #+END_SRC
 
 * Emacs Mode Settings    
@@ -195,8 +213,8 @@ MY EMACS CONFIG -*- mode: org -*-
        (global-display-line-numbers-mode t)
        (global-hl-line-mode t)
    :config
-       (setq git-gutter:lighter " gg")
-       (setq git-gutter:window-width 1)
+       (setq git-gutter:lighter       " gg")
+       (setq git-gutter:window-width  1)
        (setq git-gutter:modified-sign ".")
        (setq git-gutter:added-sign    "+")
        (setq git-gutter:deleted-sign  "-")
@@ -213,7 +231,6 @@ MY EMACS CONFIG -*- mode: org -*-
           (doom-themes-neotree-config)
           (doom-themes-org-config)
       )
-
     #+END_SRC
 ** TODO Toggle Setting
     #+BEGIN_SRC emacs-lisp
@@ -240,7 +257,6 @@ MY EMACS CONFIG -*- mode: org -*-
       :init (smart-tabs-insinuate 'c 'c++)
       )
 
-
       (use-package indent-guide :ensure t
       :init ;(indent-guide-global-mode)
       :config
@@ -259,7 +275,7 @@ MY EMACS CONFIG -*- mode: org -*-
       (my-set-indent 4)
       (setq-default indent-tabs-mode nil)
       (electric-indent-mode nil)
-
+      
       (defun un-indent-by-removing-4-spaces ()
           "back tab"
           (interactive)
@@ -287,33 +303,41 @@ MY EMACS CONFIG -*- mode: org -*-
 ** TODO Paren Mode
     #+BEGIN_SRC emacs-lisp
       (use-package paren :ensure t 
-          :init   (show-paren-mode 1)
+          :init   (show-paren-mode 0)
+                  (electric-pair-mode 0)
           :config (setq show-paren-delay 0)
+      )    
 
       (use-package rainbow-delimiters :ensure t
           :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
       )
 
       (use-package smartparens :ensure t :pin melpa
-          :init (smartparens-global-mode)
-          :config 
-          (use-package evil-smartparens :ensure t :pin melpa
-              :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
-          )
+      :init (smartparens-global-mode)
+            (evil-leader/set-key "pr"  'sp-rewrap-sexp
+                                 "pu"  'sp-unwrap-sexp
+                                 "pll" 'sp-forward-slurp-sexp
+                                 "phh" 'sp-backward-slurp-sexp
+                                 "plh" 'sp-forward-barf-sexp
+                                 "phl" 'sp-backward-barf-sexp)
+
+      :config 
+      (use-package evil-smartparens :ensure t :pin melpa
+          :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
       )
-      
+
       (use-package parinfer :ensure t :pin melpa :disabled
           :after (evil)
           :bind (("C-," . parinfer-toggle-mode))
           :init
           (setq parinfer-extensions
               '(defaults
-                  pretty-parens
-                  evil
-                  lispy
-                  paredit
-                  smart-tab
-                  smart-yank))
+                pretty-parens
+                evil
+                lispy
+                paredit
+                smart-tab
+                smart-yank))
           (add-hook 'clojure-mode-hook     #'parinfer-mode)
           (add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
           (add-hook 'common-lisp-mode-hook #'parinfer-mode)
@@ -321,9 +345,13 @@ MY EMACS CONFIG -*- mode: org -*-
           (add-hook 'lisp-mode-hook        #'parinfer-mode)
       )
     #+END_SRC
+** Hydra KeyMap 
+   #+BEGIN_SRC emacs-lisp
+     (use-package hydra :ensure t :pin melpa)
+   #+END_SRC
 ** Key map buffer make
     #+BEGIN_SRC emacs-lisp
-    (use-package which-key :ensure t 
+    (use-package which-key :ensure t :pin melpa
     :init   (which-key-mode t) 
     :config (which-key-enable-god-mode-support t))
     #+END_SRC
@@ -337,20 +365,37 @@ MY EMACS CONFIG -*- mode: org -*-
             (evil-mode 1)
       )
 
-      (use-package evil-collection :ensure t :pin melpa
+      (use-package evil-surround :ensure t :pin melpa
+      ;command is visual mode: y-s-i
       :after evil
-      :init   (setq evil-collection-setup-minibuffer t)
-              (evil-collection-init)
-              (evil-collection-helm-setup)
-              (evil-collection-magit-setup)
-              (evil-collection-neotree-setup)
-              (evil-collection-which-key-setup)
-              (evil-collection-buff-menu-setup)
-              (evil-collection-package-menu-setup)
-              (evil-collection-init)
+      :init (global-evil-surround-mode 1)
       )
 
-      (use-package evil-numbers :ensure t :pin melpa 
+      (use-package evil-mc :ensure t :pin melpa
+      :after evil
+      :init (global-evil-mc-mode 1)
+            (defun user-evil-mc-make-cursor-here () (interactive)
+                (evil-mc-pause-cursors)
+                (evil-mc-make-cursor-here))
+            (evil-leader/set-key
+                "ech" 'use-evil-mc-make-cursor-here
+                "ecp" 'evil-mc-pause-cursors
+                "ecr" 'evil-mc-resume-cursors
+                "ecu" 'evil-mc-undo-all-cursors)
+      )
+
+      (use-package evil-multiedit :ensure t :pin melpa :disabled)
+
+      (use-package evil-matchit :ensure t :pin melpa
+      :after evil
+      :init (global-evil-matchit-mode 1)
+      )
+
+      (use-package evil-escape :ensure t :pin melpa :disabled
+      :init (setq-default evil-escape-key-sequence "jk")
+      )
+
+      (use-package evil-numbers :ensure t :pin melpa
       :after evil
       ;https://github.com/cofi/evil-numbers
       :init
@@ -368,9 +413,9 @@ MY EMACS CONFIG -*- mode: org -*-
           (evil-leader/set-key
               "<SPC>" 'helm-smex
               "er"    'restart-emacs
-              "el"    'reload-emacs
+              "el"    '-reload-emacs
               "ff"    'find-file
-              "pl"    'list-processes
+              "up"    'list-processes
               "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
               "wf"    'toggle-frame-fullscreen
               "wh"    'shrink-window-horizontally
@@ -382,6 +427,7 @@ MY EMACS CONFIG -*- mode: org -*-
           (which-key-declare-prefixes "SPC d  " "Debug")
           (which-key-declare-prefixes "SPC e  " "Emacs")
           (which-key-declare-prefixes "SPC e f" "Emacs Config")
+          (which-key-declare-prefixes "SPC e c" "Evil MultiEdit")
           (which-key-declare-prefixes "SPC f  " "Find")
           (which-key-declare-prefixes "SPC n  " "File Manager")
           (which-key-declare-prefixes "SPC g  " "Git")
@@ -399,10 +445,24 @@ MY EMACS CONFIG -*- mode: org -*-
           (which-key-declare-prefixes "SPC f g" "Google")
           (which-key-declare-prefixes "SPC f a" "Agrep")
           )
+
+      (use-package evil-collection :ensure t :pin melpa
+      :after evil
+      :init   (setq evil-collection-setup-minibuffer t)
+              (evil-collection-init)
+              (evil-collection-helm-setup)
+              (evil-collection-magit-setup)
+              (evil-collection-neotree-setup)
+              (evil-collection-which-key-setup)
+              (evil-collection-buff-menu-setup)
+              (evil-collection-package-menu-setup)
+              (evil-collection-evil-mc-setup)
+              (evil-collection-init)
+      )
     #+END_SRC
 ** Modeline Setting
  #+BEGIN_SRC emacs-lisp
-   (use-package all-the-icons :ensure t)
+   (use-package all-the-icons :ensure t :pin melpa)
    (use-package doom-modeline :ensure t :pin melpa
    :hook (after-init . doom-modeline-init)
    :init (setq doom-modeline-height 20)
@@ -544,6 +604,7 @@ MY EMACS CONFIG -*- mode: org -*-
          (evil-leader/set-key "fm" #'smex-major-mode-commands)
    )
    (use-package helm-smex :ensure t :pin melpa
+   :after helm
    :bind ("M-x" . #'helm-smex-major-mode-commands)
    :init (global-set-key [remap execute-extended-command] #'helm-smex)
          (evil-leader/set-key "fm" #'helm-smex-major-mode-commands)
@@ -551,10 +612,10 @@ MY EMACS CONFIG -*- mode: org -*-
  #+END_SRC
 ** TODO Projectile Mode
  #+BEGIN_SRC emacs-lisp
- (use-package projectile :defer t :ensure t
- :init   (projectile-mode t)
- :config (evil-leader/set-key "p" 'projectile-command-map)
- )
+   (use-package projectile :defer t :ensure t
+   :init   (projectile-mode t)
+           (evil-leader/set-key "ep" 'projectile-command-map)
+   )
  #+END_SRC
 ** TODO File Manager
     #+BEGIN_SRC emacs-lisp
@@ -694,14 +755,13 @@ MY EMACS CONFIG -*- mode: org -*-
       :after org
       :init (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal")
                   org-journal-file-format "%Y-%m-%d.org"
-                  org-journal-date-format "%Y-%m-%d (%A)"
-            )
+                  org-journal-date-format "%Y-%m-%d (%A)")
             (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/journal"))
       :config
-          (setq org-journal-enable-agenda-integration t
-                org-icalendar-store-UID t
-                org-icalendar-include0tidi "all"
-                org-icalendar-conbined-agenda-file "~/calendar/org-journal.ics")
+            (setq org-journal-enable-agenda-integration t
+                  org-icalendar-store-UID t
+                  org-icalendar-include0tidi "all"
+                  org-icalendar-conbined-agenda-file "~/calendar/org-journal.ics")
             (org-journal-update-org-agenda-files)
             (org-icalendar-combine-agenda-files)
       )
@@ -774,7 +834,6 @@ MY EMACS CONFIG -*- mode: org -*-
       (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
       (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 
-
     #+END_SRC
 ** Note
 #+BEGIN_SRC emacs-lisp
@@ -793,10 +852,12 @@ MY EMACS CONFIG -*- mode: org -*-
          (typo-mode 0)
          (display-line-numbers-mode 1)))
 #+END_SRC
-
 ** Mailing Mu4e 
    #+BEGIN_SRC emacs-lisp
-
+     (use-package mu4e :ensure t :pin melpa :disabled
+     :commands (mu4e)
+     :init
+     )
    #+END_SRC
 ** TODO Color Code Paint(Rainbow mode)
     #+BEGIN_SRC emacs-lisp
@@ -812,20 +873,25 @@ MY EMACS CONFIG -*- mode: org -*-
     #+END_SRC
 ** TODO Docker
     #+BEGIN_SRC emacs-lisp
-    (use-package docker          :ensure t :init (evil-leader/set-key "ud" 'docker)) 
+    (use-package docker          :ensure t :init (evil-leader/set-key "hud" 'docker)) 
     (use-package dockerfile-mode :ensure t 
         :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
     #+END_SRC
-** TODO Eshell
+** Eshell
  #+BEGIN_SRC emacs-lisp
-
    (use-package eshell
    :init (setq eshell-buffer-maximum-lines 1000)
+         (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
+         (setq eshell-cmpl-cycle-completions nil)
    )
 
    (use-package exec-path-from-shell :ensure t :pin melpa
    :init ;(exec-path-from-shell-copy-env "PATH")
          (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
+   )
+
+   (use-package esh-help :ensure t :pin melpa
+   :init (setup-esh-help-eldoc)
    )
 
    (use-package eshell-prompt-extras :ensure t :pin melpa
@@ -835,6 +901,12 @@ MY EMACS CONFIG -*- mode: org -*-
        (autoload 'epe-theme-lambda "eshell-prompt-extras")
        (setq eshell-highlight-prompt nil
              eshell-prompt-function 'epe-theme-lambda)
+   )
+
+   (use-package fish-completion :ensure t :pin melpa
+   :init (when (and (executable-find "fish")
+               (require 'fish-completion nil t))
+         (global-fish-completion-mode))
    )
 
    (use-package esh-autosuggest :ensure t :pin melpa
@@ -852,7 +924,36 @@ MY EMACS CONFIG -*- mode: org -*-
          (evil-leader/set-key "ut" 'shell-pop)
          ;(global-set-key (kbd "<C-t>") 'shell-pop)
    )
+
+   (use-package execute-shell 
+   :init (add-to-list 'display-buffer-alist
+         (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+
+         (defun background-shell-command (command)
+             "run shell commmand background"
+             (interactive "sShell Command : ")
+             (call-process-shell-command "command" nil 0))
+   )
+
+
+
  #+END_SRC
+** Command log mode 
+   #+BEGIN_SRC emacs-lisp
+     (use-package command-log-mode :ensure t :pin melpa)
+   #+END_SRC
+    
+** Emoji Mode 
+   #+BEGIN_SRC emacs-lisp
+     (use-package emojify :ensure t :pin melpa
+     :if window-system
+     :init   (global-emojify-mode 1)
+     :config (setq emojify-display-style 'image)
+             (setq emojify-emoji-styles  '(unicode))
+             (setq emojify-emoji-set "emojione-v2.2.6")
+     )
+   #+END_SRC
+
 ** TODO Terminal
     #+BEGIN_SRC emacs-lisp
     #+END_SRC
@@ -904,7 +1005,7 @@ MY EMACS CONFIG -*- mode: org -*-
 
 
     #+END_SRC
-** TODO Dash 
+** Dash 
     #+BEGIN_SRC emacs-lisp
       (use-package dash :ensure t :pin melpa
       :init (dash-enable-font-lock)
@@ -1031,12 +1132,27 @@ MY EMACS CONFIG -*- mode: org -*-
   :init (require 'em-tramp)
         (setq password-cache t)
         (setq password-cache-expiry 3600)
-        (evil-leader/set-key "up" 'helm-system-packages))
+        (evil-leader/set-key "usp" 'helm-system-packages))
 
 #+END_SRC
 
+** Package Manage
+#+BEGIN_SRC emacs-lisp
+  (use-package try :ensure t :pin melpa)
+
+  (use-package org-use-package
+  :after (evil org)
+  :init
+      (defun org-use-package-install ()
+          "org babel emacs config evaluate"
+          (interactive)
+          (org-babel-execute-maybe)
+          (undo-tree-undo))
+      (evil-leader/set-key "oi" 'org-use-package-install)
+  )
+#+END_SRC
 * Emacs IDE Settings
-** TODO Company mode
+** Company mode
     #+BEGIN_SRC emacs-lisp
       (use-package company :ensure t
       :init (global-company-mode 1)
@@ -1066,9 +1182,7 @@ MY EMACS CONFIG -*- mode: org -*-
 ** Language Server Protocol Mode
   :init 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode :ensure t :pin melpa
-  )
-  
+  (use-package lsp-mode :ensure t :pin melpa)
   
   (use-package lsp-ui :ensure t :pin melpa
   :after lsp-mode
@@ -1081,7 +1195,7 @@ MY EMACS CONFIG -*- mode: org -*-
   )
 
 #+END_SRC
-** TODO Flycheck mode
+** Flycheck mode
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck :ensure t :pin melpa
       :init (global-flycheck-mode t)
@@ -1105,7 +1219,7 @@ MY EMACS CONFIG -*- mode: org -*-
                 flycheck-inline-clear-function #'quick-peek-hide)
       )
     #+END_SRC
-** TODO Yasnippet mode
+** Yasnippet mode
     #+BEGIN_SRC emacs-lisp
       (use-package yasnippet :ensure t :pin melpa
       ;https://github.com/joaotavora/yasnippet
@@ -1123,7 +1237,7 @@ MY EMACS CONFIG -*- mode: org -*-
             (evil-leader/set-key "hye" 'aya-expand)
       )
     #+END_SRC
-** TODO C++ Mode
+** C++ Mode
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
       (use-package company-c-headers :ensure t
@@ -1198,30 +1312,27 @@ MY EMACS CONFIG -*- mode: org -*-
       :init (add-to-list 'company-backends 'company-irony-c-headers)
       )
     #+END_SRC
-** TODO Debuger mode
+** Debuger mode
     #+BEGIN_SRC emacs-lisp
       (use-package dap-mode :ensure t :pin melpa
       :init (evil-leader/set-key "dr" 'dap-debug)
-            (evil-leader/set-key "de" 'dap-debug)
       :config (require 'dap-lldb)
       )
 
-
-
-      (setq gdb-show-main t)
-      (evil-leader/set-key "db" 'gud-break)
-      (evil-leader/set-key "dn" 'gud-next)
-      (evil-leader/set-key "di" 'gud-step)
-      (evil-leader/set-key "df" 'gud-finish)
-      (evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
-                                         (call-interactively 'gud-cont  )))
       (use-package gdb-mi
       :load-path "lisp/emacs-gdb"
-      :init (fmakunbound 'gdb)
+      :init (setq-default gdb-show-main t)
+            (setq-default gdb-many-windows t)
+            (fmakunbound 'gdb)
             (fmakunbound 'gdb-enable-debug)
+            ;(evil-leader/set-key "dn" 'gud-next)
+            ;(evil-leader/set-key "di" 'gud-step)
+            ;(evil-leader/set-key "df" 'gud-finish)
+            ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
+            ;                                   (call-interactively 'gud-cont  )))
       )
     #+END_SRC
-** TODO Eldoc mode
+** Eldoc mode
     #+BEGIN_SRC emacs-lisp
     (use-package eldoc :ensure t :diminish eldoc-mode :after rtags)
 
@@ -1258,9 +1369,9 @@ MY EMACS CONFIG -*- mode: org -*-
     (add-hook 'c-mode-hook 'rtags-eldoc-mode)
     (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
     #+END_SRC
-** TODO Lisp Mode
+** Lisp Mode
     #+BEGIN_SRC emacs-lisp
-      (use-package slime :ensure t :pin melpa
+      (use-package slime :ensure t :pin melpa :disabled
       :commands slime
       :init
           (setq inferior-lisp-program (or (executable-find "sbcl")
@@ -1291,23 +1402,45 @@ MY EMACS CONFIG -*- mode: org -*-
 
 
     #+END_SRC
-** TODO Rust Mode
+** Rust Mode
     #+BEGIN_SRC emacs-lisp
+
+      (defun racer-install ()
+          "Racer install-linux" 
+          (interactive)
+          (eshell-command "rustup toolchain add nightly")
+          (eshell-command "rustup component add rust-src")
+          (eshell-command "cargo +nightly install racer")
+      )
+
+      (defun rust-install ()
+          "Rust and Racer install-linux" 
+          (interactive)
+          (eshell-command "curl https://sh.rustup.rs -sSf | sh")
+          (racer-install)
+      )
+
       (use-package rust-mode :ensure t :pin melpa
       :mode (("\\.rs\\'" . rust-mode))
       :init (evil-leader/set-key "hrf" 'rust-format-buffer)
       ;:config (setq rust-format-on-save t)
       ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
       )
+
       (use-package flycheck-rust :ensure t :pin melpa :after flycheck
       :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
       )
+
       (use-package racer :ensure t :pin melpa
-      :init
-          (add-hook 'rust-mode-hook  #'racer-mode)
-          (add-hook 'racer-mode-hook #'company-mode) 
-          (add-hook 'racer-mode-hook #'eldoc-mode) 
+      ;Install
+      ; rustup toolchain add nightly
+      ; rustup component add rust-src
+      ; cargo +nightly install rcer
+      :init (add-hook 'rust-mode-hook  #'racer-mode)
+            (add-hook 'racer-mode-hook #'company-mode) 
+            (add-hook 'racer-mode-hook #'eldoc-mode) 
       )
+
       (use-package company-racer :ensure t :pin melpa
       :init (add-to-list 'company-backends 'company-racer)
       )
@@ -1319,23 +1452,23 @@ MY EMACS CONFIG -*- mode: org -*-
                                  "hrt" 'cargo-process-test)
       )
     #+END_SRC
-** TODO Haskell Mode
+** Haskell Mode
     #+BEGIN_SRC emacs-lisp
     (use-package haskell-mode :ensure t)
     #+END_SRC
-** TODO Yaml Mode
+** Yaml Mode
     #+BEGIN_SRC emacs-lisp
       (use-package yaml-mode :ensure t
       :mode (("\\.yaml\\'" . yaml-mode)
              ("\\.yml\\'"  . yaml-mode))
       )
     #+END_SRC
-** TODO Toml Mode
+** Toml Mode
     #+BEGIN_SRC emacs-lisp
     (use-package toml-mode :ensure t :pin melpa
     :mode ("\\.toml\\'" . toml-mode))
     #+END_SRC
-** TODO Cmake Mode
+** Cmake Mode
     #+BEGIN_SRC emacs-lisp
       (use-package cmake-mode :ensure t :pin melpa
       :mode (("\\.cmake\\'"    . cmake-mode)
@@ -1343,7 +1476,7 @@ MY EMACS CONFIG -*- mode: org -*-
       :init (setq cmake-tab-width 4)      
       )
     #+END_SRC
-** TODO Markdown mode
+** Markdown mode
  #+BEGIN_SRC emacs-lisp
    (use-package markdown-mode :ensure t :pin melpa
    :commands (markdown-mode gfm-mode)
@@ -1360,7 +1493,7 @@ MY EMACS CONFIG -*- mode: org -*-
 
  #+END_SRC
 
-** TODO Jekyll mode
+** Jekyll mode
  #+BEGIN_SRC emacs-lisp
    (use-package easy-jekyll :ensure t :pin melpa
    :init (setq easy-jekyll-basedir "~/dev/blog/")
@@ -1370,7 +1503,7 @@ MY EMACS CONFIG -*- mode: org -*-
          (setq easy-jekyll-previewtime "300")
    ) 
  #+END_SRC
-** TODO Python mode
+** Python mode
  #+BEGIN_SRC emacs-lisp
 
    (use-package python-mode
@@ -1422,6 +1555,15 @@ MY EMACS CONFIG -*- mode: org -*-
 
  #+END_SRC
  
+** Shell mode 
+#+BEGIN_SRC emacs-lisp
+  (use-package company-shell :ensure t :pin melpa
+  :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
+  )
+
+
+#+END_SRC
+
 ** Jump to Definition
    #+BEGIN_SRC emacs-lisp
      (use-package dumb-jump :ensure t :pin melpa
@@ -1443,3 +1585,17 @@ MY EMACS CONFIG -*- mode: org -*-
 
    #+END_SRC
    
+
+** Web Mode 
+   #+BEGIN_SRC emacs-lisp
+     (use-package web-mode :ensure t :pin melpa
+     :mode   (("\\.html?\\'"  . web-mode)
+              ("\\.xhtml$\\'" . web-mode)
+              ("\\.vue\\'"    . web-mode))
+     :config (setq web-mode-enable-engine-detection t)
+     )
+     (use-package json-mode :ensure t :pin melpa
+     :mode (("\\.json\\'"       . json-mode)
+            ("/Pipfile.lock\\'" . json-mode))
+     )
+   #+END_SRC

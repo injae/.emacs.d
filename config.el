@@ -2,7 +2,7 @@
 (setq-default custom-file (expand-file-name ".config.el" user-emacs-directory))
 (when (file-exists-p custom-file) (load custom-file))
 
-(setq *is-mac* (eq system-type 'darwin))
+(setq *is-mac*     (eq system-type 'darwin))
 (setq *is-windows* (eq system-type 'windows-nt))
 (setq *is-cygwin*  (eq system-type 'cygwin))
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
@@ -97,19 +97,29 @@
 (global-set-key [?\S- ] 'toggle-input-method)
 ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
 
+(use-package restart-emacs :ensure t :pin melpa
+:init
+)
+
+
 (defun launch-separate-emacs-in-terminal ()
 (suspend-emacs "fg ; emacs -nw"))
 
 (defun launch-separate-emacs-under-x ()
 (call-process "sh" nil nil nil "-c" "emacs &"))
 
-(defun restart-emacs ()
+(defun -restart-emacs ()
     (interactive)
     ;; We need the new emacs to be spawned after all kill-emacs-hooks
     ;; have been processed and there is nothing interesting left
     (let ((kill-emacs-hook (append kill-emacs-hook (list (if (display-graphic-p) #'launch-separate-emacs-under-x
-                                                                                 #'launch-separate-emacs-in-terminal)))))
-         (save-buffers-kill-emacs))
+                                                                                    #'launch-separate-emacs-in-terminal)))))
+            (save-buffers-kill-emacs))
+)
+
+(defun -reload-emacs ()
+    (interactive)
+    (load-file (expand-file-name "~/.emacs.d/config.el"))
 )
 
 (defun sudo-find-file (file-name)
@@ -125,32 +135,43 @@
 :init (setq paradox-github-token "e1a1518b1f89990587ec97b601a1d0801c5a40c6")
 )
 
-(use-package move-text :ensure t :pin melpa
-;https://github.com/emacsfodder/move-text
-:init (move-text-default-bindings)
-)
+(use-package drag-stuff :ensure t :pin melpa
+:after evil
+:init (drag-stuff-global-mode t)
+      (drag-stuff-define-keys))
 
 (use-package goto-last-change :ensure t :pin melpa
 ;https://github.com/camdez/goto-last-change.el
 :init (evil-leader/set-key "fl" 'goto-last-change)
 )
 
-(use-package esup :ensure t :pin melpa
-:init 
-)
+(use-package esup :ensure t :pin melpa)
 
 (server-start)
+
+;https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
+  (setq warning-minimum-level :error)
+
+(use-package buffer-zoom 
+:init (evil-leader/set-key "tu" 'text-scale-increase
+                           "td" 'text-scale-decrease)
+)
+
+(use-package hungry-delete :ensure t :pin melpa
+; 공백 지울때 한꺼번에 다지워짐 
+:init (global-hungry-delete-mode)
+)
 
 (use-package beacon :ensure t :init (beacon-mode t)) 
 (use-package git-gutter :ensure t
 :init 
-    (setq-default display-line-numbers-width 2)
+    (setq-default display-line-numbers-width 3)
     (global-git-gutter-mode t)
     (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
 :config
-    (setq git-gutter:lighter " gg")
-    (setq git-gutter:window-width 1)
+    (setq git-gutter:lighter       " gg")
+    (setq git-gutter:window-width  1)
     (setq git-gutter:modified-sign ".")
     (setq git-gutter:added-sign    "+")
     (setq git-gutter:deleted-sign  "-")
@@ -182,6 +203,10 @@
       ;exclud mode
       ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 ;)
+
+(use-package smart-tabs-mode :ensure t :pin melpa
+:init (smart-tabs-insinuate 'c 'c++)
+)
 
 (use-package indent-guide :ensure t
 :init ;(indent-guide-global-mode)
@@ -226,47 +251,93 @@
 ;)
 
 (use-package paren :ensure t 
-:init   (show-paren-mode 1)
-:config (setq show-paren-delay 0)
-)
+    :init   (show-paren-mode 0)
+            (electric-pair-mode 0)
+    :config (setq show-paren-delay 0)
+)    
 
 (use-package rainbow-delimiters :ensure t
-:hook ((prog-mode text-mode) . rainbow-delimiters-mode)
+    :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
 (use-package smartparens :ensure t :pin melpa
 :init (smartparens-global-mode)
+      (evil-leader/set-key "pr"  'sp-rewrap-sexp
+                           "pu"  'sp-unwrap-sexp
+                           "pll" 'sp-forward-slurp-sexp
+                           "phh" 'sp-backward-slurp-sexp
+                           "plh" 'sp-forward-barf-sexp
+                           "phl" 'sp-backward-barf-sexp)
+
 :config 
-    (use-package evil-smartparens :ensure t :pin melpa
+(use-package evil-smartparens :ensure t :pin melpa
     :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 )
 
-(use-package which-key :ensure t 
+(use-package parinfer :ensure t :pin melpa :disabled
+    :after (evil)
+    :bind (("C-," . parinfer-toggle-mode))
+    :init
+    (setq parinfer-extensions
+        '(defaults
+          pretty-parens
+          evil
+          lispy
+          paredit
+          smart-tab
+          smart-yank))
+    (add-hook 'clojure-mode-hook     #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook      #'parinfer-mode)
+    (add-hook 'lisp-mode-hook        #'parinfer-mode)
+)
+
+(use-package hydra :ensure t :pin melpa)
+
+(use-package which-key :ensure t :pin melpa
 :init   (which-key-mode t) 
 :config (which-key-enable-god-mode-support t))
 
 (use-package evil :ensure t :pin melpa
-:init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq-default evil-symbol-word-search t)
-    (evil-mode t)
-)
-(use-package evil-collection :ensure t :pin melpa
-:after evil
-:init 
-    (setq evil-collection-setup-minibuffer t)
-    (evil-collection-helm-setup)
-    (evil-collection-magit-setup)
-    (evil-collection-neotree-setup)
-    (evil-collection-which-key-setup)
-    (evil-collection-buff-menu-setup)
-    (evil-collection-package-menu-setup)
-    (evil-collection-init)
+:init (setq evil-want-integration t)
+      (setq evil-want-keybinding nil)
+      (setq evil-want-C-u-scroll t)
+      (setq-default evil-symbol-word-search t)
+      (evil-mode 1)
 )
 
-(use-package evil-numbers :ensure t :pin melpa 
+(use-package evil-surround :ensure t :pin melpa
+;command is visual mode: y-s-i
+:after evil
+:init (global-evil-surround-mode 1)
+)
+
+(use-package evil-mc :ensure t :pin melpa
+:after evil
+:init (global-evil-mc-mode 1)
+      (defun user-evil-mc-make-cursor-here () (interactive)
+          (evil-mc-pause-cursors)
+          (evil-mc-make-cursor-here))
+      (evil-leader/set-key
+          "ech" 'use-evil-mc-make-cursor-here
+          "ecp" 'evil-mc-pause-cursors
+          "ecr" 'evil-mc-resume-cursors
+          "ecu" 'evil-mc-undo-all-cursors)
+)
+
+(use-package evil-multiedit :ensure t :pin melpa :disabled)
+
+(use-package evil-matchit :ensure t :pin melpa
+:after evil
+:init (global-evil-matchit-mode 1)
+)
+
+(use-package evil-escape :ensure t :pin melpa :disabled
+:init (setq-default evil-escape-key-sequence "jk")
+)
+
+(use-package evil-numbers :ensure t :pin melpa
 :after evil
 ;https://github.com/cofi/evil-numbers
 :init
@@ -284,8 +355,9 @@
     (evil-leader/set-key
         "<SPC>" 'helm-smex
         "er"    'restart-emacs
+        "el"    '-reload-emacs
         "ff"    'find-file
-        "pl"    'list-processes
+        "up"    'list-processes
         "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
         "wf"    'toggle-frame-fullscreen
         "wh"    'shrink-window-horizontally
@@ -293,24 +365,44 @@
         "wk"    'shrink-window
         "wl"    'enlarge-window-horizontally
         )
-    (which-key-declare-prefixes "SPC b" "Buffer")
-    (which-key-declare-prefixes "SPC d" "Debug")
-    (which-key-declare-prefixes "SPC e" "Emacs")
-    (which-key-declare-prefixes "SPC f" "Find")
-    (which-key-declare-prefixes "SPC n" "File Manager")
-    (which-key-declare-prefixes "SPC g" "Git")
-    (which-key-declare-prefixes "SPC o" "Org")
-    (which-key-declare-prefixes "SPC p" "Projectile")
-    (which-key-declare-prefixes "SPC t" "Tabbar")
-    (which-key-declare-prefixes "SPC u" "Utils")
-    (which-key-declare-prefixes "SPC w" "Windows")
-    (which-key-declare-prefixes "SPC h" "Hacking")
+    (which-key-declare-prefixes "SPC b  " "Buffer")
+    (which-key-declare-prefixes "SPC d  " "Debug")
+    (which-key-declare-prefixes "SPC e  " "Emacs")
+    (which-key-declare-prefixes "SPC e f" "Emacs Config")
+    (which-key-declare-prefixes "SPC e c" "Evil MultiEdit")
+    (which-key-declare-prefixes "SPC f  " "Find")
+    (which-key-declare-prefixes "SPC n  " "File Manager")
+    (which-key-declare-prefixes "SPC g  " "Git")
+    (which-key-declare-prefixes "SPC o  " "Org")
+    (which-key-declare-prefixes "SPC p  " "Projectile")
+    (which-key-declare-prefixes "SPC t  " "Tabbar")
+    (which-key-declare-prefixes "SPC u  " "Utils")
+    (which-key-declare-prefixes "SPC w  " "Windows")
+    (which-key-declare-prefixes "SPC h  " "Hacking")
     (which-key-declare-prefixes "SPC h r" "Rust")
     (which-key-declare-prefixes "SPC h c" "C/C++")
     (which-key-declare-prefixes "SPC h y" "Yasnippet")
+    (which-key-declare-prefixes "SPC h m" "Markdown")
+    (which-key-declare-prefixes "SPC h d" "Definition Jump")
+    (which-key-declare-prefixes "SPC f g" "Google")
+    (which-key-declare-prefixes "SPC f a" "Agrep")
     )
 
-(use-package all-the-icons :ensure t)
+(use-package evil-collection :ensure t :pin melpa
+:after evil
+:init   (setq evil-collection-setup-minibuffer t)
+        (evil-collection-init)
+        (evil-collection-helm-setup)
+        (evil-collection-magit-setup)
+        (evil-collection-neotree-setup)
+        (evil-collection-which-key-setup)
+        (evil-collection-buff-menu-setup)
+        (evil-collection-package-menu-setup)
+        (evil-collection-evil-mc-setup)
+        (evil-collection-init)
+)
+
+(use-package all-the-icons :ensure t :pin melpa)
 (use-package doom-modeline :ensure t :pin melpa
 :hook (after-init . doom-modeline-init)
 :init (setq doom-modeline-height 20)
@@ -446,6 +538,7 @@
       (evil-leader/set-key "fm" #'smex-major-mode-commands)
 )
 (use-package helm-smex :ensure t :pin melpa
+:after helm
 :bind ("M-x" . #'helm-smex-major-mode-commands)
 :init (global-set-key [remap execute-extended-command] #'helm-smex)
       (evil-leader/set-key "fm" #'helm-smex-major-mode-commands)
@@ -453,7 +546,7 @@
 
 (use-package projectile :defer t :ensure t
 :init   (projectile-mode t)
-:config (evil-leader/set-key "p" 'projectile-command-map)
+        (evil-leader/set-key "ep" 'projectile-command-map)
 )
 
 (use-package neotree :ensure t
@@ -493,7 +586,7 @@
     )
 )
 
-(use-package exwm :ensure t :pin melpa
+(use-package exwm :ensure t :pin melpa :disabled
 :if window-system
 :commands (exwm-init)
 :config
@@ -536,7 +629,7 @@
 :after (evil magit)
 :init  (evil-magit-init)
 )
-(use-package magithub :ensure t
+(use-package magithub :ensure t :disabled
 :after magit
 :init (magithub-feature-autoinject t)
       (evil-leader/set-key "gd" 'magithub-dashboard)
@@ -561,7 +654,6 @@
 (use-package org
 :init (setq org-directory            (expand-file-name "~/Dropbox/org"))
       (setq org-default-notes-file   (concat org-directory "/notes/notes.org"))
-      (setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
       (evil-leader/set-key
           "oa" 'org-agenda
           "ob" 'org-iswitchb
@@ -572,18 +664,23 @@
       )
 )
 
+(use-package org-bullets :ensure t :pin melpa
+:after org
+:init ;(setq org-bullets-bullet-list '("◉" "◎" "<img draggable="false" class="emoji" alt="⚫" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/26ab.svg">" "○" "►" "◇"))
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+)
+
 (use-package org-journal :ensure t :pin melpa
 :after org
 :init (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal")
             org-journal-file-format "%Y-%m-%d.org"
-            org-journal-date-format "%Y-%m-%d (%A)"
-      )
+            org-journal-date-format "%Y-%m-%d (%A)")
       (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/journal"))
 :config
-    (setq org-journal-enable-agenda-integration t
-          org-icalendar-store-UID t
-          org-icalendar-include0tidi "all"
-          org-icalendar-conbined-agenda-file "~/calendar/org-journal.ics")
+      (setq org-journal-enable-agenda-integration t
+            org-icalendar-store-UID t
+            org-icalendar-include0tidi "all"
+            org-icalendar-conbined-agenda-file "~/calendar/org-journal.ics")
       (org-journal-update-org-agenda-files)
       (org-icalendar-combine-agenda-files)
 )
@@ -627,6 +724,12 @@
       (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
+(use-package orgtbl-aggregate :ensure t :pin melpa
+; https://github.com/tbanel/orgaggregate
+:after org
+)
+
+
 ;(use-package calfw :ensure t :pin melpa 
 ;:commands cfw:open-calendar-buffer
 ;:config (use-package calfw-org
@@ -650,6 +753,26 @@
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 
+(use-package olivetti :ensure t :pin melpa)
+(use-package typo     :ensure t :pin melpa )
+(use-package poet-theme :ensure t :pin melpa)
+(define-minor-mode writer-mode
+    "poet use writer mode"
+    :lighter " writer"
+    (if writer-mode 
+       (progn
+           (olivetti-mode 1)
+           (typo-mode 1)
+           (display-line-numbers-mode 0))
+       (olivetti-mode 0)
+       (typo-mode 0)
+       (display-line-numbers-mode 1)))
+
+(use-package mu4e :ensure t :pin melpa :disabled
+:commands (mu4e)
+:init
+)
+
 (use-package rainbow-mode :ensure t
     :hook (prog-mode
            text-mode
@@ -660,17 +783,23 @@
     :init (rainbow-mode)
 )
 
-(use-package docker          :ensure t :init (evil-leader/set-key "ud" 'docker)) 
+(use-package docker          :ensure t :init (evil-leader/set-key "hud" 'docker)) 
 (use-package dockerfile-mode :ensure t 
     :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 (use-package eshell
 :init (setq eshell-buffer-maximum-lines 1000)
+      (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
+      (setq eshell-cmpl-cycle-completions nil)
 )
 
 (use-package exec-path-from-shell :ensure t :pin melpa
 :init ;(exec-path-from-shell-copy-env "PATH")
       (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
+)
+
+(use-package esh-help :ensure t :pin melpa
+:init (setup-esh-help-eldoc)
 )
 
 (use-package eshell-prompt-extras :ensure t :pin melpa
@@ -680,6 +809,12 @@
     (autoload 'epe-theme-lambda "eshell-prompt-extras")
     (setq eshell-highlight-prompt nil
           eshell-prompt-function 'epe-theme-lambda)
+)
+
+(use-package fish-completion :ensure t :pin melpa
+:init (when (and (executable-find "fish")
+            (require 'fish-completion nil t))
+      (global-fish-completion-mode))
 )
 
 (use-package esh-autosuggest :ensure t :pin melpa
@@ -698,18 +833,42 @@
       ;(global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
+(use-package execute-shell 
+:init (add-to-list 'display-buffer-alist
+      (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+
+      (defun background-shell-command (command)
+          "run shell commmand background"
+          (interactive "sShell Command : ")
+          (call-process-shell-command "command" nil 0))
+)
+
+(use-package command-log-mode :ensure t :pin melpa)
+
+(use-package emojify :ensure t :pin melpa
+:if window-system
+:init   (global-emojify-mode 1)
+:config (setq emojify-display-style 'image)
+        (setq emojify-emoji-styles  '(unicode))
+        (setq emojify-emoji-set "emojione-v2.2.6")
+)
+
 
 
 (use-package buffer-move :ensure t :pin melpa
 :init
     (evil-leader/set-key
-        "bs" 'ibuffer
-        "br" 'eval-buffer
-        "bh" 'buf-move-left
-        "bj" 'buf-move-down
-        "bk" 'buf-move-up
-        "bl" 'buf-move-right
+        "b s" 'ibuffer
+        "b r" 'eval-buffer
+        "b h" 'buf-move-left
+        "b j" 'buf-move-down
+        "b k" 'buf-move-up
+        "b l" 'buf-move-right
+        "b m" 'switch-to-buffer
+        "b n" 'next-buffer
+        "b p" 'previous-buffer
     )
+    (global-set-key (kbd "C-x C-b") 'ibuffer)
 )
 
 (setq ibuffer-saved-filter-groups
@@ -718,7 +877,7 @@
                               (filename . "emacs-config")))
           ("org-mode"     (or (mode . org-mode)
                               (filename ."OrgMode")))
-          ("code"         (or (directory . "~/dev/")
+          ("code"         (or (filename . "~/dev")
                               (mode . prog-mode)
                               (mode . c++-mode)
                               (mode . c-mode)
@@ -734,15 +893,17 @@
 )
 (add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 
+(use-package ibuffer-projectile :ensure t :pin melpa :disabled
+    :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
+                                       (unless (eq ibuffer-sorting-mode 'alphabetic)
+                                               (ibuffer-do-sort-by-alphabetic))))
+)
+
 (use-package dash :ensure t :pin melpa
 :init (dash-enable-font-lock)
 )
 (use-package dash-functional :ensure t :pin melpa
 :after dash
-)
-;; if you want use helm-dash you use this command helm-dash-install-docset
-(use-package helm-dash :ensure t :pin melpa
-:after helm dash
 )
 
 (use-package ialign :ensure t :pin melpa 
@@ -787,6 +948,12 @@
 :init ;(symon-mode)
 )
 
+(use-package google-this :ensure t :pin melpa
+:init (google-this-mode 1)
+      (evil-leader/set-key "fgs" 'google-this)
+)
+(evil-leader/set-key "fgu" 'browse-url)
+
 (use-package google-translate :ensure t :pin melpa
 :init (require 'google-translate-smooth-ui)
       ;(require 'google-translate-default-ui)
@@ -794,10 +961,10 @@
       ;(evil-leader/set-key "fT" 'google-translate-query-translate)
       (setq google-translate-translation-directions-alist
           '(("en" . "ko")
-              ("ko" . "en")
-              ("jp" . "ko")
-              ("ko" . "jp")))
-      (evil-leader/set-key "ft" 'google-translate-smooth-translate)
+            ("ko" . "en")
+            ("jp" . "ko")
+            ("ko" . "jp")))
+      (evil-leader/set-key "fgt" 'google-translate-smooth-translate)
 :config
 
 )
@@ -817,9 +984,9 @@
 )
 
 (use-package helm-ag :ensure t :pin melpa
-    :init (evil-leader/set-key "fgt" 'helm-do-ag-this-file
-                               "fgb" 'helm-do-ag-buffers
-                               "fgr" 'helm-do-ag-project-root))
+    :init (evil-leader/set-key "fat" 'helm-do-ag-this-file
+                               "fab" 'helm-do-ag-buffers
+                               "far" 'helm-do-ag-project-root))
 (use-package wgrep :ensure t :pin melpa
 :config (setq wgrep-auto-save buffer t)
        ;(setq wgrep-enable-key "r")
@@ -833,7 +1000,7 @@
 :init (require 'em-tramp)
       (setq password-cache t)
       (setq password-cache-expiry 3600)
-      (evil-leader/set-key "up" 'helm-system-packages))
+      (evil-leader/set-key "usp" 'helm-system-packages))
 
 (use-package company :ensure t
 :init (global-company-mode 1)
@@ -860,15 +1027,12 @@
 ;:init (add-to-list 'company-backend #'company-tabnine)
 ;)
 
-(use-package lsp-mode :ensure t :pin melpa
-:init 
-)
+(use-package lsp-mode :ensure t :pin melpa)
 
 (use-package lsp-ui :ensure t :pin melpa
 :after lsp-mode
 :config (require 'lsp-clients)
 )
-
 
 (use-package company-lsp :ensure t :pin melpa
 :after (company lsp-mode)
@@ -921,7 +1085,6 @@
 (use-package clang-format :ensure t
 :init (evil-leader/set-key "hcf" 'clang-format-regieon)
 )
-
 (use-package rtags :ensure t
 :after (helm flycheck)
 :init
@@ -929,7 +1092,7 @@
     (rtags-diagnostics)
     (setq rtags-completions-enabled t) (rtags-enable-standard-keybindings)
     (evil-leader/set-key "hcs" 'rtags-find-symbol
-                         "hcr" 'rtags-find-references)
+                         "hcr" 'rtags-find-references) 
 )
 (use-package helm-rtags :ensure t :after (helm rtags)
 :init (setq rtags-display-result-backend 'helm))
@@ -989,23 +1152,20 @@
 
 (use-package dap-mode :ensure t :pin melpa
 :init (evil-leader/set-key "dr" 'dap-debug)
-      (evil-leader/set-key "de" 'dap-debug)
 :config (require 'dap-lldb)
 )
 
-
-
-(setq gdb-show-main t)
-(evil-leader/set-key "db" 'gud-break)
-(evil-leader/set-key "dn" 'gud-next)
-(evil-leader/set-key "di" 'gud-step)
-(evil-leader/set-key "df" 'gud-finish)
-(evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
-                                   (call-interactively 'gud-cont  )))
 (use-package gdb-mi
 :load-path "lisp/emacs-gdb"
-:init (fmakunbound 'gdb)
+:init (setq-default gdb-show-main t)
+      (setq-default gdb-many-windows t)
+      (fmakunbound 'gdb)
       (fmakunbound 'gdb-enable-debug)
+      ;(evil-leader/set-key "dn" 'gud-next)
+      ;(evil-leader/set-key "di" 'gud-step)
+      ;(evil-leader/set-key "df" 'gud-finish)
+      ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gud-tbreak)
+      ;                                   (call-interactively 'gud-cont  )))
 )
 
 (use-package eldoc :ensure t :diminish eldoc-mode :after rtags)
@@ -1043,6 +1203,17 @@
 (add-hook 'c-mode-hook 'rtags-eldoc-mode)
 (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
 
+(use-package slime :ensure t :pin melpa :disabled
+:commands slime
+:init
+    (setq inferior-lisp-program (or (executable-find "sbcl")
+                                    (executable-find "/usr/bin/sbcl")
+                                    (executable-find "/usr/sbin/sbcl"
+                                    "sbcl")))
+:config
+    (require 'slime-autoloads)
+    (slime-setup '(slime-fancy))
+)
 (use-package elisp-slime-nav :ensure t :diminish elisp-slime-nav-mode
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
@@ -1057,7 +1228,24 @@
 (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
 (add-hook 'ielm-mode-hook #'paredit-mode)
 (add-hook 'lisp-mode-hook #'paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
+(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
+(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
+)
+
+(defun racer-install ()
+    "Racer install-linux" 
+    (interactive)
+    (eshell-command "rustup toolchain add nightly")
+    (eshell-command "rustup component add rust-src")
+    (eshell-command "cargo +nightly install racer")
+)
+
+(defun rust-install ()
+    "Rust and Racer install-linux" 
+    (interactive)
+    (eshell-command "curl https://sh.rustup.rs -sSf | sh")
+    (racer-install)
+)
 
 (use-package rust-mode :ensure t :pin melpa
 :mode (("\\.rs\\'" . rust-mode))
@@ -1065,15 +1253,21 @@
 ;:config (setq rust-format-on-save t)
 ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
+
 (use-package flycheck-rust :ensure t :pin melpa :after flycheck
 :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 )
+
 (use-package racer :ensure t :pin melpa
-:init
-    (add-hook 'rust-mode-hook  #'racer-mode)
-    (add-hook 'racer-mode-hook #'company-mode) 
-    (add-hook 'racer-mode-hook #'eldoc-mode) 
+;Install
+; rustup toolchain add nightly
+; rustup component add rust-src
+; cargo +nightly install rcer
+:init (add-hook 'rust-mode-hook  #'racer-mode)
+      (add-hook 'racer-mode-hook #'company-mode) 
+      (add-hook 'racer-mode-hook #'eldoc-mode) 
 )
+
 (use-package company-racer :ensure t :pin melpa
 :init (add-to-list 'company-backends 'company-racer)
 )
@@ -1160,3 +1354,21 @@
 )
 
 (use-package i3wm :ensure t :pin melpa)
+
+(use-package company-shell :ensure t :pin melpa
+:init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
+)
+
+(use-package dumb-jump :ensure t :pin melpa
+:init   (evil-leader/set-key "hdo" 'dumb-jump-go-other-window)
+        (evil-leader/set-key "hdj" 'dumb-jump-go)
+        (evil-leader/set-key "hdi" 'dumb-jump-go-prompt)
+        (evil-leader/set-key "hdx" 'dumb-jump-go-prefer-external)
+        (evil-leader/set-key "hdz" 'dumb-jump-go-prefer-external-other-window)
+:config (setq dumb-jump-selector 'helm)
+)
+
+(use-package helm-dash :ensure t :pin melpa
+:init (evil-leader/set-key "hDs" 'helm-dash
+                           "hDi" 'helm-dash-install-user-docset)
+)

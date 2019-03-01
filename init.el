@@ -9,9 +9,7 @@
         (package-refresh-contents)
         (package-install 'delight t)
         (package-install 'use-package t))
-    (setq-default
-        use-package-always-defer t
-    )
+    (setq-default use-package-always-defer t)
 (package-initialize)
 
 (use-package auto-package-update :ensure t
@@ -21,15 +19,16 @@
     (auto-package-update-maybe)
 )
 
-(require 'cc-mode)
+;(require 'cc-mode)
 (use-package org :ensure t :ensure org
     :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
     :mode ("\\.org\\'" . org-mode)
-    :config
 ) 
 
 (setq custom-file "~/.emacs.d/custom-variable.el")
 (load-file custom-file)
+;
+;(garbage-collect)
+;(put 'narrow-to-region 'disabled nil)
 
-(garbage-collect)
-(put 'narrow-to-region 'disabled nil)
+

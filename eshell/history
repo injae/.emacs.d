@@ -1,128 +1,128 @@
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm cppkg search
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-ls ~/.hunter/_Base/Download/Hunter/0.23.98/bf539cb/Unpacked/cmake/projects/
-ls ~/.hunter/_Base/Download/Hunter/0.23.98/bf539cb/Unpacked/cmake/
-cppm cppkg search
-cppm build install
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm cppkg search
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm build install
-cppm cppkg search
-cppm build install
-cppm build install
-cppm build install
-cppm cppkg search
-ls 
-ls ~/.hunter/_Base/Download/Hunter/0.23.98/bf539cb/Unpacked/cmake/
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm build install
-cppm cppkg search
-cppm cppkg search Android-Apk
-cppm build install
-cppm cppkg search Android-Apk
-cppm cppkg search Android
-cppm cppkg search And
-cppm cppkg search cpptoml
-cppm cppkg search 
-cppm build install
-cppm cppkg search
-cppm cppkg search Android
-cppm cppkg search
 ls
-rm -rf ~/.cppm/tool/
-cppm build
-rm -rf ~/.cppm/tool/
-cppm build --ntc
+pwd
+ls
+sudo add-apt-repository ppa:system76/pop
+sudo apt install pop-icon-theme
+l
+clear
+ls
+sudo add-apt-repository ppa:teejee2008/ppa
+sudo apt-get install ukuu 
+ls
+ls
+cd ../dev
+ls
+mkdir algorithm
+cd algorithm/
+ls
+cppm init -b cpp
+ls
+cd cpp/
+ls
+ls
+sudo apt remove ukuu
+ls
+sudo apt install software-properties-common apt-transport-https wget
+wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+sudo apt install code
+ls
+cd ../
+ls
+cd util/
+ls
+mkdir -p ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin
+ls
+ls
+touch package.json
+cp package.json ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/
+cd ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/
+cd ~/util/
+ls
+git clone https://github.com/llvm-mirror/lldb.git
+ls
+cd lldb/
+ls
+cmake -H. -Bbuild
+sudo apt install libclang-7-dev 
+sudo apt install libclang-7-dev 
+sudo apt autoremove 
+ls
+cmake -H. -Bbuild
+sudo apt install swig
+sudo apt install libedit
+ls
+cmake -H. -Bbuild
+sudo apt-get install libedit-dev 
+cmake -H. -Bbuild
 ls
 cd build
+cmake --build .
+cmake --build . -- j8
+cmake --build . -- -j8
+ls
+sudo apt-get install libncurses5-dev
+sudo apt-get build-dep lldb-3.3
+sudo apt-get build-dep lldb-3.9 
+sudo apt-get build-dep lldb-3.9 
 ls
 ls
-cmake --build . --warn-uninitialized -Werror=dev --target install
-cmake --warn-uninitialized -Werror=dev --build . --target install
-cmake --trace-expand --build . --target install
- cmake --trace-expand ..
-rm -rf ~/.cppm/tool/
-cppm build --ntc
-rm -rf ~/.cppm/tool/
+sudo apt-get build-dep lldb-3.9 
+sudo apt-get build-dep lldb-3.9 
 ls
-cmake --trace-expand ..
-git branch nightly
-git checkout nightly
-l
+cd build
+cmake ..
+ls
+make -j8
 ls
 ls
-git checkout master
-git branch -D master
-git branch -D nightly
-git branch nightly
-git branch -D nightly
-git fetch
-git pull
-git checkout nightly
-cppm build 
-cppm cppkg search
-cd ../../
-ls
-mkdir docker
-ls
-cd docker
+cmake --build . --target lldb-vscode -- -j8
 ls
 ls
-cd docker
+sudo apt-get install libllvm7 
+sudo apt-get install llvm-7-dev 
+sudo apt-get install llvm-7-tools 
+ls
+cmake --build . --target lldb-vscode -- -j8
+sudo apt-get install libclang-common-7-dev 
+sudo apt-get install libclang-7-dev 
+sudo apt-get install libclang-dev 
+cmake --build . --target lldb-vscode -- -j8
+ls ~/.vscode/extensions/vadimcn.vscode-lldb-1.2.1/
 ls
 ls
-mkdir kakaotalk
+cd ../
 ls
-cd kakaotalk/
+cd ~/.vscode/extensions/
 ls
-touch Dockerfile
+cd webfreak.debug-0.22.0/
 ls
+cd ../
+ls
+cd llvm-org.lldb-vscode-0.1.0/
+ls
+cd ../
+ls
+cd vadimcn.vscode-lldb-1.2.1/
+ls
+cd ../
+ls
+ls
+cd ../../dev
+ls
+cargo -h
+ls
+cd lisp/
+ls
+cd emacs-gdb/
+ls
+ls
+cd .emacs.d/lisp/emacs-gdb/
+ls
+ls
+cd ../
+ls
+rm -r emacs-gdb/
+git clone https://github.com/weirdNox/emacs-gdb.git
+xrdb ~/.Xresources 
+xrdb -merge ~/.Xresources 

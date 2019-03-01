@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/Dropbox/org/notes/" "~/dev/cppm_tools/" "~/dev/cppm/" "~/.cppm/tool/" "~/dev/nlpo/" "~/dev/ccls/" "~/dev/cppkg/" "~/dev/nieel/" "~/dev/blog/" "~/dev/example/build/" "~/")
+("~/.emacs.d/" "~/dev/cppm/" "~/.cppm/install/fmt/lastest/" "~/dev/cppm_tools/" "~/dev/nlpo/" "~/")
