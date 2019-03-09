@@ -1,0 +1,161 @@
+#s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (previous-line (("use-package-report" "use-package-report" "use-package-report" "use-package-report" "use-package-report" "iedit-quit" "package-install" "package-install" "projectile-find-file" "indent-guide-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 1 "use-package-report" 5 "iedit-quit" 1 "package-install" 2 "projectile-find-file" 1 "doom-modeline-mode" 1 "which-key-show-major-mode" 1 "load-theme" 1 "prettify-symbols-mode" 2 "counsel-find-library" 1 "counsel-colors-web" 3 "what-face" 1 "indent-guide" 1 "indent-guide-mode" 2))) ivy-next-line (("historian-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 1))) ivy-historian-mode (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) counsel-describe-variable (("historian--history-table" "historian-mode" "historian-mode" "historian-mode" "historian-mode" "projectile-mode-map" "counsel-projectile-map" "global-evil-mc-mode" "beacon-
+beacon--window-scrolled                            
+beacon-before-blink-hook                           Hook run immediately before blinking the beacon.
+beacon-blink-delay                                 Time, in seconds, before starting to fade the beacon.
+beacon-blink-duration                              Time, in seconds, that the blink should last.
+beacon-blink-when-buffer-changes                   Should the beacon blink when changing buffer?
+beacon-blink-when-focused                          Should the beacon blink when Emacs gains focus?
+beacon-blink-when-point-moves-horizontally         Should the beacon blink when moving a long distance horizontally?
+beacon-blink-when-point-moves-vertically           Should the beacon blink when moving a long distance vertically?
+beacon-blink-when-window-changes                   Should the beacon blink when the window changes?
+beacon-blink-when-window-scrolls                   Should the beacon blink when the window scrolls?
+beacon-color                                       Color of the beacon.
+beacon-dont-blink-commands                         A list of commands that should not make the beacon blink.
+beacon-dont-blink-major-modes                      A list of major-modes where the beacon won’t blink.
+beacon-dont-blink-predicates                       A list of predicates that prevent the beacon blink.
+beacon-lighter                                     Lighter string used on the mode-line.
+beacon-mode                                        Non-nil if Beacon mode is enabled.
+beacon-mode-hook                                   Hook run after entering or leaving ‘beacon-mode’.
+beacon-overlay-priority                            Priotiy used on all of our overlays.
+beacon-push-mark                                   Should the mark be pushed before long movements?
+" "beacon-color") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian--history-table" 2 "historian-mode" 4 "projectile-mode-map" 1 "counsel-projectile-map" 1 "global-evil-mc-mode" 1 "beacon-
+beacon--window-scrolled                            
+beacon-before-blink-hook                           Hook run immediately before blinking the beacon.
+beacon-blink-delay                                 Time, in seconds, before starting to fade the beacon.
+beacon-blink-duration                              Time, in seconds, that the blink should last.
+beacon-blink-when-buffer-changes                   Should the beacon blink when changing buffer?
+beacon-blink-when-focused                          Should the beacon blink when Emacs gains focus?
+beacon-blink-when-point-moves-horizontally         Should the beacon blink when moving a long distance horizontally?
+beacon-blink-when-point-moves-vertically           Should the beacon blink when moving a long distance vertically?
+beacon-blink-when-window-changes                   Should the beacon blink when the window changes?
+beacon-blink-when-window-scrolls                   Should the beacon blink when the window scrolls?
+beacon-color                                       Color of the beacon.
+beacon-dont-blink-commands                         A list of commands that should not make the beacon blink.
+beacon-dont-blink-major-modes                      A list of major-modes where the beacon won’t blink.
+beacon-dont-blink-predicates                       A list of predicates that prevent the beacon blink.
+beacon-lighter                                     Lighter string used on the mode-line.
+beacon-mode                                        Non-nil if Beacon mode is enabled.
+beacon-mode-hook                                   Hook run after entering or leaving ‘beacon-mode’.
+beacon-overlay-priority                            Priotiy used on all of our overlays.
+beacon-push-mark                                   Should the mark be pushed before long movements?
+" 1 "beacon-color" 1))) quit-window (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) ivy-backward-delete-char (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) next-line (("use-package-report" "use-package-report" "prog-mode" "use-package-report" "iedit-quit" "use-package-report" "counsel-projectile-find-file" "gdb-executable" "use-package-report" "counsel-colors-emacs") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-function" 1 "use-package-report" 5 "prog-mode" 1 "iedit-quit" 1 "counsel-projectile-find-file" 1 "gdb-executable" 1 "esup" 1 "load-theme" 1 "writer-mode" 1 "list-colors-display" 1 "counsel-colors-emacs" 1))) counsel-describe-function (("evil-collection-ivy-setup" "cide--get-string-from-file" "historian-mode" "historian-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 2 "cide--get-string-from-file" 1 "evil-collection-ivy-setup" 1))) counsel-find-file (("/home/nieel/dev/cppm/src/" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/.emacs.d/config.org") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/config.org" 1 "/home/nieel/dev/cppm/src/main.cpp" 5 "/home/nieel/dev/cppm/src/" 1))) abort-recursive-edit (("use-package-report" "use-package-report" "use-package-report" "use-package-report" "use-package-report" "counsel-switch-buffer") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-switch-buffer" 1 "use-package-report" 5))) counsel-switch-buffer (("*scratch*" "*scratch*" "*Messages*" "*Messages*") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("*Messages*" 2 "*scratch*" 2))) (lambda nil (interactive) (find-file "~/.emacs.d/config.org")) (("counsel-switch-buffer") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-switch-buffer" 1))) find-file (("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package" 1))) ivy-partial-or-done (("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package" 1))) ace-window (("projectile-find-file" "use-package-report" "writer-mode" "ace-window") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("ace-window" 1 "writer-mode" 1 "use-package-report" 1 "projectile-find-file" 1))) evil-force-normal-state (("counsel-projectile-find-file" "use-package-report" "use-package-report" "writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 1 "use-package-report" 2 "counsel-projectile-find-file" 1))) writer-mode (("use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1))) ivy-switch-buffer (("config.org" "
+ config.org                     68.1k        Org          .emacs.d        .emacs.d/
+ *dashboard*                    860          Dashboard                    
+ *scratch*                      0            Lisp Inter…                 
+ *Messages*                     1.2k         Messages B…                 
+ *Warnings*                     261          Special                      
+bookmarks
+alias
+highlight-indentation.el
+highlight-indentation-autoloads.el
+init.el
+bin.cpp
+main.cpp
+cmake-ide.el
+use-package
+config.org~
+historian.el
+ivy-historian-autoloads.el
+flx-autoloads.el
+historian-autoloads.el
+" "
+ *Messages*                     1.1k         Messages B…                 
+ *Ibuffer*                      488          Ibuffer                      
+ *dashboard*                    860          Dashboard                    
+ *scratch*                      0            Lisp Inter…                 
+ *Warnings*                     261          Special                      
+bookmarks
+config.org
+alias
+highlight-indentation.el
+highlight-indentation-autoloads.el
+init.el
+bin.cpp
+main.cpp
+cmake-ide.el
+use-package
+config.org~
+historian.el
+ivy-historian-autoloads.el
+flx-autoloads.el
+" "
+ *dashboard*                    860          Dashboard                    
+ *scratch*                      0            Lisp Inter…                 
+ *Messages*                     979          Messages B…                 
+ *Warnings*                     261          Special                      
+bookmarks
+config.org
+alias
+highlight-indentation.el
+highlight-indentation-autoloads.el
+init.el
+bin.cpp
+main.cpp
+cmake-ide.el
+use-package
+config.org~
+historian.el
+ivy-historian-autoloads.el
+flx-autoloads.el
+historian-autoloads.el
+" "*Messages*" "*Messages*" "*Messages*" "*Warnings*") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("*Warnings*" 1 "*Messages*" 3 "
+ *dashboard*                    860          Dashboard                    
+ *scratch*                      0            Lisp Inter…                 
+ *Messages*                     979          Messages B…                 
+ *Warnings*                     261          Special                      
+bookmarks
+config.org
+alias
+highlight-indentation.el
+highlight-indentation-autoloads.el
+init.el
+bin.cpp
+main.cpp
+cmake-ide.el
+use-package
+config.org~
+historian.el
+ivy-historian-autoloads.el
+flx-autoloads.el
+historian-autoloads.el
+" 1 "
+ *Messages*                     1.1k         Messages B…                 
+ *Ibuffer*                      488          Ibuffer                      
+ *dashboard*                    860          Dashboard                    
+ *scratch*                      0            Lisp Inter…                 
+ *Warnings*                     261          Special                      
+bookmarks
+config.org
+alias
+highlight-indentation.el
+highlight-indentation-autoloads.el
+init.el
+bin.cpp
+main.cpp
+cmake-ide.el
+use-package
+config.org~
+historian.el
+ivy-historian-autoloads.el
+flx-autoloads.el
+" 1 "
+ config.org                     68.1k        Org          .emacs.d        .emacs.d/
+ *dashboard*                    860          Dashboard                    
+ *scratch*                      0            Lisp Inter…                 
+ *Messages*                     1.2k         Messages B…                 
+ *Warnings*                     261          Special                      
+bookmarks
+alias
+highlight-indentation.el
+highlight-indentation-autoloads.el
+init.el
+bin.cpp
+main.cpp
+cmake-ide.el
+use-package
+config.org~
+historian.el
+ivy-historian-autoloads.el
+flx-autoloads.el
+historian-autoloads.el
+" 1 "config.org" 1))) ibuffer-visit-buffer (("use-package-report" "use-package-report" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 3))) evil-normal-state (("use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1))) evil-visual-line (("iedit-rectangle-mode" "iedit-rectangle-mode" "iedit-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "iedit-rectangle-mode" 2))) evil-forward-char (("what-face" "list-colors-display" "iedit-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "list-colors-display" 1 "what-face" 1))) nil (("what-face" "google-this" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1 "google-this" 1 "what-face" 1))) evil-delete (("company-irony") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-irony" 1))) company-irony (("company-irony") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-irony" 1))) org-use-package-install (("gdb-executable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("gdb-executable" 1))) gdb-executable (("/home/nieel/dev/cppm/build/cppm" "/home/nieel/dev/cppm/build/cppm") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/cppm/build/cppm" 2))) self-insert-command (("doom-Iosvkem" "/home/nieel/dev/cppm/build/cppm") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/cppm/build/cppm" 1 "doom-Iosvkem" 1))) doom-modeline-mode (("doom-modeline-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("doom-modeline-mode" 1))) org-cycle (("writer-mode" "writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 2))) load-theme (("doom-Iosvkem" "doom-Iosvkem" "poet" "poet") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("poet" 2 "doom-Iosvkem" 2))) ivy-previous-line (("poet") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("poet" 1))) counsel-find-library (("highlight-indentation" "highlight-indentation") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("highlight-indentation" 2))) evil-backward-char (("read-color") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("read-color" 1))) evil-insert (("what-face") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("what-face" 1)))))

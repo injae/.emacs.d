@@ -2,6 +2,6 @@
 # name: use-package emacs lisp 
 # key: upkg
 # --
-(use-package $1 :ensure t :pin melpa
+(use-package $1 :ensure t :pin melpa :defer t
 :init
 )

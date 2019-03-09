@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
- text-scale-decrease
- text-scale-increase
- gud-gdb
- gdb-script-mode
  paradox-list-packages
  package-install
- command-log-mode
+ hide-mode-line-mode
+ org-babel-execute-maybe
+ org-babel-examplize-region
+ org-src-associate-babel-session
+ text-scale-decrease
 )
 
 ;; ----- smex-data -----
@@ -26,7 +26,7 @@
  (exec-path-from-shell-initialize . 1)
  (exec-path-from-shell-copy-env . 1)
  (eshell . 26)
- (package-install . 8)
+ (package-install . 9)
  (gfm-mode . 1)
  (gfm-view-mode . 2)
  (markdown-other-window . 1)
@@ -115,7 +115,7 @@
  (gh-md-render-region . 1)
  (gh-md-render-buffer . 1)
  (company-yasnippet . 19)
- (paradox-list-packages . 8)
+ (paradox-list-packages . 9)
  (paradox-sort-by-★ . 1)
  (aya-open-line . 1)
  (aya-create-one-line . 1)
@@ -188,4 +188,9 @@
  (global-emojify-mode . 2)
  (gud-gdb . 6)
  (gdb-script-mode . 1)
+ (org-src-associate-babel-session . 1)
+ (org-babel-examplize-region . 1)
+ (org-babel-execute-maybe . 3)
+ (org-use-package-install . 4)
+ (hide-mode-line-mode . 1)
 )

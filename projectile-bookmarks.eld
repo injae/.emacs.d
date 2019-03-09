@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/dev/cppm/" "~/.cppm/install/fmt/lastest/" "~/dev/cppm_tools/" "~/dev/nlpo/" "~/")
+("~/.emacs.d/" "~/dev/cppm/" "~/dev/blog/" "~/.cppm/install/fmt/lastest/" "~/dev/cppm_tools/" "~/dev/nlpo/" "~/")

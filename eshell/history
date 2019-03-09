@@ -1,58 +1,3 @@
-ls
-pwd
-ls
-sudo add-apt-repository ppa:system76/pop
-sudo apt install pop-icon-theme
-l
-clear
-ls
-sudo add-apt-repository ppa:teejee2008/ppa
-sudo apt-get install ukuu 
-ls
-ls
-cd ../dev
-ls
-mkdir algorithm
-cd algorithm/
-ls
-cppm init -b cpp
-ls
-cd cpp/
-ls
-ls
-sudo apt remove ukuu
-ls
-sudo apt install software-properties-common apt-transport-https wget
-wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-sudo apt install code
-ls
-cd ../
-ls
-cd util/
-ls
-mkdir -p ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin
-ls
-ls
-touch package.json
-cp package.json ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/
-cd ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/
-cd ~/util/
-ls
-git clone https://github.com/llvm-mirror/lldb.git
-ls
-cd lldb/
-ls
-cmake -H. -Bbuild
-sudo apt install libclang-7-dev 
-sudo apt install libclang-7-dev 
-sudo apt autoremove 
-ls
-cmake -H. -Bbuild
-sudo apt install swig
-sudo apt install libedit
-ls
-cmake -H. -Bbuild
 sudo apt-get install libedit-dev 
 cmake -H. -Bbuild
 ls
@@ -126,3 +71,58 @@ rm -r emacs-gdb/
 git clone https://github.com/weirdNox/emacs-gdb.git
 xrdb ~/.Xresources 
 xrdb -merge ~/.Xresources 
+ls
+cppm build
+cppm run
+sudo apt-get install ripgrep
+sudo apt-get install ripgrep
+sudo apt-get install ripgrep
+cargo install ripgrep
+ls
+cd ../dev/
+ls
+git clone https://github.com/injae/injae.github.io.git
+ls
+move injae.github.io/ blog/
+ls
+move injae.github.io/ blog/
+move injae.github.io/ blog
+ls
+mv injae.github.io/ blog/
+mv injae.github.io/ blog
+ls
+cd blog/
+ls
+sudo add-apt-repository ppa:longsleep/golang-backports
+sudo apt-get install golang-go
+ls
+go --version
+go -version
+go -version
+go version
+cargo -h
+cppm build -c
+cppm build install
+(evil-collection-ivy-setup)
+sudo apt-get install \    apt-transport-https \    ca-certificates \    curl \    gnupg-agent \    software-properties-common
+sudo apt-get install curl gnupg-agent software-properties-common apt-transport-https 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository \   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \   $(lsb_release -cs) \   stable"
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+apt-cache policy docker-ce
+sudo apt-get install docker-ce
+docker -h
+sudo systemctl status docker
+docker --help
+docker -h
+docker -h
+docker -h
+docker -h
+docker -h
+uname
+android-studio -v
+android-studio --version
+ls
+cd .emacs.d/
+ls
