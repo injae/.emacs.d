@@ -1096,7 +1096,7 @@
 :init (dashboard-setup-startup-hook)
 :config 
     (setq dashboard-banner-logo-title "Happy Hacking")
-    ;(setq dashboard-startup-banner "") ;banner image change
+    ;(setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
     (setq show-week-agenda-p t)
     (setq dashboard-items '((recents   . 5)

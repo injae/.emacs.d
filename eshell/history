@@ -1,80 +1,3 @@
-sudo apt-get install libedit-dev 
-cmake -H. -Bbuild
-ls
-cd build
-cmake --build .
-cmake --build . -- j8
-cmake --build . -- -j8
-ls
-sudo apt-get install libncurses5-dev
-sudo apt-get build-dep lldb-3.3
-sudo apt-get build-dep lldb-3.9 
-sudo apt-get build-dep lldb-3.9 
-ls
-ls
-sudo apt-get build-dep lldb-3.9 
-sudo apt-get build-dep lldb-3.9 
-ls
-cd build
-cmake ..
-ls
-make -j8
-ls
-ls
-cmake --build . --target lldb-vscode -- -j8
-ls
-ls
-sudo apt-get install libllvm7 
-sudo apt-get install llvm-7-dev 
-sudo apt-get install llvm-7-tools 
-ls
-cmake --build . --target lldb-vscode -- -j8
-sudo apt-get install libclang-common-7-dev 
-sudo apt-get install libclang-7-dev 
-sudo apt-get install libclang-dev 
-cmake --build . --target lldb-vscode -- -j8
-ls ~/.vscode/extensions/vadimcn.vscode-lldb-1.2.1/
-ls
-ls
-cd ../
-ls
-cd ~/.vscode/extensions/
-ls
-cd webfreak.debug-0.22.0/
-ls
-cd ../
-ls
-cd llvm-org.lldb-vscode-0.1.0/
-ls
-cd ../
-ls
-cd vadimcn.vscode-lldb-1.2.1/
-ls
-cd ../
-ls
-ls
-cd ../../dev
-ls
-cargo -h
-ls
-cd lisp/
-ls
-cd emacs-gdb/
-ls
-ls
-cd .emacs.d/lisp/emacs-gdb/
-ls
-ls
-cd ../
-ls
-rm -r emacs-gdb/
-git clone https://github.com/weirdNox/emacs-gdb.git
-xrdb ~/.Xresources 
-xrdb -merge ~/.Xresources 
-ls
-cppm build
-cppm run
-sudo apt-get install ripgrep
 sudo apt-get install ripgrep
 sudo apt-get install ripgrep
 cargo install ripgrep
@@ -126,3 +49,80 @@ android-studio --version
 ls
 cd .emacs.d/
 ls
+cd .emacs.d/
+git reset HEAD
+echo LANG
+echo $LANG
+local -a
+locale -a
+locale
+locale
+cat /etc/default/locale 
+wine Downloads/KakaoTalk_Setup.exe 
+wine Downloads/KakaoTalk_Setup.exe
+sudo apt-get install docker-compose 
+ls
+ls .wine/drive_c/'Program Files'
+de .wine/drive_c/'Program Files'
+cde .wine/drive_c/'Program Files'
+cd .wine/drive_c/'Program Files'
+ls
+cd Kakao/
+ls
+cd KakaoTalk/
+ls
+Exec=env WINEPREFIX="/home/ubuntu/.wine" wine-stable C:\\\\windows\\\\command\\\\start.exe /Unix /home/ubuntu/.wine/dosdevices/c:/ProgramData/Microsoft/Windows/Start\\ Menu/Programs/KakaoTalk/KakaoTalk.lnk
+l
+ls
+ls
+cd ~/.local/share/applications/wine/Programs
+니
+ls
+ls
+ls
+cd KakaoTalk/
+ls
+ls
+ls -al
+ls
+cd ../
+ls
+cd 카카오톡/
+니
+ls
+mv 카카오톡.desktop kakaotalk.desktop
+mv '카카오톡	제거.desktop' kakotalkremove.desktop
+mvls
+mv '카카오톡제거.desktop' kakotalkremove.desktop
+mv "카카오톡 제거.desktop" kakaotalk_remove.desktop
+ls
+ls
+cd ../
+ls
+ls
+mv ~/Downloads/emacs_icon.png .
+ls
+mkdir image
+mv emacs_icon.png image/
+ls
+ls image/
+cargo -h
+gem install jekcyll
+jekyll
+jekyll
+gem install jekyll
+ls
+sudo apt-get install ruby-full
+gem install jekyll
+sudo gem install jekyll
+kill kakaotalk
+kill kakao
+mv ~/Downloads/emacs_logo.png ../dev/blog/public/
+mv ../dev/blog/public/emacs_logo.png ../dev/blog/public/emacs-logo.png
+cd ../dev
+ls
+cargo -h
+cargo init -h
+cargo init --bin alchemist
+ls
+cd alchemist/
