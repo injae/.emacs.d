@@ -1,4 +1,149 @@
-#s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (previous-line (("use-package-report" "use-package-report" "use-package-report" "use-package-report" "use-package-report" "iedit-quit" "package-install" "package-install" "projectile-find-file" "indent-guide-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 1 "use-package-report" 5 "iedit-quit" 1 "package-install" 2 "projectile-find-file" 1 "doom-modeline-mode" 1 "which-key-show-major-mode" 1 "load-theme" 1 "prettify-symbols-mode" 2 "counsel-find-library" 1 "counsel-colors-web" 3 "what-face" 1 "indent-guide" 1 "indent-guide-mode" 2))) ivy-next-line (("historian-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 1))) ivy-historian-mode (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) counsel-describe-variable (("historian--history-table" "historian-mode" "historian-mode" "historian-mode" "historian-mode" "projectile-mode-map" "counsel-projectile-map" "global-evil-mc-mode" "beacon-
+#s(hash-table size 97 test eql rehash-size 1.5 rehash-threshold 0.8125 data (previous-line (("use-package-report" "use-package-report" "use-package-report" "use-package-report" "use-package-report" "iedit-quit" "package-install" "package-install" "projectile-find-file" "package-install") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 1 "use-package-report" 6 "iedit-quit" 3 "package-install" 4 "projectile-find-file" 1 "doom-modeline-mode" 1 "which-key-show-major-mode" 1 "load-theme" 1 "prettify-symbols-mode" 2 "counsel-find-library" 2 "counsel-colors-web" 3 "what-face" 1 "indent-guide" 1 "indent-guide-mode" 2 "company-box--next-line" 1 "company-dict" 1 "company-show-location" 1 "counsel-spotify-play" 1 "pdf-virtual-edit-mode" 1 "company-c-headers" 1 "try" 2 "iedit-mode" 1 "
+iedit-rectangle-mode (C-x r RET)                   Toggle Iedit-rect mode.
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" 2 "
+iedit-rectangle-mode (C-x r RET)                   Toggle Iedit-rect mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-quit (M-ESC ESC)                             Quit the current mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" 1 "counsel-rg" 2 "evil-mc-make-all-cursors" 1 "evil-mc-undo-all-cursors" 1 "evil-mc-make-cursor-here" 1 "counsel-ag" 1 "ivy-wgrep-change-to-wgrep-mode" 1 "
+counsel-rg                                         Grep for a string in the current directory using rg.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+iedit-quit                                         Quit the current mode.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+" 1 "tabbar-mode" 2 "dap-ui-mode" 1 "dap-mode" 1 "lsp-mode" 2 "lsp-ui-imenu" 1 "lsp-describe-session" 4 "fancy-battery-mode" 1 "lsp-rdes
+lsp-workspace-folders-switch                       Switch to another workspace folder from the current session.
+lsp-workspace-folders-add                          Add PROJECT-ROOT to the list of workspace folders.
+lsp-workspace-folders-remove                       Remove PROJECT-ROOT to the list of workspace folders.
+find-lisp-find-dired-subdirectories                Find all subdirectories of DIR.
+" 1 "lsp-ui-doc-show" 1))) ivy-next-line (("/home/nieel/dev/alchemist/target/debug/alchemist" "LLDB Run Configuration" "LLDB Run Configuration" "/home/nieel/dev/cppm/build/cppm" "LLDB Run Configuration" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "c-c-combo" "/home/nieel/dev/alchemist/target/debug/alchemist.d") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 1 "c-c-combo" 1 "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" 3 "LLDB Run Configuration" 4 "/home/nieel/dev/cppm/build/cppm" 1 "/home/nieel/dev/alchemist/target/debug/alchemist" 1 "/home/nieel/dev/alchemist/target/debug/alchemist.d" 1))) ivy-historian-mode (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) counsel-describe-variable (("historian--history-table" "historian-mode" "historian-mode" "historian-mode" "historian-mode" "projectile-mode-map" "counsel-projectile-map" "global-evil-mc-mode" "beacon-
 beacon--window-scrolled                            
 beacon-before-blink-hook                           Hook run immediately before blinking the beacon.
 beacon-blink-delay                                 Time, in seconds, before starting to fade the beacon.
@@ -18,7 +163,7 @@ beacon-mode                                        Non-nil if Beacon mode is ena
 beacon-mode-hook                                   Hook run after entering or leaving ‘beacon-mode’.
 beacon-overlay-priority                            Priotiy used on all of our overlays.
 beacon-push-mark                                   Should the mark be pushed before long movements?
-" "beacon-color") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian--history-table" 2 "historian-mode" 4 "projectile-mode-map" 1 "counsel-projectile-map" 1 "global-evil-mc-mode" 1 "beacon-
+" "dap-gdb-lldb-path") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian--history-table" 2 "historian-mode" 4 "projectile-mode-map" 1 "counsel-projectile-map" 1 "global-evil-mc-mode" 1 "beacon-
 beacon--window-scrolled                            
 beacon-before-blink-hook                           Hook run immediately before blinking the beacon.
 beacon-blink-delay                                 Time, in seconds, before starting to fade the beacon.
@@ -38,13 +183,47 @@ beacon-mode                                        Non-nil if Beacon mode is ena
 beacon-mode-hook                                   Hook run after entering or leaving ‘beacon-mode’.
 beacon-overlay-priority                            Priotiy used on all of our overlays.
 beacon-push-mark                                   Should the mark be pushed before long movements?
-" 1 "beacon-color" 1))) quit-window (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) ivy-backward-delete-char (("counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1))) next-line (("use-package-report" "gdb-executable" "counsel-projectile-find-file" "use-package-report" "iedit-quit" "use-package-report" "prog-mode" "use-package-report" "use-package-report" "writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-function" 1 "use-package-report" 5 "prog-mode" 1 "iedit-quit" 1 "counsel-projectile-find-file" 1 "gdb-executable" 1 "esup" 1 "load-theme" 1 "writer-mode" 2 "list-colors-display" 1 "counsel-colors-emacs" 1))) counsel-describe-function (("evil-collection-ivy-setup" "cide--get-string-from-file" "historian-mode" "historian-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 2 "cide--get-string-from-file" 1 "evil-collection-ivy-setup" 1))) counsel-find-file (("/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/" "/sudo:root@nieel:/etc/default/locale" "/home/nieel/.emacs.d/image/" "/home/nieel/dev/blog/_posts/2018-11-25-이맥스내장한글입력기사용법.md" "/home/nieel/dev/alchemist/src/main.rs") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/config.org" 1 "/home/nieel/dev/cppm/src/main.cpp" 5 "/home/nieel/dev/cppm/src/" 1 "/sudo:root@nieel:/etc/default/locale" 1 "/home/nieel/.emacs.d/image/" 1 "/home/nieel/dev/blog/_posts/2018-11-25-이맥스내장한글입력기사용법.md" 1 "/home/nieel/dev/blog/_posts/2019-02-19-cmake_강좌_01.md" 1 "/home/nieel/dev/alchemist/Cargo.toml" 1 "/home/nieel/dev/alchemist/src/main.rs" 1))) abort-recursive-edit (("use-package-report" "use-package-report" "use-package-report" "use-package-report" "use-package-report" "counsel-switch-buffer") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-switch-buffer" 1 "use-package-report" 5))) counsel-switch-buffer (("*scratch*" "*scratch*" "*Messages*" "*Messages*") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("*Messages*" 2 "*scratch*" 2))) (lambda nil (interactive) (find-file "~/.emacs.d/config.org")) (("counsel-switch-buffer") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-switch-buffer" 1))) find-file (("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package" 1))) ivy-partial-or-done (("/etc/default/kerneloops" "/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package" 1 "/etc/default/kerneloops" 1))) ace-window (("easy-jekyll" "easy-jekyll" "sudo-find-file" "projectile-find-file" "use-package-report" "writer-mode" "ace-window") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("ace-window" 1 "writer-mode" 1 "use-package-report" 1 "projectile-find-file" 1 "sudo-find-file" 1 "easy-jekyll" 2))) evil-force-normal-state (("counsel-projectile-find-file" "use-package-report" "use-package-report" "writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 1 "use-package-report" 2 "counsel-projectile-find-file" 1))) writer-mode (("use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1))) ivy-switch-buffer (("config.org" "
- config.org                     68.1k        Org          .emacs.d        .emacs.d/
+" 1 "beacon-color" 1 "evil-mc-key-map" 1 "dap-gdb-lldb-path" 1))) quit-window (("lsp-describe-session" "lsp-mode" "lsp-workspace-folders-switch" "lsp-format-buffer" "dap-debug-recent" "counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1 "dap-debug-recent" 1 "lsp-format-buffer" 1 "lsp-workspace-folders-switch" 1 "lsp-mode" 1 "lsp-describe-session" 1))) ivy-backward-delete-char (("counsel-rg" "counsel-describe-variable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-variable" 1 "counsel-rg" 1))) next-line (("use-package-report" "gdb-executable" "counsel-projectile-find-file" "use-package-report" "iedit-quit" "use-package-report" "prog-mode" "use-package-report" "use-package-report" "lsp-go-enable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-describe-function" 1 "use-package-report" 6 "prog-mode" 1 "iedit-quit" 1 "counsel-projectile-find-file" 1 "gdb-executable" 1 "esup" 1 "load-theme" 1 "writer-mode" 2 "list-colors-display" 1 "counsel-colors-emacs" 1 "package-install" 3 "version" 1 "company-box
+company-box-mode                                   Company-box minor mode.
+company-box--next-line                             
+company-box--prev-line                             
+company-box-doc-manually                           
+" 1 "company-quickhelp-manual-begin" 1 "company-show-doc-buffer" 1 "counsel-spotify-play" 1 "counsel-switch-buffer" 1 "pdf-tools-install" 1 "evil-collection-pdf-view-goto-first-page" 1 "pdf-view-scale-reset" 1 "try" 2 "c-c-combo-mode" 2 "c-c-combo--animate-insertion" 1 "iedit-mode" 1 "counsel-rg" 1 "ivy-occur" 1 "dap-debug" 5 "lsp-ui-mode" 1 "lsp-mode" 2 "lsp-ui-imenu" 1 "lsp-ui-doc-show" 1 "lsp-go-enable" 1))) counsel-describe-function (("dap-debug" "evil-collection-wgrep-setup" "evil-collection-ivy-setup" "cide--get-string-from-file" "historian-mode" "historian-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("historian-mode" 2 "cide--get-string-from-file" 1 "evil-collection-ivy-setup" 1 "evil-collection-wgrep-setup" 1 "dap-debug" 1))) counsel-find-file (("/home/nieel/dev/blog/_posts/2018-11-25-이맥스내장한글입력기사용법.md" "/home/nieel/.emacs.d/image/" "/sudo:root@nieel:/etc/default/locale" "/home/nieel/dev/cppm/src/" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/dev/cppm/src/main.cpp" "/home/nieel/Dropbox/org/china/02.org") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/config.org" 1 "/home/nieel/dev/cppm/src/main.cpp" 7 "/home/nieel/dev/cppm/src/" 1 "/sudo:root@nieel:/etc/default/locale" 1 "/home/nieel/.emacs.d/image/" 1 "/home/nieel/dev/blog/_posts/2018-11-25-이맥스내장한글입력기사용법.md" 1 "/home/nieel/dev/blog/_posts/2019-02-19-cmake_강좌_01.md" 1 "/home/nieel/dev/alchemist/Cargo.toml" 2 "/home/nieel/dev/alchemist/src/main.rs" 3 "/home/nieel/dev/alchemist/test_image/test_cpp/Dockerfile" 1 "/home/nieel/Downloads/layer개념.pdf" 6 "/home/nieel/Dropbox/org/scholl_study.org" 2 "/home/nieel/dev/school/cpp/src/main.cpp" 1 "/home/nieel/dev/school/cpp/cppm.toml" 2 "/home/nieel/dev/cppm/Dockerfile" 1 "ini
+ .init.el.un~                  
+ init.el                       
+ init.el~                      
+ init_back.el                  
+" 1 "/home/nieel/dev/go_study/main.go" 2 "/home/nieel/.emacs.d/elpa/lsp-mode-20190313.1838/lsp-clients.el" 1 ".bash
+ .bash_history                 
+ .bash_logout                  
+ .bashrc                       
+" 1 "/home/nieel/dev/go_study/go.mod" 1 "/home/nieel/Dropbox/org/china/02.org" 1))) abort-recursive-edit (("use-package-report" "use-package-report" "use-package-report" "use-package-report" "use-package-report" "pdf-tools-customize" "evil-collection-pdf-view-goto-page" "try" "counsel-rg" "paradox-list-packages") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-switch-buffer" 1 "use-package-report" 7 "pdf-tools-customize" 1 "evil-collection-pdf-view-goto-page" 1 "try" 1 "counsel-rg" 2 "
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-rg                                         Grep for a string in the current directory using rg.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+iedit-quit                                         Quit the current mode.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+" 1 "tabbar-mode" 1 "lsp-restart-workspace" 1 "paradox-list-packages" 1))) counsel-switch-buffer (("*scratch*" "*scratch*" "*Messages*" "*Messages*") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("*Messages*" 2 "*scratch*" 2))) (lambda nil (interactive) (find-file "~/.emacs.d/config.org")) (("counsel-switch-buffer") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-switch-buffer" 1))) find-file (("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package" 1))) ivy-partial-or-done (("" "/etc/default/kerneloops" "/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/.emacs.d/yas/emacs-lisp-mode/use-package" 1 "/etc/default/kerneloops" 1 "" 1))) ace-window (("writer-mode" "use-package-report" "projectile-find-file" "sudo-find-file" "easy-jekyll" "easy-jekyll" "dap-debug" "dap-debug" "gud-gdb" "lsp-ui-doc-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("ace-window" 1 "writer-mode" 1 "use-package-report" 1 "projectile-find-file" 1 "sudo-find-file" 1 "easy-jekyll" 2 "dap-debug" 2 "gud-gdb" 1 "lsp-ui-doc-mode" 1))) evil-force-normal-state (("use-package-report" "use-package-report" "counsel-projectile-find-file" "paradox-list-packages" "pdf-view-previous-page" "iedit-mode" "evil-iedit-state" "swiper-all" "customize-group" "smex-major-mode-commands") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 1 "use-package-report" 2 "counsel-projectile-find-file" 1 "paradox-list-packages" 1 "pdf-view-previous-page" 1 "iedit-mode" 1 "evil-iedit-state" 1 "swiper-all" 1 "customize-group" 1 "smex-major-mode-commands" 1))) writer-mode (("use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1))) ivy-switch-buffer (("*Messages*" "*Messages*" "*Messages*" "
  *dashboard*                    860          Dashboard                    
  *scratch*                      0            Lisp Inter…                 
- *Messages*                     1.2k         Messages B…                 
+ *Messages*                     979          Messages B…                 
  *Warnings*                     261          Special                      
 bookmarks
+config.org
 alias
 highlight-indentation.el
 highlight-indentation-autoloads.el
@@ -79,12 +258,12 @@ historian.el
 ivy-historian-autoloads.el
 flx-autoloads.el
 " "
+ config.org                     68.1k        Org          .emacs.d        .emacs.d/
  *dashboard*                    860          Dashboard                    
  *scratch*                      0            Lisp Inter…                 
- *Messages*                     979          Messages B…                 
+ *Messages*                     1.2k         Messages B…                 
  *Warnings*                     261          Special                      
 bookmarks
-config.org
 alias
 highlight-indentation.el
 highlight-indentation-autoloads.el
@@ -98,7 +277,47 @@ historian.el
 ivy-historian-autoloads.el
 flx-autoloads.el
 historian-autoloads.el
-" "*Messages*" "*Messages*" "*Messages*" "*Warnings*") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("*Warnings*" 1 "*Messages*" 3 "
+" "config.org" "*dashboard*" "
+ config.org                     69.7k        Org          .emacs.d        .emacs.d/
+ *dashboard*                    814          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     937          Messages B…                 
+ *Warnings*                     261          Special                      
+bookmarks
+c-c-combo-autoloads.el
+main.cpp
+Dockerfile
+alias
+cppm.toml
+layer개념.pdf
+scholl_study.org
+pdf-tools-autoloads.el
+main.rs
+counsel-spotify-autoloads.el
+company-dict-autoloads.el
+parent-mode-autoloads.el
+company-box-autoloads.el
+" "
+ *lsp-log*                      540          Fundamental                  
+ * eshell -1*                   6.5k         Eshell                       
+ *Messages*                     2.5k         Messages B…                 
+ main.go                        0            Go                           go_study/
+ config.org                     70.8k        Org          .emacs.d        .emacs.d/
+ main.rs                        32      *    Rust         alchemist       src/main.rs
+ *Command Line*                 3            Evil Comma… .emacs.d        
+ *dashboard*                    700          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Completions*                  188          Completion…                 
+alias
+bookmarks
+.bashrc
+lsp-clients.el
+lsp-mode.el
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("*Warnings*" 1 "*Messages*" 4 "
  *dashboard*                    860          Dashboard                    
  *scratch*                      0            Lisp Inter…                 
  *Messages*                     979          Messages B…                 
@@ -158,4 +377,1223 @@ historian.el
 ivy-historian-autoloads.el
 flx-autoloads.el
 historian-autoloads.el
-" 1 "config.org" 1))) ibuffer-visit-buffer (("use-package-report" "use-package-report" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 3))) evil-normal-state (("use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1))) evil-visual-line (("iedit-rectangle-mode" "iedit-rectangle-mode" "iedit-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "iedit-rectangle-mode" 2))) evil-forward-char (("what-face" "list-colors-display" "iedit-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "list-colors-display" 1 "what-face" 1))) nil (("what-face" "google-this" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1 "google-this" 1 "what-face" 1))) evil-delete (("company-irony") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-irony" 1))) company-irony (("company-irony") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-irony" 1))) org-use-package-install (("gdb-executable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("gdb-executable" 1))) gdb-executable (("/home/nieel/dev/cppm/build/cppm" "/home/nieel/dev/cppm/build/cppm") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/cppm/build/cppm" 2))) self-insert-command (("doom-Iosvkem" "/home/nieel/dev/cppm/build/cppm") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/cppm/build/cppm" 1 "doom-Iosvkem" 1))) doom-modeline-mode (("doom-modeline-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("doom-modeline-mode" 1))) org-cycle (("writer-mode" "writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 2))) load-theme (("doom-Iosvkem" "doom-Iosvkem" "poet" "poet") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("poet" 2 "doom-Iosvkem" 2))) ivy-previous-line (("poet") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("poet" 1))) counsel-find-library (("highlight-indentation" "highlight-indentation") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("highlight-indentation" 2))) evil-backward-char (("read-color") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("read-color" 1))) evil-insert (("what-face") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("what-face" 1))) sudo-find-file (("/etc/default/kerneloops") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/etc/default/kerneloops" 1))) eyebrowse-switch-to-window-config-2 (("writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 1)))))
+" 1 "config.org" 4 "*dashboard*" 4 "
+ config.org                     69.7k        Org          .emacs.d        .emacs.d/
+ *dashboard*                    814          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     937          Messages B…                 
+ *Warnings*                     261          Special                      
+bookmarks
+c-c-combo-autoloads.el
+main.cpp
+Dockerfile
+alias
+cppm.toml
+layer개념.pdf
+scholl_study.org
+pdf-tools-autoloads.el
+main.rs
+counsel-spotify-autoloads.el
+company-dict-autoloads.el
+parent-mode-autoloads.el
+company-box-autoloads.el
+" 1 "
+ init.el                        1.2k         Emacs Lisp   .emacs.d        .emacs.d/
+ config.org                     69.7k        Org          .emacs.d        .emacs.d/
+ *Messages*                     1.4k         Messages B…                 
+ *dashboard*                    814          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Warnings*                     261          Special                      
+bookmarks
+c-c-combo-autoloads.el
+main.cpp
+Dockerfile
+alias
+cppm.toml
+layer개념.pdf
+scholl_study.org
+pdf-tools-autoloads.el
+main.rs
+counsel-spotify-autoloads.el
+company-dict-autoloads.el
+parent-mode-autoloads.el
+" 1 "*out*<2>" 1 "*LLDB::Run stderr*" 1 "*GDB::Run stderr*" 2 "
+ main.cpp                       132          C++          cppm            src/main.cpp
+ *out*                          0            Fundamental  cppm            
+ * eshell -1*                   3.7k         Eshell       cppm            
+ *dashboard*                    788          Dashboard                    
+ config.org                     70.0k        Org          .emacs.d        .emacs.d/
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     2.2k         Messages B…                 
+ *Warnings*                     261          Special                      
+ *rdm*                          0       &    Fundamental  cppm            
+ *cmake*                        2.2k         Fundamental  cmakeJDC5Np     
+ *GDB::Run stderr*              392          Fundamental  cppm            
+alias
+bookmarks
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+" 1 "
+ main.cpp                       132          C++          cppm            src/main.cpp
+ *out*                          0            Fundamental  cppm            
+ *dashboard*                    744          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     1.3k         Messages B…                 
+ *Warnings*                     261          Special                      
+ *rdm*                          0       &    Fundamental  cppm            
+ *cmake*                        1.7k    &    Fundamental                  
+ *GDB::Run stderr*              406          Fundamental  cppm            
+bookmarks
+config.org
+alias
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+cppm.toml
+" 1 "
+ main.cpp                       132          C++          cppm            src/main.cpp
+ *dashboard*                    744          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     1.7k         Messages B…                 
+ *Warnings*                     261          Special                      
+ *rdm*                          0       &    Fundamental  cppm            
+ *cmake*                        2.2k         Fundamental  cmakeZNr1rB     
+bookmarks
+config.org
+alias
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+cppm.toml
+layer개념.pdf
+scholl_study.org
+" 1 "
+ *Messages*                     1.8k         Messages B…                 
+ main.cpp                       132          C++          cppm            src/main.cpp
+ *dashboard*                    744          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Warnings*                     261          Special                      
+ *rdm*                          0       &    Fundamental  cppm            
+ *cmake*                        2.2k         Fundamental  cmakeZNr1rB     
+bookmarks
+config.org
+alias
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+cppm.toml
+layer개념.pdf
+scholl_study.org
+" 1 "
+ *Warnings*                     261          Special                      
+ *Messages*                     1.8k         Messages B…                 
+ main.cpp                       132          C++          cppm            src/main.cpp
+ *dashboard*                    744          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *rdm*                          0       &    Fundamental  cppm            
+ *cmake*                        2.2k         Fundamental  cmakeZNr1rB     
+bookmarks
+config.org
+alias
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+cppm.toml
+layer개념.pdf
+scholl_study.org
+" 1 "
+ config.org                     70.3k        Org          .emacs.d        .emacs.d/
+ main.rs                        28           Rust         alchemist       src/main.rs
+ main.cpp                       132          C++          cppm            src/main.cpp
+ * eshell -1*                   1.5k         Eshell       cppm            
+ dap-mode.el                    55.3k        Emacs Lisp   .emacs.d        elpa/dap-mode-20190305.1955/dap-mode.el
+ *gud*                          790     &    Gud          cppm            
+ cppm.toml                      608          Toml         cppm            cppm/
+ *dashboard*                    744          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     2.8k         Messages B…                 
+ *Warnings*                     261          Special                      
+ *rdm*                          0       &    Fundamental  cppm            
+ *cmake*                        2.2k         Fundamental  cmake9hLztZ     
+ *Help*                         189          Help         .emacs.d        
+alias
+bookmarks
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+" 1 "main.rs" 2 "
+ config.org                     70.2k        Org          .emacs.d        .emacs.d/
+ *use-package statistics*       10.9k        Use Packag… .emacs.d        
+ main.rs                        27      *    Rust         alchemist       src/main.rs
+ *dashboard*                    778          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     1.3k         Messages B…                 
+ *Warnings*                     261          Special                      
+ *lsp-log*                      222          Fundamental  alchemist       
+ src                            374     !    Dired        alchemist       src/
+ *lsp session*                  0            Lsp Browser  alchemist       
+bookmarks
+dap-mode.el
+alias
+cppm.toml
+main.cpp
+config.el
+evil-collection-wgrep.el
+evil-iedit-state-autoloads.el
+init.el
+" 1 "*Compile-Log*" 1 "
+ main.go                        46           Go                           go_study/
+ *dashboard*                    803          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     1.9k         Messages B…                 
+ *Compile-Log*                  287          Compilation  .emacs.d        
+ *lsp-log*                      96           Fundamental                  
+bookmarks
+config.org
+lsp-clients.el
+lsp-mode.el
+alias
+main.rs
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+" 1 "
+ *Messages*                     1.9k         Messages B…                 
+ main.go                        46           Go                           go_study/
+ *dashboard*                    803          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Compile-Log*                  287          Compilation  .emacs.d        
+ *lsp-log*                      96           Fundamental                  
+bookmarks
+config.org
+lsp-clients.el
+lsp-mode.el
+alias
+main.rs
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+Dockerfile
+" 1 "
+ .bashrc                        4.0k         Sh                           nieel/
+ *lsp-log*                      161          Fundamental                  
+ *Messages*                     2.2k         Messages B…                 
+ main.go                        46           Go                           go_study/
+ *dashboard*                    803          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Compile-Log*                  287          Compilation  .emacs.d        
+bookmarks
+config.org
+lsp-clients.el
+lsp-mode.el
+alias
+main.rs
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+init.el
+c-c-combo-autoloads.el
+" 1 "
+ config.org                     70.8k        Org          .emacs.d        .emacs.d/
+ * eshell -1*                   2.8k         Eshell       .emacs.d        
+ main.rs                        32      *    Rust         alchemist       src/main.rs
+ *Command Line*                 3            Evil Comma… .emacs.d        
+ *dashboard*                    700          Dashboard                    
+ main.go                        47           Go                           go_study/
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     2.3k         Messages B…                 
+ *lsp-log*                      540          Fundamental                  
+ *Completions*                  218          Completion… .emacs.d        
+alias
+bookmarks
+.bashrc
+lsp-clients.el
+lsp-mode.el
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+" 1 "
+ main.go                        47           Go                           go_study/
+ config.org                     70.8k        Org          .emacs.d        .emacs.d/
+ * eshell -1*                   2.8k         Eshell       .emacs.d        
+ main.rs                        32      *    Rust         alchemist       src/main.rs
+ *Command Line*                 3            Evil Comma… .emacs.d        
+ *dashboard*                    700          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Messages*                     2.3k         Messages B…                 
+ *lsp-log*                      540          Fundamental                  
+ *Completions*                  218          Completion… .emacs.d        
+alias
+bookmarks
+.bashrc
+lsp-clients.el
+lsp-mode.el
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+" 1 "
+ *Messages*                     2.4k         Messages B…                 
+ main.go                        47           Go                           go_study/
+ config.org                     70.8k        Org          .emacs.d        .emacs.d/
+ * eshell -1*                   2.8k         Eshell       .emacs.d        
+ main.rs                        32      *    Rust         alchemist       src/main.rs
+ *Command Line*                 3            Evil Comma… .emacs.d        
+ *dashboard*                    700          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *lsp-log*                      540          Fundamental                  
+ *Completions*                  218          Completion… .emacs.d        
+alias
+bookmarks
+.bashrc
+lsp-clients.el
+lsp-mode.el
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+" 1 "
+ *lsp-log*                      540          Fundamental                  
+ * eshell -1*                   6.5k         Eshell                       
+ *Messages*                     2.5k         Messages B…                 
+ main.go                        0            Go                           go_study/
+ config.org                     70.8k        Org          .emacs.d        .emacs.d/
+ main.rs                        32      *    Rust         alchemist       src/main.rs
+ *Command Line*                 3            Evil Comma… .emacs.d        
+ *dashboard*                    700          Dashboard                    
+ *scratch*                      145          Lisp Inter…                 
+ *Completions*                  188          Completion…                 
+alias
+bookmarks
+.bashrc
+lsp-clients.el
+lsp-mode.el
+cppm.toml
+main.cpp
+config.el
+evil-iedit-state-autoloads.el
+" 1))) ibuffer-visit-buffer (("use-package-report" "use-package-report" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 3))) evil-normal-state (("iedit-mode" "iedit-mode" "iedit-mode" "iedit-mode" "
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+describe-key (C-h k)                               Display documentation of the function invoked by KEY.
+evil-mc-make-cursor-here (<visual-state> g r h)    Create a cursor at point.
+evil-mc-undo-all-cursors (SPC e m u)               Delete all cursors and remove them from ‘evil-mc-cursor-list’.
+evil-mc-make-all-cursors (SPC e m a)               Initialize ‘evil-mc-pattern’ and make cursors for all matches.
+counsel-rg                                         Grep for a string in the current directory using rg.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+" "
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+describe-key (C-h k)                               Display documentation of the function invoked by KEY.
+evil-mc-make-cursor-here (<visual-state> g r h)    Create a cursor at point.
+evil-mc-undo-all-cursors (SPC e m u)               Delete all cursors and remove them from ‘evil-mc-cursor-list’.
+evil-mc-make-all-cursors (SPC e m a)               Initialize ‘evil-mc-pattern’ and make cursors for all matches.
+counsel-rg                                         Grep for a string in the current directory using rg.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+" "evil-iedit-state
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-state/substitute                        Wipe all the occurrences and switch in ‘iedit-insert state’
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+evil-iedit-state/paste-replace                     Replace the selection with the yanked text.
+evil-iedit-state/quit-iedit-mode                   Quit iedit-mode and return set state ‘evil-iedit-state-default-state’.
+evil-iedit-state/evil-append                       Append and switch to ‘iedit-insert state’
+evil-iedit-state/evil-change                       Wipe all the occurrences and switch in ‘iedit-insert state’
+evil-iedit-state/evil-substitute                   Append and switch to ‘iedit-insert state’
+evil-iedit-state/evil-open-above                   Insert new line above and switch to ‘iedit-insert state’
+evil-iedit-state/evil-open-below                   Insert new line below and switch to ‘iedit-insert state’
+evil-iedit-state/evil-append-line                  Put the point at then end of current overlay and switch to
+evil-iedit-state/evil-insert-line                  Put the point at then end of current overlay and switch to
+evil-iedit-state/evil-end-of-line                  Go to the beginning of the current overlay.
+evil-iedit-state/evil-beginning-of-line            Go to the beginning of the current overlay.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-digit-argument-or-evil-iedit-state/evil-beg… 
+evil-multiedit-insert-state-escape                 Exit to ‘evil-multiedit-state’ and move the cursor back one, to be consistent
+" "wgrep
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+ebrowse-tags-query-replace                         Query replace FROM with TO in all files of a class tree.
+" "wgrep
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+ebrowse-tags-query-replace                         Query replace FROM with TO in all files of a class tree.
+" "prettify-symbols-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1 "iedit-mode" 4 "
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+describe-key (C-h k)                               Display documentation of the function invoked by KEY.
+evil-mc-make-cursor-here (<visual-state> g r h)    Create a cursor at point.
+evil-mc-undo-all-cursors (SPC e m u)               Delete all cursors and remove them from ‘evil-mc-cursor-list’.
+evil-mc-make-all-cursors (SPC e m a)               Initialize ‘evil-mc-pattern’ and make cursors for all matches.
+counsel-rg                                         Grep for a string in the current directory using rg.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+" 2 "evil-iedit-state
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-state/substitute                        Wipe all the occurrences and switch in ‘iedit-insert state’
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+evil-iedit-state/paste-replace                     Replace the selection with the yanked text.
+evil-iedit-state/quit-iedit-mode                   Quit iedit-mode and return set state ‘evil-iedit-state-default-state’.
+evil-iedit-state/evil-append                       Append and switch to ‘iedit-insert state’
+evil-iedit-state/evil-change                       Wipe all the occurrences and switch in ‘iedit-insert state’
+evil-iedit-state/evil-substitute                   Append and switch to ‘iedit-insert state’
+evil-iedit-state/evil-open-above                   Insert new line above and switch to ‘iedit-insert state’
+evil-iedit-state/evil-open-below                   Insert new line below and switch to ‘iedit-insert state’
+evil-iedit-state/evil-append-line                  Put the point at then end of current overlay and switch to
+evil-iedit-state/evil-insert-line                  Put the point at then end of current overlay and switch to
+evil-iedit-state/evil-end-of-line                  Go to the beginning of the current overlay.
+evil-iedit-state/evil-beginning-of-line            Go to the beginning of the current overlay.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-digit-argument-or-evil-iedit-state/evil-beg… 
+evil-multiedit-insert-state-escape                 Exit to ‘evil-multiedit-state’ and move the cursor back one, to be consistent
+" 1 "wgrep
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+ebrowse-tags-query-replace                         Query replace FROM with TO in all files of a class tree.
+" 3 "
+counsel-rg                                         Grep for a string in the current directory using rg.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+iedit-quit                                         Quit the current mode.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+" 6 "wgrep-change-to-wgrep-mode" 3 "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" 3 "ivy-occur" 2 "lsp-restart-workspace" 1 "rustic-mode" 2 "lsp-mode" 1 "lsp-describe-session" 1 "writer-mode" 1 "org-tab
+org-table-sum (C-c +)                              Sum numbers in region of current table column.
+org-table-align                                    Align the table at point by aligning all vertical bars.
+org-table-create                                   Query for a size and insert a table skeleton.
+org-table-export                                   Export table to a file, with configurable format.
+org-table-import                                   Import FILE as a table.
+org-table-convert                                  Convert from ‘org-mode’ table to table.el and back.
+org-table-iterate                                  Recalculate the table until it does not change anymore.
+org-table-recalculate                              Recalculate the current table line by applying all stored formulas.
+org-table-kill-row                                 Delete the current row or horizontal line from the table.
+org-table-move-row                                 Move the current table line down.  With arg UP, move it up.
+org-table-next-row                                 Go to the next row (same column) in the current table.
+org-table-copy-down (<S-return>)                   Copy the value of the current field one row below.
+org-table-cut-region                               Copy region in table to the clipboard and blank all relevant fields.
+org-table-edit-field (C-c `)                       Edit table field in a different window.
+org-table-fedit-menu                               Org Edit Formulas Menu
+org-table-field-info (C-c ?)                       Show info about the current field, and highlight any reference at point.
+org-table-insert-row                               Insert a new row above the current line into the table.
+org-table-next-field                               Go to the next field in the current table, creating new lines as needed.
+org-table-sort-lines                               Sort table lines according to the column at point.
+" 1 "prettify-symbols-mode" 1))) evil-visual-line (("iedit-rectangle-mode" "iedit-rectangle-mode" "iedit-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "iedit-rectangle-mode" 2))) evil-forward-char (("list-colors-display" "what-face" "pdf-view-next-page" "
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-quit (M-ESC ESC)                             Quit the current mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+pdf-view-scale-reset                               Reset PDF to its default set.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" "iedit
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-describe-key                                 Display documentation of the function invoked by Iedit mode key.
+iedit-describe-mode                                Display documentation of Iedit mode.
+iedit-rectangle-mode                               Toggle Iedit-rect mode.
+iedit-next-occurrence                              Move forward to the next occurrence in the ‘iedit’.
+iedit-prev-occurrence                              Move backward to the previous occurrence in the ‘iedit’.
+iedit-blank-occurrences                            Replace occurrences with blank spaces.
+iedit-describe-bindings                            Show a list of all keys defined in Iedit mode, and their definitions.
+iedit-restrict-function                            Restricting Iedit mode in current function.
+iedit-delete-occurrences                           Delete occurrences.
+iedit-number-occurrences                           Insert numbers in front of the occurrences.
+iedit-upcase-occurrences                           Covert occurrences to upper case.
+iedit-replace-occurrences                          Replace occurrences with STRING.
+iedit-downcase-occurrences                         Covert occurrences to lower case.
+iedit-help-for-help                                Display Iedit help menu.
+iedit-mode-from-isearch                            Start Iedit mode using last search string as the regexp.
+iedit-goto-last-occurrence                         Move to the last occurrence.
+iedit-help-for-occurrences                         Display ‘iedit-occurrence-keymap-default’
+" "describe-key" "evil-iedit-insert-state" "evil-iedit-state" "prettify-symbols-mode" "translate-region") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "list-colors-display" 1 "what-face" 1 "pdf-view-next-page" 1 "
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-quit (M-ESC ESC)                             Quit the current mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+pdf-view-scale-reset                               Reset PDF to its default set.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" 1 "iedit
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-describe-key                                 Display documentation of the function invoked by Iedit mode key.
+iedit-describe-mode                                Display documentation of Iedit mode.
+iedit-rectangle-mode                               Toggle Iedit-rect mode.
+iedit-next-occurrence                              Move forward to the next occurrence in the ‘iedit’.
+iedit-prev-occurrence                              Move backward to the previous occurrence in the ‘iedit’.
+iedit-blank-occurrences                            Replace occurrences with blank spaces.
+iedit-describe-bindings                            Show a list of all keys defined in Iedit mode, and their definitions.
+iedit-restrict-function                            Restricting Iedit mode in current function.
+iedit-delete-occurrences                           Delete occurrences.
+iedit-number-occurrences                           Insert numbers in front of the occurrences.
+iedit-upcase-occurrences                           Covert occurrences to upper case.
+iedit-replace-occurrences                          Replace occurrences with STRING.
+iedit-downcase-occurrences                         Covert occurrences to lower case.
+iedit-help-for-help                                Display Iedit help menu.
+iedit-mode-from-isearch                            Start Iedit mode using last search string as the regexp.
+iedit-goto-last-occurrence                         Move to the last occurrence.
+iedit-help-for-occurrences                         Display ‘iedit-occurrence-keymap-default’
+" 1 "describe-key" 1 "evil-iedit-insert-state" 1 "evil-iedit-state" 1 "prettify-symbols-mode" 1 "translate-region" 1))) nil (("package-autoremove" "
+swiper-all (C-S-s)                                 Run ‘swiper’ for all open buffers.
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode." "
+swiper-all (C-S-s)                                 Run ‘swiper’ for all open buffers.
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode." "
+swiper-all (C-S-s)                                 Run ‘swiper’ for all open buffers.
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode." "counsel-rg" "what-face" "google-this" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1 "google-this" 1 "what-face" 1 "counsel-rg" 1 "
+swiper-all (C-S-s)                                 Run ‘swiper’ for all open buffers.
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode." 3 "package-autoremove" 1))) evil-delete (("lsp-mode" "lsp-ui-doc-show" "company-show-doc-buffer" "company-show-doc-buffer" "company-box-mode" "company-irony") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-irony" 1 "company-box-mode" 1 "company-show-doc-buffer" 2 "lsp-ui-doc-show" 1 "lsp-mode" 1))) company-irony (("company-irony") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-irony" 1))) org-use-package-install (("gdb-executable") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("gdb-executable" 1))) gdb-executable (("/home/nieel/dev/cppm/build/cppm" "/home/nieel/dev/cppm/build/cppm") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/cppm/build/cppm" 2))) self-insert-command (("parrot" "parrot" "parrot" "/home/nieel/dev/alchemist/src/search.rs" "company-show-doc-buffer" "company-dict" "company-dict" "company-dict" "doom-Iosvkem" "doom-modeline") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/cppm/build/cppm" 11 "doom-Iosvkem" 1 "company-dict" 3 "company-show-doc-buffer" 1 "/home/nieel/dev/alchemist/src/search.rs" 1 "parrot" 3 "lsp-ui" 1 "doom-modeline" 1))) doom-modeline-mode (("doom-modeline-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("doom-modeline-mode" 1))) org-cycle (("writer-mode" "writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 2))) load-theme (("doom-Iosvkem" "doom-Iosvkem" "poet" "poet") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("poet" 2 "doom-Iosvkem" 2))) ivy-previous-line (("
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "wgrep-
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" "wgrep-
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" "wgrep-
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" "poet") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("poet" 1 "wgrep-
+wgrep-exit                                         Return to original mode.
+wgrep-finish-edit                                  Apply changes to file buffers.
+wgrep-abort-changes                                Discard all changes and return to original mode.
+wgrep-mark-deletion                                Mark as delete to current line.
+wgrep-remove-change                                Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change                            Remove changes in the whole buffer.
+wgrep-toggle-readonly-area                         Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" 3 "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" 4))) counsel-find-library (("lsp-mode" "lsp-mode" "highlight-indentation" "highlight-indentation") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("highlight-indentation" 2 "lsp-mode" 2))) evil-backward-char (("lsp-ui-doc-mode" "iedit-mode" "evil-mc-make-cursor-here" "company-c-headers" "read-color") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("read-color" 1 "company-c-headers" 1 "evil-mc-make-cursor-here" 1 "iedit-mode" 1 "lsp-ui-doc-mode" 1))) evil-insert (("company-show-doc-buffer" "what-face") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("what-face" 1 "company-show-doc-buffer" 1))) sudo-find-file (("/etc/default/kerneloops") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/etc/default/kerneloops" 1))) eyebrowse-switch-to-window-config-2 (("writer-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("writer-mode" 1))) exit-minibuffer (("mouse-major-mode-menu" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" "company-tabnine-install-binary") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-tabnine-install-binary" 1 "
+counsel-rg                                         Grep for a string in the current directory using rg.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+counsel-ag                                         Grep for a string in the current directory using ag.
+evil-iedit-state                                   Enable ‘iedit state’ interfacing iedit mode. Disable with negative ARG.
+evil-iedit-insert-state                            Enable Replace insert state in ‘iedit state’. Disable with negative ARG.
+evil-iedit-state/iedit-mode                        Start ‘iedit-mode’.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+iedit-quit                                         Quit the current mode.
+" 2 "mouse-major-mode-menu" 1))) company-dict (("company-dict") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-dict" 1))) evil-append (("company-dict") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-dict" 1))) company-show-doc-buffer (("company-complete-common") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("company-complete-common" 1))) mouse-set-point (("lsp-mode
+lsp-mode                                           (fn &optional ARG)
+lisp-mode                                          Major mode for editing Lisp code for Lisps other than GNU Emacs Lisp.
+emacs-lisp-mode                                    Major mode for editing Lisp code to run in Emacs.
+common-lisp-mode (lisp-mode)                       Major mode for editing Lisp code for Lisps other than GNU Emacs Lisp.
+lsp-ui-mode                                        Toggle language server UI mode on or off.
+lsp-lens-mode                                      toggle code-lens overlays
+lsp-browser-mode                                   Define mode for displaying lsp sessions.
+lsp--managed-mode                                  Mode for source buffers managed by lsp-mode.
+lsp-ui-peek-mode                                   Mode for lsp-ui-peek.
+lsp-ui-doc-mode                                    Minor mode for showing hover information in child frame.
+lsp-ui-imenu-mode                                  Mode showing imenu entries.
+lsp-ui-sideline-mode                               Minor mode for showing information of current line.
+lsp-ui-flycheck-list-mode                          Mode showing flycheck diagnostics for the whole workspace.
+ld-script-mode                                     A major mode to edit GNU ld script files
+lisp-interaction-mode                              Major mode for typing and evaluating Lisp forms.
+evil-collection-elisp-mode-return-or-last-sexp-t… Trigger RET or call ‘elisp-last-sexp-toggle-display’.
+flyspell-prog-mode                                 Turn on ‘flyspell-mode’ for comments and strings.
+flyspell-mode                                      Toggle on-the-fly spell checking (Flyspell mode).
+global-superword-mode                              Toggle Superword mode in all buffers.
+" "counsel-spotify-play" "counsel-spotify-play") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-spotify-play" 2 "lsp-mode
+lsp-mode                                           (fn &optional ARG)
+lisp-mode                                          Major mode for editing Lisp code for Lisps other than GNU Emacs Lisp.
+emacs-lisp-mode                                    Major mode for editing Lisp code to run in Emacs.
+common-lisp-mode (lisp-mode)                       Major mode for editing Lisp code for Lisps other than GNU Emacs Lisp.
+lsp-ui-mode                                        Toggle language server UI mode on or off.
+lsp-lens-mode                                      toggle code-lens overlays
+lsp-browser-mode                                   Define mode for displaying lsp sessions.
+lsp--managed-mode                                  Mode for source buffers managed by lsp-mode.
+lsp-ui-peek-mode                                   Mode for lsp-ui-peek.
+lsp-ui-doc-mode                                    Minor mode for showing hover information in child frame.
+lsp-ui-imenu-mode                                  Mode showing imenu entries.
+lsp-ui-sideline-mode                               Minor mode for showing information of current line.
+lsp-ui-flycheck-list-mode                          Mode showing flycheck diagnostics for the whole workspace.
+ld-script-mode                                     A major mode to edit GNU ld script files
+lisp-interaction-mode                              Major mode for typing and evaluating Lisp forms.
+evil-collection-elisp-mode-return-or-last-sexp-t… Trigger RET or call ‘elisp-last-sexp-toggle-display’.
+flyspell-prog-mode                                 Turn on ‘flyspell-mode’ for comments and strings.
+flyspell-mode                                      Toggle on-the-fly spell checking (Flyspell mode).
+global-superword-mode                              Toggle Superword mode in all buffers.
+" 1))) neotree-create-node (("/home/nieel/dev/alchemist/src/search.rs") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/alchemist/src/search.rs" 1))) evil-collection-pdf-view-previous-line-or-previous-page (("pdf-
+pdf-view-goto-page (M-g g)                         Go to PAGE in PDF.
+pdf-view-last-page (M->)                           View the last page.
+pdf-misc-minor-mode                                FIXME:  Not documented.
+pdf-sync-minor-mode                                Correlate a PDF position with the TeX file.
+pdf-view-goto-label (g l)                          Go to the page corresponding to LABEL.
+pdf-view-scale-reset (0)                           Reset PDF to its default set.
+pdf-annot-minor-mode                               Support for PDF Annotations.
+pdf-cache-clear-data                               
+pdf-links-minor-mode                               Handle links in PDF documents.
+pdf-view-reset-slice (s r)                         Reset the current slice.
+pdf-virtual-edit-mode                              Major mode when editing a virtual PDF buffer.
+pdf-virtual-view-mode                              Major mode in virtual PDF buffers.
+pdf-view-previous-page                             View the previous page in the PDF.
+pdf-history-minor-mode                             Keep a history of previously visited pages.
+pdf-isearch-batch-mode                             Isearch PDF documents batch-wise.
+pdf-isearch-minor-mode                             Isearch mode for PDF buffer.
+pdf-links-isearch-link                             
+pdf-outline-minor-mode                             Display an outline of a PDF document.
+pdf-outline-up-heading                             Like ‘outline-up-heading’, but ‘push-mark’ first.
+" "which-key-show-major-mode" "pdf-view-next-page") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-next-page" 1 "which-key-show-major-mode" 1 "pdf-
+pdf-view-goto-page (M-g g)                         Go to PAGE in PDF.
+pdf-view-last-page (M->)                           View the last page.
+pdf-misc-minor-mode                                FIXME:  Not documented.
+pdf-sync-minor-mode                                Correlate a PDF position with the TeX file.
+pdf-view-goto-label (g l)                          Go to the page corresponding to LABEL.
+pdf-view-scale-reset (0)                           Reset PDF to its default set.
+pdf-annot-minor-mode                               Support for PDF Annotations.
+pdf-cache-clear-data                               
+pdf-links-minor-mode                               Handle links in PDF documents.
+pdf-view-reset-slice (s r)                         Reset the current slice.
+pdf-virtual-edit-mode                              Major mode when editing a virtual PDF buffer.
+pdf-virtual-view-mode                              Major mode in virtual PDF buffers.
+pdf-view-previous-page                             View the previous page in the PDF.
+pdf-history-minor-mode                             Keep a history of previously visited pages.
+pdf-isearch-batch-mode                             Isearch PDF documents batch-wise.
+pdf-isearch-minor-mode                             Isearch mode for PDF buffer.
+pdf-links-isearch-link                             
+pdf-outline-minor-mode                             Display an outline of a PDF document.
+pdf-outline-up-heading                             Like ‘outline-up-heading’, but ‘push-mark’ first.
+" 1))) evil-collection-pdf-view-next-line-or-next-page (("pdf-
+pdf-outline-select-pdf-window                      Display and select the PDF document window.
+pdf-tools-disable-minor-modes                      Disable MODES in the current buffer.
+pdf-view-extract-region-image (C-c TAB)            Create a PNG image of REGIONS.
+pdf-view-position-to-register (m)                  Store current PDF position in register REGISTER.
+pdf-virtual-global-minor-mode                      Enable recognition and handling of VPDF files.
+pdf-outline-mouse-display-link                     Display the page corresponding to the position of EVENT.
+pdf-view-previous-page-command (C-k)               View the previous page in the PDF.
+pdf-info-process-assert-running                    Assert a running process.
+pdf-virtual-buffer-backward-file                   (fn &optional N INTERACTIVE-P)
+pdf-misc-menu-bar-minor-mode                       Display a PDF Tools menu in the menu-bar.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-set-slice-using-mouse (s m)               Set the slice of the images that should be displayed.
+pdf-misc-context-menu-minor-mode                   Provide a right-click context menu in PDF buffers.
+pdf-outline-move-to-current-page                   Move to the item corresponding to the current page.
+pdf-misc-size-indication-minor-mode                Provide a working size indication in the mode-line.
+pdf-view-mouse-set-region-rectangle (<M-down-mou… Like ‘pdf-view-mouse-set-region’ but displays as a rectangle.
+pdf-view-next-line-or-next-page                    Scroll upward by ARG lines if possible, else go to the next page.
+pdf-view-scroll-up-or-next-page (C-f)              Scroll page up ARG lines if possible, else go to the next page.
+pdf-util-image-map-mouse-event-proxy (<pdf-view-… Set POS-OR-AREA in EVENT to 1 and unread it.
+" "evil-collection-pdf-view-previous-line-or-previous-page" "evil-collection-pdf-view-next-line-or-next-page" "evil-collection-pdf-view-next-line-or-next-page" "pdf-view-next-page") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-next-page" 1 "evil-collection-pdf-view-next-line-or-next-page" 2 "evil-collection-pdf-view-previous-line-or-previous-page" 1 "pdf-
+pdf-outline-select-pdf-window                      Display and select the PDF document window.
+pdf-tools-disable-minor-modes                      Disable MODES in the current buffer.
+pdf-view-extract-region-image (C-c TAB)            Create a PNG image of REGIONS.
+pdf-view-position-to-register (m)                  Store current PDF position in register REGISTER.
+pdf-virtual-global-minor-mode                      Enable recognition and handling of VPDF files.
+pdf-outline-mouse-display-link                     Display the page corresponding to the position of EVENT.
+pdf-view-previous-page-command (C-k)               View the previous page in the PDF.
+pdf-info-process-assert-running                    Assert a running process.
+pdf-virtual-buffer-backward-file                   (fn &optional N INTERACTIVE-P)
+pdf-misc-menu-bar-minor-mode                       Display a PDF Tools menu in the menu-bar.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-set-slice-using-mouse (s m)               Set the slice of the images that should be displayed.
+pdf-misc-context-menu-minor-mode                   Provide a right-click context menu in PDF buffers.
+pdf-outline-move-to-current-page                   Move to the item corresponding to the current page.
+pdf-misc-size-indication-minor-mode                Provide a working size indication in the mode-line.
+pdf-view-mouse-set-region-rectangle (<M-down-mou… Like ‘pdf-view-mouse-set-region’ but displays as a rectangle.
+pdf-view-next-line-or-next-page                    Scroll upward by ARG lines if possible, else go to the next page.
+pdf-view-scroll-up-or-next-page (C-f)              Scroll page up ARG lines if possible, else go to the next page.
+pdf-util-image-map-mouse-event-proxy (<pdf-view-… Set POS-OR-AREA in EVENT to 1 and unread it.
+" 1))) pdf-view-next-page (("pdf-view-previous-page" "pdf-view-next-page") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-next-page" 1 "pdf-view-previous-page" 1))) pdf-view-previous-page (("pdf-view-previous-page" "pdf-view-previous-page" "pdf-view-previous-page" "pdf-view-previous-page") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-previous-page" 4))) eyebrowse-switch-to-window-config-1 (("which-key-show-major-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("which-key-show-major-mode" 1))) evil-collection-pdf-view-goto-first-page (("evil-collection-pdf-view-next-line-or-next-page") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("evil-collection-pdf-view-next-line-or-next-page" 1))) doc-view-previous-line-or-previous-page (("pdf-view-mode" "evil-collection-pdf-view-next-line-or-next-page") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("evil-collection-pdf-view-next-line-or-next-page" 1 "pdf-view-mode" 1))) pdf-view-mode (("pdf-view-mode" "pdf-view-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-mode" 2))) evil-ret (("lsp-restart-workspace" "Do not ask more for the current project(add \"/home/nieel/dev/alchemist/\" to lsp-session-folder-blacklist)" "Do not ask more for the current project(add \"/home/nieel/dev/alchemist/\" to lsp-session-folder-blacklist)" "lsp-describe-session" "dap-debug" "pdf-view-auto-slice-minor-mode" "pdf-outline") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-outline" 1 "pdf-view-auto-slice-minor-mode" 1 "dap-debug" 1 "lsp-describe-session" 1 "Do not ask more for the current project(add \"/home/nieel/dev/alchemist/\" to lsp-session-folder-blacklist)" 2 "lsp-restart-workspace" 1))) pdf-outline (("pdf-tools-customize-faces" "pdf-outline") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-outline" 1 "pdf-tools-customize-faces" 1))) Custom-buffer-done (("pdf-
+pdf-occur                                          List lines matching STRING or PCRE.
+pdf-outline                                        Display an PDF outline of BUFFER.
+pdf-view-mode                                      Major mode in PDF buffers.
+pdf-tools-help                                     
+pdf-view-shrink                                    Shrink PDF by FACTOR.
+pdf-outline-quit                                   Quit browsing the outline buffer.
+pdf-view-enlarge                                   Enlarge PDF by FACTOR.
+pdf-tools-install                                  Install PDF-Tools in all current and future PDF buffers.
+pdf-isearch-occur                                  Run ‘occur’ using the last search string or regexp.
+pdf-tools-customize                                Customize Pdf Tools.
+pdf-tools-uninstall                                Uninstall PDF-Tools in all current and future PDF buffers.
+pdf-view-next-page                                 View the next page in the PDF.
+pdf-view-goto-page                                 Go to PAGE in PDF.
+pdf-view-last-page                                 View the last page.
+pdf-misc-minor-mode                                FIXME:  Not documented.
+pdf-sync-minor-mode                                Correlate a PDF position with the TeX file.
+pdf-view-goto-label                                Go to the page corresponding to LABEL.
+pdf-annot-minor-mode                               Support for PDF Annotations.
+pdf-cache-clear-data                               
+") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-
+pdf-occur                                          List lines matching STRING or PCRE.
+pdf-outline                                        Display an PDF outline of BUFFER.
+pdf-view-mode                                      Major mode in PDF buffers.
+pdf-tools-help                                     
+pdf-view-shrink                                    Shrink PDF by FACTOR.
+pdf-outline-quit                                   Quit browsing the outline buffer.
+pdf-view-enlarge                                   Enlarge PDF by FACTOR.
+pdf-tools-install                                  Install PDF-Tools in all current and future PDF buffers.
+pdf-isearch-occur                                  Run ‘occur’ using the last search string or regexp.
+pdf-tools-customize                                Customize Pdf Tools.
+pdf-tools-uninstall                                Uninstall PDF-Tools in all current and future PDF buffers.
+pdf-view-next-page                                 View the next page in the PDF.
+pdf-view-goto-page                                 Go to PAGE in PDF.
+pdf-view-last-page                                 View the last page.
+pdf-misc-minor-mode                                FIXME:  Not documented.
+pdf-sync-minor-mode                                Correlate a PDF position with the TeX file.
+pdf-view-goto-label                                Go to the page corresponding to LABEL.
+pdf-annot-minor-mode                               Support for PDF Annotations.
+pdf-cache-clear-data                               
+" 1))) pdf-view-previous-page-command (("pdf-view-scale-reset") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-scale-reset" 1))) pdf-view-scale-reset (("pdf-view-mode" "pdf-view-scale-reset") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("pdf-view-scale-reset" 1 "pdf-view-mode" 1))) try (("c-c-combo" "c-c-combo" "parrot" "parrot" "parrot" "parrot" "parrot" "parrot") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("parrot" 6 "c-c-combo" 2))) c-c-combo-mode (("c-c-combo-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("c-c-combo-mode" 1))) evil-forward-WORD-end (("
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+pdf-view-scale-reset                               Reset PDF to its default set.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" "iedit-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("iedit-mode" 1 "
+iedit-quit                                         Quit the current mode.
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+pdf-view-scale-reset                               Reset PDF to its default set.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" 1))) iedit-mode (("
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-rectangle-mode (C-x r RET)                   Toggle Iedit-rect mode.
+iedit-quit (M-ESC ESC)                             Quit the current mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("
+iedit-mode (SPC f i)                               Toggle Iedit mode.
+iedit-rectangle-mode (C-x r RET)                   Toggle Iedit-rect mode.
+iedit-quit (M-ESC ESC)                             Quit the current mode.
+try                                                Try out a package from your ‘package-archives’ or pass a URL
+company-c-headers                                  Company backend for C/C++ header files.
+pdf-view-auto-slice-minor-mode                     Automatically slice pages according to their bounding boxes.
+pdf-view-mode                                      Major mode in PDF buffers.
+use-package-report                                 Show current statistics gathered about use-package declarations.
+counsel-switch-buffer                              Switch to another buffer.
+historian-mode                                     historian minor mode
+counsel-find-file (SPC f f)                        Forward to ‘find-file’.
+counsel-describe-variable (C-h v)                  Forward to ‘describe-variable’.
+writer-mode                                        poet use writer mode
+ivy-switch-buffer (SPC b m)                        Switch to another buffer.
+ivy-resume                                         Resume the last completion session.
+counsel-projectile-find-file (SPC f p f)           Jump to a file in the current project.
+company-dict                                       ‘company-mode’ backend for user-provided dictionaries. Dictionary files are lazy
+package-install                                    Install the package PKG.
+pdf-view-previous-page                             View the previous page in the PDF.
+" 1))) evil-iedit-insert-state (("evil-iedit-insert-state") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("evil-iedit-insert-state" 1))) evil-delete-backward-char-and-join (("evil-iedit-state") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("evil-iedit-state" 1))) counsel-rg (("./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" "./config.el:24:(use-package menu-bar :ensure nil :no-require t" ":no-require t
+./config.el:1186:(use-package org-use-package :no-require t
+./config.el:1266:(use-package company-yasnippet :no-require t
+./config.el:1368:(use-package cppm :no-require t
+./config.el:1532:(use-package prettify-symbol :no-require t
+./config.org:33:      (use-package menu-bar :ensure nil :no-require t
+./config.org:38:      (use-package tooltip-mode :ensure nil :no-require t
+./config.org:43:      (use-package fringe-mode :ensure nil :no-require t
+./config.org:48:      (use-package mouse :ensure nil :no-require t
+./config.org:55:  (use-package backup-mode :no-require t
+./config.org:142:    (use-package sudo-mode :no-require t
+./config.org:189:  (use-package buffer-zoom :no-require t
+./config.org:202:   (use-package face-picker :no-require t
+./config.org:294:      (use-package indent4-mode :no-require t
+./config.org:997:      (use-package org-babel :no-require t
+./config.org:1116:   (use-package execute-shell :no-require t
+./config.org:1303:  (use-package org-use-package :no-require t
+./config.org:1391:      (use-package company-yasnippet :no-require t
+./config.org:1501:      (use-package cppm :no-require t
+./config.org:1674:      (use-package prettify-symbol :no-require t
+") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("./config.el:24:(use-package menu-bar :ensure nil :no-require t" 10 ":no-require t
+./config.el:24:(use-package menu-bar :ensure nil :no-require t
+./config.el:29:(use-package tooltip-mode :ensure nil :no-require t
+./config.el:34:(use-package fringe-mode :ensure nil :no-require t
+./config.el:39:(use-package mouse :ensure nil :no-require t
+./config.el:44:(use-package backup-mode :no-require t
+./config.el:121:(use-package sudo-mode :no-require t
+./config.el:154:(use-package buffer-zoom :no-require t
+./config.el:165:(use-package face-picker :no-require t
+./config.el:248:(use-package indent4-mode :no-require t
+./config.el:921:(use-package org-babel :no-require t
+./config.el:1029:(use-package execute-shell :no-require t
+./config.el:1186:(use-package org-use-package :no-require t
+./config.el:1266:(use-package company-yasnippet :no-require t
+./config.el:1368:(use-package cppm :no-require t
+./config.el:1532:(use-package prettify-symbol :no-require t
+./config.org:33:      (use-package menu-bar :ensure nil :no-require t
+./config.org:38:      (use-package tooltip-mode :ensure nil :no-require t
+./config.org:43:      (use-package fringe-mode :ensure nil :no-require t
+./config.org:48:      (use-package mouse :ensure nil :no-require t
+" 2 ":no-require t
+./config.el:1186:(use-package org-use-package :no-require t
+./config.el:1266:(use-package company-yasnippet :no-require t
+./config.el:1368:(use-package cppm :no-require t
+./config.el:1532:(use-package prettify-symbol :no-require t
+./config.org:33:      (use-package menu-bar :ensure nil :no-require t
+./config.org:38:      (use-package tooltip-mode :ensure nil :no-require t
+./config.org:43:      (use-package fringe-mode :ensure nil :no-require t
+./config.org:48:      (use-package mouse :ensure nil :no-require t
+./config.org:55:  (use-package backup-mode :no-require t
+./config.org:142:    (use-package sudo-mode :no-require t
+./config.org:189:  (use-package buffer-zoom :no-require t
+./config.org:202:   (use-package face-picker :no-require t
+./config.org:294:      (use-package indent4-mode :no-require t
+./config.org:997:      (use-package org-babel :no-require t
+./config.org:1116:   (use-package execute-shell :no-require t
+./config.org:1303:  (use-package org-use-package :no-require t
+./config.org:1391:      (use-package company-yasnippet :no-require t
+./config.org:1501:      (use-package cppm :no-require t
+./config.org:1674:      (use-package prettify-symbol :no-require t
+" 2))) ivy-done (("writer-mode" "customize-group" "dap-debug" "dap-debug" "tabbar-mode" "counsel-rg" "counsel-rg" "counsel-rg") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("counsel-rg" 3 "tabbar-mode" 1 "dap-debug" 2 "customize-group" 1 "writer-mode" 1))) wgrep-change-to-wgrep-mode (("wgrep-
+wgrep-exit (C-x C-q)                               Return to original mode.
+wgrep-finish-edit (Z Z)                            Apply changes to file buffers.
+wgrep-abort-changes (Z Q)                          Discard all changes and return to original mode.
+wgrep-mark-deletion (C-c C-d)                      Mark as delete to current line.
+wgrep-remove-change (C-c C-r)                      Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change (C-c ESC)                  Remove changes in the whole buffer.
+wgrep-toggle-readonly-area (C-c C-p)               Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" "wgrep-
+wgrep-exit (C-x C-q)                               Return to original mode.
+wgrep-finish-edit (Z Z)                            Apply changes to file buffers.
+wgrep-abort-changes (Z Q)                          Discard all changes and return to original mode.
+wgrep-mark-deletion (C-c C-d)                      Mark as delete to current line.
+wgrep-remove-change (C-c C-r)                      Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change (C-c ESC)                  Remove changes in the whole buffer.
+wgrep-toggle-readonly-area (C-c C-p)               Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" "wgrep-
+wgrep-exit (C-x C-q)                               Return to original mode.
+wgrep-finish-edit (Z Z)                            Apply changes to file buffers.
+wgrep-abort-changes (Z Q)                          Discard all changes and return to original mode.
+wgrep-mark-deletion (C-c C-d)                      Mark as delete to current line.
+wgrep-remove-change (C-c C-r)                      Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change (C-c ESC)                  Remove changes in the whole buffer.
+wgrep-toggle-readonly-area (C-c C-p)               Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("wgrep-
+wgrep-exit (C-x C-q)                               Return to original mode.
+wgrep-finish-edit (Z Z)                            Apply changes to file buffers.
+wgrep-abort-changes (Z Q)                          Discard all changes and return to original mode.
+wgrep-mark-deletion (C-c C-d)                      Mark as delete to current line.
+wgrep-remove-change (C-c C-r)                      Remove changes in the region between BEG and END.
+wgrep-save-all-buffers                             Save the buffers that wgrep changed.
+wgrep-remove-all-change (C-c ESC)                  Remove changes in the whole buffer.
+wgrep-toggle-readonly-area (C-c C-p)               Toggle read-only area to remove a whole line.
+wgrep-change-to-wgrep-mode                         Change to wgrep mode.
+ivy-wgrep-change-to-wgrep-mode                     Forward to ‘wgrep-change-to-wgrep-mode’.
+" 3))) (lambda nil (interactive) (find-file "~/.emacs.d/config.org")) (("tabbar-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("tabbar-mode" 1))) tabbar-mode (("tabbar-mode" "tabbar-mode" "tabbar-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("tabbar-mode" 3))) dap-ui-mode (("dap-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("dap-mode" 1))) dap-mode (("dap-debug") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("dap-debug" 1))) dap-debug (("GDB Run Configuration" "/home/nieel/dev/cppm/build/cppm" "/home/nieel/dev/cppm/build/cppm" "GDB Run Configuration" "GDB Run Configuration" "GDB Run Configuration" "/home/nieel/dev/cppm/build/cppm" "/home/nieel/dev/cppm/build/cppm" "LLDB Run Configuration" "/home/nieel/dev/alchemist/target/debug/alchemist.d") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("LLDB Run Configuration" 6 "/home/nieel/dev/cppm/build/cppm" 19 "GDB Run Configuration" 27 "
+GDB Run Configuration
+LLDB Run Configuration
+" 2 "/home/nieel/dev/alchemist/target/debug/alchemist" 2 "/home/nieel/dev/alchemist/target/debug/alchemist.d" 2))) counsel-projectile-find-file (("cppm.toml") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("cppm.toml" 1))) gud-gdb (("gdb --fullname ") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("gdb --fullname " 1))) dap-debug-recent (("" "" "") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("" 3))) evil-write (("dap-debug") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("dap-debug" 1))) lsp-mode (("lsp-mode" "lsp-ui-mode" "lsp-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-mode" 2 "lsp-ui-mode" 1))) lsp-ui-mode (("lsp-ui-mode" "lsp-ui-mode" "lsp-ui-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-ui-mode" 3))) customize-group (("doom-modeline" "doom-modeline" "lsp-ui" "lsp-ui") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-ui" 2 "doom-modeline" 2))) lsp-ui-doc-mode (("lsp-ui-doc-show" "lsp-ui-doc-show") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-ui-doc-show" 2))) lsp-restart-workspace (("lsp-describe-session" "lsp-find-implementation") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-find-implementation" 1 "lsp-describe-session" 1))) lsp-find-implementation (("lsp-ui-imenu") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-ui-imenu" 1))) lsp-ui-doc-show (("lsp-workspace-folders-add") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-workspace-folders-add" 1))) lsp-workspace-folders-add (("/home/nieel/dev/alchemist/" "/home/nieel/dev/alchemist/" "/home/nieel/dev/alchemist/" "/home/nieel/dev/alchemist/" "/home/nieel/dev/alchemist/" "/home/nieel/dev/alchemist/") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/nieel/dev/alchemist/" 6))) lsp-workspace-folders-switch (("" "") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("" 2))) evil-quit (("lsp-ui-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-ui-mode" 1))) scroll-up-command (("google-this") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("google-this" 1))) fancy-battery-mode (("fancy-battery-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("fancy-battery-mode" 1))) evil-org-delete (("prettify-symbols-mode" "use-package-report") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("use-package-report" 1 "prettify-symbols-mode" 1))) neotree-toggle (("lsp") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp" 1))) lsp (("lsp-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("lsp-mode" 1))) undo-tree-undo (("org-table-create") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("org-table-create" 1))) prettify-symbols-mode (("prettify-symbols-mode") . #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("prettify-symbols-mode" 1)))))

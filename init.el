@@ -13,17 +13,15 @@
     ;(setq-default use-package-always-defer t)
 (package-initialize)
 
-(use-package auto-package-update :ensure t
-:init
-    (setq auto-package-update-delete-old-versions t)
-    (setq auto-package-update-hide-results t)
-    (auto-package-update-maybe)
+(use-package auto-package-update :ensure t :pin melpa
+:init (setq auto-package-update-delete-old-versions t)
+      (setq auto-package-update-hide-results t)
+      (auto-package-update-maybe)
 )
 
-;(require 'cc-mode)
 (use-package org :ensure t :ensure org
-    :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
-    :mode ("\\.org\\'" . org-mode)
+:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+:mode ("\\.org\\'" . org-mode)
 )
 
 (setq custom-file "~/.emacs.d/custom-variable.el")

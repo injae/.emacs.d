@@ -8,7 +8,7 @@
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
 (setq *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
-(use-package scroll-bar :ensure nil :no-require t
+(use-package scroll-bar :ensure nil
 :if window-system
 :init (scroll-bar-mode -1)
 :config
@@ -41,7 +41,7 @@
 :init (xterm-mouse-mode)
 )
 
-(use-package backup-mode :no-require t
+(use-package backup-mode :ensure nil :no-require t
 :init (setq backup-inhibited t)
       (setq auto-save-default nil)
       (setq make-backup-files nil) 
@@ -171,6 +171,118 @@
           (if face (message "Face: %s" face) (message "No face at %d" pos))))
 )
 
+(use-package evil :ensure t :pin melpa
+:init (setq evil-want-integration t)
+      (setq evil-want-keybinding nil)
+      (setq evil-want-C-u-scroll t)
+      (setq-default evil-symbol-word-search t)
+      (evil-mode 1)
+)
+
+(use-package evil-surround :ensure t :pin melpa
+;command is visual mode: y-s-i
+:after  evil
+:config (global-evil-surround-mode 1)
+)
+
+(use-package evil-mc :ensure t :pin melpa :disabled
+:after evil
+:preface
+      (defun user-evil-mc-make-cursor-here () 
+          (evil-mc-pause-cursors)
+          (evil-mc-make-cursor-here))
+:config 
+      (evil-leader/set-key "emh" #'evil-mc-make-cursors-here
+                           "ema" #'evil-mc-make-all-cursors
+                           "emp" #'evil-mc-pause-cursors
+                           "emr" #'evil-mc-resume-cursors
+                           "emu" #'evil-mc-undo-all-cursors)
+      (global-evil-mc-mode 1)
+)
+
+(use-package evil-multiedit :ensure t :pin melpa :defer t :disabled)
+(use-package evil-iedit-state :ensure t :pin melpa :after evil)
+
+
+(use-package evil-matchit :ensure t :pin melpa
+:after evil
+:config (global-evil-matchit-mode 1)
+)
+
+(use-package evil-escape :ensure t :pin melpa :disabled
+:config (setq-default evil-escape-key-sequence "jk")
+)
+
+(use-package evil-numbers :ensure t :pin melpa
+;https://github.com/cofi/evil-numbers
+:after evil
+:config
+    (global-set-key (kbd "C-c +") 'evil-number/inc-at-pt)
+    (global-set-key (kbd "C-c -") 'evil-number/dec-at-pt)
+    (evil-leader/set-key "+" 'evil-number/inc-at-pt)
+    (evil-leader/set-key "-" 'evil-number/dec-at-pt)
+)
+
+(use-package evil-leader :ensure t :pin melpa
+:after (evil which-key)
+:config 
+     (global-evil-leader-mode t)
+     (setq evil-leader/leader "<SPC>")
+     (evil-leader/set-key
+         ;"<SPC>" 'helm-smex
+         "<SPC>" 'counsel-M-x
+         "er"    'restart-emacs
+         "el"    '-reload-emacs
+         "ff"    'find-file
+         "up"    'list-processes
+         "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
+         "wf"    'toggle-frame-fullscreen
+         "wh"    'shrink-window-horizontally
+         "wj"    'enlarge-window
+         "wk"    'shrink-window
+         "wl"    'enlarge-window-horizontally
+         )
+     (which-key-declare-prefixes "SPC b  " "Buffer")
+     (which-key-declare-prefixes "SPC d  " "Debug")
+     (which-key-declare-prefixes "SPC e  " "Emacs")
+     (which-key-declare-prefixes "SPC e f" "Emacs Config")
+     (which-key-declare-prefixes "SPC e c" "Evil MultiEdit")
+     (which-key-declare-prefixes "SPC f  " "Find")
+     (which-key-declare-prefixes "SPC n  " "File Manager")
+     (which-key-declare-prefixes "SPC g  " "Git")
+     (which-key-declare-prefixes "SPC o  " "Org")
+     (which-key-declare-prefixes "SPC p  " "Paren")
+     (which-key-declare-prefixes "SPC t  " "Tabbar")
+     (which-key-declare-prefixes "SPC u  " "Utils")
+     (which-key-declare-prefixes "SPC w  " "Windows")
+     (which-key-declare-prefixes "SPC h  " "Hacking")
+     (which-key-declare-prefixes "SPC h r" "Rust")
+     (which-key-declare-prefixes "SPC h c" "C/C++")
+     (which-key-declare-prefixes "SPC h y" "Yasnippet")
+     (which-key-declare-prefixes "SPC h m" "Markdown")
+     (which-key-declare-prefixes "SPC h d" "Definition Jump")
+     (which-key-declare-prefixes "SPC f g" "Google")
+     (which-key-declare-prefixes "SPC f a" "Agrep")
+     (which-key-declare-prefixes "SPC f p" "Projectile")
+    )
+
+(use-package evil-collection :ensure t :pin melpa
+:after (evil)
+:init  (setq evil-collection-setup-minibuffer t)
+       (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
+       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
+       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
+       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
+       (evil-collection-pdf-setup)
+       (evil-collection-minibuffer-setup)
+       (evil-collection-ivy-setup)
+       (evil-collection-buff-menu-setup)
+       (evil-collection-package-menu-setup)
+       (evil-collection-eshell-setup)
+:config
+       (evil-collection-init)
+)
+
 (use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t)) 
 (use-package git-gutter :ensure t :pin melpa :defer t
 :init 
@@ -193,6 +305,29 @@
 :init   (load-theme 'doom-one t)
 :config (doom-themes-neotree-config)
         (doom-themes-org-config)
+)
+
+(use-package all-the-icons :ensure t :pin melpa)
+(use-package doom-modeline :ensure t :pin melpa
+:hook   (after-init . doom-modeline-mode)
+:config (setq find-file-visit-truename t)
+        (setq inhibit-compacting-font-caches t)
+        (setq doom-modeline-height 20)
+        ;(setq doom-modeline-icon t) ; current version has error
+        (setq doom-modeline-persp-name t)
+        (setq doom-modeline-major-mode-icon t)
+        (setq doom-modeline-lsp t)
+        (setq doom-modeline-current-window t)
+        (setq doom-modeline-python-executable "python")
+        (setq doom-modeline--flycheck-icon t)
+        (setq doom-modeline-github t)
+        (setq doom-modeline-current-window t)
+        (setq doom-modeline-major-mode-color-icon t)
+)
+
+(use-package hide-mode-line :ensure t :pin melpa
+:after (neotree)
+:hook (neotree-mode . hide-mode-line-mode)
 )
 
 ;(load-library "hideshow")
@@ -324,140 +459,18 @@
 :init     (which-key-mode t) 
 :config   (which-key-enable-god-mode-support t))
 
-(use-package evil :ensure t :pin melpa
-:init (setq evil-want-integration t)
-      (setq evil-want-keybinding nil)
-      (setq evil-want-C-u-scroll t)
-      (setq-default evil-symbol-word-search t)
-      (evil-mode 1)
-)
-
-(use-package evil-surround :ensure t :pin melpa
-;command is visual mode: y-s-i
-:after  evil
-:config (global-evil-surround-mode 1)
-)
-
-(use-package evil-mc :ensure t :pin melpa
-:after evil
-:preface
-      (defun user-evil-mc-make-cursor-here () 
-          (evil-mc-pause-cursors)
-          (evil-mc-make-cursor-here))
-:config 
-      (evil-leader/set-key "ech" #'evil-mc-make-cursors-here
-                           "ecp" #'evil-mc-pause-cursors
-                           "ecr" #'evil-mc-resume-cursors
-                           "ecu" #'evil-mc-undo-all-cursors)
-      (global-evil-mc-mode 1)
-)
-
-(use-package evil-multiedit :ensure t :pin melpa :defer t :disabled)
-
-(use-package evil-matchit :ensure t :pin melpa
-:after evil
-:config (global-evil-matchit-mode 1)
-)
-
-(use-package evil-escape :ensure t :pin melpa :disabled
-:config (setq-default evil-escape-key-sequence "jk")
-)
-
-(use-package evil-numbers :ensure t :pin melpa
-;https://github.com/cofi/evil-numbers
-:after evil
-:config
-    (global-set-key (kbd "C-c +") 'evil-number/inc-at-pt)
-    (global-set-key (kbd "C-c -") 'evil-number/dec-at-pt)
-    (evil-leader/set-key "+" 'evil-number/inc-at-pt)
-    (evil-leader/set-key "-" 'evil-number/dec-at-pt)
-)
-
-(use-package evil-leader :ensure t :pin melpa
-:after (evil which-key)
-:config 
-     (global-evil-leader-mode t)
-     (setq evil-leader/leader "<SPC>")
-     (evil-leader/set-key
-         ;"<SPC>" 'helm-smex
-         "<SPC>" 'counsel-M-x
-         "er"    'restart-emacs
-         "el"    '-reload-emacs
-         "ff"    'find-file
-         "up"    'list-processes
-         "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
-         "wf"    'toggle-frame-fullscreen
-         "wh"    'shrink-window-horizontally
-         "wj"    'enlarge-window
-         "wk"    'shrink-window
-         "wl"    'enlarge-window-horizontally
-         )
-     (which-key-declare-prefixes "SPC b  " "Buffer")
-     (which-key-declare-prefixes "SPC d  " "Debug")
-     (which-key-declare-prefixes "SPC e  " "Emacs")
-     (which-key-declare-prefixes "SPC e f" "Emacs Config")
-     (which-key-declare-prefixes "SPC e c" "Evil MultiEdit")
-     (which-key-declare-prefixes "SPC f  " "Find")
-     (which-key-declare-prefixes "SPC n  " "File Manager")
-     (which-key-declare-prefixes "SPC g  " "Git")
-     (which-key-declare-prefixes "SPC o  " "Org")
-     (which-key-declare-prefixes "SPC p  " "Projectile")
-     (which-key-declare-prefixes "SPC t  " "Tabbar")
-     (which-key-declare-prefixes "SPC u  " "Utils")
-     (which-key-declare-prefixes "SPC w  " "Windows")
-     (which-key-declare-prefixes "SPC h  " "Hacking")
-     (which-key-declare-prefixes "SPC h r" "Rust")
-     (which-key-declare-prefixes "SPC h c" "C/C++")
-     (which-key-declare-prefixes "SPC h y" "Yasnippet")
-     (which-key-declare-prefixes "SPC h m" "Markdown")
-     (which-key-declare-prefixes "SPC h d" "Definition Jump")
-     (which-key-declare-prefixes "SPC f g" "Google")
-     (which-key-declare-prefixes "SPC f a" "Agrep")
-    )
-
-(use-package evil-collection :ensure t :pin melpa
-:after  (evil)
-:init (setq evil-collection-setup-minibuffer t)
-        (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
-        (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
-        (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
-        (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
-        (evil-collection-minibuffer-setup)
-        (evil-collection-ivy-setup)
-        (evil-collection-buff-menu-setup)
-        (evil-collection-package-menu-setup)
-        (evil-collection-eshell-setup)
-:config
-        (evil-collection-init)
-)
-
-(use-package all-the-icons :ensure t :pin melpa)
-(use-package doom-modeline :ensure t :pin melpa
-:hook (after-init . doom-modeline-init)
-:init (setq doom-modeline-height 20)
-      (setq doom-modeline-icon t)
-      (setq doom-modeline-persp-name t)
-      (setq doom-modeline-major-mode-icon t)
-      (setq doom-modeline-lsp t)
-      (setq doom-modeline-python-executable "python")
-      (setq doom-modeline--flycheck-icon t)
-      (setq doom-modeline-github t)
-      (setq doom-modeline-current-window t)
-)
-
-(use-package hide-mode-line :ensure t :pin melpa
-:after (neotree)
-:hook (neotree-mode . hide-mode-line-mode)
-)
-
-(use-package nyan-mode :ensure t :pin melpa :defer t
-:init   (nyan-mode)
-:config (setq-default nyan-wavy-trail t)
+(use-package nyan-mode :ensure t :pin melpa
+:after  (doom-modeline)
+:config (nyan-mode)
+        (setq-default nyan-wavy-trail t)
         (nyan-start-animation)
-        (nyan-refresh))
-(use-package fancy-battery :ensure t :pin melpa :defer t
-:init   (fancy-battery-mode)
-:config (setq fancy-battery-show-percentage t))
+        (nyan-refresh)
+)
+(use-package fancy-battery :ensure t :pin melpa 
+:after  (doom-modeline)
+:config (fancy-battery-default-mode-line)
+        (setq fancy-battery-show-percentage t))
+        (fancy-battery-mode)
 
 (use-package diminish :ensure t :pin melpa :defer t
 :init 
@@ -528,9 +541,9 @@
 :after  (counsel projectile)
 :config (setq projectile-completion-system 'ivy)
         (counsel-projectile-mode 1)
-        (evil-leader/set-key "epf" 'counsel-projectile-find-file
-                             "epg" 'counsel-projectile-rg
-                             "ept" 'counsel-projectile-transformer)
+        (evil-leader/set-key "fpf" 'counsel-projectile-find-file
+                             "fpg" 'counsel-projectile-rg
+                             "fpt" 'counsel-projectile-transformer)
 )
 
 (use-package counsel-world-clock :ensure t :pin melpa
@@ -960,7 +973,7 @@
 :init (evil-leader/set-key "hud" 'docker)) 
 
 (use-package dockerfile-mode :ensure t :pin melpa 
-:init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+:mode   ("Dockerfile\\'" . dockerfile-mode))
 
 (use-package shell-pop :ensure t :pin melpa
 :init (setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
@@ -977,9 +990,15 @@
 
 (use-package exec-path-from-shell :ensure t :pin melpa
 :after eshell
-:config ;(exec-path-from-shell-copy-env "PATH")
-      (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
+:config (exec-path-from-shell-copy-env "PATH")
+        (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
 )
+
+(use-package eshell-did-you-mean :ensure t :pin melpa
+:after  eshell
+:config (eshell-did-you-mean-setup)
+)
+
 
 (use-package esh-help :ensure t :pin melpa
 :after eshell
@@ -1039,7 +1058,7 @@
 (use-package buffer-move :ensure t :pin melpa :defer t
 :init
     (evil-leader/set-key
-        "b s" 'ibuffer
+        "b s" 'switch-to-buffer
         "b r" 'eval-buffer
         "b h" 'buf-move-left
         "b j" 'buf-move-down
@@ -1049,30 +1068,30 @@
         "b n" 'next-buffer
         "b p" 'previous-buffer
     )
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
-)
+    (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
 
-(setq ibuffer-saved-filter-groups
-    '(("home"
-          ("emacs-config" (or (filename . ".emacs.d")
-                              (filename . "emacs-config")))
-          ("org-mode"     (or (mode . org-mode)
-                              (filename ."OrgMode")))
-          ("code"         (or (filename . "~/dev")
-                              (mode . prog-mode)
-                              (mode . c++-mode)
-                              (mode . c-mode)
-                              (mode . yaml-mode)
-                              (mode . toml-mode)
-                              (mode . lisp-mode)
-                              (mode . emacs-lisp-mode)))
-          ("magit"        (or (name . "\*magit")))
-          ("Help"         (or (name . "\*Help\*")
-                              (name . "\*Apropos\*")
-                              (name . "\*info\*")))
-     ))
+    (setq ibuffer-saved-filter-groups
+        '(("home"
+                ("emacs-config" (or (filename . ".emacs.d")
+                                    (filename . "emacs-config")))
+                ("org-mode"     (or (mode . org-mode)
+                                    (filename ."OrgMode")))
+                ("code"         (or (filename . "~/dev")
+                                    (mode . prog-mode)
+                                    (mode . c++-mode)
+                                    (mode . c-mode)
+                                    (mode . yaml-mode)
+                                    (mode . toml-mode)
+                                    (mode . lisp-mode)
+                                    (mode . emacs-lisp-mode)))
+                ("magit"        (or (name . "\*magit")))
+                ("Help"         (or (name . "\*Help\*")
+                                    (name . "\*Apropos\*")
+                                    (name . "\*info\*")))
+        ))
+    )
+    (add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 )
-(add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 
 (use-package ibuffer-projectile :ensure t :pin melpa :disabled
 :after (projectile)
@@ -1095,8 +1114,8 @@
 (use-package dashboard :ensure t :pin melpa :defer t
 :init (dashboard-setup-startup-hook)
 :config 
-    (setq dashboard-banner-logo-title "Happy Hacking")
-    ;(setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
+    (setq dashboard-banner-logo-title "We are Emacsian!")
+    (setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
     (setq show-week-agenda-p t)
     (setq dashboard-items '((recents   . 5)
@@ -1105,26 +1124,25 @@
                             (agenda    . 5)))
 )
 
-(use-package tabbar :ensure t :pin melpa
-:after (powerline evil-leader)
-:commands (tabbar-mode)
+(use-package tabbar :ensure t :pin melpa :disabled
+:after (doom-modeline powerline)
 :preface
 (defvar my/tabbar-left  "/"  "Separator on left side of tab")
 (defvar my/tabbar-right "\\" "Separator on right side of tab")
 (defun my/tabbar-tab-label-function (tab)
     (powerline-render (list my/tabbar-left (format " %s  " (car tab)) my/tabbar-right)))
-:init (tabbar-mode 1)
+:init  (tabbar-mode 1)
 :config
-      (require 'tabbar)
-      (setq my/tabbar-left  (powerline-wave-right 'tabbar-default nil 24))
-      (setq my/tabbar-right (powerline-wave-left  nil 'tabbar-default 24))
-      (setq tabbar-tab-label-function 'my/tabbar-tab-label-function)
-      (setq tabbar-use-images nil)
-      (setq tabbar-scroll-left-button  nil)
-      (setq tabbar-scroll-right-button nil)
-      (setq tabbar-home-button nil)
-      (evil-leader/set-key "th" 'tabbar-forward-tab)
-      (evil-leader/set-key "tl" 'tabbar-backward-tab)
+     (require 'tabbar)
+     (setq my/tabbar-left  (powerline-wave-right 'tabbar-default nil 24))
+     (setq my/tabbar-right (powerline-wave-left  nil 'tabbar-default 24))
+     (setq tabbar-tab-label-function 'my/tabbar-tab-label-function)
+     (setq tabbar-use-images nil)
+     (setq tabbar-scroll-left-button  nil)
+     (setq tabbar-scroll-right-button nil)
+     (setq tabbar-home-button nil)
+     (evil-leader/set-key "th" 'tabbar-forward-tab)
+     (evil-leader/set-key "tl" 'tabbar-backward-tab)
 )
 
 (use-package symon :ensure t :pin melpa :defer t)
@@ -1159,8 +1177,10 @@
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
 )
 
-(use-package wgrep :ensure t :pin melpa :defer t
-:config (setq wgrep-auto-save buffer t)
+(use-package wgrep :ensure t :pin melpa
+:after evil-collection
+:config (setq wgrep-auto-save-buffer t)
+        (evil-collection-wgrep-setup)
        ;(setq wgrep-enable-key "r")
 )
 
@@ -1236,22 +1256,41 @@
 :init (evil-leader/set-key "s" 'helm-flyspell-correct)
 )
 
+(use-package pdf-tools :ensure t :pin melpa :defer t)
+
 (use-package company :ensure t :pin melpa
 :init (global-company-mode 1)
 :config 
     (setq company-idle-delay 0)
+    (setq company-tooltip-align-annotations t)
     (setq company-minimum-prefix-length 1)
-    (setq company-show-numbers t)
     (define-key company-active-map (kbd "M-n") 0)
     (define-key company-active-map (kbd "M-p") 0)
     (define-key company-active-map (kbd "C-n") 'company-select-next)
     (define-key company-active-map (kbd "C-p") 'company-select-previous)
 )
 
+(use-package company-yasnippet :no-require t
+:after company
+:preface
+(defun company-mode/backend-with-yas (backend)
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+    (append (if (consp backend) backend (list backend))
+            '(:with company-yasnippet))))
+:config (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+)
+
 (use-package company-quickhelp :ensure t :pin melpa
 :after  company
 :config (company-quickhelp-mode)
-       ;(evil-leader/set-key "hch" 'company-quickhelp-manual-begin)
+        (define-key company-active-map (kbd "C-h") #'company-quickhelp-manual-begin)
+)
+
+(use-package company-dict :ensure t :pin melpa
+:after  company
+:config (setq company-dict-dir (concat user-emacs-directory "dict/"))
+        (add-to-list 'company-backends 'company-dict)
 )
 
 (use-package company-statistics :ensure t :pin melpa
@@ -1259,7 +1298,8 @@
 :config (company-statistics-mode)
 )
 
-(use-package company-tabnine :ensure t :pin melpa
+(use-package company-tabnine :ensure t :pin melpa 
+;first install: company-tabnine-install-binary
 :after  company
 :config (add-to-list 'company-backend #'company-tabnine)
         (company-tng-configure-default)
@@ -1269,23 +1309,24 @@
 )
 
 (use-package lsp-mode :ensure t :pin melpa
-:commands (lsp-prog-major-mode-enable)
-:hook (prog-major-mode . lsp-prog-major-mode-enable)
-:config (setq lsp-inhibit-message t)
-      (setq lsp-message-project-root-warning t)
-      (setq create-lockfiles nil)
+:commands lsp
+;:init   (add-hook 'prog-mode-hook 'lsp)
+:config (require 'lsp-clients)
+        (require 'lsp-imenu)
+        (setq lsp-inhibit-message t)
+        (setq lsp-message-project-root-warning t)
+        (setq create-lockfiles nil)
 )
 
 (use-package lsp-ui :ensure t :pin melpa
 :after  lsp-mode
 :hook   (lsp-mode . lsp-ui-mode)
 :config (setq scroll-margin 0)
-        (require 'lsp-clients)
 )
 
 (use-package company-lsp :ensure t :pin melpa
-:after   (lsp-mode company)
-:init    (add-to-list 'company-backends #'company-lsp)
+:after  (lsp-mode company)
+:config (add-to-list 'company-backends #'company-lsp)
 )
 
 (use-package flycheck :ensure t :pin melpa
@@ -1332,13 +1373,19 @@
 :config (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 )
 
+(use-package cppm :no-require t
+:after cc-mode
+:config (evil-leader/set-key "hcb" (lambda () (eshell-command "cppm build"))
+                             "hcr" (lambda () (eshell-command "cppm run")))
+)
+
 (use-package company-c-headers :ensure t :pin melpa
 :after (company cc-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
 )
 (use-package clang-format :ensure t :pin melpa
 :after (cc-mode)
-:config (evil-leader/set-key "hcf" 'clang-format-regieon)
+:config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
 (use-package rtags :ensure t :pin melpa
 :after (cc-mode)
@@ -1346,8 +1393,8 @@
     (setq rtags-autostart-diagnostics t)
     (rtags-diagnostics)
     (setq rtags-completions-enabled t) (rtags-enable-standard-keybindings)
-    (evil-leader/set-key "hcs" 'rtags-find-symbol
-                         "hcr" 'rtags-find-references) 
+    (evil-leader/set-key "hcfs" 'rtags-find-symbol
+                         "hcfr" 'rtags-find-references) 
 )
 
 (use-package ivy-rtags :ensure t :pin melpa
@@ -1416,9 +1463,15 @@
 :config (add-to-list 'company-backends 'company-irony-c-headers)
 )
 
-(use-package dap-mode :ensure t :pin melpa :defer t
+(use-package dap-mode :ensure t :pin melpa
+:commands (dap-debug)
 :init   (evil-leader/set-key "dd" 'dap-debug)
-:config (require 'dap-lldb)
+:config
+        (setq dap-gdb-lldb-path (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/"))
+        (setq dap-gdb-lldb-debug-program (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js"))
+        (require 'dap-gdb-lldb) ; gdb mode
+        (dap-ui-mode 1)
+        (dap-mode 1)
 )
 
 (use-package gdb-mi 
@@ -1519,12 +1572,12 @@
     "Rust and Racer install-linux" 
     (interactive)
     (eshell-command "curl https://sh.rustup.rs -sSf | sh")
-    (racer-install)
 )
 
-(use-package rust-mode :ensure t :pin melpa
-:commands rust-mode
+(use-package rust-mode :ensure t :pin melpa 
+:commands rust-mode 
 :mode (("\\.rs\\'" . rust-mode))
+:init (add-hook 'rust-mode-hook 'lsp-rust-enable)
 :config (evil-leader/set-key "hrf" 'rust-format-buffer)
 ;:config (setq rust-format-on-save t)
 ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
@@ -1543,7 +1596,7 @@
 )
 
 (use-package company-racer :ensure t :pin melpa
-:after (company racer)
+:after  (company racer)
 :config (add-to-list 'company-backends 'company-racer)
 )
 
@@ -1639,12 +1692,21 @@
 ;:config (jedi:complete-on-dot t)
 )
 
+(use-package lsp-python :ensure t :pin melpa
+:hook (python-mode . lsp-python-enable)
+)
+
 (use-package i3wm :ensure t :pin melpa :defer t :disabled)
 
 (use-package company-shell :ensure t :pin melpa :defer t
 :after (company eshell)
 :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
 )
+
+(use-package go-mode :ensure t :pin melpa
+:mode ("\\.go\\''" . go-mode)
+)
+
 
 (use-package lsp-go :ensure t :pin melpa
 :after  (lsp-mode go-mode)
