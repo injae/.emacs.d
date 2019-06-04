@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Make main function
+# key: main
+# --
+
+int main(int argc, char* argv[]) {
+
+    return 0;
+}
+

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Class Generater
+# key: class
+# --
+
+class $1 {
+public:
+    $1() {}
+private:
+};

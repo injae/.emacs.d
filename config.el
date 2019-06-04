@@ -81,10 +81,10 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(set-face-attribute   'default            nil       :family "DejaVu Sans Mono" :height 110)
+(set-face-attribute   'default            nil       :family "D2Coding" :height 120)
 (set-fontset-font nil 'hangul            (font-spec :family "D2Coding" :pixelsize 18))
 (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding" :pixelsize 18))
-(setq face-font-rescale-alist '(("D2coding" . 1.2)))
+(setq face-font-rescale-alist '(("D2coding" . 1.0)))
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
 
@@ -146,7 +146,7 @@
 
 (use-package esup :ensure t :pin melpa :defer t)
 
-(server-start)
+;(server-start)
 
 ;https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
   (setq warning-minimum-level :error)
@@ -181,6 +181,8 @@
 
 (use-package evil-surround :ensure t :pin melpa
 ;command is visual mode: y-s-i
+; 감싸기: => y-s-i-w-감싸고 싶은거( "(", "{", "[")
+; 벗기기: => c-s-벗기고 싶은거( "(", "{", "[")
 :after  evil
 :config (global-evil-surround-mode 1)
 )
@@ -308,19 +310,33 @@
 )
 
 (use-package all-the-icons :ensure t :pin melpa)
-(use-package doom-modeline :ensure t :pin melpa
-:hook   (after-init . doom-modeline-mode)
-:config (setq find-file-visit-truename t)
+(use-package doom-modeline :ensure t :pin melpa :defer t
+:hook   (after-init . doom-modeline-init)
+:init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
-        (setq doom-modeline-height 20)
+        (setq doom-modeline-height 30)
         ;(setq doom-modeline-icon t) ; current version has error
         (setq doom-modeline-persp-name t)
         (setq doom-modeline-major-mode-icon t)
+        (setq doom-modeline-enable-word-count t)
         (setq doom-modeline-lsp t)
         (setq doom-modeline-current-window t)
+        (setq doom-modeline-env-version t)
+        (setq doom-modeline-env-enable-python t)
         (setq doom-modeline-python-executable "python")
-        (setq doom-modeline--flycheck-icon t)
+        (setq doom-modeline-env-enable-ruby t)
+        (setq doom-modeline-env-ruby-executable "ruby")
+        (setq doom-modeline-env-enable-elixir t)
+        (setq doom-modeline-env-elixir-executable "iex")
+        (setq doom-modeline-env-enable-go t)
+        (setq doom-modeline-env-go-executable "go")
+        (setq doom-modeline-env-enable-perl t)
+        (setq doom-modeline-env-perl-executable "perl")
+        (setq doom-modeline-env-enable-rust t)
+        (setq doom-modeline-env-rust-executable "rustc")
         (setq doom-modeline-github t)
+        (setq doom-modeline--battery-status t)
+        (setq doom-modeline--flycheck-icon t)
         (setq doom-modeline-current-window t)
         (setq doom-modeline-major-mode-color-icon t)
 )
@@ -328,6 +344,25 @@
 (use-package hide-mode-line :ensure t :pin melpa
 :after (neotree)
 :hook (neotree-mode . hide-mode-line-mode)
+)
+
+(use-package nyan-mode :ensure t :pin melpa
+;:after  (doom-modeline)
+:config (nyan-mode)
+        (setq-default nyan-wavy-trail t)
+        (nyan-start-animation)
+        (nyan-refresh)
+)
+(use-package fancy-battery :ensure t :pin melpa 
+;:after  (doom-modeline)
+:config (fancy-battery-default-mode-line)
+        (setq fancy-battery-show-percentage t))
+        (fancy-battery-mode)
+
+(use-package diminish :ensure t :pin melpa :defer t
+:init 
+    (diminish 'c++-mode "C++ Mode")
+    (diminish 'c-mode   "C Mode"  )
 )
 
 ;(load-library "hideshow")
@@ -458,25 +493,6 @@
 :commands (which-key-mode)
 :init     (which-key-mode t) 
 :config   (which-key-enable-god-mode-support t))
-
-(use-package nyan-mode :ensure t :pin melpa
-:after  (doom-modeline)
-:config (nyan-mode)
-        (setq-default nyan-wavy-trail t)
-        (nyan-start-animation)
-        (nyan-refresh)
-)
-(use-package fancy-battery :ensure t :pin melpa 
-:after  (doom-modeline)
-:config (fancy-battery-default-mode-line)
-        (setq fancy-battery-show-percentage t))
-        (fancy-battery-mode)
-
-(use-package diminish :ensure t :pin melpa :defer t
-:init 
-    (diminish 'c++-mode "C++ Mode")
-    (diminish 'c-mode   "C Mode"  )
-)
 
 (use-package ivy :ensure t :pin melpa :defer t
 :after evil-collection
@@ -726,6 +742,10 @@
     (setq neo-force-change-root t)
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-show-hidden-files t)
+)
+(use-package all-the-icons-dired :ensure t :pin melpa
+:after all-the-icons
+:init  (add-hook 'dired-mode-hook 'all-the-dired-mode)
 )
 
 (use-package ace-window :ensure t :pin melpa
@@ -1001,7 +1021,7 @@
 
 
 (use-package esh-help :ensure t :pin melpa
-:after eshell
+:after (eshell eldoc)
 :config (setup-esh-help-eldoc)
 )
 
@@ -1043,6 +1063,10 @@
     (call-process-shell-command "command" nil 0))
 :config (add-to-list 'display-buffer-alist
         (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+)
+
+(use-package vterm :load-path "lisp/emacs-libvterm"
+:config (display-line-numbers-mode 0)
 )
 
 (use-package command-log-mode :ensure t :pin melpa :defer t)
@@ -1170,11 +1194,21 @@
 
 (use-package esup :ensure t :pin melpa :defer t)
 
-(use-package flyspell :ensure t :pin melpa :defer t
-:init
+(use-package flyspell :ensure t :pin melpa
+:config
+    (setq ispell-program-name "hunspell")
+    (setq ispell-dictionary "en_US")
+    (evil-leader/set-key "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)))
+    (evil-leader/set-key "se" (lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)))
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+)
+
+(use-package flyspell-correct-ivy :ensure t :pin melpa 
+:bind (:map flyspell-mode-map ("C-c $" . flyspell-correct-word-generic))
+:config 
+    (evil-leader/set-key "ss" 'flyspell-correct-word-generic)
 )
 
 (use-package wgrep :ensure t :pin melpa
@@ -1212,7 +1246,7 @@
                     (window-height . 0.4)))
 
 (use-package helm-projectile :ensure t :pin melpa :disabled
-:after projectile
+:after (helm projectile)
 :init (helm-projectile-on)
 ))
 (use-package helm-company :ensure t :pin melpa :disabled
@@ -1264,20 +1298,20 @@
     (setq company-idle-delay 0)
     (setq company-tooltip-align-annotations t)
     (setq company-minimum-prefix-length 1)
-    (define-key company-active-map (kbd "M-n") 0)
-    (define-key company-active-map (kbd "M-p") 0)
-    (define-key company-active-map (kbd "C-n") 'company-select-next)
-    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    (setq company-dict-enable-yasnippet t)
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n")        'company-select-next)
+    (define-key company-active-map (kbd "C-p")        'company-select-previous)
+    (define-key company-active-map (kbd "C-<return>") 'company-complete-selection)
 )
 
 (use-package company-yasnippet :no-require t
 :after company
 :preface
 (defun company-mode/backend-with-yas (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-    (append (if (consp backend) backend (list backend))
-            '(:with company-yasnippet))))
+    (if (and (listp backend) (member 'company-yasnippet backend)) 
+    backend (append (if (consp backend) backend (list backend)) '(:with company-yasnippet))))
 :config (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 )
 
@@ -1310,22 +1344,23 @@
 
 (use-package lsp-mode :ensure t :pin melpa
 :commands lsp
-;:init   (add-hook 'prog-mode-hook 'lsp)
-:config (require 'lsp-clients)
-        (require 'lsp-imenu)
-        (setq lsp-inhibit-message t)
+:config (setq lsp-inhibit-message t)
         (setq lsp-message-project-root-warning t)
         (setq create-lockfiles nil)
 )
 
 (use-package lsp-ui :ensure t :pin melpa
-:after  lsp-mode
-:hook   (lsp-mode . lsp-ui-mode)
+:commands lsp-ui-mode
+:after  (lsp-mode flycheck)
 :config (setq scroll-margin 0)
+        ;(lsp-ui-flycheck-enable)
+        ;(lsp-ui-sideline-mode)
+        ;(lsp-ui-peek-mode)
 )
 
 (use-package company-lsp :ensure t :pin melpa
-:after  (lsp-mode company)
+:commands company-lsp
+:after  (company lsp-mode)
 :config (add-to-list 'company-backends #'company-lsp)
 )
 
@@ -1338,8 +1373,9 @@
 :after   flycheck
 :config (flycheck-pos-tip-mode))
 
+(use-package quick-peek :ensure t :pin melpa :after flychcek)
 (use-package flycheck-inline :ensure t :pin melpa
-:after flycheck
+:after (flycheck quick-peek)
 :config
     (setq flycheck-inline-display-function
         (lambda (msg pos)
@@ -1380,19 +1416,59 @@
 )
 
 (use-package company-c-headers :ensure t :pin melpa
-:after (company cc-mode)
+:after  (company cc-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
 )
+
 (use-package clang-format :ensure t :pin melpa
-:after (cc-mode)
+:after  (cc-mode)
 :config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
-(use-package rtags :ensure t :pin melpa
+
+(use-package irony :ensure t :pin melpa :diminish irony-mode
 :after (cc-mode)
+:hook ((c++-mode  . irony-mode)
+       (c-mode    . irony-mode)
+       (objc-mode . irony-mode))
 :config
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+    (setq irony-additional-clang-options '("-std=c++17"))
+    (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
+)
+
+(use-package irony-eldoc :ensure t :pin melpa
+    :after (irony eldoc)
+    :config (add-hook 'irony-mode-hook #'irony-eldoc)
+)
+
+(use-package company-irony :ensure t :pin melpa
+:after  (company irony)
+:config (add-to-list 'company-backends 'company-irony)
+)
+
+(use-package flycheck-irony :ensure t :pin melpa :after (flycheck irony) :config (flycheck-irony-setup))
+
+(use-package company-irony-c-headers :ensure t :pin melpa
+:after  (company-c-headers irony)
+:config (add-to-list 'company-backends 'company-irony-c-headers)
+)
+
+(use-package rtags :ensure t :pin melpa 
+:after (cc-mode)
+:custom (rtags-verify-protocol-version nil "rtags version bug fix")
+:preface
+(defun setup-flycheck-rtags ()
+  (interactive)
+  (flycheck-select-checker 'rtags)
+  ;; RTags creates more accurate overlays.
+  (setq-local flycheck-highlighting-mode nil)
+  (setq-local flycheck-check-syntax-automatically nil))
+:config
+    (rtags-enable-standard-keybindings)
     (setq rtags-autostart-diagnostics t)
     (rtags-diagnostics)
-    (setq rtags-completions-enabled t) (rtags-enable-standard-keybindings)
+    (setq rtags-completions-enabled t) 
+    (rtags-start-process-unless-running)
     (evil-leader/set-key "hcfs" 'rtags-find-symbol
                          "hcfr" 'rtags-find-references) 
 )
@@ -1406,6 +1482,7 @@
 :after  (company rtags)
 :config (add-to-list 'company-backend 'company-rtags))
 (use-package flycheck-rtags :ensure t :pin melpa
+:after (flycheck rtags)
 :preface
     (defun my-flycheck-rtags-setup ()
         (flycheck-select-checker 'rtags)
@@ -1420,47 +1497,20 @@
 )
 
 (use-package cmake-ide :ensure t :pin melpa
-:after cc-mode
+:after (cc-mode) 
 :config
     (require 'subr-x)
     (cmake-ide-setup)
     (setq cmake-ide-flags-c++ (append '("-std=c++17")))
-    (defadvice cmake-ide--run-cmake-impl
-      (after copy-compile-commands-to-project-dir activate)
-      (if (file-exists-p (concat project-dir "/compile_commands.json"))
-      (progn 
-      (cmake-ide--message "[advice] found compile_commands.json" )
-      (copy-file (concat project-dir "compile_commands.json") cmake-dir)
-      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
-      (cmake-ide--message "[advice] couldn't find compile_commands.json" )))
-)
-
-(use-package irony :ensure t :pin melpa :diminish irony-mode
-:after cc-mode
-:config
-    (setq irony-additional-clang-options '("-std=c++17"))
-    (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
-    (add-hook 'c++-mode-hook   'irony-mode)
-    (add-hook 'c-mode-hook     'irony-mode)
-    (add-hook 'objc-mode-hook  'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-)
-
-(use-package irony-eldoc :ensure t :pin melpa
-:after (irony eldoc)
-:hook irony-mode
-)
-(use-package company-irony :ensure t :pin melpa
-:after  (company irony)
-:config (add-to-list 'company-backends 'company-irony)
-)
-(use-package flycheck-irony :ensure t :pin melpa
-:after  (flycheck irony)
-:config (flycheck-irony-setup)
-)
-(use-package company-irony-c-headers :ensure t :pin melpa
-:after  (company-c-headers irony)
-:config (add-to-list 'company-backends 'company-irony-c-headers)
+    ;(defadvice cmake-ide--run-cmake-impl
+    ;  (after copy-compile-commands-to-project-dir activate)
+    ;  (if (file-exists-p (concat project-dir "/build/compile_commands.json"))
+    ;  (progn 
+    ;      (cmake-ide--message "[advice] found compile_commands.json" )
+    ;      (copy-file (concat project-dir "compile_commands.json") cmake-dir)
+    ;      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
+    ;      (cmake-ide--message "[advice] couldn't find compile_commands.json" ))
+    ;)
 )
 
 (use-package dap-mode :ensure t :pin melpa
@@ -1488,9 +1538,12 @@
       ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gub-tbreak) (call-interactively 'gud-cont)))
 )
 
+; only c/c++
+(use-package disaster :ensure t :pin melpa :commands disaster)
+
 (use-package eldoc :ensure t :pin melpa :diminish eldoc-mode)
-(use-package eldoc-rtags
-:after (eldoc-rtags)
+(use-package eldoc-rtags :no-require t
+:after (eldoc rtags)
 :preface
     (defun fontify-string (str mode)
         "Return STR fontified according to MODE."
@@ -1696,6 +1749,21 @@
 :hook (python-mode . lsp-python-enable)
 )
 
+(use-package dart-mode :ensure t :pin melpa
+:after lsp
+:mode ("\\.dart\\'" . dart-mode)
+:custom (dart-format-on-save t)
+        (dart-enable-analysis-server t)
+        (dart-sdk-path (expand-file-name "~/dev/flutter/bin/cache/dart-sdk/"))
+:init (add-hook 'dart-mode-hook 'lsp)
+)
+
+(use-package flutter :ensure t :pin melpa
+:after dart-mode
+:bind (:map dart-mode-map ("C-M-x" . #'flutter-run-or-hot-reload))
+:custom (flutter-sdk-path (expand-file-name "~/dev/flutter/"))
+)
+
 (use-package i3wm :ensure t :pin melpa :defer t :disabled)
 
 (use-package company-shell :ensure t :pin melpa :defer t
@@ -1706,7 +1774,6 @@
 (use-package go-mode :ensure t :pin melpa
 :mode ("\\.go\\''" . go-mode)
 )
-
 
 (use-package lsp-go :ensure t :pin melpa
 :after  (lsp-mode go-mode)

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Make Virtual Function
+# key: virtual
+# --
+virtual $1 $2($3) = 0;

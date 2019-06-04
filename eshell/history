@@ -2,127 +2,127 @@ cppm build
 cppm build
 cppm run
 cppm build
-cppm build
-cppm build -h
-cppm build
+cppm run
 cppm build
 cppm run
-a
-cppm build
 cppm build
 cppm build
 cppm build
 cppm run
-cppm buidl
 cppm build
-cppm buidl
 cppm build
 cppm run
+cppm build
+cppm build
+cppm build
 cppm run
 cppm build
 cppm run
-cppm run
-cppm run
-ls
-cd ../../
-ls
-cd ../cppm
-ls
-cppm build --release
-ls
-cd ../../
-ls
-cd ../cppm
-ls
-cppm build --release
-ls
-cd ../cppm
-ls
-cd dev/cppm
-ls
-cppm build --release
-cppm build install
-cd ../cppm
-ls
-cd dev/cppm
-ls
-cppm build --release
 cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm build
+cppm build
+cppm build
+cppm build
+cppm build
+cppm run
+cppm build
+./omp_loop1 
+./pi_num_integration 
+./omp_pi_num_integration
+./omp_hello 
+./omp_hello 
+./omp_loop_ordered 
+time ./pi_num_integration 
+time ./omp_pi_num_integration
+./cond_var
+touch /tmp/my_fifo
+ls
+./fiio_write
+./fifo_write
+ls -a
+chown -x fifo_write 
+chmod -x fifo_write 
+ls -al
+ls -al fifo_write 
+cd ../
+ls
+cd 6.io_interface/
+make
+cd ../
+ls
+cd 8.pthread/
+./fifo_write 
+./fifo_write 
+ls
+cd ../6.io_interface/
+./fifo_write
+cd ../
+ls
+./cond_var
+./cond_var
+cd 8.pthread/
+./fifo_write
+cd ../6.io_interface/
+ls
+make
+make all
+clear
+ls
+rm fifo_write
+make
+./fifo_write
+ls
+mkdir ../dev/treasure
+mv -r Loopang/ ../dev/treasure/
+mv  Loopang/ ../dev/treasure/
+ls
+cd ../
+cd dev/treasure/
 ls
 cd ../
 ls
-cd school/
+cd ../school/
 ls
-cd cppm
-cd cppm
-cd cpp
 ls
-cppm build
-cppm run
-cppm build
-cppm run
-cppm build
-cppm run
-cppm build
-cppm run
-cppm build
-ls
-cp Downloads/emacs-logo.png .emacs.d/image/emacs_icon.png 
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-docker build -t cppm-test .
-ls
-cppm build -d
-ls
-ls ../../../.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js 
-cd ../../../.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js 
-cd ../../../.vscode/extensions/webfreak.debug-0.22.0/out/src
-ls
-pwd
-node -h
-cppm build --debug
-rustup update
-rustup component add rls rust-analysis rust-src
-rustup component add clippy --toolchain stable-x86_64-unknown-linux-gnu
-rls -h
-rls --version
+cd elpa/rtags-20190410.1615/
 ls
 cd ../
-ls
-cd test_image/
-ls
 cd ../../
 ls
-mkdir go_study
-cd go_study/
+cd school/cpp/src/
+cppm build
+cppm build
+cppm build
+cppm build
+cd ../build/
+cppm build
+./cpp 
+cppm build
+./cpp
+cppm build
+cppm run
+rtags --version
+cd ~/.emacs.d/elpa/rtags-20190410.1615/rtags-2.31/
 ls
-touch main.go
-go -v
-go get -u github.com/sourcegraph/go-langserver
-pip3 install python-language-server
+cd bin/
 ls
-cd ../dev
-ls
-rm go_study/
-rm -r go_study/
-go mod init go_study
-ls
-rm go.mod 
-go init 0h
-go init -h
-go init --help
-go init help
-mkdir go_study
-cd go_study/
-ls
-go mod init go_study
-ls
-touch main.go
-ls
+./rc --version
+./rp --version
+cd ~/school/cpp/build/
+cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+hunspell -D
+cppm build
+cppm build
+cppm build
+cppm build
+cppm build
+cppm run

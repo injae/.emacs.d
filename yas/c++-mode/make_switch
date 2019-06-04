@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Mak Switch
+# key: switch
+# --
+
+switch($1) {
+$2
+default:
+    break;
+}

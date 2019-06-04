@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: make setter
+# key: set_
+# --
+
+void set_$1($2 $1) { $1_ = $1; }
