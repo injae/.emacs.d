@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/school/" "~/.emacs.d/lisp/emacs-libvterm/" "~/AndroidStudioProjects/Loopang/" "~/dev/cppm/" "~/dev/cppm_tools/" "~/dev/cppkg/" "~/dev/nlpo/" "~/dev/test/cppm-rust/" "~/dev/test/cppm/" "~/dev/alchemist/" "~/dev/blog/" "~/.cppm/install/fmt/lastest/" "~/")
+("~/.emacs.d/" "~/dev/rstudy/" "~/school/" "~/dev/cppm/" "~/.emacs.d/lisp/emacs-libvterm/" "~/AndroidStudioProjects/Loopang/" "~/dev/cppm_tools/" "~/dev/cppkg/" "~/dev/nlpo/" "~/dev/test/cppm-rust/" "~/dev/test/cppm/" "~/dev/alchemist/" "~/dev/blog/" "~/.cppm/install/fmt/lastest/" "~/")

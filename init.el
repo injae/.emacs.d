@@ -19,6 +19,10 @@
       (auto-package-update-maybe)
 )
 
+(use-package use-package-ensure-system-package :ensure t :pin melpa)
+
+;(use-package quelpa-use-package :ensure t :pin melpa)
+
 (use-package org :ensure t :ensure org
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 :mode ("\\.org\\'" . org-mode)

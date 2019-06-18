@@ -41,12 +41,6 @@
 :init (xterm-mouse-mode)
 )
 
-(use-package backup-mode :ensure nil :no-require t
-:init (setq backup-inhibited t)
-      (setq auto-save-default nil)
-      (setq make-backup-files nil) 
-)
-
 (set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
 (set-variable 'cursor-type '(hbar . 10))
@@ -171,6 +165,47 @@
           (if face (message "Face: %s" face) (message "No face at %d" pos))))
 )
 
+ ; text random
+ (defun randomize-region (beg end)
+ (interactive "r")
+ (if (> beg end)
+     (let (mid) (setq mid end end beg beg mid)))
+ (save-excursion
+     ;; put beg at the start of a line and end and the end of one --
+     ;; the largest possible region which fits this criteria
+     (goto-char beg)
+     (or (bolp) (forward-line 1))
+     (setq beg (point))
+     (goto-char end)
+     ;; the test for bolp is for those times when end is on an empty
+     ;; line; it is probably not the case that the line should be
+     ;; included in the reversal; it isn't difficult to add it
+     ;; afterward.
+     (or (and (eolp) (not (bolp)))
+         (progn (forward-line -1) (end-of-line)))
+     (setq end (point-marker))
+     (let ((strs (shuffle-list 
+                 (split-string (buffer-substring-no-properties beg end)
+                             "\n"))))
+     (delete-region beg end)
+     (dolist (str strs)
+         (insert (concat str "\n"))))))
+
+ (defun shuffle-list (list)
+ "Randomly permute the elements of LIST.
+ All permutations equally likely."
+ (let ((i 0)
+ j
+ temp
+ (len (length list)))
+     (while (< i len)
+     (setq j (+ i (random (- len i))))
+     (setq temp (nth i list))
+     (setcar (nthcdr i list) (nth j list))
+     (setcar (nthcdr j list) temp)
+     (setq i (1+ i))))
+ list)
+
 (use-package evil :ensure t :pin melpa
 :init (setq evil-want-integration t)
       (setq evil-want-keybinding nil)
@@ -180,11 +215,29 @@
 )
 
 (use-package evil-surround :ensure t :pin melpa
-;command is visual mode: y-s-i
-; 감싸기: => y-s-i-w-감싸고 싶은거( "(", "{", "[")
-; 벗기기: => c-s-벗기고 싶은거( "(", "{", "[")
+; ${target}( 바꾸고싶은거 ), ${change}(바뀔거)
+; 감싸기:     => y-s-i-w-${change}( "(", "{", "[")
+; 전부 감싸기 => y-s-s-${change}
+; 바꾸기: => c-s-${target}( "(", "{", "["), ${change}
+; 벗기기: => d-s-${target}( "(", "{", "[")
 :after  evil
 :config (global-evil-surround-mode 1)
+)
+
+(use-package evil-exchange :ensure t :pin melpa
+:after evil
+:config (evil-exchange-install)
+)
+
+(use-package evil-indent-plus :ensure t :pin melpa
+:after evil
+:config (evil-indent-plus-default-bindings)
+)
+
+(use-package evil-goggles :ensure t :pin melpa
+:config (evil-goggles-mode)
+        (setq evil-goggles-pulse t)
+        (setq evil-goggles-duration 0.500)
 )
 
 (use-package evil-mc :ensure t :pin melpa :disabled
@@ -203,12 +256,16 @@
 )
 
 (use-package evil-multiedit :ensure t :pin melpa :defer t :disabled)
-(use-package evil-iedit-state :ensure t :pin melpa :after evil)
-
+(use-package evil-iedit-state :ensure t :pin melpa :after (evil iedit))
 
 (use-package evil-matchit :ensure t :pin melpa
 :after evil
 :config (global-evil-matchit-mode 1)
+)
+
+(use-package evil-lion :ensure t :pin melpa
+; gl ${operator} 
+:config (evil-lion-mode)
 )
 
 (use-package evil-escape :ensure t :pin melpa :disabled
@@ -221,6 +278,8 @@
 :config
     (global-set-key (kbd "C-c +") 'evil-number/inc-at-pt)
     (global-set-key (kbd "C-c -") 'evil-number/dec-at-pt)
+    (define-key evil-normal-state-map (kbd "C-c =") #'evil-numbers/inc-at-pt)
+    (define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
     (evil-leader/set-key "+" 'evil-number/inc-at-pt)
     (evil-leader/set-key "-" 'evil-number/dec-at-pt)
 )
@@ -231,11 +290,12 @@
      (global-evil-leader-mode t)
      (setq evil-leader/leader "<SPC>")
      (evil-leader/set-key
-         ;"<SPC>" 'helm-smex
+      ;"<SPC>" 'helm-smex
          "<SPC>" 'counsel-M-x
          "er"    'restart-emacs
          "el"    '-reload-emacs
          "ff"    'find-file
+         "fu"   'browse-url
          "up"    'list-processes
          "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
          "wf"    'toggle-frame-fullscreen
@@ -245,11 +305,17 @@
          "wl"    'enlarge-window-horizontally
          )
      (which-key-declare-prefixes "SPC b  " "Buffer")
+     (which-key-declare-prefixes "SPC s  " "Spell Check")
+     (which-key-declare-prefixes "SPC s e" "Spell Dictionary English")
+     (which-key-declare-prefixes "SPC s k" "Spell Dictionary Korean")
+     (which-key-declare-prefixes "SPC s s" "Spell Suggestion")
      (which-key-declare-prefixes "SPC d  " "Debug")
      (which-key-declare-prefixes "SPC e  " "Emacs")
      (which-key-declare-prefixes "SPC e f" "Emacs Config")
      (which-key-declare-prefixes "SPC e c" "Evil MultiEdit")
      (which-key-declare-prefixes "SPC f  " "Find")
+     (which-key-declare-prefixes "SPC f w" "Find Word")
+     (which-key-declare-prefixes "SPC f u" "Find Url")
      (which-key-declare-prefixes "SPC n  " "File Manager")
      (which-key-declare-prefixes "SPC g  " "Git")
      (which-key-declare-prefixes "SPC o  " "Org")
@@ -278,6 +344,8 @@
        (evil-collection-pdf-setup)
        (evil-collection-minibuffer-setup)
        (evil-collection-ivy-setup)
+       (evil-collection-occur-setup)
+       (evil-collection-wgrep-setup)
        (evil-collection-buff-menu-setup)
        (evil-collection-package-menu-setup)
        (evil-collection-eshell-setup)
@@ -290,9 +358,9 @@
 :init 
     (setq-default display-line-numbers-width 3)
     (global-git-gutter-mode t)
+:config
     (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
-:config
     (setq git-gutter:lighter       " gg")
     (setq git-gutter:window-width  1)
     (setq git-gutter:modified-sign ".")
@@ -315,7 +383,7 @@
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
         (setq doom-modeline-height 30)
-        ;(setq doom-modeline-icon t) ; current version has error
+        (setq doom-modeline-icon t) ; current version has error
         (setq doom-modeline-persp-name t)
         (setq doom-modeline-major-mode-icon t)
         (setq doom-modeline-enable-word-count t)
@@ -343,7 +411,7 @@
 
 (use-package hide-mode-line :ensure t :pin melpa
 :after (neotree)
-:hook (neotree-mode . hide-mode-line-mode)
+:hook  (neotree-mode . hide-mode-line-mode)
 )
 
 (use-package nyan-mode :ensure t :pin melpa
@@ -355,9 +423,9 @@
 )
 (use-package fancy-battery :ensure t :pin melpa 
 ;:after  (doom-modeline)
+:hook (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t))
-        (fancy-battery-mode)
 
 (use-package diminish :ensure t :pin melpa :defer t
 :init 
@@ -494,227 +562,177 @@
 :init     (which-key-mode t) 
 :config   (which-key-enable-god-mode-support t))
 
-(use-package ivy :ensure t :pin melpa :defer t
-:after evil-collection
-:commands counsel-M-x
-:bind ("M-x" . counsel-M-x)
-:config (ivy-mode 1)
-        (setq ivy-use-virtual-buffers t)
-        (setq ivy-use-selectable-prompt t)
-        (setq enable-recursive-minibuffers t)
-        (setq ivy-height 20)
-        (setq ivy-count-format "(%d/%d) ")
-        (setq ivy-display-style 'fancy)
-        (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
-                                      (t . ivy--regex-plus)))
-        (setq ivy-format-function 'ivy-format-function-line)
-        (setq ivy-initial-inputs-alist nil)
+(use-package ivy :ensure t :pin melpa :defer t 
+  :after evil-collection 
+  :commands counsel-M-x 
+  :bind   ("M-x" . counsel-M-x) 
+  :config (ivy-mode 1) 
+      (setq ivy-use-virtual-buffers t) 
+      (setq ivy-use-selectable-prompt t) 
+      (setq enable-recursive-minibuffers t) 
+      (setq ivy-height 20) 
+      (setq ivy-count-format "(%d/%d) ")
+      (setq ivy-display-style 'fancy) 
+      (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus))) 
+      (setq ivy-format-function 'ivy-format-function-line) 
+      (setq ivy-initial-inputs-alist nil) 
+      ;(evil-set-initial-state   'ivy-occur-grep-mode 'normal) 
+      ;(evil-make-overriding-map  ivy-occur-mode-map  'normal)
 )
+  (use-package counsel :after ivy :config (counsel-mode)) 
+  (use-package swiper :ensure t :pin melpa 
+  :after ivy 
+  :bind ("C-s"   . swiper) 
+        ("C-S-s" . swiper-all)
+  :config (setq swiper-action-recenter t) 
+          (setq swiper-goto-start-of-match t) 
+          (setq swiper-stay-on-quit t)
+  ) 
+  (use-package ivy-yasnippet :ensure t :pin melpa 
+  :after (ivy yasnippet) 
+  :bind  ("C-c C-y" . ivy-yasnippet) 
+  :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
+  ) 
 
-(use-package counsel 
-:after ivy
-:config (counsel-mode)
-)
+  (use-package historian :ensure t :pin melpa 
+  :after  (ivy) 
+  :config (historian-mode)
+  )
+  (use-package ivy-historian :ensure t :pin melpa 
+  :after  (ivy historian) 
+  :config (ivy-historian-mode)
+  ) 
+  (use-package ivy-xref :ensure t :pin melpa :disabled 
+  :after (ivy xref) 
+  :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+  )
+  (use-package counsel-projectile :ensure t :pin melpa 
+  :after  (counsel projectile) 
+  :config (setq projectile-completion-system 'ivy) 
+          (counsel-projectile-mode 1)
+          (evil-leader/set-key "fpf" 'counsel-projectile-find-file 
+                               "fpg" 'counsel-projectile-rg 
+                               "fpt" 'counsel-projectile-transformer)
+  ) 
+  (use-package counsel-world-clock :ensure t :pin melpa 
+  :after (counsel) 
+  :bind (:map counsel-mode-map ("C-c c k" . counsel-world-clock))
+  ) 
 
-(use-package swiper :ensure t :pin melpa
-:after ivy
-:bind ("C-s"   . swiper)
-      ("C-S-s" . swiper-all)
-:config
-    (setq swiper-action-recenter t)
-    (setq swiper-goto-start-of-match t)
-    (setq swiper-stay-on-quit t)
-)
-
-(use-package ivy-yasnippet :ensure t :pin melpa
-:after (ivy yasnippet)
-:bind  ("C-c C-y" . ivy-yasnippet)
-:config (advice-add #'ivy-yasnippet--preview :override #'ignore)
-)
-
-(use-package historian :ensure t :pin melpa
-:after  (ivy)
-:config (historian-mode)
-)
-
-(use-package ivy-historian :ensure t :pin melpa
-:after  (ivy historian)
-:config (ivy-historian-mode)
-)
-
-(use-package ivy-xref :ensure t :pin melpa :disabled
-:after (ivy xref)
-:config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-)
-
-(use-package flyspell-correct-ivy :ensure t :pin melpa
-:after (ivy flyspell)
-:bind  (:map flyspell-mode-map
-             ([remap flyspell-correct-word-before-point] . flyspell-correct-previous-word-generic))
-)
-
-(use-package counsel-projectile :ensure t :pin melpa
-:after  (counsel projectile)
-:config (setq projectile-completion-system 'ivy)
-        (counsel-projectile-mode 1)
-        (evil-leader/set-key "fpf" 'counsel-projectile-find-file
-                             "fpg" 'counsel-projectile-rg
-                             "fpt" 'counsel-projectile-transformer)
-)
-
-(use-package counsel-world-clock :ensure t :pin melpa
-:after (counsel)
-;:bind (:map counsel-mode-map ("C-c c k" . counsel-world-clock))
-)
-
-(use-package counsel-tramp :ensure t :pin melpa
-:after counsel
-:bind ("C-c s" . 'counsel-tramp)
-:init (setq tramp-default-method "ssh")
-)
-
-(use-package counsel-org-clock :ensure t :pin melpa 
-:after (counsel org)
-)
-
-(use-package ivy-rich :ensure t :pin melpa
-:after ivy
-:defines   (all-the-icons-mode-icon-alist all-the-icons-dir-icon-alist bookmark-alist)
-:functions (all-the-icons-icon-family
-            all-the-icons-match-to-alist
-            all-the-icons-auto-mode-match?
-            all-the-icons-octicon
-            all-the-icons-dir-is-submodule)
-:hook (ivy-rich-mode . (lambda ()
-                         (setq ivy-virtual-abbreviate
-                               (or (and ivy-rich-mode 'abbreviate) 'name))))
-:preface
-(with-eval-after-load 'all-the-icons
-  (add-to-list 'all-the-icons-mode-icon-alist
-               '(gfm-mode  all-the-icons-octicon "markdown" :v-adjust 0.0 :face all-the-icons-lblue)))
-
-(defun ivy-rich-bookmark-name (candidate)
-  (car (assoc candidate bookmark-alist)))
-
-(defun ivy-rich-buffer-icon (candidate)
-  "Display buffer icons in `ivy-rich'."
-  (when (display-graphic-p)
-    (when-let* ((buffer (get-buffer candidate))
-                (major-mode (buffer-local-value 'major-mode buffer))
-                (icon (if (and (buffer-file-name buffer)
-                               (all-the-icons-auto-mode-match? candidate))
-                          (all-the-icons-icon-for-file candidate)
-                        (all-the-icons-icon-for-mode major-mode))))
-      (if (symbolp icon)
-          (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
-      (unless (symbolp icon)
-        (propertize icon
-                    'face `(
-                            :height 1.1
-                            :family ,(all-the-icons-icon-family icon)
-                            ))))))
-
-(defun ivy-rich-file-icon (candidate)
-  "Display file icons in `ivy-rich'."
-  (when (display-graphic-p)
-    (let ((icon (if (file-directory-p candidate)
-                    (cond
-                     ((and (fboundp 'tramp-tramp-file-p)
-                           (tramp-tramp-file-p default-directory))
-                      (all-the-icons-octicon "file-directory"))
-                     ((file-symlink-p candidate)
-                      (all-the-icons-octicon "file-symlink-directory"))
-                     ((all-the-icons-dir-is-submodule candidate)
-                      (all-the-icons-octicon "file-submodule"))
-                     ((file-exists-p (format "%s/.git" candidate))
-                      (all-the-icons-octicon "repo"))
-                     (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
-                          (apply (car matcher) (list (cadr matcher))))))
-                  (all-the-icons-icon-for-file candidate))))
-      (unless (symbolp icon)
-        (propertize icon
-                    'face `(
-                            :height 1.1
-                            :family ,(all-the-icons-icon-family icon)
-                            ))))))
-
-(setq ivy-rich--display-transformers-list
+  (use-package counsel-tramp :ensure t :pin melpa 
+  :after counsel 
+  :bind ("C-c s" . 'counsel-tramp) 
+  :init (setq tramp-default-method "ssh")
+  ) 
+  (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org)) 
+  (use-package ivy-rich :ensure t :pin melpa 
+  :after ivy 
+  :defines   
+      (all-the-icons-mode-icon-alist all-the-icons-dir-icon-alist bookmark-alist) 
+  :functions (all-the-icons-icon-family
+              all-the-icons-match-to-alist 
+              all-the-icons-auto-mode-match?
+              all-the-icons-octicon 
+              all-the-icons-dir-is-submodule) 
+  :hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name)))) 
+  :preface 
+  (with-eval-after-load 'all-the-icons 
+  (add-to-list 'all-the-icons-mode-icon-alist 
+               '(gfm-mode  all-the-icons-octicon "markdown" 
+               :v-adjust 0.0 
+               :face all-the-icons-lblue))) 
+  (defun ivy-rich-bookmark-name (candidate) 
+      (car (assoc candidate bookmark-alist)))
+      (defun ivy-rich-buffer-icon (candidate)
+          "Display buffer icons in `ivy-rich'."
+          (when (display-graphic-p)
+              (when-let* ((buffer (get-buffer candidate))
+                             (major-mode
+                                 (buffer-local-value 'major-mode buffer))
+                             (icon (if (and (buffer-file-name buffer)
+                                           (all-the-icons-auto-mode-match? candidate))
+                                       (all-the-icons-icon-for-file candidate)
+                                       (all-the-icons-icon-for-mode major-mode))))
+                  (if (symbolp icon)
+                      (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
+                  (unless (symbolp icon)
+                      (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+  (defun ivy-rich-file-icon (candidate)
+      "Display file icons in `ivy-rich'."
+      (when (display-graphic-p)
+          (let ((icon
+                      (if (file-directory-p candidate)
+                          (cond ((and (fboundp 'tramp-tramp-file-p)
+                                      (tramp-tramp-file-p default-directory))
+                                  (all-the-icons-octicon "file-directory"))
+                              ((file-symlink-p candidate)
+                                  (all-the-icons-octicon "file-symlink-directory"))
+                              ((all-the-icons-dir-is-submodule candidate)
+                                  (all-the-icons-octicon "file-submodule"))
+                              ((file-exists-p (format "%s/.git" candidate))
+                                  (all-the-icons-octicon "repo"))
+                              (t (let ((matcher (all-the-icons-match-to-alist
+                                                  candidate all-the-icons-dir-icon-alist)))
+                                      (apply (car matcher) (list (cadr matcher))))))
+                          (all-the-icons-icon-for-file candidate))))
+              (unless (symbolp icon)
+                  (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+  (setq ivy-rich--display-transformers-list
       '(ivy-switch-buffer
-        (:columns
-         ((ivy-rich-buffer-icon (:width 1))
-          (ivy-rich-candidate (:width 30))
-          (ivy-rich-switch-buffer-size (:width 7))
-          (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-          (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-          (ivy-rich-switch-buffer-project (:width 15 :face success))
-          (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-         :predicate
-         (lambda (cand) (get-buffer cand)))
-        ivy-switch-buffer-other-window
-        (:columns
-         ((ivy-rich-buffer-icon)
-          (ivy-rich-candidate (:width 30))
-          (ivy-rich-switch-buffer-size (:width 7))
-          (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-          (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-          (ivy-rich-switch-buffer-project (:width 15 :face success))
-          (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-         :predicate
-         (lambda (cand) (get-buffer cand)))
-        counsel-M-x
-        (:columns
-         ((counsel-M-x-transformer (:width 50))
-          (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-        counsel-describe-function
-        (:columns
-         ((counsel-describe-function-transformer (:width 50))
-          (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-        counsel-describe-variable
-        (:columns
-         ((counsel-describe-variable-transformer (:width 50))
-          (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-        counsel-find-file
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 30))))
-        counsel-file-jump
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 30))))
-        counsel-dired-jump
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 30))))
-        counsel-git
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 30))))
-        counsel-projectile-find-file
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 30))))
-        counsel-projectile-find-dir
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 30))))
-        counsel-recentf
-        (:columns
-         ((ivy-rich-file-icon)
-          (ivy-rich-candidate (:width 90))
-          (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
-        counsel-bookmark
-        (:columns
-         ((ivy-rich-bookmark-type)
-          (ivy-rich-bookmark-name (:width 40))
-          (ivy-rich-bookmark-info)))
-        ))
-:config
-(setq ivy-rich-parse-remote-buffer nil)
-(ivy-rich-mode 1))
+          (:columns ((ivy-rich-buffer-icon (:width 1))
+                      (ivy-rich-candidate (:width 30))
+                      (ivy-rich-switch-buffer-size (:width 7))
+                      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+                      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+                      (ivy-rich-switch-buffer-project (:width 15 :face success))
+                      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x
+                                                                  (ivy-rich-minibuffer-width 0.3))))))
+              :predicate (lambda (cand) (get-buffer cand)))
+          ivy-switch-buffer-other-window
+          (:columns ((ivy-rich-buffer-icon)
+                     (ivy-rich-candidate (:width 30))
+                     (ivy-rich-switch-buffer-size (:width 7))
+                     (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+                     (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+                     (ivy-rich-switch-buffer-project (:width 15 :face success))
+                     (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x
+                                                                  (ivy-rich-minibuffer-width 0.3))))))
+              :predicate (lambda (cand) (get-buffer cand)))
+              counsel-M-x
+          (:columns ((counsel-M-x-transformer (:width 50))
+                     (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+          counsel-describe-function
+          (:columns ((counsel-describe-function-transformer (:width 50))
+                     (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+          counsel-describe-variable
+          (:columns ((counsel-describe-variable-transformer (:width 50))
+                     (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+          counsel-find-file
+          (:columns ((ivy-rich-file-icon)
+                     (ivy-rich-candidate (:width 30))))
+              counsel-file-jump (:columns ((ivy-rich-file-icon)
+                                           (ivy-rich-candidate (:width 30))))
+              counsel-dired-jump (:columns ((ivy-rich-file-icon)
+                                            (ivy-rich-candidate (:width 30))))
+              counsel-git (:columns ((ivy-rich-file-icon)
+                                     (ivy-rich-candidate (:width 30))))
+              counsel-projectile-find-file (:columns ((ivy-rich-file-icon)
+                                                      (ivy-rich-candidate (:width 30))))
+              counsel-projectile-find-dir (:columns ((ivy-rich-file-icon)
+                                                     (ivy-rich-candidate (:width 30))))
+              counsel-recentf (:columns ((ivy-rich-file-icon)
+                                         (ivy-rich-candidate (:width 90))
+                                         (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
+              counsel-bookmark (:columns ((ivy-rich-bookmark-type)
+                                         (ivy-rich-bookmark-name (:width 40))
+                                         (ivy-rich-bookmark-info)))))
+      :config
+      (setq ivy-rich-parse-remote-buffer nil)
+      (ivy-rich-mode 1))
 
 (use-package smex :ensure t :pin melpa :disabled
 :init (smex-initialize)
-      (global-set-key [remap execute-extended-command] #'helm-smex)
+      ;(global-set-key [remap execute-extended-command] #'helm-smex)
       (evil-leader/set-key "fm" #'smex-major-mode-commands)
 )
 (use-package helm-smex :ensure t :pin melpa :disabled
@@ -967,18 +985,27 @@
 (use-package typo :ensure t :pin melpa
 :commands (type-mode))
 (use-package poet-theme :ensure t :pin melpa :defer t)
+(use-package writeroom-mode :ensure t :pin melpa 
+:commands (writeroom-mode)
+:config (setq writeroom-width 100)
+)
 (define-minor-mode writer-mode
     "poet use writer mode"
     :lighter " writer"
     (if writer-mode 
        (progn
-           (olivetti-mode 1)
-           (typo-mode 1)
-           (display-line-numbers-mode 0))
-       (olivetti-mode 0)
-       (typo-mode 0)
-       (beacon-mode 0)
-       (display-line-numbers-mode 1)))
+           ;(olivetti-mode 1)
+           ;(typo-mode 1)
+           (beacon-mode 0)
+           (display-line-numbers-mode 0)
+           (git-gutter-mode 0)
+           (writeroom-mode 1))
+       ;(olivetti-mode 0)
+       ;(typo-mode 0)
+       (beacon-mode 1)
+       (display-line-numbers-mode 1)
+       (git-gutter-mode 1)
+       (writeroom-mode 0)))
 
 (use-package mu4e :ensure t :pin melpa :disabled
 :commands (mu4e)
@@ -1173,14 +1200,13 @@
 
 (use-package google-this :ensure t :pin melpa
 :commands google-this
-:init    (evil-leader/set-key "fgs" 'google-this)
+:init    (evil-leader/set-key "fw" 'google-this)
 :config  (google-this-mode 1)
 )
-(evil-leader/set-key "fgu" 'browse-url)
 
 (use-package google-translate :ensure t :pin melpa
 :commands (google-translate-smooth-translate)
-:init (evil-leader/set-key "fgt" 'google-translate-smooth-translate)
+:init (evil-leader/set-key "tw" 'google-translate-smooth-translate)
 :config (require 'google-translate-smooth-ui)
        ;(require 'google-translate-default-ui)
        ;(evil-leader/set-key "ft" 'google-translate-at-point)
@@ -1195,20 +1221,22 @@
 (use-package esup :ensure t :pin melpa :defer t)
 
 (use-package flyspell :ensure t :pin melpa
+:init 
+    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+    (add-hook 'text-mode-hook 'flyspell-mode)
 :config
     (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US")
     (evil-leader/set-key "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)))
     (evil-leader/set-key "se" (lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)))
-    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-    (add-hook 'text-mode-hook 'flyspell-mode)
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
 )
 
 (use-package flyspell-correct-ivy :ensure t :pin melpa 
-:bind (:map flyspell-mode-map ("C-c $" . flyspell-correct-word-generic))
-:config 
-    (evil-leader/set-key "ss" 'flyspell-correct-word-generic)
+:after (flyspell ivy)
+:bind ((:map flyspell-mode-map ("C-c $" . flyspell-correct-word-generic))
+       (:map flyspell-mode-map ([remap flyspell-correct-word-before-point] . flyspell-correct-previous-word-generic)))
+:init  (evil-leader/set-key "ss" 'flyspell-correct-word-generic)
 )
 
 (use-package wgrep :ensure t :pin melpa
@@ -1218,7 +1246,7 @@
        ;(setq wgrep-enable-key "r")
 )
 
-(use-package iedit :ensure t :pin melpa :defer t
+(use-package iedit :ensure t :pin melpa
 :init (evil-leader/set-key "fi" 'iedit-mode)
 )
 
@@ -1235,62 +1263,12 @@
 :config (evil-leader/set-key "oi" 'org-use-package-install)
 )
 
-(use-package helm :defer t :ensure t :pin melpa :diminish helm-mode :disabled
-;:bind ("M-x" . helm-M-x)
-:init (helm-mode 1)
-;; helm always bottom
-(add-to-list 'display-buffer-alist
-            `(,(rx bos "*helm" (* not-newline) "*" eos)
-                    (display-buffer-in-side-window)
-                    (inhibit-same-window . t)
-                    (window-height . 0.4)))
-
-(use-package helm-projectile :ensure t :pin melpa :disabled
-:after (helm projectile)
-:init (helm-projectile-on)
-))
-(use-package helm-company :ensure t :pin melpa :disabled
-:after helm company
-:init
-    (define-key company-mode-map   (kbd "C-q") 'helm-company)
-    (define-key company-active-map (kbd "C-q") 'helm-company)
-)
-(use-package helm-descbinds :ensure t :pin melpa :disabled
-:after helm
-:init (helm-descbinds-mode)
-)
-(use-package helm-swoop :ensure t :pin melpa :defer t :disabled
-:after helm
-:init (evil-leader/set-key "fw" 'helm-swoop)
-)
-
-(use-package helm-ag :ensure t :pin melpa :defer t :disabled
-:after helm
-:init (evil-leader/set-key "fat" 'helm-do-ag-this-file
-                           "fab" 'helm-do-ag-buffers
-                           "far" 'helm-do-ag-project-root))
-
-(use-package helm-system-packages :ensure t :pin melpa :defer t :disabled
-:init (require 'em-tramp)
-      (setq password-cache t)
-      (setq password-cache-expiry 3600)
-      (evil-leader/set-key "usp" 'helm-system-packages))
-
-(use-package helm-dash :ensure t :pin melpa :defer t :disabled
-:init (evil-leader/set-key "hDs" 'helm-dash
-                           "hDi" 'helm-dash-install-user-docset)
-)
-
-;(use-package helm-rtags :ensure t :disabled
-;:after (helm rtags)
-;:config (setq rtags-display-result-backend 'helm))
-
-(use-package helm-flyspell :ensure t :pin melpa :defer t :disabled
-:after (helm flyspell)
-:init (evil-leader/set-key "s" 'helm-flyspell-correct)
-)
+(setq helm-mode nil)
+(use-package helm :if helm-mode :config (load-file "~/.emacs.d/lisp/helm-mode.el"))
 
 (use-package pdf-tools :ensure t :pin melpa :defer t)
+
+(use-package smeargle :ensure t :pin melpa)
 
 (use-package company :ensure t :pin melpa
 :init (global-company-mode 1)
@@ -1580,13 +1558,12 @@
     (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
 )
 
-(use-package slime :ensure t :pin melpa :disabled
+(use-package slime :ensure t :pin melpa
 :commands slime
 :init
     (setq inferior-lisp-program (or (executable-find "sbcl")
                                     (executable-find "/usr/bin/sbcl")
-                                    (executable-find "/usr/sbin/sbcl"
-                                    "sbcl")))
+                                    (executable-find "/usr/sbin/sbcl" )))
 :config
     (require 'slime-autoloads)
     (slime-setup '(slime-fancy))
@@ -1594,6 +1571,10 @@
 (use-package elisp-slime-nav :ensure t :pin melpa :diminish elisp-slime-nav-mode
 :after slime
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
+)
+
+(use-package elisp-slime-nav :ensure t :pin melpa
+:hook ((emacs-lisp-mode ielm-mode) . turn-on-elisp-slime-nav-mode)
 )
 
 (use-package prettify-symbol :no-require t
@@ -1613,24 +1594,11 @@
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
 )
 
-(defun racer-install ()
-    "Racer install-linux" 
-    (interactive)
-    (eshell-command "rustup toolchain add nightly")
-    (eshell-command "rustup component add rust-src")
-    (eshell-command "cargo +nightly install racer")
-)
-
-(defun rust-install ()
-    "Rust and Racer install-linux" 
-    (interactive)
-    (eshell-command "curl https://sh.rustup.rs -sSf | sh")
-)
-
 (use-package rust-mode :ensure t :pin melpa 
+:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 :commands rust-mode 
 :mode (("\\.rs\\'" . rust-mode))
-:init (add-hook 'rust-mode-hook 'lsp-rust-enable)
+;:init (add-hook 'rust-mode-hook 'lsp-rust-enable)
 :config (evil-leader/set-key "hrf" 'rust-format-buffer)
 ;:config (setq rust-format-on-save t)
 ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
@@ -1642,9 +1610,11 @@
 )
 
 (use-package racer :ensure t :pin melpa
+:ensure-system-package ((racer . "rustup toolchain add nightly")
+                        (racer . "rustup component add rust-src")
+                        (racer . "cargo +nightly install racer"))
 :after  rust-mode
 :config (add-hook 'rust-mode-hook  #'racer-mode)
-        (add-hook 'racer-mode-hook #'company-mode) 
         (add-hook 'racer-mode-hook #'eldoc-mode) 
 )
 
@@ -1659,6 +1629,22 @@
         (evil-leader/set-key "hrb" 'cargo-process-build
                              "hrr" 'cargo-process-run
                              "hrt" 'cargo-process-test)
+)
+
+(use-package lsp-rust :ensure t :pin melpa
+:after  (lsp-mode)
+:config (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
+)
+
+
+(use-package rustic :ensure t :pin melpa
+:commands (cargo-minor-mode)
+:mode   ("\\.rs" . rustic-mode)
+:config (add-hook 'rustic-mode-hook 'cargo-minor-mode)
+        (add-hook 'rustic-mode-hook 'racer-mode)
+        (add-hook 'rustic-mode-hook 'lsp)
+        ;(setq rustic-lsp-server 'rust-analyzer)
+        ;(setq rustic-rls-pkg 'lsp-mode)
 )
 
 (use-package haskell-mode :ensure t :pin melpa :defer t)
@@ -1773,15 +1759,6 @@
 
 (use-package go-mode :ensure t :pin melpa
 :mode ("\\.go\\''" . go-mode)
-)
-
-(use-package lsp-go :ensure t :pin melpa
-:after  (lsp-mode go-mode)
-:hook   (go-mode . lsp-go-enable)
-:custom (lsp-go-language-server-flags '("-gocodecompletion"
-                                        "-diagnostics"
-                                        "-lint-tool=golint"))
-:commands lsp-go-enable
 )
 
 (use-package dumb-jump :ensure t :pin melpa

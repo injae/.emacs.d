@@ -7,3 +7,6 @@
 [submodule "emacs-gdb"]
 	path = lisp/emacs-gdb
 	url = https://github.com/weirdNox/emacs-gdb.git
+[submodule "emacs-libvterm"]
+	path = lisp/emacs-libvterm
+	url = https://github.com/akermu/emacs-libvterm.git

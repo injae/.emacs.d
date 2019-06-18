@@ -1,12 +1,6 @@
-cppm build
-cppm build
 cppm run
 cppm build
 cppm run
-cppm build
-cppm run
-cppm build
-cppm build
 cppm build
 cppm run
 cppm build
@@ -15,114 +9,120 @@ cppm run
 cppm build
 cppm build
 cppm build
+cppm build
+cppm build
+cppm run
+cppm build
+cppm build
+cppm run
+cppm build
+cppm build
+cppm build
+cppm run
+cppm run
+cppm build
+cppm run
+cppm run
+cppm run
+cppm run
+cppm build
+cppm run
+cppm run
+바
+cppm run
+체ㅔㅡ ㅠㅕㅑ이
+cppm build
+cppm run
 cppm run
 cppm build
 cppm run
 cppm build
 cppm run
-cppm build
-cppm run
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm run
-cppm build
-./omp_loop1 
-./pi_num_integration 
-./omp_pi_num_integration
-./omp_hello 
-./omp_hello 
-./omp_loop_ordered 
-time ./pi_num_integration 
-time ./omp_pi_num_integration
-./cond_var
-touch /tmp/my_fifo
 ls
-./fiio_write
-./fifo_write
-ls -a
-chown -x fifo_write 
-chmod -x fifo_write 
-ls -al
-ls -al fifo_write 
-cd ../
+cp rusia_example.org rusia_solution.org
 ls
-cd 6.io_interface/
+cp rusia_example1.org test.org
+ls
+cd ../../dev/t
+cd ../../dev/
+ls
+cd test/
+ls
+rm -rf Loopang/
+./omp_task_linkedlist 
 make
-cd ../
-ls
-cd 8.pthread/
-./fifo_write 
-./fifo_write 
-ls
-cd ../6.io_interface/
-./fifo_write
-cd ../
-ls
-./cond_var
-./cond_var
-cd 8.pthread/
-./fifo_write
-cd ../6.io_interface/
-ls
+./omp_task_linkedlist
 make
-make all
-clear
-ls
-rm fifo_write
+./omp_task_linkedlist
 make
-./fifo_write
+./omp_task_linkedlist
+make
+./omp_task_linkedlist
+./omp_task_linkedlist
+make
+make
+./omp_task_linkedlist
+make
+./omp_task_linkedlist
+make
+./omp_task_linkedlist
+cppm build
+cppm run
+cargo -h
+cargo init -h
+cargo init -b rstudy
+cargo init --bin rstudy
 ls
-mkdir ../dev/treasure
-mv -r Loopang/ ../dev/treasure/
-mv  Loopang/ ../dev/treasure/
+mv rstudy/ ../../dev
+ls
+cd ../../dev/
+ls
 ls
 cd ../
-cd dev/treasure/
 ls
-cd ../
+mv dev/ ../dev/rstudy
 ls
-cd ../school/
+cd ../dev/rstudy/
 ls
-ls
-cd elpa/rtags-20190410.1615/
-ls
-cd ../
-cd ../../
-ls
-cd school/cpp/src/
-cppm build
-cppm build
-cppm build
-cppm build
-cd ../build/
-cppm build
-./cpp 
-cppm build
-./cpp
-cppm build
-cppm run
-rtags --version
-cd ~/.emacs.d/elpa/rtags-20190410.1615/rtags-2.31/
-ls
-cd bin/
-ls
-./rc --version
-./rp --version
-cd ~/school/cpp/build/
+cargo run
+gcargo run
+cargo run
+cargo run
+cargo run
+cargo run
+cargo run
+cargo run
+cargo run
+cargo install cargo-update
 cppm build
 cppm run
 cppm build
 cppm run
 cppm build
 cppm run
-hunspell -D
 cppm build
+cppm run
 cppm build
-cppm build
+cppm run
 cppm build
 cppm build
 cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+ cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+cppm build
+cppm run
+cppm build
