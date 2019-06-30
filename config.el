@@ -83,7 +83,7 @@
 (global-font-lock-mode t)
 
 ;; 한글입력할때 완성전까지 안보이는 문제 해결을 위해 내장 한글입력기 사용
-; Linux 내장 한글입력기 사용법 
+; Linux 내장 한글입력기 사용법
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
 (setq default-korean-keyboard 'korean-hangul2)
@@ -103,7 +103,7 @@
     ;; We need the new emacs to be spawned after all kill-emacs-hooks
     ;; have been processed and there is nothing interesting left
     (let ((kill-emacs-hook (append kill-emacs-hook (list (if (display-graphic-p) #'launch-separate-emacs-under-x
-                                                                                    #'launch-separate-emacs-in-terminal)))))
+                                                                                 #'launch-separate-emacs-in-terminal)))))
             (save-buffers-kill-emacs))
 )
 
@@ -143,7 +143,7 @@
 ;(server-start)
 
 ;https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
-  (setq warning-minimum-level :error)
+  ;(setq warning-minimum-level :error)
 
 (use-package buffer-zoom :no-require t
 :after evil-leader
@@ -152,7 +152,7 @@
 )
 
 (use-package hungry-delete :ensure t :pin melpa :defer t :disabled
-; 공백 지울때 한꺼번에 다지워짐 
+; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
 
@@ -184,7 +184,7 @@
      (or (and (eolp) (not (bolp)))
          (progn (forward-line -1) (end-of-line)))
      (setq end (point-marker))
-     (let ((strs (shuffle-list 
+     (let ((strs (shuffle-list
                  (split-string (buffer-substring-no-properties beg end)
                              "\n"))))
      (delete-region beg end)
@@ -243,10 +243,10 @@
 (use-package evil-mc :ensure t :pin melpa :disabled
 :after evil
 :preface
-      (defun user-evil-mc-make-cursor-here () 
+      (defun user-evil-mc-make-cursor-here ()
           (evil-mc-pause-cursors)
           (evil-mc-make-cursor-here))
-:config 
+:config
       (evil-leader/set-key "emh" #'evil-mc-make-cursors-here
                            "ema" #'evil-mc-make-all-cursors
                            "emp" #'evil-mc-pause-cursors
@@ -264,7 +264,7 @@
 )
 
 (use-package evil-lion :ensure t :pin melpa
-; gl ${operator} 
+; gl ${operator}
 :config (evil-lion-mode)
 )
 
@@ -286,7 +286,7 @@
 
 (use-package evil-leader :ensure t :pin melpa
 :after (evil which-key)
-:config 
+:config
      (global-evil-leader-mode t)
      (setq evil-leader/leader "<SPC>")
      (evil-leader/set-key
@@ -334,6 +334,7 @@
      (which-key-declare-prefixes "SPC f p" "Projectile")
     )
 
+(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
 (use-package evil-collection :ensure t :pin melpa
 :after (evil)
 :init  (setq evil-collection-setup-minibuffer t)
@@ -353,9 +354,9 @@
        (evil-collection-init)
 )
 
-(use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t)) 
+(use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
 (use-package git-gutter :ensure t :pin melpa :defer t
-:init 
+:init
     (setq-default display-line-numbers-width 3)
     (global-git-gutter-mode t)
 :config
@@ -421,14 +422,14 @@
         (nyan-start-animation)
         (nyan-refresh)
 )
-(use-package fancy-battery :ensure t :pin melpa 
+(use-package fancy-battery :ensure t :pin melpa
 ;:after  (doom-modeline)
 :hook (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t))
 
 (use-package diminish :ensure t :pin melpa :defer t
-:init 
+:init
     (diminish 'c++-mode "C++ Mode")
     (diminish 'c-mode   "C Mode"  )
 )
@@ -516,16 +517,17 @@
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
-)    
+)
 
 (use-package rainbow-delimiters :ensure t :pin melpa
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
 (use-package smartparens :ensure t :pin melpa
+;:evil-leader (("pu"  'sp-unwrap-sexp))
 :init (smartparens-global-mode)
       (evil-leader/set-key "pr"  'sp-rewrap-sexp
-                           "pu"  'sp-unwrap-sexp
+                ;          "pu"  'sp-unwrap-sexp
                            "pll" 'sp-forward-slurp-sexp
                            "phh" 'sp-backward-slurp-sexp
                            "plh" 'sp-forward-barf-sexp
@@ -559,89 +561,91 @@
 
 (use-package which-key :ensure t :pin melpa
 :commands (which-key-mode)
-:init     (which-key-mode t) 
+:init     (which-key-mode t)
 :config   (which-key-enable-god-mode-support t))
 
-(use-package ivy :ensure t :pin melpa :defer t 
-  :after evil-collection 
-  :commands counsel-M-x 
-  :bind   ("M-x" . counsel-M-x) 
-  :config (ivy-mode 1) 
-      (setq ivy-use-virtual-buffers t) 
-      (setq ivy-use-selectable-prompt t) 
-      (setq enable-recursive-minibuffers t) 
-      (setq ivy-height 20) 
+(use-package ivy :ensure t :pin melpa :defer t
+  :after evil-collection
+  :commands counsel-M-x
+  :bind   (("M-x" . counsel-M-x)
+          :map ivy-minibuffer-map
+          ("S-SPC" . toggle-input-method))
+  :config (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-use-selectable-prompt t)
+      (setq enable-recursive-minibuffers t)
+      (setq ivy-height 20)
       (setq ivy-count-format "(%d/%d) ")
-      (setq ivy-display-style 'fancy) 
-      (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus))) 
-      (setq ivy-format-function 'ivy-format-function-line) 
-      (setq ivy-initial-inputs-alist nil) 
-      ;(evil-set-initial-state   'ivy-occur-grep-mode 'normal) 
+      (setq ivy-display-style 'fancy)
+      (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
+      (setq ivy-format-function 'ivy-format-function-line)
+      (setq ivy-initial-inputs-alist nil)
+      ;(evil-set-initial-state   'ivy-occur-grep-mode 'normal)
       ;(evil-make-overriding-map  ivy-occur-mode-map  'normal)
 )
-  (use-package counsel :after ivy :config (counsel-mode)) 
-  (use-package swiper :ensure t :pin melpa 
-  :after ivy 
-  :bind ("C-s"   . swiper) 
+  (use-package counsel :after ivy :config (counsel-mode))
+  (use-package swiper :ensure t :pin melpa
+  :after ivy
+  :bind ("C-s"   . swiper)
         ("C-S-s" . swiper-all)
-  :config (setq swiper-action-recenter t) 
-          (setq swiper-goto-start-of-match t) 
+  :config (setq swiper-action-recenter t)
+          (setq swiper-goto-start-of-match t)
           (setq swiper-stay-on-quit t)
-  ) 
-  (use-package ivy-yasnippet :ensure t :pin melpa 
-  :after (ivy yasnippet) 
-  :bind  ("C-c C-y" . ivy-yasnippet) 
+  )
+  (use-package ivy-yasnippet :ensure t :pin melpa
+  :after (ivy yasnippet)
+  :bind  ("C-c C-y" . ivy-yasnippet)
   :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
-  ) 
+  )
 
-  (use-package historian :ensure t :pin melpa 
-  :after  (ivy) 
+  (use-package historian :ensure t :pin melpa
+  :after  (ivy)
   :config (historian-mode)
   )
-  (use-package ivy-historian :ensure t :pin melpa 
-  :after  (ivy historian) 
+  (use-package ivy-historian :ensure t :pin melpa
+  :after  (ivy historian)
   :config (ivy-historian-mode)
-  ) 
-  (use-package ivy-xref :ensure t :pin melpa :disabled 
-  :after (ivy xref) 
+  )
+  (use-package ivy-xref :ensure t :pin melpa :disabled
+  :after (ivy xref)
   :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
   )
-  (use-package counsel-projectile :ensure t :pin melpa 
-  :after  (counsel projectile) 
-  :config (setq projectile-completion-system 'ivy) 
+  (use-package counsel-projectile :ensure t :pin melpa
+  :after  (counsel projectile)
+  :config (setq projectile-completion-system 'ivy)
           (counsel-projectile-mode 1)
-          (evil-leader/set-key "fpf" 'counsel-projectile-find-file 
-                               "fpg" 'counsel-projectile-rg 
+          (evil-leader/set-key "fpf" 'counsel-projectile-find-file
+                               "fpg" 'counsel-projectile-rg
                                "fpt" 'counsel-projectile-transformer)
-  ) 
-  (use-package counsel-world-clock :ensure t :pin melpa 
-  :after (counsel) 
+  )
+  (use-package counsel-world-clock :ensure t :pin melpa
+  :after (counsel)
   :bind (:map counsel-mode-map ("C-c c k" . counsel-world-clock))
-  ) 
+  )
 
-  (use-package counsel-tramp :ensure t :pin melpa 
-  :after counsel 
-  :bind ("C-c s" . 'counsel-tramp) 
+  (use-package counsel-tramp :ensure t :pin melpa
+  :after counsel
+  :bind ("C-c s" . 'counsel-tramp)
   :init (setq tramp-default-method "ssh")
-  ) 
-  (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org)) 
-  (use-package ivy-rich :ensure t :pin melpa 
-  :after ivy 
-  :defines   
-      (all-the-icons-mode-icon-alist all-the-icons-dir-icon-alist bookmark-alist) 
+  )
+  (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
+  (use-package ivy-rich :ensure t :pin melpa
+  :after ivy
+  :defines
+      (all-the-icons-mode-icon-alist all-the-icons-dir-icon-alist bookmark-alist)
   :functions (all-the-icons-icon-family
-              all-the-icons-match-to-alist 
+              all-the-icons-match-to-alist
               all-the-icons-auto-mode-match?
-              all-the-icons-octicon 
-              all-the-icons-dir-is-submodule) 
-  :hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name)))) 
-  :preface 
-  (with-eval-after-load 'all-the-icons 
-  (add-to-list 'all-the-icons-mode-icon-alist 
-               '(gfm-mode  all-the-icons-octicon "markdown" 
-               :v-adjust 0.0 
-               :face all-the-icons-lblue))) 
-  (defun ivy-rich-bookmark-name (candidate) 
+              all-the-icons-octicon
+              all-the-icons-dir-is-submodule)
+  :hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name))))
+  :preface
+  (with-eval-after-load 'all-the-icons
+  (add-to-list 'all-the-icons-mode-icon-alist
+               '(gfm-mode  all-the-icons-octicon "markdown"
+               :v-adjust 0.0
+               :face all-the-icons-lblue)))
+  (defun ivy-rich-bookmark-name (candidate)
       (car (assoc candidate bookmark-alist)))
       (defun ivy-rich-buffer-icon (candidate)
           "Display buffer icons in `ivy-rich'."
@@ -749,7 +753,7 @@
 (use-package neotree :ensure t :pin melpa
 :after (projectile)
 :commands (neotree-toggle)
-:init 
+:init
     (setq projectile-switch-project-action 'neotree-projectile-action)
     (setq-default neo-smart-open t)
     (evil-leader/set-key "n" #'neotree-toggle)
@@ -774,7 +778,7 @@
 
 (use-package eyebrowse :ensure t :pin melpa :defer t
 :init (eyebrowse-mode t)
-:config 
+:config
     (evil-leader/set-key
         "w;" 'eyebrowse-last-window-config
         "w0" 'eyebrowse-close-window-config
@@ -792,7 +796,7 @@
 :if window-system
 :commands (exwm-init)
 :config
-    (use-package exwm-config 
+    (use-package exwm-config
     :init (exwm-config-default))
     (setq exwm-workspace-number 0)
     (exwm-input-set-key (kbd "s-h") 'windmove-left)
@@ -820,7 +824,7 @@
                             (start-process-shell-command command nil command)))
 )
 
-(use-package magit :ensure t :pin melpa 
+(use-package magit :ensure t :pin melpa
 :commands magit-status
 :init   (evil-leader/set-key "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
@@ -835,10 +839,10 @@
 :after magit
 :init (magithub-feature-autoinject t)
       (evil-leader/set-key "gd" 'magithub-dashboard)
-      (setq magithub-clone-default-directory "~/github")   
+      (setq magithub-clone-default-directory "~/github")
 )
 
-(use-package evil-ediff :ensure t :pin melpa 
+(use-package evil-ediff :ensure t :pin melpa
 :after evil
 :config (evil-ediff-init)
 )
@@ -855,7 +859,7 @@
 )
 
 (use-package org
-:init (setq org-directory            (expand-file-name "~/Dropbox/org"))
+:init (setq org-directory            (expand-file-name     "~/Dropbox/org   "))
       (setq org-default-notes-file   (concat org-directory "/notes/notes.org"))
       (evil-leader/set-key
           "oa" 'org-agenda
@@ -873,7 +877,7 @@
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 )
 
-(use-package org-journal :ensure t :pin melpa
+(use-package org-journal :ensure t :pin melpa :disabled
 :after org
 :preface
 (defun org-journal-find-location () (org-journal-new-entry t) (goto-char (point-min)))
@@ -908,7 +912,7 @@
       )
 )
 
-(use-package org-agenda 
+(use-package org-agenda
 :after org
 :config (use-package evil-org :ensure t :pin melpa
         :after (org evil)
@@ -943,10 +947,10 @@
 
 (use-package org-gcal :ensure t :pin melpa
 :after  org-agenda
-:config (setq org-gcal-client-id "354752650679-2rrgv1qctk75ceg0r9vtaghi4is7iad4.apps.googleusercontent.com"
-              org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4"
-              org-gcal-file-alist '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
-        (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync)))
+:config (setq org-gcal-client-id     "354752650679-2rrgv1qctk75ceg0r9vtaghi4is7iad4.apps.googleusercontent.com"
+              org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4                                                "
+              org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
+        (add-hook 'org-agenda-mode-hook            (lambda () (org-gcal-sync)))
         (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
@@ -955,7 +959,7 @@
 :after org
 )
 
-;(use-package calfw :ensure t :pin melpa :defer t 
+;(use-package calfw :ensure t :pin melpa :defer t
 ;:commands cfw:open-calendar-buffer
 ;:config (use-package calfw-org
 ;        :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp))
@@ -985,14 +989,14 @@
 (use-package typo :ensure t :pin melpa
 :commands (type-mode))
 (use-package poet-theme :ensure t :pin melpa :defer t)
-(use-package writeroom-mode :ensure t :pin melpa 
+(use-package writeroom-mode :ensure t :pin melpa
 :commands (writeroom-mode)
 :config (setq writeroom-width 100)
 )
 (define-minor-mode writer-mode
     "poet use writer mode"
     :lighter " writer"
-    (if writer-mode 
+    (if writer-mode
        (progn
            ;(olivetti-mode 1)
            ;(typo-mode 1)
@@ -1017,13 +1021,14 @@
 )
 
 (use-package docker :ensure t :pin melpa :disabled
-:init (evil-leader/set-key "hud" 'docker)) 
+:init (evil-leader/set-key "hud" 'docker))
 
-(use-package dockerfile-mode :ensure t :pin melpa 
+(use-package dockerfile-mode :ensure t :pin melpa
 :mode   ("Dockerfile\\'" . dockerfile-mode))
 
 (use-package shell-pop :ensure t :pin melpa
 :init (setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
+      ;(setq shell-pop-universal-key "C-1")
       (evil-leader/set-key "ut" 'shell-pop)
       ;(global-set-key (kbd "<C-t>") 'shell-pop)
 )
@@ -1100,8 +1105,8 @@
 
 (use-package emojify :ensure t :pin melpa :defer t
 :if window-system
-:init   (global-emojify-mode 1)
-:config (setq emojify-display-style 'image)
+:config (global-emojify-mode 1)
+        (setq emojify-display-style 'image)
         (setq emojify-emoji-styles  '(unicode))
         (setq emojify-emoji-set "emojione-v2.2.6")
 )
@@ -1164,7 +1169,7 @@
 (use-package page-break-lines :ensure t :pin melpa :defer t)
 (use-package dashboard :ensure t :pin melpa :defer t
 :init (dashboard-setup-startup-hook)
-:config 
+:config
     (setq dashboard-banner-logo-title "We are Emacsian!")
     (setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
@@ -1196,6 +1201,17 @@
      (evil-leader/set-key "tl" 'tabbar-backward-tab)
 )
 
+(use-package centaur-tabs :load-path "lisp/centaur-tabs"
+:commands centaur-tabs-mode
+:config (setq centaur-tabs-background-color (face-background 'default))
+        (setq centaur-tabs-style  "zigzag")
+        (setq centaur-tabs-height "32")
+        (setq centaur-tabs-set-icons t)
+        (setq centaur-tabs-set-close-button t)
+        (evil-leader/set-key "th" 'centaur-tabs-backward
+                             "tl" 'centaur-tabs-forward)
+)
+
 (use-package symon :ensure t :pin melpa :defer t)
 
 (use-package google-this :ensure t :pin melpa
@@ -1221,7 +1237,7 @@
 (use-package esup :ensure t :pin melpa :defer t)
 
 (use-package flyspell :ensure t :pin melpa
-:init 
+:init
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
 :config
@@ -1232,7 +1248,7 @@
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
 )
 
-(use-package flyspell-correct-ivy :ensure t :pin melpa 
+(use-package flyspell-correct-ivy :ensure t :pin melpa
 :after (flyspell ivy)
 :bind ((:map flyspell-mode-map ("C-c $" . flyspell-correct-word-generic))
        (:map flyspell-mode-map ([remap flyspell-correct-word-before-point] . flyspell-correct-previous-word-generic)))
@@ -1272,13 +1288,13 @@
 
 (use-package company :ensure t :pin melpa
 :init (global-company-mode 1)
-:config 
+:config
     (setq company-idle-delay 0)
     (setq company-tooltip-align-annotations t)
     (setq company-minimum-prefix-length 1)
     (setq company-dict-enable-yasnippet t)
-    (define-key company-active-map (kbd "M-n") nil)
-    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "M-n")        nil)
+    (define-key company-active-map (kbd "M-p")        nil)
     (define-key company-active-map (kbd "C-n")        'company-select-next)
     (define-key company-active-map (kbd "C-p")        'company-select-previous)
     (define-key company-active-map (kbd "C-<return>") 'company-complete-selection)
@@ -1288,7 +1304,7 @@
 :after company
 :preface
 (defun company-mode/backend-with-yas (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend)) 
+    (if (and (listp backend) (member 'company-yasnippet backend))
     backend (append (if (consp backend) backend (list backend)) '(:with company-yasnippet))))
 :config (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 )
@@ -1310,7 +1326,7 @@
 :config (company-statistics-mode)
 )
 
-(use-package company-tabnine :ensure t :pin melpa 
+(use-package company-tabnine :ensure t :pin melpa
 ;first install: company-tabnine-install-binary
 :after  company
 :config (add-to-list 'company-backend #'company-tabnine)
@@ -1325,6 +1341,7 @@
 :config (setq lsp-inhibit-message t)
         (setq lsp-message-project-root-warning t)
         (setq create-lockfiles nil)
+        (lsp-ui-mode)
 )
 
 (use-package lsp-ui :ensure t :pin melpa
@@ -1343,7 +1360,7 @@
 )
 
 (use-package flycheck :ensure t :pin melpa
-:hook   company
+:after  company
 :config (setq flycheck-clang-language-standard "c++17")
         (global-flycheck-mode t)
 )
@@ -1351,7 +1368,7 @@
 :after   flycheck
 :config (flycheck-pos-tip-mode))
 
-(use-package quick-peek :ensure t :pin melpa :after flychcek)
+(use-package quick-peek :ensure t :pin melpa :after flycheck)
 (use-package flycheck-inline :ensure t :pin melpa
 :after (flycheck quick-peek)
 :config
@@ -1370,12 +1387,12 @@
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :config
-  (use-package yasnippet-snippets :ensure t :pin melpa :after yansippet)
   (evil-leader/set-key "hyl" 'company-yasnippet)
   (setq yas-snippet-dirs '("~/.emacs.d/yas/"))
   (yas-global-mode t)
   (yas-reload-all t)
 )
+(use-package yasnippet-snippets :ensure t :pin melpa :after yasnippet)
 (use-package auto-yasnippet :ensure t :pin melpa
 ;https://github.com/abo-abo/auto-yasnippet
 :after yasnippet
@@ -1383,31 +1400,34 @@
         (evil-leader/set-key "hye" 'aya-expand)
 )
 
-(use-package cc-mode
-:config (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(use-package cpp-mode :load-path "lisp/cpp-mode"
+:commands cpp-mode
+:init (add-hook 'c++-mode-hook  'cpp-mode)
+      (add-hook 'c-mode-hook    'cpp-mode)
+      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
 (use-package cppm :no-require t
-:after cc-mode
+:after cpp-mode
 :config (evil-leader/set-key "hcb" (lambda () (eshell-command "cppm build"))
                              "hcr" (lambda () (eshell-command "cppm run")))
 )
 
 (use-package company-c-headers :ensure t :pin melpa
-:after  (company cc-mode)
+:after  (company cpp-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
+        (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 )
 
 (use-package clang-format :ensure t :pin melpa
-:after  (cc-mode)
+:after  (cpp-mode)
+:init   (add-hook 'c++-mode-hook 'clang-format)
 :config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
 
 (use-package irony :ensure t :pin melpa :diminish irony-mode
-:after (cc-mode)
-:hook ((c++-mode  . irony-mode)
-       (c-mode    . irony-mode)
-       (objc-mode . irony-mode))
+:after (cpp-mode)
+:hook  (cpp-mode . irony-mode)
 :config
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
     (setq irony-additional-clang-options '("-std=c++17"))
@@ -1415,8 +1435,8 @@
 )
 
 (use-package irony-eldoc :ensure t :pin melpa
-    :after (irony eldoc)
-    :config (add-hook 'irony-mode-hook #'irony-eldoc)
+:after (irony eldoc)
+:config (add-hook 'irony-mode-hook #'irony-eldoc)
 )
 
 (use-package company-irony :ensure t :pin melpa
@@ -1431,8 +1451,8 @@
 :config (add-to-list 'company-backends 'company-irony-c-headers)
 )
 
-(use-package rtags :ensure t :pin melpa 
-:after (cc-mode)
+(use-package rtags :ensure t :pin melpa
+:after  cpp-mode
 :custom (rtags-verify-protocol-version nil "rtags version bug fix")
 :preface
 (defun setup-flycheck-rtags ()
@@ -1445,10 +1465,10 @@
     (rtags-enable-standard-keybindings)
     (setq rtags-autostart-diagnostics t)
     (rtags-diagnostics)
-    (setq rtags-completions-enabled t) 
+    (setq rtags-completions-enabled t)
     (rtags-start-process-unless-running)
     (evil-leader/set-key "hcfs" 'rtags-find-symbol
-                         "hcfr" 'rtags-find-references) 
+                         "hcfr" 'rtags-find-references)
 )
 
 (use-package ivy-rtags :ensure t :pin melpa
@@ -1456,7 +1476,7 @@
 :config (setq rtags-display-result-backend 'ivy)
 )
 
-(use-package company-rtags :ensure t :pin melpa 
+(use-package company-rtags :ensure t :pin melpa
 :after  (company rtags)
 :config (add-to-list 'company-backend 'company-rtags))
 (use-package flycheck-rtags :ensure t :pin melpa
@@ -1475,7 +1495,7 @@
 )
 
 (use-package cmake-ide :ensure t :pin melpa
-:after (cc-mode) 
+:after (rtags)
 :config
     (require 'subr-x)
     (cmake-ide-setup)
@@ -1483,7 +1503,7 @@
     ;(defadvice cmake-ide--run-cmake-impl
     ;  (after copy-compile-commands-to-project-dir activate)
     ;  (if (file-exists-p (concat project-dir "/build/compile_commands.json"))
-    ;  (progn 
+    ;  (progn
     ;      (cmake-ide--message "[advice] found compile_commands.json" )
     ;      (copy-file (concat project-dir "compile_commands.json") cmake-dir)
     ;      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
@@ -1502,7 +1522,7 @@
         (dap-mode 1)
 )
 
-(use-package gdb-mi 
+(use-package gdb-mi
 :load-path "lisp/emacs-gdb"
 :commands gdb-executable
 :init   (evil-leader/set-key "de" 'gdb-executable)
@@ -1519,7 +1539,7 @@
 ; only c/c++
 (use-package disaster :ensure t :pin melpa :commands disaster)
 
-(use-package eldoc :ensure t :pin melpa :diminish eldoc-mode)
+(use-package eldoc :ensure t :pin melpa :diminish eldoc-mode :commands eldoc-mode)
 (use-package eldoc-rtags :no-require t
 :after (eldoc rtags)
 :preface
@@ -1594,17 +1614,18 @@
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
 )
 
-(use-package rust-mode :ensure t :pin melpa 
+(use-package rust-mode :ensure t :pin melpa
 :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
-:commands rust-mode 
 :mode (("\\.rs\\'" . rust-mode))
-;:init (add-hook 'rust-mode-hook 'lsp-rust-enable)
+:commands rust-mode
+:init   (add-hook 'rust-mode 'lsp)
 :config (evil-leader/set-key "hrf" 'rust-format-buffer)
-;:config (setq rust-format-on-save t)
-;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+        (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
+       ;(setq rust-format-on-save t)
+       ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
 
-(use-package flycheck-rust :ensure t :pin melpa 
+(use-package flycheck-rust :ensure t :pin melpa
 :after  (flycheck rust-mode)
 :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 )
@@ -1613,39 +1634,33 @@
 :ensure-system-package ((racer . "rustup toolchain add nightly")
                         (racer . "rustup component add rust-src")
                         (racer . "cargo +nightly install racer"))
-:after  rust-mode
-:config (add-hook 'rust-mode-hook  #'racer-mode)
-        (add-hook 'racer-mode-hook #'eldoc-mode) 
+:after (rust-mode eldoc)
+:hook  ((rust-mode  . racer-mode)
+        (racer-mode . eldoc-mode))
+;:init  (add-hook 'racer-mode-hook  #'eldoc-mode)
 )
 
-(use-package company-racer :ensure t :pin melpa
+(use-package company-racer :ensure t :pin melpa 
 :after  (company racer)
 :config (add-to-list 'company-backends 'company-racer)
 )
 
 (use-package cargo :ensure t :pin melpa
 :after  rust-mode
-:config (add-hook 'rust-mode-hook 'cargo-minor-mode)
-        (evil-leader/set-key "hrb" 'cargo-process-build
+:hook (rust-mode . cargo-minor-mode)
+:commands cargo-minor-mode
+:config (evil-leader/set-key "hrb" 'cargo-process-build
                              "hrr" 'cargo-process-run
                              "hrt" 'cargo-process-test)
 )
 
-(use-package lsp-rust :ensure t :pin melpa
-:after  (lsp-mode)
-:config (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
-)
-
-
-(use-package rustic :ensure t :pin melpa
-:commands (cargo-minor-mode)
-:mode   ("\\.rs" . rustic-mode)
-:config (add-hook 'rustic-mode-hook 'cargo-minor-mode)
-        (add-hook 'rustic-mode-hook 'racer-mode)
-        (add-hook 'rustic-mode-hook 'lsp)
-        ;(setq rustic-lsp-server 'rust-analyzer)
-        ;(setq rustic-rls-pkg 'lsp-mode)
-)
+;(use-package rustic :ensure t :pin melpa
+;:commands (rustic-mode)
+;:mode   ("\\.rs" . rustic-mode)
+;:config ;(add-hook 'rustic-mode-hook 'racer-mode)
+;        (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
+;        (add-hook 'rustic-mode-hook 'lsp)
+;)
 
 (use-package haskell-mode :ensure t :pin melpa :defer t)
 
@@ -1663,7 +1678,7 @@
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
        ("CMakeLists.txt" . cmake-mode))
-:init (setq cmake-tab-width 4)      
+:init (setq cmake-tab-width 4)
 )
 
 (use-package markdown-mode :ensure t :pin melpa

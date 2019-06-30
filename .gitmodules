@@ -10,3 +10,6 @@
 [submodule "emacs-libvterm"]
 	path = lisp/emacs-libvterm
 	url = https://github.com/akermu/emacs-libvterm.git
+[submodule "lisp/centaur-tabs"]
+	path = lisp/centaur-tabs
+	url = https://github.com/ema2159/centaur-tabs.git

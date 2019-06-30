@@ -23,7 +23,7 @@
 
 ;(use-package quelpa-use-package :ensure t :pin melpa)
 
-(use-package org :ensure t :ensure org
+(use-package org :ensure t :pin melpa
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 :mode ("\\.org\\'" . org-mode)
 )
