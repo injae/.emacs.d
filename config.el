@@ -151,6 +151,21 @@
                              "td" 'text-scale-decrease)
 )
 
+(defun new-buffer-save (name buffer-major-mode)
+    (let ((buffer (generate-new-buffer name)))
+         (switch-to-buffer buffer)
+         (set-buffer-major-mode buffer)
+         (funcall buffer-major-mode)
+         (setq buffer-offer-save t))
+)
+
+(defun new-buffer (name buffer-major-mode)
+    (let ((buffer (generate-new-buffer name)))
+         (switch-to-buffer buffer)
+         (set-buffer-major-mode buffer)
+         (funcall buffer-major-mode))
+)
+
 (use-package hungry-delete :ensure t :pin melpa :defer t :disabled
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
@@ -971,15 +986,20 @@
 ;(use-package calfw-gcal :ensure t :pin melpa :defer t
 ;:init (require 'calfw-gcal))
 
+(use-package ob-restclient :ensure t :pin melpa
+:after  (org restclient)
+:config (org-babel-do-load-languages 'org-babel-load-languages '((restclient . t)))
+)
+
 (use-package org-babel :no-require t
 :after org
 :config (org-babel-do-load-languages
-          'org-babel-load-languages
-          '((emacs-lisp . t)
-            (python     . t)
-            (org        . t)
-            (shell      . t)
-            (C          . t)))
+        'org-babel-load-languages
+        '((emacs-lisp . t)
+          (python     . t)
+          (org        . t)
+          (shell      . t)
+          (C          . t)))
 )
 ;; 스펠체크 넘어가는 부분 설정
 (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
@@ -1775,10 +1795,10 @@
  ;:config (jedi:complete-on-dot t)
  )
 
-(use-package lsp-python :ensure t :pin melpa
+(use-package lsp-python-ms :ensure t :pin melpa
+:ensure-system-package (pyls . "pip install python-language-server")
 :after (python-mode)
-:hook  ((python-mode . lsp)
-        (python-mode . lsp-python-enable))
+:hook  (python-mode . lsp)
 )
 
 (use-package elpy :ensure t :pin melpa
@@ -1862,4 +1882,18 @@
 
 (use-package json-reformat :ensure t :pin melpa
 :commands json-reformat-region
+)
+
+(use-package restclient :ensure t :pin melpa
+:preface 
+(defun new-restclient-buffer ()
+    "restclient buffer open"
+    (interactive)
+    (new-buffer "*RC Client*" #'restclient-mode)
+    (restclient-response-mode))
+)
+
+(use-package company-restclient :ensure t :pin melpa
+:after  (company restclient)
+:config (add-to-list 'company-backends 'company-restclient)
 )
