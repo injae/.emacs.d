@@ -87,7 +87,7 @@
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
 (setq default-korean-keyboard 'korean-hangul2)
-(global-set-key [?\S- ] 'toggle-input-method)
+(global-set-key [?\S- ] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
 
 (use-package restart-emacs :ensure t :pin melpa :defer t)
@@ -284,8 +284,34 @@
     (evil-leader/set-key "-" 'evil-number/dec-at-pt)
 )
 
+(use-package evil-extra-operator :ensure t :pin melpa :after (evil fold-this)
+:config (global-evil-extra-operator-mode 1)
+)
+
+(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
+(use-package evil-collection :ensure t :pin melpa
+:after (evil)
+:init  (setq evil-collection-setup-minibuffer t)
+       (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
+       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
+       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
+       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
+       (evil-collection-pdf-setup)
+       (evil-collection-minibuffer-setup)
+       (evil-collection-ivy-setup)
+       (evil-collection-occur-setup)
+       (evil-collection-wgrep-setup)
+       (evil-collection-buff-menu-setup)
+       (evil-collection-package-menu-setup)
+       (evil-collection-eshell-setup)
+       (evil-collection-vterm-setup)
+       (evil-collection-which-key-setup)
+:config
+       (evil-collection-init)
+)
+
 (use-package evil-leader :ensure t :pin melpa
-:after (evil which-key)
+:after (evil-collection which-key)
 :config
      (global-evil-leader-mode t)
      (setq evil-leader/leader "<SPC>")
@@ -303,7 +329,7 @@
          "wj"    'enlarge-window
          "wk"    'shrink-window
          "wl"    'enlarge-window-horizontally
-         )
+     )
      (which-key-declare-prefixes "SPC b  " "Buffer")
      (which-key-declare-prefixes "SPC s  " "Spell Check")
      (which-key-declare-prefixes "SPC s e" "Spell Dictionary English")
@@ -332,26 +358,6 @@
      (which-key-declare-prefixes "SPC f g" "Google")
      (which-key-declare-prefixes "SPC f a" "Agrep")
      (which-key-declare-prefixes "SPC f p" "Projectile")
-    )
-
-(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
-(use-package evil-collection :ensure t :pin melpa
-:after (evil)
-:init  (setq evil-collection-setup-minibuffer t)
-       (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
-       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
-       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
-       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
-       (evil-collection-pdf-setup)
-       (evil-collection-minibuffer-setup)
-       (evil-collection-ivy-setup)
-       (evil-collection-occur-setup)
-       (evil-collection-wgrep-setup)
-       (evil-collection-buff-menu-setup)
-       (evil-collection-package-menu-setup)
-       (evil-collection-eshell-setup)
-:config
-       (evil-collection-init)
 )
 
 (use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
@@ -538,25 +544,6 @@
 :after (evil smartparens)
 :init  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 
-(use-package parinfer :ensure t :pin melpa :defer t :disabled
-:after (evil)
-:bind ("C-," . parinfer-toggle-mode)
-:init
-(setq parinfer-extensions
-    '(defaults
-      pretty-parens
-      evil
-      lispy
-      paredit
-      smart-tab
-      smart-yank))
-(add-hook 'clojure-mode-hook     #'parinfer-mode)
-(add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
-(add-hook 'common-lisp-mode-hook #'parinfer-mode)
-(add-hook 'scheme-mode-hook      #'parinfer-mode)
-(add-hook 'lisp-mode-hook        #'parinfer-mode)
-)
-
 (use-package hydra :ensure t :pin melpa :defer t :disabled)
 
 (use-package which-key :ensure t :pin melpa
@@ -569,7 +556,8 @@
   :commands counsel-M-x
   :bind   (("M-x" . counsel-M-x)
           :map ivy-minibuffer-map
-          ("S-SPC" . toggle-input-method))
+          ("S-SPC" . toggle-input-method) ;ivy S-SPC remapping toogle-input-method
+          )
   :config (ivy-mode 1)
       (setq ivy-use-virtual-buffers t)
       (setq ivy-use-selectable-prompt t)
@@ -792,6 +780,8 @@
     )
 )
 
+(use-package window-purpose :ensure t :pin melpa :disabled)
+
 (use-package exwm :ensure t :pin melpa :disabled
 :if window-system
 :commands (exwm-init)
@@ -835,12 +825,18 @@
 :config  (evil-magit-init)
 )
 
-(use-package magithub :ensure t :pin melpa :disabled
+(use-package magithub :ensure t :pin melpa 
 :after magit
 :init (magithub-feature-autoinject t)
       (evil-leader/set-key "gd" 'magithub-dashboard)
       (setq magithub-clone-default-directory "~/github")
 )
+
+(use-package magit-todos :ensure t :pin melpa :after magit)
+
+(use-package gitignore-mode :ensure t :pin melpa :commands gitignore-mode)
+(use-package gitconfig-mode :ensure t :pin melpa :commands gitconfig-mode)
+(use-package gitattributes-mode :ensure t :pin melpa :commands gitattributes-mode)
 
 (use-package evil-ediff :ensure t :pin melpa
 :after evil
@@ -1027,14 +1023,15 @@
 :mode   ("Dockerfile\\'" . dockerfile-mode))
 
 (use-package shell-pop :ensure t :pin melpa
-:init (setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
+:init (setq shell-pop-shell-type '("term" "* vterm *" (lambda () (vterm))))
+      ;(setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
       ;(setq shell-pop-universal-key "C-1")
       (evil-leader/set-key "ut" 'shell-pop)
       ;(global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
 (use-package eshell
-:commands eshell-mode
+:commands eshell
 :config  (setq eshell-buffer-maximum-lines 1000)
          (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
          (setq eshell-cmpl-cycle-completions nil)
@@ -1051,7 +1048,6 @@
 :config (eshell-did-you-mean-setup)
 )
 
-
 (use-package esh-help :ensure t :pin melpa
 :after (eshell eldoc)
 :config (setup-esh-help-eldoc)
@@ -1064,9 +1060,6 @@
     (setq eshell-highlight-prompt nil
           eshell-prompt-function 'epe-theme-lambda)
 )
-(use-package virtualenvwrapper :ensure t :pin melpa
-:after eshell-prompt-extras
-:init (venv-initialize-eshell))
 
 (use-package fish-completion :ensure t :pin melpa
 :after eshell
@@ -1097,7 +1090,7 @@
         (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 )
 
-(use-package vterm :load-path "lisp/emacs-libvterm"
+(use-package vterm :ensure t :pin melpa
 :config (display-line-numbers-mode 0)
 )
 
@@ -1286,6 +1279,22 @@
 
 (use-package smeargle :ensure t :pin melpa)
 
+(use-package polymode :ensure t :pin melpa
+:init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
+)
+(use-package poly-org :ensure t :pin melpa :hook (org-mode . poly-org-mode)
+:init (evil-set-initial-state 'poly-org-mode 'normal)
+)
+;(use-package mmm-mode :load-path "lisp/mmm-mode" ; too slow
+;:hook   (org-mode . mmm-mode)
+;:config (setq mmm-global-mode 'buffers-with-submode-classes)
+;        (setq mmm-submode-decoration-level 2)
+;        (mmm-add-mode-ext-class 'org-mode nil 'org-elisp)
+;        (mmm-add-group 'org-elisp '((elisp-src-block :submode emacs-lisp-mode
+;                                                     :face org-block
+;                                                     :front "#\\+BEGIN_SRC emacs-lisp.*\n"
+;                                                     :back "#\\+END_SRC"))))
+
 (use-package company :ensure t :pin melpa
 :init (global-company-mode 1)
 :config
@@ -1325,6 +1334,12 @@
 :after  company
 :config (company-statistics-mode)
 )
+
+(use-package company-box :ensure t :pin melpa :disabled
+:after company
+:hook (company-mode . company-box-mode)
+)
+
 
 (use-package company-tabnine :ensure t :pin melpa
 ;first install: company-tabnine-install-binary
@@ -1580,11 +1595,10 @@
 
 (use-package slime :ensure t :pin melpa
 :commands slime
-:init
+:config
     (setq inferior-lisp-program (or (executable-find "sbcl")
                                     (executable-find "/usr/bin/sbcl")
                                     (executable-find "/usr/sbin/sbcl" )))
-:config
     (require 'slime-autoloads)
     (slime-setup '(slime-fancy))
 )
@@ -1612,6 +1626,21 @@
 (add-hook 'lisp-mode-hook #'paredit-mode)
 (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
+)
+
+(use-package parinfer :ensure t :pin melpa :disabled
+:after (evil)
+:bind ("C-," . parinfer-toggle-mode)
+:init 
+(add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
+(add-hook 'common-lisp-mode-hook #'parinfer-mode)
+(add-hook 'lisp-mode-hook        #'parinfer-mode)
+;(add-hook 'clojure-mode-hook     #'parinfer-mode)
+;(add-hook 'scheme-mode-hook      #'parinfer-mode)
+:config
+(setq parinfer-extensions '(defaults evil paredit pretty-parens
+                           ;lispy smart-tab smart-yank
+                            ))
 )
 
 (use-package rust-mode :ensure t :pin melpa
@@ -1703,52 +1732,75 @@
         (setq easy-jekyll-previewtime "300")
 )
 
-(use-package python-mode
-:after python-mode
-:interpreter ("python" . python-mode)
-:mode   ("\\.py\\'" . python-mode)
-        ("\\.wsgi$" . python-mode)
-:init   (setq-default indent-tabs-mode nil)
-:config (setq python-indent-offset 4)
-)
+(use-package python-mode :ensure t :pin melpa
+ :mode   ("\\.py\\'" . python-mode)
+         ("\\.wsgi$" . python-mode)
+ :interpreter ("python" . python-mode)
+ :init   (setq-default indent-tabs-mode nil)
+ :config (setq python-indent-offset 4)
+ )
 
-(use-package pyenv-mode :ensure t :pin melpa
-:after python-mode
-:preface
-    (defun projectile-pyenv-mode-set ()
-        "Set pyenv version matching project name."
-        (let ((project (projectile-project-name)))
-            (if (member project (pyenv-mode-versions))
-                (pyenv-mode-set project)
-                (pyenv-mode-unset)
-            )
-        )
-    )
-:config
-    (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
-    (add-hook 'python-mode-hook 'pyenv-mode)
-)
-(use-package pyenv-mode-auto :ensure t :pin melpa :after python-mode)
+ (use-package pyvenv :ensure t :pin melpa
+ :after python-mode
+ :hook (python-mode . pyvenv-mode)
+ )
 
-(use-package anaconda-mode :ensure t :pin melpa
-:after  python-mode
-:config (add-hook 'python-mode-hook 'anaconda-mode)
-        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-
-(use-package company-anaconda :ensure t :pin melpa
-:after  (company-mode anaconda-mode)
-:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
-
-(use-package company-jedi :ensure t :pin melpa
-:after  (company python-mode)
-:config (add-hook 'python-mode 'jedi:setup)
-        (add-to-list 'company-backends 'company-jedi)
-;:config (jedi:complete-on-dot t)
-)
+ (use-package pyenv-mode :ensure t :pin melpa
+ :after python-mode
+ :hook  (python-mode . pyenv-mode)
+ :preface
+     (defun projectile-pyenv-mode-set ()
+         "Set pyenv version matching project name."
+         (let ((project (projectile-project-name)))
+             (if (member project (pyenv-mode-versions))
+                 (pyenv-mode-set project)
+                 (pyenv-mode-unset)
+             )
+         )
+     )
+ :config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
+ )
+ (use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
+ (use-package company-jedi :ensure t :pin melpa
+ :after  (company python-mode)
+ :config (add-hook 'python-mode 'jedi:setup)
+         (add-to-list 'company-backends 'company-jedi)
+ ;:config (jedi:complete-on-dot t)
+ )
 
 (use-package lsp-python :ensure t :pin melpa
-:hook (python-mode . lsp-python-enable)
+:after (python-mode)
+:hook  ((python-mode . lsp)
+        (python-mode . lsp-python-enable))
 )
+
+(use-package elpy :ensure t :pin melpa
+:ensure-system-package ((jedi . "pip install jedi flake8 autopep8 black yapf"))
+:after python-mode
+:hook (python-mode . elpy-enable)
+)
+
+ ;(use-package anaconda-mode :ensure t :pin melpa
+ ;:after  python-mode
+ ;:config (add-hook 'python-mode-hook 'anaconda-mode)
+ ;        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+
+ ;(use-package company-anaconda :ensure t :pin melpa
+ ;:after  (company-mode anaconda-mode)
+ ;:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+
+ ;(use-package virtualenvwrapper
+ ;:after  python-mode
+ ;:custom (venv-project-home expand-file-name (or (getenv "PROJECT_HOME") "~/projects/") :group 'virtualenvwrapper)
+ ;:preface (defun workon-venv ()
+ ;             "change directory to project in eshell"
+ ;             (eshell/cd (concat venv-project-home venv-current-name)))
+ ;:config (venv-initialize-interactive-shells) ;; if you want interactive shell support
+ ;        (venv-initialize-eshell) ;; if you want eshell support
+ ;        (setq venv-location "~/dev/flask/.virtualenvs/")
+ ;        (setq venv-project-home "~/dev/")
+ ;        (add-hook 'venv-postactivate-hook (lambda () (workon-venv)))
+ ;)
 
 (use-package dart-mode :ensure t :pin melpa
 :after lsp
@@ -1796,8 +1848,11 @@
 )
 
 (use-package json-mode :ensure t :pin melpa
-:after web-mode
 :commands json-mode
 :mode (("\\.json\\'"       . json-mode)
        ("/Pipfile.lock\\'" . json-mode))
+)
+
+(use-package json-reformat :ensure t :pin melpa
+:commands json-reformat-region
 )

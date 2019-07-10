@@ -1,128 +1,128 @@
-cppm build
-cppm run
-cppm build
-cppm run
-time cppm run
-cppm build
-cppm run
-time cppm run
-cppm build
-time cppm run
-cppm build
-cppm build
-time cppm run
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
 ls
-cd ../src/
+sudo add-apt-repository ppa:ubuntu-elisp/ppa
+sudo apt-get install emacs-snapshot
+sudo update-alternatives --config emacs
+sudo update-alternatives --config emacs
+sudo update-alternatives --install /usr/bin/emacs emacs /usr/bin/emacs-snapshot 100
+emacs-snapshot -h
+emacs-snapshot -v
+emacs-snapshot --version
 ls
-cp main.cpp backup.cpp
-cppm build
-cppm build
-cppm build
-cd ../build/
-cppm build
-cppm run
-cppm build
-]
-]
-cppm build
-cppm build
-time cppm run
-cppm build
-cppm run
-time cppm run
-cppm build
-time cppm run
-cppm build
-time cppm run
-cppm build
-time cppm run
-cppm build
-cppm build
-cppm run
-cppm build
-cppm run
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm build
-cppm run
-cppm build
-cppm build
-cppm build
-time cppm run
-cppm build
-cppm build
-cppm build
-time cppm run
-cd ../src/
-ls
-cp backup.cpp main.cpp 
-cppm build
-cd ../build/
-cppm run
-time cppm run
-rm ~/Downloads/sample_input.txt 
-mv ~/Downloads/sample_input\ \(1\).txt ../sameple_input2.txt
-ls
-ls ../
-cppm build
-cppm run
-ls
-ls
-cd lisp/
-ls
-rm c++-config-mode.el\~ cpp-config-mode.el\~ cpp-mode.el\~ cpp.el~
-ls
-ls
-cd lisp
-ls
-cd ../elpa/
-ls
-cd rtags-20190621.2006/
-ls
-ls
-ls
-cd lisp/
-ls
-git clone https://github.com/ema2159/centaur-tabs.git
-ls
-cd lisp/
-ls
-rustup update
-rustup component add rls rust-analysis rust-src
-rustup component add rls
-rustup update
-ls
-cd elpa/
-ls
-rm -r lsp-mode-20190615.1959/
-rls -h
-rls --version
-cd ~/.emacs.d/elpa/
-ls
-rm -r lsp-rust-20180305.1308/
-cargo run
-cargo run
-cargo search rust-src
 clear
-cargo build
-cargo ru
-cargo run
+ls
+sudo update-alternatives --config emacs
+ls
+ls /usr/bin/emacs
+ls /usr/bin/emacs*
+sudo update-alternatives --config emacsclient
+sudo update-alternatives --install /usr/bin/emacsclient emacsclient /usr/bin/emacsclient-snapshot 100
+ls
+cd ../dev/fl
+cd ../dev/flask/
+ls
+. .venv/bin/activate
+ls
+ls
+touch main.py
+python main.py 
+python main.py
+python main.py
+python main.py
+python main.py
+python main.py
+python main.py
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get install python3.8
+python
+python .
+python .
+ls
+python .
+ls
+python .
+ls
+clear
+sudo update-alternatives --config python
+sudo update-alternatives --config python3
+sudo update-alternatives --config python3
+sudo update-alternatives --config python
+sudo update-alternatives --install /usr/bin/python3 python /usr/bin/python3.8 
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 
+sudo apt-get install python3
+ls
+sudo update-alternatives --config python
+sudo update-alternatives --config python3
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 100
+sudo update-alternatives --config python3
+sudo update-alternatives --config python
+python .
+ls
+python main.py 
+ls
+ls -a
+rm -r .venv/
+pip install --upgrade rope jedi flake8
+pip install --upgrade rope jedi flake8
+ls
+clear
+ls
+ls -a
+ls
+ls -a
+pip install flask
+ls
+ls -a
+ls
+ls -a
+virtualenv .venv
+ls
+ls -a
+ls ~/.emacs.d/.python-environments/
+ls
+ls
+pip install flask
+ls
+ls -a .venv/
+ls -a .venv/lib/
+ls -a .venv/lib/python3.6/
+ls
+ls -a
+pip list
+ls
+cd ../
+ls
+cd dev/flask/
+ls
+ls -a
+ls
+rm .venv/
+rm -r .venv/
+ls
+virtualenv .virtualenvs
+ls -a
+ls -a
+pip list
+pip list
+. .virtualenvs/bin/activate.fish 
+. .virtualenvs/bin/activate
+. .virtualenvs/bin/activate.xsh 
+. .virtualenvs/bin/activate.csh 
+workon .virtualenv
+venv-workon
+venv-activate
+venv-mkvirtualenv
+ls
+ls -a
+venv-mkvirtualenv
+ls -a
+venv-mkvirtualenv
+venv-mkvirtualenv
+venv-mkvirtualenv
+allvirtualenv pip list
+allvirtualenv -
+ls
+ls
+venv-initialize-eshell 
+ls
+pip list
+venv-workon .virtualenvs/
