@@ -1,4 +1,0 @@
-(:token
-    (:access_token "ya29.GlyjBiU3QdtsHw-YaMGwkGk-sDUXDi7XEuDKenQvVwc3evtEmDmediNcaXnVEJ0QoSNYR1SwqSccYMcC7PLC1c6UJ_DlwYKy946XhymNMiL3Cx_ZU5egNZUQBEeBuw" :expires_in 3600 :refresh_token "1/anDxzm-VtzLV2wFlwWwICivgJwmdXf-2J7WGi8zuuHY" :scope "https://www.googleapis.com/auth/calendar" :token_type "Bearer")
-    :elem nil :8687lee@gmail\.com
-    (("65i32dr6coqjabb3ccq30b9k6pgj6bb1c4o3cbb6c5hmad9h6pi3ae32c4_20190201" . "* 아빠생신\n  :PROPERTIES:\n  :LINK: [[https://www.google.com/calendar/event?eid=NjVpMzJkcjZjb3FqYWJiM2NjcTMwYjlrNnBnajZiYjFjNG8zY2JiNmM1aG1hZDloNnBpM2FlMzJjNF8yMDE5MDIwMSA4Njg3bGVlQG0][Go to gcal web page]]\n  :ID: 65i32dr6coqjabb3ccq30b9k6pgj6bb1c4o3cbb6c5hmad9h6pi3ae32c4_20190201\n  :END:\n\n  <2019-02-01 Fri>\n")))
