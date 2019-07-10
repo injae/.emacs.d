@@ -360,6 +360,13 @@
      (which-key-declare-prefixes "SPC f p" "Projectile")
 )
 
+(use-package no-littering :ensure t :pin melpa
+:config (require 'recentf)
+        (add-to-list 'recentf-exclude no-littering-var-directory)
+        (add-to-list 'recentf-exclude no-littering-etc-directory)
+        (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+)
+
 (use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
 (use-package git-gutter :ensure t :pin melpa :defer t
 :init

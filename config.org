@@ -405,7 +405,7 @@ MY EMACS CONFIG -*- mode: org -*-
   :config (require 'recentf)
           (add-to-list 'recentf-exclude no-littering-var-directory)
           (add-to-list 'recentf-exclude no-littering-etc-directory)
-          (setq auto-save-file-name-transforms '((".*" , (no-littering-expand-var-file-name "auto-save/") t)))
+          (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
   )
 #+END_SRC
 ** Line Number and Highlighting
