@@ -1,1 +1,1 @@
-("~/.emacs.d/")
+("~/.emacs.d/" "~/dev/cppm/" "~/dev/cppkg/" "~/.cppm/install/ghcfilesystem/lastest/" "~/.cppm/install/ghc_filesystem/lastest/" "~/dev/cppm_tools/" "~/dev/cmake_git_tool/" "~/dev/cppm/thirdparty/nlpo/" "~/dev/cppm/thirdparty/Catch2/" "~/.cppm/install/cpptoml/lastest/" "~/dev/nlpo/" "~/.cppm/install/nlpo/lastest/" "~/.cppm/tool/" "~/.cppm/repo/cppkg/" "~/.cppm/install/Catch2/lastest/" "~/dev/rstudy/" "~/dev/loopang-server/")

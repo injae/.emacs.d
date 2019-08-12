@@ -113,16 +113,16 @@
 )
 
 (use-package sudo-mode :no-require t
-:after evil-leader
-:preface
-(defun sudo-find-file (file-name)
-  "sudo open"
-  (interactive "FSudo Find File: ")
-  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-    (find-file tramp-file-name)))
-:init (evil-leader/set-key "fs" #'sudo-find-file))
+ :after evil-leader
+ :preface
+ (defun sudo-find-file (file-name)
+     "sudo open"
+     (interactive "FSudo Find File: ")
+     (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+         (find-file tramp-file-name)))
+ :init (evil-leader/set-key "fs" #'sudo-find-file))
 
-(use-package paradox :ensure t :pin melpa :defer t
+(use-package paradox :ensure t :pin melpa :defer t :disabled
 ;https://github.com/Malabarba/paradox
 :init (setq paradox-github-token "e1a1518b1f89990587ec97b601a1d0801c5a40c6")
 )
@@ -222,11 +222,11 @@
  list)
 
 (use-package evil :ensure t :pin melpa
-:init (setq evil-want-integration t)
-      (setq evil-want-keybinding nil)
-      (setq evil-want-C-u-scroll t)
-      (setq-default evil-symbol-word-search t)
-      (evil-mode 1)
+:custom (evil-want-keybinding nil)
+        (evil-want-integration t)
+        (evil-want-C-u-scroll t)
+        (evil-symbol-word-search t)
+:init   (evil-mode 1)
 )
 
 (use-package evil-surround :ensure t :pin melpa
@@ -249,10 +249,16 @@
 :config (evil-indent-plus-default-bindings)
 )
 
-(use-package evil-goggles :ensure t :pin melpa
+(use-package evil-goggles :ensure t :pin melpa :after evil
 :config (evil-goggles-mode)
         (setq evil-goggles-pulse t)
         (setq evil-goggles-duration 0.500)
+)
+
+(use-package evil-traces :ensure t :pin melpa :after evil
+; move: m +{n}, delete: +{n},+{n}d, join: .,+{n}j glboal: g/{target}/{change}
+:config (evil-traces-use-diff-faces)
+        (evil-traces-mode)
 )
 
 (use-package evil-mc :ensure t :pin melpa :disabled
@@ -270,7 +276,29 @@
       (global-evil-mc-mode 1)
 )
 
-(use-package evil-multiedit :ensure t :pin melpa :defer t :disabled)
+(use-package evil-nerd-commenter :ensure t :pin melpa :after evil
+:init (evil-leader/set-key "ci" 'evilnc-comment-or-uncomment-lines
+                           "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
+                           "cc" 'evilnc-copy-and-comment-lines
+                           "cp" 'evilnc-comment-or-uncomment-paragraphs
+                           "cr" 'comment-or-uncomment-region
+                           "cv" 'evilnc-toggle-invert-comment-line-by-line
+                           "\\" 'evilnc-comment-operator)
+)
+
+(use-package evil-args :ensure t :pin melpa :after evil
+; change argument: c-i-a, delete arguemnt: d-a-a
+:config (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+        (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+        (define-key evil-normal-state-map "L" 'evil-forward-arg)
+        (define-key evil-normal-state-map "H" 'evil-backward-arg)
+        (define-key evil-motion-state-map "L" 'evil-forward-arg)
+        (define-key evil-motion-state-map "H" 'evil-backward-arg)
+        (define-key evil-normal-state-map "K" 'evil-jump-out-args)
+)
+
+
+(use-package evil-multiedit :ensure t :pin melpa :disabled)
 (use-package evil-iedit-state :ensure t :pin melpa :after (evil iedit))
 
 (use-package evil-matchit :ensure t :pin melpa
@@ -286,6 +314,10 @@
 (use-package evil-escape :ensure t :pin melpa :disabled
 :config (setq-default evil-escape-key-sequence "jk")
 )
+
+(use-package evil-smartparens :ensure t :pin melpa
+:after (evil smartparens)
+:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 
 (use-package evil-numbers :ensure t :pin melpa
 ;https://github.com/cofi/evil-numbers
@@ -321,10 +353,11 @@
        (evil-collection-eshell-setup)
        (evil-collection-vterm-setup)
        (evil-collection-which-key-setup)
+       (evil-collection-evil-mc-setup)
+       (evil-collection-calc-setup)
 :config
        (evil-collection-init)
 )
-
 (use-package evil-leader :ensure t :pin melpa
 :after (evil-collection which-key)
 :config
@@ -381,6 +414,8 @@
         (add-to-list 'recentf-exclude no-littering-etc-directory)
         (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 )
+
+(use-package elmacro :ensure t :pin melpa :config (elmacro-mode))
 
 (use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
 (use-package git-gutter :ensure t :pin melpa :defer t
@@ -562,187 +597,195 @@
                            "phl" 'sp-backward-barf-sexp)
 )
 
-(use-package evil-smartparens :ensure t :pin melpa
-:after (evil smartparens)
-:init  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
-
-(use-package hydra :ensure t :pin melpa :defer t :disabled)
+(use-package hydra :ensure t :pin melpa :defer t)
 
 (use-package which-key :ensure t :pin melpa
-:commands (which-key-mode)
 :init     (which-key-mode t)
-:config   (which-key-enable-god-mode-support t))
+:config   (setq which-key-allow-evil-operators t)
+)
 
 (use-package ivy :ensure t :pin melpa :defer t
-  :after evil-collection
-  :commands counsel-M-x
-  :bind   (("M-x" . counsel-M-x)
-          :map ivy-minibuffer-map
-          ("S-SPC" . toggle-input-method) ;ivy S-SPC remapping toogle-input-method
-          )
-  :config (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-use-selectable-prompt t)
-      (setq enable-recursive-minibuffers t)
-      (setq ivy-height 20)
-      (setq ivy-count-format "(%d/%d) ")
-      (setq ivy-display-style 'fancy)
-      (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
-      (setq ivy-format-function 'ivy-format-function-line)
-      (setq ivy-initial-inputs-alist nil)
-      ;(evil-set-initial-state   'ivy-occur-grep-mode 'normal)
-      ;(evil-make-overriding-map  ivy-occur-mode-map  'normal)
+:after evil-collection
+:commands counsel-M-x
+:bind   (("M-x" . counsel-M-x)
+        :map ivy-minibuffer-map
+        ("S-SPC" . toggle-input-method) ;ivy S-SPC remapping toogle-input-method
+        )
+:config (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-use-selectable-prompt t)
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-height 20)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq ivy-display-style 'fancy)
+    (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
+    (setq ivy-format-function 'ivy-format-function-line)
+    (setq ivy-initial-inputs-alist nil)
+    ;(evil-set-initial-state   'ivy-occur-grep-mode 'normal)
+    ;(evil-make-overriding-map  ivy-occur-mode-map  'normal)
 )
-  (use-package counsel :after ivy :config (counsel-mode))
-  (use-package swiper :ensure t :pin melpa
-  :after ivy
-  :bind ("C-s"   . swiper)
-        ("C-S-s" . swiper-all)
-  :config (setq swiper-action-recenter t)
-          (setq swiper-goto-start-of-match t)
-          (setq swiper-stay-on-quit t)
-  )
-  (use-package ivy-yasnippet :ensure t :pin melpa
-  :after (ivy yasnippet)
-  :bind  ("C-c C-y" . ivy-yasnippet)
-  :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
-  )
+(use-package counsel
+:after ivy
+:config (counsel-mode)
+)
+(use-package swiper :ensure t :pin melpa
+:after ivy
+:bind ("C-s"   . swiper)
+      ("C-S-s" . swiper-all)
+:config (setq swiper-action-recenter t)
+        (setq swiper-goto-start-of-match t)
+        (setq swiper-stay-on-quit t)
+)
 
-  (use-package historian :ensure t :pin melpa
-  :after  (ivy)
-  :config (historian-mode)
-  )
-  (use-package ivy-historian :ensure t :pin melpa
-  :after  (ivy historian)
-  :config (ivy-historian-mode)
-  )
-  (use-package ivy-xref :ensure t :pin melpa :disabled
-  :after (ivy xref)
-  :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
-  )
-  (use-package counsel-projectile :ensure t :pin melpa
-  :after  (counsel projectile)
-  :config (setq projectile-completion-system 'ivy)
-          (counsel-projectile-mode 1)
-          (evil-leader/set-key "fpf" 'counsel-projectile-find-file
-                               "fpg" 'counsel-projectile-rg
-                               "fpt" 'counsel-projectile-transformer)
-  )
-  (use-package counsel-world-clock :ensure t :pin melpa
-  :after (counsel)
-  :bind (:map counsel-mode-map ("C-c c k" . counsel-world-clock))
-  )
+(use-package ivy-yasnippet :ensure t :pin melpa
+:after (ivy yasnippet)
+:bind  ("C-c C-y" . ivy-yasnippet)
+:config (advice-add #'ivy-yasnippet--preview :override #'ignore)
+)
 
-  (use-package counsel-tramp :ensure t :pin melpa
-  :after counsel
-  :bind ("C-c s" . 'counsel-tramp)
-  :init (setq tramp-default-method "ssh")
-  )
-  (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
-  (use-package ivy-rich :ensure t :pin melpa
-  :after ivy
-  :defines
-      (all-the-icons-mode-icon-alist all-the-icons-dir-icon-alist bookmark-alist)
+(use-package historian :ensure t :pin melpa
+:after  (ivy)
+:config (historian-mode)
+)
+
+(use-package ivy-historian :ensure t :pin melpa
+:after  (ivy historian)
+:config (ivy-historian-mode)
+)
+
+(use-package all-the-icons-ivy :ensure t :pin melpa
+:config (all-the-icons-ivy-setup)
+)
+
+(use-package ivy-xref :ensure t :pin melpa :disabled
+:after (ivy xref)
+:config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+)
+
+(use-package counsel-projectile :ensure t :pin melpa
+:after  (counsel projectile)
+:config (setq projectile-completion-system 'ivy)
+        (counsel-projectile-mode 1)
+        (evil-leader/set-key "fF" 'counsel-projectile-find-file
+                             "fG" 'counsel-projectile-rg)
+)
+(use-package counsel-world-clock :ensure t :pin melpa
+:after (counsel)
+:bind (:map counsel-mode-map ("C-c c k" . counsel-world-clock))
+)
+
+(use-package counsel-tramp :ensure t :pin melpa
+:after counsel
+:bind ("C-c s" . 'counsel-tramp)
+:init (setq tramp-default-method "ssh")
+)
+(use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
+
+(use-package ivy-rich
+  :defines (all-the-icons-dir-icon-alist bookmark-alist)
   :functions (all-the-icons-icon-family
               all-the-icons-match-to-alist
               all-the-icons-auto-mode-match?
               all-the-icons-octicon
               all-the-icons-dir-is-submodule)
-  :hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name))))
   :preface
-  (with-eval-after-load 'all-the-icons
-  (add-to-list 'all-the-icons-mode-icon-alist
-               '(gfm-mode  all-the-icons-octicon "markdown"
-               :v-adjust 0.0
-               :face all-the-icons-lblue)))
   (defun ivy-rich-bookmark-name (candidate)
-      (car (assoc candidate bookmark-alist)))
-      (defun ivy-rich-buffer-icon (candidate)
-          "Display buffer icons in `ivy-rich'."
-          (when (display-graphic-p)
-              (when-let* ((buffer (get-buffer candidate))
-                             (major-mode
-                                 (buffer-local-value 'major-mode buffer))
-                             (icon (if (and (buffer-file-name buffer)
-                                           (all-the-icons-auto-mode-match? candidate))
-                                       (all-the-icons-icon-for-file candidate)
-                                       (all-the-icons-icon-for-mode major-mode))))
-                  (if (symbolp icon)
-                      (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
-                  (unless (symbolp icon)
-                      (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+    (car (assoc candidate bookmark-alist)))
+
+  (defun ivy-rich-repo-icon (candidate)
+    "Display repo icons in `ivy-rich`."
+    (all-the-icons-octicon "repo" :height .9))
+
+  (defun ivy-rich-org-capture-icon (candidate)
+    "Display repo icons in `ivy-rich`."
+    (pcase (car (last (split-string (car (split-string candidate)) "-")))
+       ("emacs" (all-the-icons-fileicon "emacs" :height .68 :v-adjust .001))
+       ("schedule" (all-the-icons-faicon "calendar" :height .68 :v-adjust .005))
+       ("tweet" (all-the-icons-faicon "commenting" :height .7 :v-adjust .01))
+       ("link" (all-the-icons-faicon "link" :height .68 :v-adjust .01))
+       ("memo" (all-the-icons-faicon "pencil" :height .7 :v-adjust .01))
+       (_       (all-the-icons-octicon "inbox" :height .68 :v-adjust .01))))
+
+  (defun ivy-rich-org-capture-title (candidate)
+    (let* ((octl (split-string candidate))
+           (title (pop octl))
+           (desc (mapconcat 'identity octl " ")))
+      (format "%-25s %s" title (propertize desc 'face `(:inherit font-lock-doc-face)))))
+
+  (defun ivy-rich-buffer-icon (candidate)
+    "Display buffer icons in `ivy-rich'."
+    (when (display-graphic-p)
+      (when-let* ((buffer (get-buffer candidate))
+                  (major-mode (buffer-local-value 'major-mode buffer))
+                  (icon (if (and (buffer-file-name buffer)
+                                 (all-the-icons-auto-mode-match? candidate))
+                            (all-the-icons-icon-for-file candidate)
+                          (all-the-icons-icon-for-mode major-mode))))
+        (if (symbolp icon)
+            (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
+        (unless (symbolp icon)
+          (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+
   (defun ivy-rich-file-icon (candidate)
-      "Display file icons in `ivy-rich'."
-      (when (display-graphic-p)
-          (let ((icon
-                      (if (file-directory-p candidate)
-                          (cond ((and (fboundp 'tramp-tramp-file-p)
-                                      (tramp-tramp-file-p default-directory))
-                                  (all-the-icons-octicon "file-directory"))
-                              ((file-symlink-p candidate)
-                                  (all-the-icons-octicon "file-symlink-directory"))
-                              ((all-the-icons-dir-is-submodule candidate)
-                                  (all-the-icons-octicon "file-submodule"))
-                              ((file-exists-p (format "%s/.git" candidate))
-                                  (all-the-icons-octicon "repo"))
-                              (t (let ((matcher (all-the-icons-match-to-alist
-                                                  candidate all-the-icons-dir-icon-alist)))
-                                      (apply (car matcher) (list (cadr matcher))))))
-                          (all-the-icons-icon-for-file candidate))))
-              (unless (symbolp icon)
-                  (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
-  (setq ivy-rich--display-transformers-list
-      '(ivy-switch-buffer
-          (:columns ((ivy-rich-buffer-icon (:width 1))
-                      (ivy-rich-candidate (:width 30))
-                      (ivy-rich-switch-buffer-size (:width 7))
-                      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-                      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-                      (ivy-rich-switch-buffer-project (:width 15 :face success))
-                      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x
-                                                                  (ivy-rich-minibuffer-width 0.3))))))
-              :predicate (lambda (cand) (get-buffer cand)))
+    "Display file icons in `ivy-rich'."
+    (when (display-graphic-p)
+      (let ((icon (if (file-directory-p candidate)
+                      (cond
+                       ((and (fboundp 'tramp-tramp-file-p)
+                             (tramp-tramp-file-p default-directory))
+                        (all-the-icons-octicon "file-directory"))
+                       ((file-symlink-p candidate)
+                        (all-the-icons-octicon "file-symlink-directory"))
+                       ((all-the-icons-dir-is-submodule candidate)
+                        (all-the-icons-octicon "file-submodule"))
+                       ((file-exists-p (format "%s/.git" candidate))
+                        (all-the-icons-octicon "repo"))
+                       (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
+                            (apply (car matcher) (list (cadr matcher))))))
+                    (all-the-icons-icon-for-file candidate))))
+        (unless (symbolp icon) (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+  :hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name))))
+  :init
+  (setq ivy-rich-display-transformers-list
+        '(ivy-switch-buffer
+          (:columns
+           ((ivy-rich-buffer-icon)
+            (ivy-rich-candidate (:width 30))
+            (ivy-rich-switch-buffer-size (:width 7))
+            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+            (ivy-rich-switch-buffer-project (:width 15 :face success))
+            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+           :predicate
+           (lambda (cand) (get-buffer cand)))
           ivy-switch-buffer-other-window
-          (:columns ((ivy-rich-buffer-icon)
-                     (ivy-rich-candidate (:width 30))
-                     (ivy-rich-switch-buffer-size (:width 7))
-                     (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-                     (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-                     (ivy-rich-switch-buffer-project (:width 15 :face success))
-                     (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x
-                                                                  (ivy-rich-minibuffer-width 0.3))))))
-              :predicate (lambda (cand) (get-buffer cand)))
-              counsel-M-x
-          (:columns ((counsel-M-x-transformer (:width 50))
-                     (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-          counsel-describe-function
-          (:columns ((counsel-describe-function-transformer (:width 50))
-                     (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-          counsel-describe-variable
-          (:columns ((counsel-describe-variable-transformer (:width 50))
-                     (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-          counsel-find-file
-          (:columns ((ivy-rich-file-icon)
-                     (ivy-rich-candidate (:width 30))))
-              counsel-file-jump (:columns ((ivy-rich-file-icon)
-                                           (ivy-rich-candidate (:width 30))))
-              counsel-dired-jump (:columns ((ivy-rich-file-icon)
-                                            (ivy-rich-candidate (:width 30))))
-              counsel-git (:columns ((ivy-rich-file-icon)
-                                     (ivy-rich-candidate (:width 30))))
-              counsel-projectile-find-file (:columns ((ivy-rich-file-icon)
-                                                      (ivy-rich-candidate (:width 30))))
-              counsel-projectile-find-dir (:columns ((ivy-rich-file-icon)
-                                                     (ivy-rich-candidate (:width 30))))
-              counsel-recentf (:columns ((ivy-rich-file-icon)
-                                         (ivy-rich-candidate (:width 90))
-                                         (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
-              counsel-bookmark (:columns ((ivy-rich-bookmark-type)
-                                         (ivy-rich-bookmark-name (:width 40))
-                                         (ivy-rich-bookmark-info)))))
-      :config
-      (setq ivy-rich-parse-remote-buffer nil)
-      (ivy-rich-mode 1))
+          (:columns
+           ((ivy-rich-buffer-icon)
+            (ivy-rich-candidate (:width 30))
+            (ivy-rich-switch-buffer-size (:width 7))
+            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+            (ivy-rich-switch-buffer-project (:width 15 :face success))
+            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+           :predicate (lambda (cand) (get-buffer cand)))
+          counsel-M-x (:columns ((counsel-M-x-transformer (:width 40)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+          counsel-describe-function (:columns ((counsel-describe-function-transformer (:width 45)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+          counsel-describe-variable (:columns ((counsel-describe-variable-transformer (:width 45)) (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+          counsel-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          counsel-file-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          counsel-dired-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          counsel-git (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          counsel-recentf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate (:width 110)))) counsel-bookmark (:columns ((ivy-rich-bookmark-type) (ivy-rich-bookmark-name (:width 30)) (ivy-rich-bookmark-info (:width 80))))
+          counsel-projectile-switch-project (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          counsel-fzf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          ivy-ghq-open (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
+          ivy-ghq-open-and-fzf (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
+          counsel-projectile-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+          counsel-org-capture (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
+          counsel-projectile-find-dir (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))))
+  (setq ivy-rich-parse-remote-buffer nil)
+  :config
+  (ivy-rich-mode 1))
 
 (use-package smex :ensure t :pin melpa :disabled
 :init (smex-initialize)
@@ -761,7 +804,7 @@
 )
 
 (use-package neotree :ensure t :pin melpa
-:after (projectile)
+:after (projectile all-the-icons)
 :commands (neotree-toggle)
 :init
     (setq projectile-switch-project-action 'neotree-projectile-action)
@@ -770,9 +813,9 @@
 :config
     (setq-default neo-window-width 30)
     (setq-default neo-dont-be-alone t)
-    (setq-local display-line-numbers 0)
+    (add-hook 'neotree-mode-hook (lambda () (display-line-numbers-mode -1) ))
     (setq neo-force-change-root t)
-    (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+    (setq neo-theme 'icons)
     (setq neo-show-hidden-files t)
 )
 (use-package all-the-icons-dired :ensure t :pin melpa
@@ -972,19 +1015,14 @@
         (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
-(use-package orgtbl-aggregate :ensure t :pin melpa :defer t
-; https://github.com/tbanel/orgaggregate
-:after org
-)
+(use-package orgtbl-aggregate :ensure t :pin melpa :defer t)
 
-;(use-package calfw :ensure t :pin melpa :defer t
-;:commands cfw:open-calendar-buffer
-;:config (use-package calfw-org
-;        :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp))
-;        )
-;)
-;(use-package calfw-gcal :ensure t :pin melpa :defer t
-;:init (require 'calfw-gcal))
+(use-package calfw :ensure t :pin melpa
+:commands cfw:open-calendar-buffer
+:config (use-package calfw-org :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp)))
+)
+(use-package calfw-gcal :ensure t :pin melpa :disabled
+:init (require 'calfw-gcal))
 
 (use-package ob-restclient :ensure t :pin melpa
 :after  (org restclient)
@@ -1043,17 +1081,40 @@
 :config (rainbow-mode)
 )
 
-(use-package docker :ensure t :pin melpa :disabled
-:init (evil-leader/set-key "hud" 'docker))
+(use-package docker :ensure t :pin melpa 
+:commands docker
+:init   (evil-leader/set-key "hud" 'docker)
+:custom (docker-image-run-arguments '("-i", "-t", "--rm"))
+)
 
 (use-package dockerfile-mode :ensure t :pin melpa
 :mode   ("Dockerfile\\'" . dockerfile-mode))
+
+(use-package vterm :ensure t :pin melpa
+ :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
+ )
+
+ (use-package vterm-toggle :load-path "lisp/vterm-toggle" :after vterm
+ :init   (evil-leader/set-key "ut" 'vterm-toggle
+                              "tl" 'vterm-toggle-forward
+                              "th" 'vterm-toggle-backward
+                              "tn" 'vterm)
+
+ :config (setq vterm-toggle-fullscreen-p nil)
+         (add-to-list 'display-buffer-alist
+                      '("^v?term.*"
+                       (display-buffer-reuse-window display-buffer-at-bottom)
+                       (reusable-frames . visible)
+                       (direction . bottom)
+                       (window-height . 0.3)))
+)
 
 (use-package shell-pop :ensure t :pin melpa
 :init (setq shell-pop-shell-type '("term" "* vterm *" (lambda () (vterm))))
       ;(setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
       ;(setq shell-pop-universal-key "C-1")
-      (evil-leader/set-key "ut" 'shell-pop)
+      ;(evil-leader/set-key "ut" 'shell-pop)
+      (setq shell-pop-full-span t)
       ;(global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
@@ -1115,10 +1176,6 @@
     (call-process-shell-command "command" nil 0))
 :config (add-to-list 'display-buffer-alist
         (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
-)
-
-(use-package vterm :ensure t :pin melpa
-:config (display-line-numbers-mode 0)
 )
 
 (use-package command-log-mode :ensure t :pin melpa :defer t)
@@ -1193,20 +1250,27 @@
     (setq dashboard-banner-logo-title "We are Emacsian!")
     (setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-show-shortcuts nil)
+    (setq dashboard-set-navigator t)
+    ;(setq dashboard-center-content t)
+    (setq dashboard-set-init-info t)
     (setq show-week-agenda-p t)
     (setq dashboard-items '((recents   . 5)
                             (bookmarks . 5)
                             (projects  . 5)
                             (agenda    . 5)))
+    (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
 )
 
 (use-package tabbar :ensure t :pin melpa :disabled
 :after (doom-modeline powerline)
 :preface
-(defvar my/tabbar-left  "/"  "Separator on left side of tab")
-(defvar my/tabbar-right "\\" "Separator on right side of tab")
-(defun my/tabbar-tab-label-function (tab)
-    (powerline-render (list my/tabbar-left (format " %s  " (car tab)) my/tabbar-right)))
+     (defvar my/tabbar-left  "/"  "Separator on left side of tab")
+     (defvar my/tabbar-right "\\" "Separator on right side of tab")
+     (defun my/tabbar-tab-label-function (tab)
+         (powerline-render (list my/tabbar-left (format " %s  " (car tab)) my/tabbar-right)))
 :init  (tabbar-mode 1)
 :config
      (require 'tabbar)
@@ -1221,7 +1285,7 @@
      (evil-leader/set-key "tl" 'tabbar-backward-tab)
 )
 
-(use-package centaur-tabs :load-path "lisp/centaur-tabs"
+(use-package centaur-tabs :ensure t :pin melpa :disabled
 :commands centaur-tabs-mode
 :config (setq centaur-tabs-background-color (face-background 'default))
         (setq centaur-tabs-style  "zigzag")
@@ -1296,7 +1360,10 @@
     (interactive)
     (org-babel-execute-maybe)
     (undo-tree-undo))
-:config (evil-leader/set-key "oi" 'org-use-package-install)
+:config
+    (evil-leader/set-key "oi" 'org-use-package-install
+                         "ot" 'polymode-next-chunk
+                         "oh" 'polymode-previous-chunk)
 )
 
 (setq helm-mode nil)
@@ -1328,7 +1395,7 @@
     (setq company-idle-delay 0)
     (setq company-tooltip-align-annotations t)
     (setq company-minimum-prefix-length 1)
-    (setq company-dict-enable-yasnippet t)
+    (add-to-list 'company-backends 'company-capf)
     (define-key company-active-map (kbd "M-n")        nil)
     (define-key company-active-map (kbd "M-p")        nil)
     (define-key company-active-map (kbd "C-n")        'company-select-next)
@@ -1348,12 +1415,13 @@
 (use-package company-quickhelp :ensure t :pin melpa
 :after  company
 :config (company-quickhelp-mode)
-        (define-key company-active-map (kbd "C-h") #'company-quickhelp-manual-begin)
+        (define-key company-active-map (kbd "C-c h") #'company-quickhelp-manual-begin)
 )
 
 (use-package company-dict :ensure t :pin melpa
 :after  company
 :config (setq company-dict-dir (concat user-emacs-directory "dict/"))
+        (setq company-dict-enable-yasnippet t)
         (add-to-list 'company-backends 'company-dict)
 )
 
@@ -1362,21 +1430,115 @@
 :config (company-statistics-mode)
 )
 
-(use-package company-box :ensure t :pin melpa :disabled
+(use-package company-flx :ensure t :pin melpa :disabled
 :after company
-:hook (company-mode . company-box-mode)
+:config (company-flx-mode +1)
 )
 
-
-(use-package company-tabnine :ensure t :pin melpa
+(use-package company-tabnine :ensure t :pin melpa :disabled
 ;first install: company-tabnine-install-binary
 :after  company
-:config (add-to-list 'company-backend #'company-tabnine)
-        (company-tng-configure-default)
-        (setq company-frontends '(company-tng-frontend
-                                  company-pseudo-tooltip-frontend
-                                  company-echo-metadata-frontend))
+;:preface
+;    (setq company-tabnine--disable-next-transform nil)
+;    (defun my-company--transform-candidates (func &rest args)
+;    (if (not company-tabnine--disable-next-transform)
+;        (apply func args)
+;        (setq company-tabnine--disable-next-transform nil)
+;        (car args)))
+
+;    (defun my-company-tabnine (func &rest args)
+;    (when (eq (car args) 'candidates)
+;        (setq company-tabnine--disable-next-transform t))
+;    (apply func args))
+
+;    (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
+;    (advice-add #'company-tabnine :around #'my-company-tabnine)
+:config
+     (add-to-list 'company-backends #'company-tabnine)
+     (company-tng-configure-default)
+     (setq company-frontends '(company-tng-frontend
+                               company-pseudo-tooltip-frontend
+                               company-echo-metadata-frontend))
 )
+(use-package company-box :ensure t :pin melpa :disabled
+    :diminish
+    :functions (my-company-box--make-line my-company-box-icons--elisp)
+    :hook (company-mode . company-box-mode)
+    :config
+    (setq company-box-backends-colors nil
+          company-box-show-single-candidate t
+          company-box-max-candidates 50
+          company-box-doc-delay 0.5
+          company-box-icons-alist 'company-box-icons-all-the-icons)
+
+     ;; Support `company-common'
+    (defun my-company-box--make-line (candidate)
+       (-let* (((candidate annotation len-c len-a backend) candidate)
+               (color (company-box--get-color backend))
+               ((c-color a-color i-color s-color) (company-box--resolve-colors color))
+               (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
+               (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
+                                       (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
+               (align-string (when annotation
+                               (concat " " (and company-tooltip-align-annotations
+                                               (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
+               (space company-box--space)
+               (icon-p company-box-enable-icon)
+               (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
+               (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
+                               (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
+                           (company-box--apply-color icon-string i-color)
+                           (company-box--apply-color candidate-string c-color)
+                           align-string
+                           (company-box--apply-color annotation-string a-color)))
+               (len (length line)))
+       (add-text-properties 0 len (list 'company-box--len (+ len-c len-a) 'company-box--color s-color) line) line))
+    (advice-add #'company-box--make-line :override #'my-company-box--make-line)
+
+    ;; Prettify icons
+    (defun my-company-box-icons--elisp (candidate)
+        (when (derived-mode-p 'emacs-lisp-mode)
+        (let ((sym (intern candidate)))
+            (cond ((fboundp sym) 'Function)
+                ((featurep sym) 'Module)
+                ((facep sym) 'Color)
+                ((boundp sym) 'Variable)
+                ((symbolp sym) 'Text)
+                (t . nil)))))
+    (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
+
+    (with-eval-after-load 'all-the-icons
+        (declare-function all-the-icons-faicon 'all-the-icons)
+        (declare-function all-the-icons-material 'all-the-icons)
+        (setq company-box-icons-all-the-icons
+            `((Unknown . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
+                (Text . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
+                (Method . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+                (Function . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+                (Constructor . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
+                (Field . ,(all-the-icons-faicon "tag" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-lblue))
+                (Variable . ,(all-the-icons-faicon "tag" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-lblue))
+                (Class . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+                (Interface . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Module . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Property . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
+                (Unit . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
+                (Value . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Enum . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+                (Keyword . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
+                (Snippet . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
+                (Color . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
+                (File . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
+                (Reference . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
+                (Folder . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
+                (EnumMember . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
+                (Constant . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
+                (Struct . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
+                (Event . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
+                (Operator . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
+                (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
+                (Template . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2)))))
+    )
 
 (use-package lsp-mode :ensure t :pin melpa
 :commands lsp
@@ -1443,8 +1605,10 @@
 )
 
 (use-package cpp-mode :load-path "lisp/cpp-mode"
+:mode (("\\.h\\'" . c++-mode))
 :commands cpp-mode
-:init (add-hook 'c++-mode-hook  'cpp-mode)
+:init (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+      (add-hook 'c++-mode-hook  'cpp-mode)
       (add-hook 'c-mode-hook    'cpp-mode)
       (add-hook 'objc-mode-hook 'cpp-mode)
 )
@@ -1458,9 +1622,7 @@
 (use-package company-c-headers :ensure t :pin melpa
 :after  (company cpp-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
-        (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 )
-
 (use-package clang-format :ensure t :pin melpa
 :after  (cpp-mode)
 :init   (add-hook 'c++-mode-hook 'clang-format)
@@ -1470,6 +1632,8 @@
 (use-package irony :ensure t :pin melpa :diminish irony-mode
 :after (cpp-mode)
 :hook  (cpp-mode . irony-mode)
+;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
+;         (irony-additional-clang-options '("-std=c++17")))
 :config
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
     (setq irony-additional-clang-options '("-std=c++17"))
@@ -1520,7 +1684,8 @@
 
 (use-package company-rtags :ensure t :pin melpa
 :after  (company rtags)
-:config (add-to-list 'company-backend 'company-rtags))
+:config (add-to-list 'company-backends 'company-rtags))
+
 (use-package flycheck-rtags :ensure t :pin melpa
 :after (flycheck rtags)
 :preface
@@ -1536,7 +1701,7 @@
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 )
 
-(use-package cmake-ide :ensure t :pin melpa
+(use-package cmake-ide :ensure t :pin melpa :disabled
 :after (rtags)
 :config
     (require 'subr-x)
@@ -1620,7 +1785,7 @@
     (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
 )
 
-(use-package slime :ensure t :pin melpa
+(use-package slime :ensure t :pin melpa :disabled
 :commands slime
 :config
     (setq inferior-lisp-program (or (executable-find "sbcl")
@@ -1632,10 +1797,6 @@
 (use-package elisp-slime-nav :ensure t :pin melpa :diminish elisp-slime-nav-mode
 :after slime
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
-)
-
-(use-package elisp-slime-nav :ensure t :pin melpa
-:hook ((emacs-lisp-mode ielm-mode) . turn-on-elisp-slime-nav-mode)
 )
 
 (use-package prettify-symbol :no-require t
@@ -1792,10 +1953,10 @@
  :after  (company python-mode)
  :config (add-hook 'python-mode 'jedi:setup)
          (add-to-list 'company-backends 'company-jedi)
- ;:config (jedi:complete-on-dot t)
  )
 
-(use-package lsp-python-ms :ensure t :pin melpa
+(use-package lsp-python-ms :ensure t :pin melpa :disabled 
+; pyvenv not working 
 :ensure-system-package (pyls . "pip install python-language-server")
 :after (python-mode)
 :hook  (python-mode . lsp)
@@ -1807,27 +1968,27 @@
 :hook (python-mode . elpy-enable)
 )
 
- ;(use-package anaconda-mode :ensure t :pin melpa
- ;:after  python-mode
- ;:config (add-hook 'python-mode-hook 'anaconda-mode)
- ;        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+;(use-package anaconda-mode :ensure t :pin melpa
+;:after  python-mode
+;:config (add-hook 'python-mode-hook 'anaconda-mode)
+;        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
- ;(use-package company-anaconda :ensure t :pin melpa
- ;:after  (company-mode anaconda-mode)
- ;:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+;(use-package company-anaconda :ensure t :pin melpa
+;:after  (company-mode anaconda-mode)
+;:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 
- ;(use-package virtualenvwrapper
- ;:after  python-mode
- ;:custom (venv-project-home expand-file-name (or (getenv "PROJECT_HOME") "~/projects/") :group 'virtualenvwrapper)
- ;:preface (defun workon-venv ()
- ;             "change directory to project in eshell"
- ;             (eshell/cd (concat venv-project-home venv-current-name)))
- ;:config (venv-initialize-interactive-shells) ;; if you want interactive shell support
- ;        (venv-initialize-eshell) ;; if you want eshell support
- ;        (setq venv-location "~/dev/flask/.virtualenvs/")
- ;        (setq venv-project-home "~/dev/")
- ;        (add-hook 'venv-postactivate-hook (lambda () (workon-venv)))
- ;)
+;(use-package virtualenvwrapper
+;:after  python-mode
+;:custom (venv-project-home expand-file-name (or (getenv "PROJECT_HOME") "~/projects/") :group 'virtualenvwrapper)
+;:preface (defun workon-venv ()
+;             "change directory to project in eshell"
+;             (eshell/cd (concat venv-project-home venv-current-name)))
+;:config (venv-initialize-interactive-shells) ;; if you want interactive shell support
+;        (venv-initialize-eshell) ;; if you want eshell support
+;        (setq venv-location "~/dev/flask/.virtualenvs/")
+;        (setq venv-project-home "~/dev/")
+;        (add-hook 'venv-postactivate-hook (lambda () (workon-venv)))
+;)
 
 (use-package dart-mode :ensure t :pin melpa
 :after lsp
@@ -1864,6 +2025,7 @@
         (evil-leader/set-key "hdz" 'dumb-jump-go-prefer-external-other-window)
 :config (setq dumb-jump-selector 'ivy)
         (setq dumb-jump-force-searcher 'rg)
+        (setq dumb-jump-default-project "~/build")
 )
 
 (use-package web-mode :ensure t :pin melpa
