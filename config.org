@@ -1,12 +1,16 @@
-MY EMACS CONFIG -*- mode: org -*-
+#+TITLE: InJae Emacs Configure File
+#+OPTIONS: toc:4 h:4
+#+PROPERTY: header-args:emacs-lisp :tangle "~/.emacs.d/config.el"
 * Emacs Default Settings
-** org babel config load
+** emacs config load
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq-default custom-file (expand-file-name ".config.el" user-emacs-directory))
-(when (file-exists-p custom-file) (load custom-file))
 #+END_SRC
-** set os find r
+** No Waring
+#+BEGIN_SRC emacs-lisp
+(setq ad-redefinition-action 'accept)
+#+END_SRC
+** set os find
 #+BEGIN_SRC emacs-lisp
   (setq *is-mac*     (eq system-type 'darwin))
   (setq *is-windows* (eq system-type 'windows-nt))
@@ -129,132 +133,133 @@ MY EMACS CONFIG -*- mode: org -*-
 )
 #+END_SRC
 ** Sudo file open
- #+BEGIN_SRC emacs-lisp
-   (use-package sudo-mode :no-require t
-    :after evil-leader
-    :preface
-    (defun sudo-find-file (file-name)
-        "sudo open"
-        (interactive "FSudo Find File: ")
-        (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-            (find-file tramp-file-name)))
-    :init (evil-leader/set-key "fs" #'sudo-find-file))
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package sudo-mode :no-require t
+:after evil-leader
+:preface
+(defun sudo-find-file (file-name)
+    "sudo open"
+    (interactive "FSudo Find File: ")
+    (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+        (find-file tramp-file-name)))
+:init (evil-leader/set-key "fs" #'sudo-find-file))
+#+END_SRC
 ** Modern Package Menu
- #+BEGIN_SRC emacs-lisp
-   (use-package paradox :ensure t :pin melpa :defer t :disabled
-   ;https://github.com/Malabarba/paradox
-   :init (setq paradox-github-token "e1a1518b1f89990587ec97b601a1d0801c5a40c6")
-   )
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package paradox :ensure t :pin melpa :defer t :disabled
+;https://github.com/Malabarba/paradox
+:init (setq paradox-github-token "e1a1518b1f89990587ec97b601a1d0801c5a40c6")
+)
+#+END_SRC
 ** Move Text
- #+BEGIN_SRC emacs-lisp
-   (use-package drag-stuff :ensure t :pin melpa :defer t
-   :after evil
-   :init (drag-stuff-global-mode t)
-         (drag-stuff-define-keys))
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package drag-stuff :ensure t :pin melpa :defer t
+:after evil
+:init (drag-stuff-global-mode t)
+        (drag-stuff-define-keys)
+)
+#+END_SRC
 ** Goto Last Change
-   #+BEGIN_SRC emacs-lisp
-     (use-package goto-last-change :ensure t :pin melpa :defer t
-     ;https://github.com/camdez/goto-last-change.el
-     :after evil-leader
-     :init (evil-leader/set-key "fl" 'goto-last-change)
-     )
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package goto-last-change :ensure t :pin melpa :defer t
+;https://github.com/camdez/goto-last-change.el
+:after evil-leader
+:init (evil-leader/set-key "fl" 'goto-last-change)
+)
+#+END_SRC
 ** Emacs Profiler
 #+BEGIN_SRC emacs-lisp
-  (use-package esup :ensure t :pin melpa :defer t)
+(use-package esup :ensure t :pin melpa :defer t)
 #+END_SRC
 ** Emacs Server
 #+BEGIN_SRC emacs-lisp
-  ;(server-start)
+;(server-start)
 #+END_SRC
 ** Emacs Warning
-   #+BEGIN_SRC emacs-lisp
-   ;https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
-     ;(setq warning-minimum-level :error)
-   #+END_SRC
+https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
+#+BEGIN_SRC emacs-lisp
+;(setq warning-minimum-level :error)
+#+END_SRC
 ** Emacs Buffer
 #+BEGIN_SRC emacs-lisp
-  (use-package buffer-zoom :no-require t
-  :after evil-leader
-  :config (evil-leader/set-key "tu" 'text-scale-increase
-                               "td" 'text-scale-decrease)
-  )
+(use-package buffer-zoom :no-require t
+:after evil-leader
+:config (evil-leader/set-key "tu" 'text-scale-increase
+                             "td" 'text-scale-decrease)
+)
 
-  (defun new-buffer-save (name buffer-major-mode)
-      (let ((buffer (generate-new-buffer name)))
-           (switch-to-buffer buffer)
-           (set-buffer-major-mode buffer)
-           (funcall buffer-major-mode)
-           (setq buffer-offer-save t))
-  )
+(defun new-buffer-save (name buffer-major-mode)
+    (let ((buffer (generate-new-buffer name)))
+         (switch-to-buffer buffer)
+         (set-buffer-major-mode buffer)
+         (funcall buffer-major-mode)
+         (setq buffer-offer-save t))
+)
 
-  (defun new-buffer (name buffer-major-mode)
-      (let ((buffer (generate-new-buffer name)))
-           (switch-to-buffer buffer)
-           (set-buffer-major-mode buffer)
-           (funcall buffer-major-mode))
-  )
+(defun new-buffer (name buffer-major-mode)
+    (let ((buffer (generate-new-buffer name)))
+         (switch-to-buffer buffer)
+         (set-buffer-major-mode buffer)
+         (funcall buffer-major-mode))
+)
 #+END_SRC
 ** Text Editing
-   #+BEGIN_SRC emacs-lisp
-   (use-package hungry-delete :ensure t :pin melpa :defer t :disabled
-   ; 공백 지울때 한꺼번에 다지워짐
-   :init (global-hungry-delete-mode)
-   )
+#+BEGIN_SRC emacs-lisp
+(use-package hungry-delete :ensure t :pin melpa :defer t :disabled
+; 공백 지울때 한꺼번에 다지워짐
+:init (global-hungry-delete-mode)
+)
 
-   (use-package face-picker :no-require t
-   :preface
-   (defun what-face (pos)
-        (interactive "d")
-        (let ((face (or (get-char-property (pos) 'read-face-name)
-                        (get-char-property (pos) 'face))))
-             (if face (message "Face: %s" face) (message "No face at %d" pos))))
-   )
+(use-package face-picker :no-require t
+:preface
+(defun what-face (pos)
+     (interactive "d")
+     (let ((face (or (get-char-property (pos) 'read-face-name)
+                     (get-char-property (pos) 'face))))
+          (if face (message "Face: %s" face) (message "No face at %d" pos))))
+)
 
-    ; text random
-    (defun randomize-region (beg end)
-    (interactive "r")
-    (if (> beg end)
-        (let (mid) (setq mid end end beg beg mid)))
-    (save-excursion
-        ;; put beg at the start of a line and end and the end of one --
-        ;; the largest possible region which fits this criteria
-        (goto-char beg)
-        (or (bolp) (forward-line 1))
-        (setq beg (point))
-        (goto-char end)
-        ;; the test for bolp is for those times when end is on an empty
-        ;; line; it is probably not the case that the line should be
-        ;; included in the reversal; it isn't difficult to add it
-        ;; afterward.
-        (or (and (eolp) (not (bolp)))
-            (progn (forward-line -1) (end-of-line)))
-        (setq end (point-marker))
-        (let ((strs (shuffle-list
-                    (split-string (buffer-substring-no-properties beg end)
-                                "\n"))))
-        (delete-region beg end)
-        (dolist (str strs)
-            (insert (concat str "\n"))))))
+; text random
+(defun randomize-region (beg end)
+(interactive "r")
+(if (> beg end)
+    (let (mid) (setq mid end end beg beg mid)))
+(save-excursion
+    ;; put beg at the start of a line and end and the end of one --
+    ;; the largest possible region which fits this criteria
+    (goto-char beg)
+    (or (bolp) (forward-line 1))
+    (setq beg (point))
+    (goto-char end)
+    ;; the test for bolp is for those times when end is on an empty
+    ;; line; it is probably not the case that the line should be
+    ;; included in the reversal; it isn't difficult to add it
+    ;; afterward.
+    (or (and (eolp) (not (bolp)))
+        (progn (forward-line -1) (end-of-line)))
+    (setq end (point-marker))
+    (let ((strs (shuffle-list
+                (split-string (buffer-substring-no-properties beg end)
+                            "\n"))))
+    (delete-region beg end)
+    (dolist (str strs)
+        (insert (concat str "\n"))))))
 
-    (defun shuffle-list (list)
-    "Randomly permute the elements of LIST.
-    All permutations equally likely."
-    (let ((i 0)
-    j
-    temp
-    (len (length list)))
-        (while (< i len)
-        (setq j (+ i (random (- len i))))
-        (setq temp (nth i list))
-        (setcar (nthcdr i list) (nth j list))
-        (setcar (nthcdr j list) temp)
-        (setq i (1+ i))))
-    list)
-   #+END_SRC
+(defun shuffle-list (list)
+"Randomly permute the elements of LIST.
+All permutations equally likely."
+(let ((i 0)
+j
+temp
+(len (length list)))
+    (while (< i len)
+    (setq j (+ i (random (- len i))))
+    (setq temp (nth i list))
+    (setcar (nthcdr i list) (nth j list))
+    (setcar (nthcdr j list) temp)
+    (setq i (1+ i))))
+list)
+#+END_SRC
 * Emacs Mode Settings
 ** Vim KeyMap (Evil-mode)
 #+BEGIN_SRC emacs-lisp
@@ -372,7 +377,7 @@ MY EMACS CONFIG -*- mode: org -*-
 :config (global-evil-extra-operator-mode 1)
 )
 
-(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
+;(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
 (use-package evil-collection :ensure t :pin melpa
 :after (evil)
 :init  (setq evil-collection-setup-minibuffer t)
@@ -447,105 +452,105 @@ MY EMACS CONFIG -*- mode: org -*-
 #+END_SRC
 ** Clean Emacs Config Mode
 #+BEGIN_SRC emacs-lisp
-  (use-package no-littering :ensure t :pin melpa
-  :config (require 'recentf)
-          (add-to-list 'recentf-exclude no-littering-var-directory)
-          (add-to-list 'recentf-exclude no-littering-etc-directory)
-          (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  )
+(use-package no-littering :ensure t :pin melpa
+:config (require 'recentf)
+        (add-to-list 'recentf-exclude no-littering-var-directory)
+        (add-to-list 'recentf-exclude no-littering-etc-directory)
+        (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+)
 #+END_SRC
-** Macro 
+** Macro
 #+BEGIN_SRC emacs-lisp
 (use-package elmacro :ensure t :pin melpa :config (elmacro-mode))
 #+END_SRC
 ** Line Number and Highlighting
-   #+BEGIN_SRC emacs-lisp
-   (use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
-   (use-package git-gutter :ensure t :pin melpa :defer t
-   :init
-       (setq-default display-line-numbers-width 3)
-       (global-git-gutter-mode t)
-   :config
-       (global-display-line-numbers-mode t)
-       (global-hl-line-mode t)
-       (setq git-gutter:lighter       " gg")
-       (setq git-gutter:window-width  1)
-       (setq git-gutter:modified-sign ".")
-       (setq git-gutter:added-sign    "+")
-       (setq git-gutter:deleted-sign  "-")
-       (set-face-foreground 'git-gutter:added    "#daefa3")
-       (set-face-foreground 'git-gutter:deleted  "#FA8072")
-       (set-face-foreground 'git-gutter:modified "#b18cce")
-   )
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
+(use-package git-gutter :ensure t :pin melpa :defer t
+:init
+    (setq-default display-line-numbers-width 3)
+    (global-git-gutter-mode t)
+:config
+    (global-display-line-numbers-mode t)
+    (global-hl-line-mode t)
+    (setq git-gutter:lighter       " gg")
+    (setq git-gutter:window-width  1)
+    (setq git-gutter:modified-sign ".")
+    (setq git-gutter:added-sign    "+")
+    (setq git-gutter:deleted-sign  "-")
+    (set-face-foreground 'git-gutter:added    "#daefa3")
+    (set-face-foreground 'git-gutter:deleted  "#FA8072")
+    (set-face-foreground 'git-gutter:modified "#b18cce")
+)
+#+END_SRC
 ** Theme Setting
-    #+BEGIN_SRC emacs-lisp
-      (use-package doom-themes :ensure t :pin melpa
-      :init   (load-theme 'doom-one t)
-      :config (doom-themes-neotree-config)
-              (doom-themes-org-config)
-      )
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (use-package doom-themes :ensure t :pin melpa
+    :init   (load-theme 'doom-one t)
+    :config (doom-themes-neotree-config)
+            (doom-themes-org-config)
+    )
+#+END_SRC
 ** Modeline Setting
- #+BEGIN_SRC emacs-lisp
-   (use-package all-the-icons :ensure t :pin melpa)
-   (use-package doom-modeline :ensure t :pin melpa :defer t
-   :hook   (after-init . doom-modeline-init)
-   :init   (setq find-file-visit-truename t)
-           (setq inhibit-compacting-font-caches t)
-           (setq doom-modeline-height 30)
-           (setq doom-modeline-icon t) ; current version has error
-           (setq doom-modeline-persp-name t)
-           (setq doom-modeline-major-mode-icon t)
-           (setq doom-modeline-enable-word-count t)
-           (setq doom-modeline-lsp t)
-           (setq doom-modeline-current-window t)
-           (setq doom-modeline-env-version t)
-           (setq doom-modeline-env-enable-python t)
-           (setq doom-modeline-python-executable "python")
-           (setq doom-modeline-env-enable-ruby t)
-           (setq doom-modeline-env-ruby-executable "ruby")
-           (setq doom-modeline-env-enable-elixir t)
-           (setq doom-modeline-env-elixir-executable "iex")
-           (setq doom-modeline-env-enable-go t)
-           (setq doom-modeline-env-go-executable "go")
-           (setq doom-modeline-env-enable-perl t)
-           (setq doom-modeline-env-perl-executable "perl")
-           (setq doom-modeline-env-enable-rust t)
-           (setq doom-modeline-env-rust-executable "rustc")
-           (setq doom-modeline-github t)
-           (setq doom-modeline--battery-status t)
-           (setq doom-modeline--flycheck-icon t)
-           (setq doom-modeline-current-window t)
-           (setq doom-modeline-major-mode-color-icon t)
-   )
+#+BEGIN_SRC emacs-lisp
+(use-package all-the-icons :ensure t :pin melpa)
+(use-package doom-modeline :ensure t :pin melpa
+:hook   (after-init . doom-modeline-init)
+:init   (setq find-file-visit-truename t)
+        (setq inhibit-compacting-font-caches t)
+        (setq doom-modeline-height 30)
+        (setq doom-modeline-icon t) ; current version has error
+        (setq doom-modeline-persp-name t)
+        (setq doom-modeline-major-mode-icon t)
+        (setq doom-modeline-enable-word-count t)
+        (setq doom-modeline-lsp t)
+        (setq doom-modeline-current-window t)
+        (setq doom-modeline-env-version t)
+        (setq doom-modeline-env-enable-python t)
+        (setq doom-modeline-python-executable "python")
+        (setq doom-modeline-env-enable-ruby t)
+        (setq doom-modeline-env-ruby-executable "ruby")
+        (setq doom-modeline-env-enable-elixir t)
+        (setq doom-modeline-env-elixir-executable "iex")
+        (setq doom-modeline-env-enable-go t)
+        (setq doom-modeline-env-go-executable "go")
+        (setq doom-modeline-env-enable-perl t)
+        (setq doom-modeline-env-perl-executable "perl")
+        (setq doom-modeline-env-enable-rust t)
+        (setq doom-modeline-env-rust-executable "rustc")
+        (setq doom-modeline-github t)
+        (setq doom-modeline--battery-status t)
+        (setq doom-modeline--flycheck-icon t)
+        (setq doom-modeline-current-window t)
+        (setq doom-modeline-major-mode-color-icon t)
+)
 
-   (use-package hide-mode-line :ensure t :pin melpa
-   :after (neotree)
-   :hook  (neotree-mode . hide-mode-line-mode)
-   )
- #+END_SRC
+(use-package hide-mode-line :ensure t :pin melpa
+:after (neotree)
+:hook  (neotree-mode . hide-mode-line-mode)
+)
+#+END_SRC
 ** Modeline Minor Mode
- #+BEGIN_SRC emacs-lisp
-   (use-package nyan-mode :ensure t :pin melpa
-   ;:after  (doom-modeline)
-   :config (nyan-mode)
-           (setq-default nyan-wavy-trail t)
-           (nyan-start-animation)
-           (nyan-refresh)
-   )
-   (use-package fancy-battery :ensure t :pin melpa
-   ;:after  (doom-modeline)
-   :hook (after-init . fancy-battery-mode)
-   :config (fancy-battery-default-mode-line)
-           (setq fancy-battery-show-percentage t))
+#+BEGIN_SRC emacs-lisp
+(use-package nyan-mode :ensure t :pin melpa
+;:after  (doom-modeline)
+:config (nyan-mode)
+        (setq-default nyan-wavy-trail t)
+        (nyan-start-animation)
+        (nyan-refresh)
+)
+(use-package fancy-battery :ensure t :pin melpa
+;:after  (doom-modeline)
+:hook (after-init . fancy-battery-mode)
+:config (fancy-battery-default-mode-line)
+        (setq fancy-battery-show-percentage t))
 
-   (use-package diminish :ensure t :pin melpa :defer t
-   :init
-       (diminish 'c++-mode "C++ Mode")
-       (diminish 'c-mode   "C Mode"  )
-   )
- #+END_SRC
+(use-package diminish :ensure t :pin melpa :defer t
+:init
+    (diminish 'c++-mode "C++ Mode")
+    (diminish 'c-mode   "C Mode"  )
+)
+#+END_SRC
 ** Toggle Setting
     #+BEGIN_SRC emacs-lisp
       ;(load-library "hideshow")
@@ -738,9 +743,11 @@ MY EMACS CONFIG -*- mode: org -*-
 
 (use-package counsel-tramp :ensure t :pin melpa
 :after counsel
+:commands counsel-tramp
 :bind ("C-c s" . 'counsel-tramp)
 :init (setq tramp-default-method "ssh")
 )
+
 (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
 
 (use-package ivy-rich
@@ -1063,6 +1070,7 @@ MY EMACS CONFIG -*- mode: org -*-
                     (evil-org-agenda-set-keys)
               )
       )
+
       (use-package org-pomodoro :ensure t :pin melpa
       :after org-agenda
       :custom
@@ -1436,11 +1444,10 @@ MY EMACS CONFIG -*- mode: org -*-
 #+END_SRC
 ** FlySpell
 #+BEGIN_SRC emacs-lisp
-(use-package flyspell :ensure t :pin melpa
-:init
+(use-package flyspell :ensure t :pin melpa :defer t :disabled
+:config
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
-:config
     (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US")
     (evil-leader/set-key "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)))
@@ -1485,7 +1492,8 @@ MY EMACS CONFIG -*- mode: org -*-
 :config
     (evil-leader/set-key "oi" 'org-use-package-install
                          "ot" 'polymode-next-chunk
-                         "oh" 'polymode-previous-chunk)
+                         "oh" 'polymode-previous-chunk
+                         "or" 'save-buffer)
 )
 #+END_SRC
 ** Helm Mode
@@ -1780,7 +1788,7 @@ MY EMACS CONFIG -*- mode: org -*-
           (setq irony-additional-clang-options '("-std=c++17"))
           (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
       )
-      
+
       (use-package irony-eldoc :ensure t :pin melpa
       :after (irony eldoc)
       :config (add-hook 'irony-mode-hook #'irony-eldoc)
@@ -1842,7 +1850,7 @@ MY EMACS CONFIG -*- mode: org -*-
           (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
       )
 
-      (use-package cmake-ide :ensure t :pin melpa :disabled
+      (use-package cmake-ide :ensure t :pin melpa
       :after (rtags)
       :config
           (require 'subr-x)

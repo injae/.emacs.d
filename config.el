@@ -1,6 +1,4 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq-default custom-file (expand-file-name ".config.el" user-emacs-directory))
-(when (file-exists-p custom-file) (load custom-file))
 
 (setq *is-mac*     (eq system-type 'darwin))
 (setq *is-windows* (eq system-type 'windows-nt))
@@ -113,14 +111,14 @@
 )
 
 (use-package sudo-mode :no-require t
- :after evil-leader
- :preface
- (defun sudo-find-file (file-name)
-     "sudo open"
-     (interactive "FSudo Find File: ")
-     (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-         (find-file tramp-file-name)))
- :init (evil-leader/set-key "fs" #'sudo-find-file))
+:after evil-leader
+:preface
+(defun sudo-find-file (file-name)
+    "sudo open"
+    (interactive "FSudo Find File: ")
+    (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+        (find-file tramp-file-name)))
+:init (evil-leader/set-key "fs" #'sudo-find-file))
 
 (use-package paradox :ensure t :pin melpa :defer t :disabled
 ;https://github.com/Malabarba/paradox
@@ -130,7 +128,8 @@
 (use-package drag-stuff :ensure t :pin melpa :defer t
 :after evil
 :init (drag-stuff-global-mode t)
-      (drag-stuff-define-keys))
+        (drag-stuff-define-keys)
+)
 
 (use-package goto-last-change :ensure t :pin melpa :defer t
 ;https://github.com/camdez/goto-last-change.el
@@ -142,8 +141,7 @@
 
 ;(server-start)
 
-;https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
-  ;(setq warning-minimum-level :error)
+;(setq warning-minimum-level :error)
 
 (use-package buffer-zoom :no-require t
 :after evil-leader
@@ -180,46 +178,46 @@
           (if face (message "Face: %s" face) (message "No face at %d" pos))))
 )
 
- ; text random
- (defun randomize-region (beg end)
- (interactive "r")
- (if (> beg end)
-     (let (mid) (setq mid end end beg beg mid)))
- (save-excursion
-     ;; put beg at the start of a line and end and the end of one --
-     ;; the largest possible region which fits this criteria
-     (goto-char beg)
-     (or (bolp) (forward-line 1))
-     (setq beg (point))
-     (goto-char end)
-     ;; the test for bolp is for those times when end is on an empty
-     ;; line; it is probably not the case that the line should be
-     ;; included in the reversal; it isn't difficult to add it
-     ;; afterward.
-     (or (and (eolp) (not (bolp)))
-         (progn (forward-line -1) (end-of-line)))
-     (setq end (point-marker))
-     (let ((strs (shuffle-list
-                 (split-string (buffer-substring-no-properties beg end)
-                             "\n"))))
-     (delete-region beg end)
-     (dolist (str strs)
-         (insert (concat str "\n"))))))
+; text random
+(defun randomize-region (beg end)
+(interactive "r")
+(if (> beg end)
+    (let (mid) (setq mid end end beg beg mid)))
+(save-excursion
+    ;; put beg at the start of a line and end and the end of one --
+    ;; the largest possible region which fits this criteria
+    (goto-char beg)
+    (or (bolp) (forward-line 1))
+    (setq beg (point))
+    (goto-char end)
+    ;; the test for bolp is for those times when end is on an empty
+    ;; line; it is probably not the case that the line should be
+    ;; included in the reversal; it isn't difficult to add it
+    ;; afterward.
+    (or (and (eolp) (not (bolp)))
+        (progn (forward-line -1) (end-of-line)))
+    (setq end (point-marker))
+    (let ((strs (shuffle-list
+                (split-string (buffer-substring-no-properties beg end)
+                            "\n"))))
+    (delete-region beg end)
+    (dolist (str strs)
+        (insert (concat str "\n"))))))
 
- (defun shuffle-list (list)
- "Randomly permute the elements of LIST.
- All permutations equally likely."
- (let ((i 0)
- j
- temp
- (len (length list)))
-     (while (< i len)
-     (setq j (+ i (random (- len i))))
-     (setq temp (nth i list))
-     (setcar (nthcdr i list) (nth j list))
-     (setcar (nthcdr j list) temp)
-     (setq i (1+ i))))
- list)
+(defun shuffle-list (list)
+"Randomly permute the elements of LIST.
+All permutations equally likely."
+(let ((i 0)
+j
+temp
+(len (length list)))
+    (while (< i len)
+    (setq j (+ i (random (- len i))))
+    (setq temp (nth i list))
+    (setcar (nthcdr i list) (nth j list))
+    (setcar (nthcdr j list) temp)
+    (setq i (1+ i))))
+list)
 
 (use-package evil :ensure t :pin melpa
 :custom (evil-want-keybinding nil)
@@ -335,7 +333,7 @@
 :config (global-evil-extra-operator-mode 1)
 )
 
-(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
+;(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
 (use-package evil-collection :ensure t :pin melpa
 :after (evil)
 :init  (setq evil-collection-setup-minibuffer t)
@@ -442,7 +440,7 @@
 )
 
 (use-package all-the-icons :ensure t :pin melpa)
-(use-package doom-modeline :ensure t :pin melpa :defer t
+(use-package doom-modeline :ensure t :pin melpa
 :hook   (after-init . doom-modeline-init)
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
@@ -676,9 +674,11 @@
 
 (use-package counsel-tramp :ensure t :pin melpa
 :after counsel
+:commands counsel-tramp
 :bind ("C-c s" . 'counsel-tramp)
 :init (setq tramp-default-method "ssh")
 )
+
 (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
 
 (use-package ivy-rich
@@ -984,6 +984,7 @@
               (evil-org-agenda-set-keys)
         )
 )
+
 (use-package org-pomodoro :ensure t :pin melpa
 :after org-agenda
 :custom
@@ -1320,11 +1321,10 @@
 
 (use-package esup :ensure t :pin melpa :defer t)
 
-(use-package flyspell :ensure t :pin melpa
-:init
+(use-package flyspell :ensure t :pin melpa :defer t :disabled
+:config
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
-:config
     (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US")
     (evil-leader/set-key "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)))
@@ -1363,7 +1363,8 @@
 :config
     (evil-leader/set-key "oi" 'org-use-package-install
                          "ot" 'polymode-next-chunk
-                         "oh" 'polymode-previous-chunk)
+                         "oh" 'polymode-previous-chunk
+                         "or" 'save-buffer)
 )
 
 (setq helm-mode nil)
@@ -1701,7 +1702,7 @@
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 )
 
-(use-package cmake-ide :ensure t :pin melpa :disabled
+(use-package cmake-ide :ensure t :pin melpa
 :after (rtags)
 :config
     (require 'subr-x)

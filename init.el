@@ -28,9 +28,17 @@
 :mode ("\\.org\\'" . org-mode)
 )
 
-(setq custom-file "~/.emacs.d/custom-variable.el")
-(load-file custom-file)
-;
+;(defun my/tangle-on-save-eamcs-config-org-file ()
+;    "message"
+;    (when (string= buffer-file-name (file-truename "~/.emacs.d/config.org")) (org-babel-tangle)))
+;(add-hook 'after-save-hook 'my/tangle-on-save-eamcs-config-org-file)
+
+;(setq-default config-file "~/.emacs.d/config.el")
+;(when (file-exists-p config-file) (load config-file))
+
+(setq-default custom-file "~/.emacs.d/custom-variable.el")
+(when (file-exists-p custom-file) (load-file custom-file))
+
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
 
