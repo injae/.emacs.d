@@ -1,5 +1,7 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+(setq ad-redefinition-action 'accept)
+
 (setq *is-mac*     (eq system-type 'darwin))
 (setq *is-windows* (eq system-type 'windows-nt))
 (setq *is-cygwin*  (eq system-type 'cygwin))
@@ -508,8 +510,8 @@ list)
 ;(use-package aggressive-indent :ensure t :pin melpa :defer t
 ;https://github.com/Malabarba/aggressive-indent-mode
 ;:init (global-aggressive-indent-mode)
-      ;exclud mode
-      ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
+    ;exclud mode
+    ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 ;)
 
 (use-package smart-tabs-mode :ensure t :pin melpa :defer t :disabled
@@ -564,7 +566,7 @@ list)
         (when (looking-at "^\\s-+")
         (untabify (match-beginning 0) (match-end 0)))
             (when (looking-at "^    ")
-                  (replace-match "")))
+                (replace-match "")))
             )
     )
 :config
@@ -587,8 +589,8 @@ list)
 (use-package smartparens :ensure t :pin melpa
 ;:evil-leader (("pu"  'sp-unwrap-sexp))
 :init (smartparens-global-mode)
-      (evil-leader/set-key "pr"  'sp-rewrap-sexp
-                ;          "pu"  'sp-unwrap-sexp
+      (evil-leader/set-key "pr "  'sp-rewrap-sexp
+                          ;"pu "  'sp-unwrap-sexp
                            "pll" 'sp-forward-slurp-sexp
                            "phh" 'sp-backward-slurp-sexp
                            "plh" 'sp-forward-barf-sexp
@@ -664,7 +666,7 @@ list)
 :after  (counsel projectile)
 :config (setq projectile-completion-system 'ivy)
         (counsel-projectile-mode 1)
-        (evil-leader/set-key "fF" 'counsel-projectile-find-file
+        (evil-leader/set-key "fp" 'counsel-projectile-find-file
                              "fG" 'counsel-projectile-rg)
 )
 (use-package counsel-world-clock :ensure t :pin melpa
@@ -682,121 +684,121 @@ list)
 (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
 
 (use-package ivy-rich
-  :defines (all-the-icons-dir-icon-alist bookmark-alist)
-  :functions (all-the-icons-icon-family
-              all-the-icons-match-to-alist
-              all-the-icons-auto-mode-match?
-              all-the-icons-octicon
-              all-the-icons-dir-is-submodule)
-  :preface
-  (defun ivy-rich-bookmark-name (candidate)
-    (car (assoc candidate bookmark-alist)))
+:defines (all-the-icons-dir-icon-alist bookmark-alist)
+:functions (all-the-icons-icon-family
+            all-the-icons-match-to-alist
+            all-the-icons-auto-mode-match?
+            all-the-icons-octicon
+            all-the-icons-dir-is-submodule)
+:preface
+(defun ivy-rich-bookmark-name (candidate)
+(car (assoc candidate bookmark-alist)))
 
-  (defun ivy-rich-repo-icon (candidate)
-    "Display repo icons in `ivy-rich`."
-    (all-the-icons-octicon "repo" :height .9))
+(defun ivy-rich-repo-icon (candidate)
+"Display repo icons in `ivy-rich`."
+(all-the-icons-octicon "repo" :height .9))
 
-  (defun ivy-rich-org-capture-icon (candidate)
-    "Display repo icons in `ivy-rich`."
-    (pcase (car (last (split-string (car (split-string candidate)) "-")))
-       ("emacs" (all-the-icons-fileicon "emacs" :height .68 :v-adjust .001))
-       ("schedule" (all-the-icons-faicon "calendar" :height .68 :v-adjust .005))
-       ("tweet" (all-the-icons-faicon "commenting" :height .7 :v-adjust .01))
-       ("link" (all-the-icons-faicon "link" :height .68 :v-adjust .01))
-       ("memo" (all-the-icons-faicon "pencil" :height .7 :v-adjust .01))
-       (_       (all-the-icons-octicon "inbox" :height .68 :v-adjust .01))))
+(defun ivy-rich-org-capture-icon (candidate)
+"Display repo icons in `ivy-rich`."
+(pcase (car (last (split-string (car (split-string candidate)) "-")))
+    ("emacs" (all-the-icons-fileicon "emacs" :height .68 :v-adjust .001))
+    ("schedule" (all-the-icons-faicon "calendar" :height .68 :v-adjust .005))
+    ("tweet" (all-the-icons-faicon "commenting" :height .7 :v-adjust .01))
+    ("link" (all-the-icons-faicon "link" :height .68 :v-adjust .01))
+    ("memo" (all-the-icons-faicon "pencil" :height .7 :v-adjust .01))
+    (_       (all-the-icons-octicon "inbox" :height .68 :v-adjust .01))))
 
-  (defun ivy-rich-org-capture-title (candidate)
-    (let* ((octl (split-string candidate))
-           (title (pop octl))
-           (desc (mapconcat 'identity octl " ")))
-      (format "%-25s %s" title (propertize desc 'face `(:inherit font-lock-doc-face)))))
+(defun ivy-rich-org-capture-title (candidate)
+(let* ((octl (split-string candidate))
+        (title (pop octl))
+        (desc (mapconcat 'identity octl " ")))
+    (format "%-25s %s" title (propertize desc 'face `(:inherit font-lock-doc-face)))))
 
-  (defun ivy-rich-buffer-icon (candidate)
-    "Display buffer icons in `ivy-rich'."
-    (when (display-graphic-p)
-      (when-let* ((buffer (get-buffer candidate))
-                  (major-mode (buffer-local-value 'major-mode buffer))
-                  (icon (if (and (buffer-file-name buffer)
-                                 (all-the-icons-auto-mode-match? candidate))
-                            (all-the-icons-icon-for-file candidate)
-                          (all-the-icons-icon-for-mode major-mode))))
-        (if (symbolp icon)
-            (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
-        (unless (symbolp icon)
-          (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+(defun ivy-rich-buffer-icon (candidate)
+"Display buffer icons in `ivy-rich'."
+(when (display-graphic-p)
+    (when-let* ((buffer (get-buffer candidate))
+                (major-mode (buffer-local-value 'major-mode buffer))
+                (icon (if (and (buffer-file-name buffer)
+                                (all-the-icons-auto-mode-match? candidate))
+                        (all-the-icons-icon-for-file candidate)
+                        (all-the-icons-icon-for-mode major-mode))))
+    (if (symbolp icon)
+        (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
+    (unless (symbolp icon)
+        (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
 
-  (defun ivy-rich-file-icon (candidate)
-    "Display file icons in `ivy-rich'."
-    (when (display-graphic-p)
-      (let ((icon (if (file-directory-p candidate)
-                      (cond
-                       ((and (fboundp 'tramp-tramp-file-p)
-                             (tramp-tramp-file-p default-directory))
-                        (all-the-icons-octicon "file-directory"))
-                       ((file-symlink-p candidate)
-                        (all-the-icons-octicon "file-symlink-directory"))
-                       ((all-the-icons-dir-is-submodule candidate)
-                        (all-the-icons-octicon "file-submodule"))
-                       ((file-exists-p (format "%s/.git" candidate))
-                        (all-the-icons-octicon "repo"))
-                       (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
-                            (apply (car matcher) (list (cadr matcher))))))
-                    (all-the-icons-icon-for-file candidate))))
-        (unless (symbolp icon) (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
-  :hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name))))
-  :init
-  (setq ivy-rich-display-transformers-list
-        '(ivy-switch-buffer
-          (:columns
-           ((ivy-rich-buffer-icon)
-            (ivy-rich-candidate (:width 30))
-            (ivy-rich-switch-buffer-size (:width 7))
-            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-            (ivy-rich-switch-buffer-project (:width 15 :face success))
-            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate
-           (lambda (cand) (get-buffer cand)))
-          ivy-switch-buffer-other-window
-          (:columns
-           ((ivy-rich-buffer-icon)
-            (ivy-rich-candidate (:width 30))
-            (ivy-rich-switch-buffer-size (:width 7))
-            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-            (ivy-rich-switch-buffer-project (:width 15 :face success))
-            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate (lambda (cand) (get-buffer cand)))
-          counsel-M-x (:columns ((counsel-M-x-transformer (:width 40)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-          counsel-describe-function (:columns ((counsel-describe-function-transformer (:width 45)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-          counsel-describe-variable (:columns ((counsel-describe-variable-transformer (:width 45)) (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-          counsel-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          counsel-file-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          counsel-dired-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          counsel-git (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          counsel-recentf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate (:width 110)))) counsel-bookmark (:columns ((ivy-rich-bookmark-type) (ivy-rich-bookmark-name (:width 30)) (ivy-rich-bookmark-info (:width 80))))
-          counsel-projectile-switch-project (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          counsel-fzf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          ivy-ghq-open (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
-          ivy-ghq-open-and-fzf (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
-          counsel-projectile-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-          counsel-org-capture (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
-          counsel-projectile-find-dir (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))))
-  (setq ivy-rich-parse-remote-buffer nil)
-  :config
-  (ivy-rich-mode 1))
+(defun ivy-rich-file-icon (candidate)
+"Display file icons in `ivy-rich'."
+(when (display-graphic-p)
+    (let ((icon (if (file-directory-p candidate)
+                    (cond
+                    ((and (fboundp 'tramp-tramp-file-p)
+                            (tramp-tramp-file-p default-directory))
+                    (all-the-icons-octicon "file-directory"))
+                    ((file-symlink-p candidate)
+                    (all-the-icons-octicon "file-symlink-directory"))
+                    ((all-the-icons-dir-is-submodule candidate)
+                    (all-the-icons-octicon "file-submodule"))
+                    ((file-exists-p (format "%s/.git" candidate))
+                    (all-the-icons-octicon "repo"))
+                    (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
+                        (apply (car matcher) (list (cadr matcher))))))
+                (all-the-icons-icon-for-file candidate))))
+    (unless (symbolp icon) (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+:hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name))))
+:init
+(setq ivy-rich-display-transformers-list
+    '(ivy-switch-buffer
+        (:columns
+        ((ivy-rich-buffer-icon)
+        (ivy-rich-candidate (:width 30))
+        (ivy-rich-switch-buffer-size (:width 7))
+        (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+        (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+        (ivy-rich-switch-buffer-project (:width 15 :face success))
+        (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+        :predicate
+        (lambda (cand) (get-buffer cand)))
+        ivy-switch-buffer-other-window
+        (:columns
+        ((ivy-rich-buffer-icon)
+        (ivy-rich-candidate (:width 30))
+        (ivy-rich-switch-buffer-size (:width 7))
+        (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+        (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+        (ivy-rich-switch-buffer-project (:width 15 :face success))
+        (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+        :predicate (lambda (cand) (get-buffer cand)))
+        counsel-M-x (:columns ((counsel-M-x-transformer (:width 40)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+        counsel-describe-function (:columns ((counsel-describe-function-transformer (:width 45)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+        counsel-describe-variable (:columns ((counsel-describe-variable-transformer (:width 45)) (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+        counsel-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-file-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-dired-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-git (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-recentf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate (:width 110)))) counsel-bookmark (:columns ((ivy-rich-bookmark-type) (ivy-rich-bookmark-name (:width 30)) (ivy-rich-bookmark-info (:width 80))))
+        counsel-projectile-switch-project (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-fzf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        ivy-ghq-open (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
+        ivy-ghq-open-and-fzf (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
+        counsel-projectile-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-org-capture (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
+        counsel-projectile-find-dir (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))))
+(setq ivy-rich-parse-remote-buffer nil)
+:config
+(ivy-rich-mode 1))
 
 (use-package smex :ensure t :pin melpa :disabled
 :init (smex-initialize)
-      ;(global-set-key [remap execute-extended-command] #'helm-smex)
-      (evil-leader/set-key "fm" #'smex-major-mode-commands)
+        ;(global-set-key [remap execute-extended-command] #'helm-smex)
+        (evil-leader/set-key "fm" #'smex-major-mode-commands)
 )
 (use-package helm-smex :ensure t :pin melpa :disabled
 :after (helm smex)
-:bind ("M-x" . #'helm-smex-major-mode-commands)
-:init (global-set-key [remap execute-extended-command] #'helm-smex)
-      (evil-leader/set-key "fm" #'helm-smex-major-mode-commands)
+:bind  ("M-x" . #'helm-smex-major-mode-commands)
+:init  (global-set-key [remap execute-extended-command] #'helm-smex)
+       (evil-leader/set-key "fm" #'helm-smex-major-mode-commands)
 )
 
 (use-package projectile :ensure t :pin melpa :defer t
@@ -893,8 +895,8 @@ list)
 (use-package magithub :ensure t :pin melpa 
 :after magit
 :init (magithub-feature-autoinject t)
-      (evil-leader/set-key "gd" 'magithub-dashboard)
-      (setq magithub-clone-default-directory "~/github")
+        (evil-leader/set-key "gd" 'magithub-dashboard)
+        (setq magithub-clone-default-directory "~/github")
 )
 
 (use-package magit-todos :ensure t :pin melpa :after magit)
@@ -921,21 +923,21 @@ list)
 
 (use-package org
 :init (setq org-directory            (expand-file-name     "~/Dropbox/org   "))
-      (setq org-default-notes-file   (concat org-directory "/notes/notes.org"))
-      (evil-leader/set-key
-          "oa" 'org-agenda
-          "ob" 'org-iswitchb
-          "oc" 'org-capture
-          "oe" 'org-edit-src-code
-          "ok" 'org-edit-src-exit
-          "ol" 'org-store-link
-      )
+    (setq org-default-notes-file   (concat org-directory "/notes/notes.org"))
+    (evil-leader/set-key
+        "oa" 'org-agenda
+        "ob" 'org-iswitchb
+        "oc" 'org-capture
+        "oe" 'org-edit-src-code
+        "ok" 'org-edit-src-exit
+        "ol" 'org-store-link
+    )
 )
 
 (use-package org-bullets :ensure t :pin melpa
 :after org
 :init ;(setq org-bullets-bullet-list '("◉" "◎" "<img draggable="false" class="emoji" alt="⚫" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/26ab.svg">" "○" "►" "◇"))
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 )
 
 (use-package org-journal :ensure t :pin melpa :disabled
@@ -943,34 +945,34 @@ list)
 :preface
 (defun org-journal-find-location () (org-journal-new-entry t) (goto-char (point-min)))
 :config
-      (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal")
+    (setq org-journal-dir (expand-file-name "~/Dropbox/org/journal")
             org-journal-file-format "%Y-%m-%d.org"
             org-journal-date-format "%Y-%m-%d (%A)")
-      (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/journal"))
-      (setq org-journal-enable-agenda-integration t
+    (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/journal"))
+    (setq org-journal-enable-agenda-integration t
             org-icalendar-store-UID t
             org-icalendar-include0tidi "all"
             org-icalendar-conbined-agenda-file "~/calendar/org-journal.ics")
-      (org-journal-update-org-agenda-files)
-      (org-icalendar-combine-agenda-files)
+    (org-journal-update-org-agenda-files)
+    (org-icalendar-combine-agenda-files)
 )
 
 
 (use-package org-capture
 :after org
 :config (setq org-reverse-note-order t)
-      (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/notes"))
-      (setq org-capture-templates
-          '(("t" "Todo" entry (file+headline "~/Dropbox/org/notes/notes.org" "Todos")
-             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
+    (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/notes"))
+    (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/Dropbox/org/notes/notes.org" "Todos")
+            "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
             ("l" "Link" entry (file+headline "~/Dropbox/org/notes/notes.org" "Links")
-             "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
+            "* TODO %?\nAdded: %U\n" :prepend t :kill-buffer t)
             ("j" "Journal" entry (function org-journal-find-location)
-             "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+            "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
             ("a" "Appointment" entry (file "~/Dropbox/org/agenda/gcal.org")
-             "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
-           )
-      )
+            "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
+            )
+    )
 )
 
 (use-package org-agenda
@@ -978,10 +980,10 @@ list)
 :config (use-package evil-org :ensure t :pin melpa
         :after (org evil)
         :init (add-hook 'org-mode-hook 'evil-org-mode)
-              (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
-              (setq org-agenda-files '("~/Dropbox/org/agenda"))
-              (require 'evil-org-agenda)
-              (evil-org-agenda-set-keys)
+            (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
+            (setq org-agenda-files '("~/Dropbox/org/agenda"))
+            (require 'evil-org-agenda)
+            (evil-org-agenda-set-keys)
         )
 )
 
@@ -1010,8 +1012,8 @@ list)
 (use-package org-gcal :ensure t :pin melpa
 :after  org-agenda
 :config (setq org-gcal-client-id     "354752650679-2rrgv1qctk75ceg0r9vtaghi4is7iad4.apps.googleusercontent.com"
-              org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4                                                "
-              org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
+            org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4                                                "
+            org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
         (add-hook 'org-agenda-mode-hook            (lambda () (org-gcal-sync)))
         (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
@@ -1035,10 +1037,10 @@ list)
 :config (org-babel-do-load-languages
         'org-babel-load-languages
         '((emacs-lisp . t)
-          (python     . t)
-          (org        . t)
-          (shell      . t)
-          (C          . t)))
+        (python     . t)
+        (org        . t)
+        (shell      . t)
+        (C          . t)))
 )
 ;; 스펠체크 넘어가는 부분 설정
 (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
@@ -1059,23 +1061,21 @@ list)
     "poet use writer mode"
     :lighter " writer"
     (if writer-mode
-       (progn
-           ;(olivetti-mode 1)
-           ;(typo-mode 1)
-           (beacon-mode 0)
-           (display-line-numbers-mode 0)
-           (git-gutter-mode 0)
-           (writeroom-mode 1))
-       ;(olivetti-mode 0)
-       ;(typo-mode 0)
-       (beacon-mode 1)
-       (display-line-numbers-mode 1)
-       (git-gutter-mode 1)
-       (writeroom-mode 0)))
+        (progn
+            ;(olivetti-mode 1)
+            ;(typo-mode 1)
+            (beacon-mode 0)
+            (display-line-numbers-mode 0)
+            (git-gutter-mode 0)
+            (writeroom-mode 1))
+        ;(olivetti-mode 0)
+        ;(typo-mode 0)
+        (beacon-mode 1)
+        (display-line-numbers-mode 1)
+        (git-gutter-mode 1)
+        (writeroom-mode 0)))
 
-(use-package mu4e :ensure t :pin melpa :disabled
-:commands (mu4e)
-)
+(use-package mu4e :ensure t :pin melpa :disabled :commands (mu4e))
 
 (use-package rainbow-mode :ensure t :pin melpa
 :hook   (prog-mode text-mode)
@@ -1092,38 +1092,38 @@ list)
 :mode   ("Dockerfile\\'" . dockerfile-mode))
 
 (use-package vterm :ensure t :pin melpa
- :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
- )
+:config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
+)
 
- (use-package vterm-toggle :load-path "lisp/vterm-toggle" :after vterm
- :init   (evil-leader/set-key "ut" 'vterm-toggle
-                              "tl" 'vterm-toggle-forward
-                              "th" 'vterm-toggle-backward
-                              "tn" 'vterm)
+(use-package vterm-toggle :load-path "lisp/vterm-toggle" :after vterm
+:init   (evil-leader/set-key "ut" 'vterm-toggle
+                                "tl" 'vterm-toggle-forward
+                                "th" 'vterm-toggle-backward
+                                "tn" 'vterm)
 
- :config (setq vterm-toggle-fullscreen-p nil)
-         (add-to-list 'display-buffer-alist
-                      '("^v?term.*"
-                       (display-buffer-reuse-window display-buffer-at-bottom)
-                       (reusable-frames . visible)
-                       (direction . bottom)
-                       (window-height . 0.3)))
+:config (setq vterm-toggle-fullscreen-p nil)
+        (add-to-list 'display-buffer-alist
+                        '("^v?term.*"
+                        (display-buffer-reuse-window display-buffer-at-bottom)
+                        (reusable-frames . visible)
+                        (direction . bottom)
+                        (window-height . 0.3)))
 )
 
 (use-package shell-pop :ensure t :pin melpa
 :init (setq shell-pop-shell-type '("term" "* vterm *" (lambda () (vterm))))
-      ;(setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
-      ;(setq shell-pop-universal-key "C-1")
-      ;(evil-leader/set-key "ut" 'shell-pop)
-      (setq shell-pop-full-span t)
-      ;(global-set-key (kbd "<C-t>") 'shell-pop)
+        ;(setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
+        ;(setq shell-pop-universal-key "C-1")
+        ;(evil-leader/set-key "ut" 'shell-pop)
+        (setq shell-pop-full-span t)
+        ;(global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
 (use-package eshell
 :commands eshell
 :config  (setq eshell-buffer-maximum-lines 1000)
-         (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
-         (setq eshell-cmpl-cycle-completions nil)
+        (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
+        (setq eshell-cmpl-cycle-completions nil)
 )
 
 (use-package exec-path-from-shell :ensure t :pin melpa
@@ -1147,14 +1147,14 @@ list)
 :config
     (autoload 'epe-theme-lambda "eshell-prompt-extras")
     (setq eshell-highlight-prompt nil
-          eshell-prompt-function 'epe-theme-lambda)
+            eshell-prompt-function 'epe-theme-lambda)
 )
 
 (use-package fish-completion :ensure t :pin melpa
 :after eshell
 :config (when (and (executable-find "fish")
-                   (require 'fish-completion nil t))
-              (global-fish-completion-mode))
+                    (require 'fish-completion nil t))
+                (global-fish-completion-mode))
 )
 
 (use-package esh-autosuggest :ensure t :pin melpa
@@ -1165,7 +1165,7 @@ list)
 (use-package eshell-up :ensure t :pin melpa
 :after eshell
 :config (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
-                                          (eshell/alias "pk" "eshell-up-peek $1")))
+                                            (eshell/alias "pk" "eshell-up-peek $1")))
 )
 
 (use-package execute-shell :no-require t
@@ -1230,8 +1230,8 @@ list)
 (use-package ibuffer-projectile :ensure t :pin melpa :disabled
 :after (projectile)
 :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
-                                     (unless (eq ibuffer-sorting-mode 'alphabetic)
-                                             (ibuffer-do-sort-by-alphabetic))))
+                                    (unless (eq ibuffer-sorting-mode 'alphabetic)
+                                            (ibuffer-do-sort-by-alphabetic))))
 )
 
 (use-package dash :ensure t :pin melpa :defer t
@@ -1455,11 +1455,11 @@ list)
 ;    (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
 ;    (advice-add #'company-tabnine :around #'my-company-tabnine)
 :config
-     (add-to-list 'company-backends #'company-tabnine)
-     (company-tng-configure-default)
-     (setq company-frontends '(company-tng-frontend
-                               company-pseudo-tooltip-frontend
-                               company-echo-metadata-frontend))
+    (add-to-list 'company-backends #'company-tabnine)
+    (company-tng-configure-default)
+    (setq company-frontends '(company-tng-frontend
+                                company-pseudo-tooltip-frontend
+                                company-echo-metadata-frontend))
 )
 (use-package company-box :ensure t :pin melpa :disabled
     :diminish
@@ -1467,33 +1467,33 @@ list)
     :hook (company-mode . company-box-mode)
     :config
     (setq company-box-backends-colors nil
-          company-box-show-single-candidate t
-          company-box-max-candidates 50
-          company-box-doc-delay 0.5
-          company-box-icons-alist 'company-box-icons-all-the-icons)
+        company-box-show-single-candidate t
+        company-box-max-candidates 50
+        company-box-doc-delay 0.5
+        company-box-icons-alist 'company-box-icons-all-the-icons)
 
-     ;; Support `company-common'
+    ;; Support `company-common'
     (defun my-company-box--make-line (candidate)
-       (-let* (((candidate annotation len-c len-a backend) candidate)
-               (color (company-box--get-color backend))
-               ((c-color a-color i-color s-color) (company-box--resolve-colors color))
-               (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
-               (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
-                                       (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
-               (align-string (when annotation
-                               (concat " " (and company-tooltip-align-annotations
-                                               (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
-               (space company-box--space)
-               (icon-p company-box-enable-icon)
-               (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
-               (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
-                               (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
-                           (company-box--apply-color icon-string i-color)
-                           (company-box--apply-color candidate-string c-color)
-                           align-string
-                           (company-box--apply-color annotation-string a-color)))
-               (len (length line)))
-       (add-text-properties 0 len (list 'company-box--len (+ len-c len-a) 'company-box--color s-color) line) line))
+        (-let* (((candidate annotation len-c len-a backend) candidate)
+                (color (company-box--get-color backend))
+                ((c-color a-color i-color s-color) (company-box--resolve-colors color))
+                (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
+                (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
+                                        (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
+                (align-string (when annotation
+                                (concat " " (and company-tooltip-align-annotations
+                                                (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
+                (space company-box--space)
+                (icon-p company-box-enable-icon)
+                (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
+                (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
+                                (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
+                            (company-box--apply-color icon-string i-color)
+                            (company-box--apply-color candidate-string c-color)
+                            align-string
+                            (company-box--apply-color annotation-string a-color)))
+                (len (length line)))
+        (add-text-properties 0 len (list 'company-box--len (+ len-c len-a) 'company-box--color s-color) line) line))
     (advice-add #'company-box--make-line :override #'my-company-box--make-line)
 
     ;; Prettify icons
@@ -1592,10 +1592,10 @@ list)
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :config
-  (evil-leader/set-key "hyl" 'company-yasnippet)
-  (setq yas-snippet-dirs '("~/.emacs.d/yas/"))
-  (yas-global-mode t)
-  (yas-reload-all t)
+(evil-leader/set-key "hyl" 'company-yasnippet)
+(setq yas-snippet-dirs '("~/.emacs.d/yas/"))
+(yas-global-mode t)
+(yas-reload-all t)
 )
 (use-package yasnippet-snippets :ensure t :pin melpa :after yasnippet)
 (use-package auto-yasnippet :ensure t :pin melpa
@@ -1609,15 +1609,15 @@ list)
 :mode (("\\.h\\'" . c++-mode))
 :commands cpp-mode
 :init (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-      (add-hook 'c++-mode-hook  'cpp-mode)
-      (add-hook 'c-mode-hook    'cpp-mode)
-      (add-hook 'objc-mode-hook 'cpp-mode)
+    (add-hook 'c++-mode-hook  'cpp-mode)
+    (add-hook 'c-mode-hook    'cpp-mode)
+    (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
 (use-package cppm :no-require t
 :after cpp-mode
 :config (evil-leader/set-key "hcb" (lambda () (eshell-command "cppm build"))
-                             "hcr" (lambda () (eshell-command "cppm run")))
+                            "hcr" (lambda () (eshell-command "cppm run")))
 )
 
 (use-package company-c-headers :ensure t :pin melpa
@@ -1663,11 +1663,11 @@ list)
 :custom (rtags-verify-protocol-version nil "rtags version bug fix")
 :preface
 (defun setup-flycheck-rtags ()
-  (interactive)
-  (flycheck-select-checker 'rtags)
-  ;; RTags creates more accurate overlays.
-  (setq-local flycheck-highlighting-mode nil)
-  (setq-local flycheck-check-syntax-automatically nil))
+(interactive)
+(flycheck-select-checker 'rtags)
+;; RTags creates more accurate overlays.
+(setq-local flycheck-highlighting-mode nil)
+(setq-local flycheck-check-syntax-automatically nil))
 :config
     (rtags-enable-standard-keybindings)
     (setq rtags-autostart-diagnostics t)
@@ -1675,7 +1675,7 @@ list)
     (setq rtags-completions-enabled t)
     (rtags-start-process-unless-running)
     (evil-leader/set-key "hcfs" 'rtags-find-symbol
-                         "hcfr" 'rtags-find-references)
+                        "hcfr" 'rtags-find-references)
 )
 
 (use-package ivy-rtags :ensure t :pin melpa
@@ -1741,7 +1741,7 @@ list)
         (evil-leader/set-key "dn" 'gdb-next)
         (evil-leader/set-key "di" 'gdb-step)
         (evil-leader/set-key "df" 'gdb-finish)
-      ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gub-tbreak) (call-interactively 'gud-cont)))
+    ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gub-tbreak) (call-interactively 'gud-cont)))
 )
 
 ; only c/c++
@@ -1802,8 +1802,8 @@ list)
 
 (use-package prettify-symbol :no-require t
 :init (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
-      (add-hook 'lisp-mode-hook       'prettify-symbols-mode)
-      (add-hook 'org-mode-hook        'prettify-symbols-mode)
+    (add-hook 'lisp-mode-hook       'prettify-symbols-mode)
+    (add-hook 'org-mode-hook        'prettify-symbols-mode)
 )
 
 (use-package paredit :ensure t :pin melpa :disabled
@@ -1827,9 +1827,7 @@ list)
 ;(add-hook 'clojure-mode-hook     #'parinfer-mode)
 ;(add-hook 'scheme-mode-hook      #'parinfer-mode)
 :config
-(setq parinfer-extensions '(defaults evil paredit pretty-parens
-                           ;lispy smart-tab smart-yank
-                            ))
+(setq parinfer-extensions '(defaults evil paredit pretty-parens)) ;lispy smart-tab smart-yank
 )
 
 (use-package rust-mode :ensure t :pin melpa
@@ -1839,8 +1837,8 @@ list)
 :init   (add-hook 'rust-mode 'lsp)
 :config (evil-leader/set-key "hrf" 'rust-format-buffer)
         (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
-       ;(setq rust-format-on-save t)
-       ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+        ;(setq rust-format-on-save t)
+        ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
 
 (use-package flycheck-rust :ensure t :pin melpa
@@ -1868,8 +1866,8 @@ list)
 :hook (rust-mode . cargo-minor-mode)
 :commands cargo-minor-mode
 :config (evil-leader/set-key "hrb" 'cargo-process-build
-                             "hrr" 'cargo-process-run
-                             "hrt" 'cargo-process-test)
+                            "hrr" 'cargo-process-run
+                            "hrt" 'cargo-process-test)
 )
 
 ;(use-package rustic :ensure t :pin melpa
@@ -1885,7 +1883,7 @@ list)
 (use-package yaml-mode :ensure t :pin melpa
 :commands yaml-mode
 :mode (("\\.yaml\\'" . yaml-mode)
-       ("\\.yml\\'"  . yaml-mode))
+        ("\\.yml\\'"  . yaml-mode))
 )
 
 (use-package toml-mode :ensure t :pin melpa
@@ -1895,15 +1893,15 @@ list)
 (use-package cmake-mode :ensure t :pin melpa
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
-       ("CMakeLists.txt" . cmake-mode))
+        ("CMakeLists.txt" . cmake-mode))
 :init (setq cmake-tab-width 4)
 )
 
 (use-package markdown-mode :ensure t :pin melpa
 :commands (markdown-mode gfm-mode)
 :mode   (("\\README.md\\'" . gfm-mode)
-         ("\\.md\\'"       . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
+        ("\\.md\\'"       . markdown-mode)
+        ("\\.markdown\\'" . markdown-mode))
 :config (setq markdown-command "multimarkdown")
 )
 
@@ -1922,39 +1920,40 @@ list)
 )
 
 (use-package python-mode :ensure t :pin melpa
- :mode   ("\\.py\\'" . python-mode)
-         ("\\.wsgi$" . python-mode)
- :interpreter ("python" . python-mode)
- :init   (setq-default indent-tabs-mode nil)
- :config (setq python-indent-offset 4)
- )
+:mode   ("\\.py\\'" . python-mode)
+        ("\\.wsgi$" . python-mode)
+:interpreter ("python" . python-mode)
+:custom (python-indent-guess-indent-offset t)
+:init   (setq-default indent-tabs-mode nil)
+:config (setq python-indent-offset 4)
+)
 
- (use-package pyvenv :ensure t :pin melpa
- :after python-mode
- :hook (python-mode . pyvenv-mode)
- )
+(use-package pyvenv :ensure t :pin melpa
+:after python-mode
+:hook (python-mode . pyvenv-mode)
+)
 
- (use-package pyenv-mode :ensure t :pin melpa
- :after python-mode
- :hook  (python-mode . pyenv-mode)
- :preface
-     (defun projectile-pyenv-mode-set ()
-         "Set pyenv version matching project name."
-         (let ((project (projectile-project-name)))
-             (if (member project (pyenv-mode-versions))
-                 (pyenv-mode-set project)
-                 (pyenv-mode-unset)
-             )
-         )
-     )
- :config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
- )
- (use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
- (use-package company-jedi :ensure t :pin melpa
- :after  (company python-mode)
- :config (add-hook 'python-mode 'jedi:setup)
-         (add-to-list 'company-backends 'company-jedi)
- )
+(use-package pyenv-mode :ensure t :pin melpa
+:after python-mode
+:hook  (python-mode . pyenv-mode)
+:preface
+    (defun projectile-pyenv-mode-set ()
+        "Set pyenv version matching project name."
+        (let ((project (projectile-project-name)))
+            (if (member project (pyenv-mode-versions))
+                (pyenv-mode-set project)
+                (pyenv-mode-unset)
+            )
+        )
+    )
+:config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
+)
+(use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
+(use-package company-jedi :ensure t :pin melpa
+:after  (company python-mode)
+:config (add-hook 'python-mode 'jedi:setup)
+        (add-to-list 'company-backends 'company-jedi)
+)
 
 (use-package lsp-python-ms :ensure t :pin melpa :disabled 
 ; pyvenv not working 
@@ -2040,7 +2039,7 @@ list)
 (use-package json-mode :ensure t :pin melpa
 :commands json-mode
 :mode (("\\.json\\'"       . json-mode)
-       ("/Pipfile.lock\\'" . json-mode))
+    ("/Pipfile.lock\\'" . json-mode))
 )
 
 (use-package json-reformat :ensure t :pin melpa
