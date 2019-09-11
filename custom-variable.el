@@ -3,14 +3,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-    '(custom-safe-themes
-         (quote
-             ("7e78a1030293619094ea6ae80a7579a562068087080e01c2b8b503b27900165c" default)))
  '(doom-modeline-mode t)
  '(evil-symbol-word-search t)
  '(evil-want-C-u-scroll t)
  '(evil-want-integration t)
  '(evil-want-keybinding nil)
+ '(exec-path-from-shell-arguments nil)
  '(org-agenda-files nil)
  '(org-pomodoro-ask-upon-killing t t)
  '(org-pomodoro-format "%s" t)
@@ -18,7 +16,7 @@
  '(org-pomodoro-short-break-format "%s" t)
     '(package-selected-packages
          (quote
-             (slime evil-args evil-nerd-commenter evil-traces centaur-tabs epc company-restclient restclient no-littering mmm-mode evil-extra-operator polymode poly-mode window-purpose emacs-purpose purpose parinfer magit-todos magit-todo smeargle evil-lion evil-exchange writeroom-mode disaster all-the-icons-dired evil-iedit-state pdf-tools counsel-spotify company-dict company-box company-flx eshell-did-you-mean highlight-indentation ivy-historian historian counsel-world-clock counsel-org-clock ivy-xref counsel-projectile flyspell-correct-ivy ivy-smex counsel ivy org-pomodoro hide-mode-line flycheck-inline spaceline-colors helm-smex smex company-tabnine toml-mode diminish magithub evil-org org-agenda org-mode eshell-up fish-completion esh-autosuggest shell-pop virtualenvwrapper eshell-prompt-extras exec-path-from-shell exec-path-from-eshell symon tabbar dashboard irony rtags helm spaceline smartparens evil-ediff evil-magit evil-collection evil-smartparens-keybindings ialign helm-swoop flycheck-irony flycheck-rtags flycheck-pos-tip flycheck helm-dash dash-functional buffer-move rust-mode helm-rtags irony-eldoc yasnippet-snippets zenburn-theme yasnippet yaml-mode xpm window-layout which-key use-package spacemacs-theme spaceline-all-the-icons rg rainbow-mode rainbow-delimiters racer python-mode nyan-mode neotree multi-term mode-icons major-mode-icons magit indent-guide helm-projectile helm-descbinds helm-company haskell-mode god-mode git-gutter-fringe flymake-rust fancy-battery eyebrowse evil-smartparens evil-multiedit evil-leader emamux elisp-slime-nav doom-themes doom-modeline dockerfile-mode docker discover-my-major delight company-rtags company-irony-c-headers company-irony company-c-headers cmake-mode cmake-ide clang-format cargo boxquote beacon ace-window)))
+             (base16-theme ivy-rich vterm-toggle web-mode dumb-jump go-mode company-shell flutter dart-mode elpy company-jedi pyenv-mode-auto pyenv-mode pyvenv easy-jekyll gh-md markdown-preview-mode company-racer flycheck-rust dap-mode ivy-rtags auto-yasnippet quick-peek company-lsp lsp-ui lsp-mode company-statistics company-quickhelp poly-org try wgrep google-translate google-this page-break-lines emojify command-log-mode esh-help vterm poet-theme typo olivetti ob-restclient calfw orgtbl-aggregate org-gcal org-bullets gitattributes-mode gitconfig-mode gitignore-mode counsel-tramp all-the-icons-ivy ivy-yasnippet swiper hydra all-the-icons git-gutter elmacro evil-numbers evil-matchit evil-goggles evil-indent-plus evil-surround evil esup goto-last-change drag-stuff restart-emacs slime evil-args evil-nerd-commenter evil-traces centaur-tabs epc company-restclient restclient no-littering mmm-mode evil-extra-operator polymode poly-mode window-purpose emacs-purpose purpose parinfer magit-todos magit-todo smeargle evil-lion evil-exchange writeroom-mode disaster all-the-icons-dired evil-iedit-state pdf-tools counsel-spotify company-dict company-box company-flx eshell-did-you-mean highlight-indentation ivy-historian historian counsel-world-clock counsel-org-clock ivy-xref counsel-projectile flyspell-correct-ivy ivy-smex counsel ivy org-pomodoro hide-mode-line flycheck-inline spaceline-colors helm-smex smex company-tabnine toml-mode diminish magithub evil-org org-agenda org-mode eshell-up fish-completion esh-autosuggest shell-pop virtualenvwrapper eshell-prompt-extras exec-path-from-shell exec-path-from-eshell symon tabbar dashboard irony rtags helm spaceline smartparens evil-ediff evil-magit evil-collection evil-smartparens-keybindings ialign helm-swoop flycheck-irony flycheck-rtags flycheck-pos-tip flycheck helm-dash dash-functional buffer-move rust-mode helm-rtags irony-eldoc yasnippet-snippets zenburn-theme yasnippet yaml-mode xpm window-layout which-key use-package spacemacs-theme spaceline-all-the-icons rg rainbow-mode rainbow-delimiters racer python-mode nyan-mode neotree multi-term mode-icons major-mode-icons magit indent-guide helm-projectile helm-descbinds helm-company haskell-mode god-mode git-gutter-fringe flymake-rust fancy-battery eyebrowse evil-smartparens evil-multiedit evil-leader emamux elisp-slime-nav doom-modeline dockerfile-mode docker discover-my-major delight company-rtags company-irony-c-headers company-irony company-c-headers cmake-mode cmake-ide clang-format cargo boxquote beacon ace-window)))
  '(spaceline-all-the-icons-icon-set-git-ahead (quote commit))
  '(spaceline-all-the-icons-icon-set-modified (quote toggle))
  '(spaceline-all-the-icons-icon-set-window-numbering (quote square))
@@ -32,6 +30,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(doom-modeline-error ((t nil)))
+ '(evil-ex-substitute-matches ((t (:inherit diff-removed :foreground unspecified :background unspecified))))
+ '(evil-ex-substitute-replacement ((t (:inherit diff-added :foreground unspecified :background unspecified))))
  '(evil-traces-change ((t (:inherit diff-removed))))
  '(evil-traces-copy-preview ((t (:inherit diff-added))))
  '(evil-traces-copy-range ((t (:inherit diff-changed))))

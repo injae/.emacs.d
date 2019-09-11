@@ -1,9 +1,7 @@
-(require 'package)
-    (add-to-list 'package-archives '("melpa"     . "http://melpa.milkbox.net/packages/")  t)
-    (add-to-list 'package-archives '("elpa"      . "https://tromey.com/elpa/")            t)
-    (add-to-list 'package-archives '("org"       . "http://orgmode.org/elpa/")            t)
-    (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
-    (package-initialize)
+(when (eval-when-compile (version< emacs-version "27"))
+    (load "~/.emacs.d/early-init.el")
+    (package-initialize))
+
     (setq use-package-compute-statistics t)
     (unless (and (package-installed-p 'delight)
                  (package-installed-p 'use-package))
@@ -11,7 +9,6 @@
         (package-install 'delight t)
         (package-install 'use-package t))
     ;(setq-default use-package-always-defer t)
-(package-initialize)
 
 (use-package auto-package-update :ensure t :pin melpa
 :init (setq auto-package-update-delete-old-versions t)

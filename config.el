@@ -364,7 +364,6 @@ list)
      (global-evil-leader-mode t)
      (setq evil-leader/leader "<SPC>")
      (evil-leader/set-key
-      ;"<SPC>" 'helm-smex
          "<SPC>" 'counsel-M-x
          "er"    'restart-emacs
          "el"    '-reload-emacs
@@ -435,10 +434,11 @@ list)
     (set-face-foreground 'git-gutter:modified "#b18cce")
 )
 
+(setq custom-safe-themes t)
 (use-package doom-themes :ensure t :pin melpa
-:init   (load-theme 'doom-one t)
-:config (doom-themes-neotree-config)
-        (doom-themes-org-config)
+:init       (load-theme 'doom-one t)
+:config  (doom-themes-neotree-config)
+             (doom-themes-org-config)
 )
 
 (use-package all-the-icons :ensure t :pin melpa)
@@ -604,13 +604,12 @@ list)
 :config   (setq which-key-allow-evil-operators t)
 )
 
-(use-package ivy :ensure t :pin melpa :defer t
+(use-package ivy :ensure t :pin melpa
+:ensure-system-package (rg . "cargo install ripgrep")
 :after evil-collection
 :commands counsel-M-x
-:bind   (("M-x" . counsel-M-x)
-        :map ivy-minibuffer-map
-        ("S-SPC" . toggle-input-method) ;ivy S-SPC remapping toogle-input-method
-        )
+:bind   (("M-x" . counsel-M-x) :map ivy-minibuffer-map ("S-SPC" . toggle-input-method))
+ ;ivy S-SPC remapping toogle-input-method
 :config (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
     (setq ivy-use-selectable-prompt t)
@@ -789,40 +788,24 @@ list)
 :config
 (ivy-rich-mode 1))
 
-(use-package smex :ensure t :pin melpa :disabled
+(use-package smex :ensure t :pin melpa
 :init (smex-initialize)
-        ;(global-set-key [remap execute-extended-command] #'helm-smex)
-        (evil-leader/set-key "fm" #'smex-major-mode-commands)
+      (evil-leader/set-key "fm" #'smex-major-mode-commands)
+     ;(global-set-key [remap execute-extended-command] #'helm-smex)
 )
+
 (use-package helm-smex :ensure t :pin melpa :disabled
 :after (helm smex)
 :bind  ("M-x" . #'helm-smex-major-mode-commands)
 :init  (global-set-key [remap execute-extended-command] #'helm-smex)
-       (evil-leader/set-key "fm" #'helm-smex-major-mode-commands)
-)
+       (evil-leader/set-key "fm" #'helm-smex-major-mode-commands))
 
 (use-package projectile :ensure t :pin melpa :defer t
 :init (projectile-mode t)
 )
 
-(use-package neotree :ensure t :pin melpa
-:after (projectile all-the-icons)
-:commands (neotree-toggle)
-:init
-    (setq projectile-switch-project-action 'neotree-projectile-action)
-    (setq-default neo-smart-open t)
-    (evil-leader/set-key "n" #'neotree-toggle)
-:config
-    (setq-default neo-window-width 30)
-    (setq-default neo-dont-be-alone t)
-    (add-hook 'neotree-mode-hook (lambda () (display-line-numbers-mode -1) ))
-    (setq neo-force-change-root t)
-    (setq neo-theme 'icons)
-    (setq neo-show-hidden-files t)
-)
-(use-package all-the-icons-dired :ensure t :pin melpa
-:after all-the-icons
-:init  (add-hook 'dired-mode-hook 'all-the-dired-mode)
+(use-package projectile :ensure t :pin melpa :defer t
+:init (projectile-mode t)
 )
 
 (use-package ace-window :ensure t :pin melpa
@@ -910,28 +893,38 @@ list)
 :config (evil-ediff-init)
 )
 
-(use-package undo-tree :ensure t :pin melpa :defer t :diminish undo-tree-mode
+(use-package undo-tree :ensure t :pin melpa :diminish undo-tree-mode
+:commands (undo-tree-undo undo-tree-redo)
 :init
-    ;(global-set-key (kbd "C-u") #'undo-tree-undo)
-    ;(global-set-key (kbd "C-r") #'undo-tree-redo)
     (evil-leader/set-key "uu"    'undo-tree-undo)
-    (evil-leader/set-key "ur"    'undo-tree-undo)
+    (evil-leader/set-key "ur"    'undo-tree-redo)
+    (evil-define-key 'normal 'global (kbd "C-r") #'undo-tree-redo)
+    (evil-define-key 'normal 'global "u" #'undo-tree-undo)
     (defalias 'redo 'undo-tree-redo)
     (defalias 'undo 'undo-tree-undo)
+:config
     (global-undo-tree-mode)
 )
 
+;(use-package undo-propose :ensure t :pin melpa
+;:after evil
+;:commands undo-propose
+;:init   (evil-define-key 'normal 'global (kbd "C-r") #'undo-propose)
+;        (evil-define-key 'normal 'global "u" #'undo-only)
+;:config (global-undo-tree-mode -1)
+;)
+
 (use-package org
-:init (setq org-directory            (expand-file-name     "~/Dropbox/org   "))
-    (setq org-default-notes-file   (concat org-directory "/notes/notes.org"))
-    (evil-leader/set-key
-        "oa" 'org-agenda
-        "ob" 'org-iswitchb
-        "oc" 'org-capture
-        "oe" 'org-edit-src-code
-        "ok" 'org-edit-src-exit
-        "ol" 'org-store-link
-    )
+:init (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
+      (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
+      (evil-leader/set-key
+          "oa" 'org-agenda
+          "ob" 'org-iswitchb
+          "oc" 'org-capture
+          "oe" 'org-edit-src-code
+          "ok" 'org-edit-src-exit
+          "ol" 'org-store-link
+      )
 )
 
 (use-package org-bullets :ensure t :pin melpa
@@ -1128,6 +1121,7 @@ list)
 
 (use-package exec-path-from-shell :ensure t :pin melpa
 :after eshell
+:custom (exec-path-from-shell-check-startup-files nil)
 :config (exec-path-from-shell-copy-env "PATH")
         (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
 )
@@ -1567,6 +1561,7 @@ list)
 (use-package flycheck :ensure t :pin melpa
 :after  company
 :config (setq flycheck-clang-language-standard "c++17")
+        (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode t)
 )
 (use-package flycheck-pos-tip :ensure t :pin melpa
@@ -1722,8 +1717,7 @@ list)
 (use-package dap-mode :ensure t :pin melpa
 :commands (dap-debug)
 :init   (evil-leader/set-key "dd" 'dap-debug)
-:config
-        (setq dap-gdb-lldb-path (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/"))
+:config (setq dap-gdb-lldb-path (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/"))
         (setq dap-gdb-lldb-debug-program (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js"))
         (require 'dap-gdb-lldb) ; gdb mode
         (dap-ui-mode 1)
@@ -1847,7 +1841,7 @@ list)
 )
 
 (use-package racer :ensure t :pin melpa
-:ensure-system-package ((racer . "rustup toolchain add nightly")
+:ensure-system-package ((racer . "rustup install nightly")
                         (racer . "rustup component add rust-src")
                         (racer . "cargo +nightly install racer"))
 :after (rust-mode eldoc)
@@ -1926,11 +1920,13 @@ list)
 :custom (python-indent-guess-indent-offset t)
 :init   (setq-default indent-tabs-mode nil)
 :config (setq python-indent-offset 4)
+        (eldoc-mode 0)
 )
 
 (use-package pyvenv :ensure t :pin melpa
 :after python-mode
 :hook (python-mode . pyvenv-mode)
+:config (pyvenv-tracking-mode)
 )
 
 (use-package pyenv-mode :ensure t :pin melpa
@@ -1951,8 +1947,8 @@ list)
 (use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
 (use-package company-jedi :ensure t :pin melpa
 :after  (company python-mode)
-:config (add-hook 'python-mode 'jedi:setup)
-        (add-to-list 'company-backends 'company-jedi)
+:config ;(add-hook 'python-mode 'jedi:setup)
+        (add-to-list 'company-backends #'company-jedi)
 )
 
 (use-package lsp-python-ms :ensure t :pin melpa :disabled 
@@ -1963,7 +1959,7 @@ list)
 )
 
 (use-package elpy :ensure t :pin melpa
-:ensure-system-package ((jedi . "pip install jedi flake8 autopep8 black yapf"))
+:ensure-system-package ((jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic"))
 :after python-mode
 :hook (python-mode . elpy-enable)
 )
@@ -1979,7 +1975,7 @@ list)
 
 ;(use-package virtualenvwrapper
 ;:after  python-mode
-;:custom (venv-project-home expand-file-name (or (getenv "PROJECT_HOME") "~/projects/") :group 'virtualenvwrapper)
+;:custom (venv-project-home expand-file-name (or (getenv "PROJECT_HOME") "~/dev/") :group 'virtualenvwrapper)
 ;:preface (defun workon-venv ()
 ;             "change directory to project in eshell"
 ;             (eshell/cd (concat venv-project-home venv-current-name)))
