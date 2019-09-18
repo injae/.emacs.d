@@ -1172,7 +1172,7 @@ list)
 #+END_SRC
 ** Color Code Paint(Rainbow mode)
 #+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode :ensure t :pin melpa
+(use-package rainbow-mode :ensure t :pin elpa
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
