@@ -152,6 +152,7 @@
 )
 
 (defun new-buffer-save (name buffer-major-mode)
+    (interactive)
     (let ((buffer (generate-new-buffer name)))
          (switch-to-buffer buffer)
          (set-buffer-major-mode buffer)
@@ -160,10 +161,16 @@
 )
 
 (defun new-buffer (name buffer-major-mode)
+    (interactive)
     (let ((buffer (generate-new-buffer name)))
          (switch-to-buffer buffer)
          (set-buffer-major-mode buffer)
          (funcall buffer-major-mode))
+)
+
+(defun new-no-name-buffer ()
+    (interactive)
+    (new-buffer "untitled" 'text-mode)
 )
 
 (use-package hungry-delete :ensure t :pin melpa :defer t :disabled
@@ -801,11 +808,13 @@ list)
        (evil-leader/set-key "fm" #'helm-smex-major-mode-commands))
 
 (use-package projectile :ensure t :pin melpa :defer t
-:init (projectile-mode t)
-)
-
-(use-package projectile :ensure t :pin melpa :defer t
-:init (projectile-mode t)
+:init   (projectile-mode t)
+:config (setq projectile-require-project-root nil)
+        (setq projectile-enable-caching t)
+        (setq projectile-globally-ignored-directories
+            (append '(".ccls-cache" ".git" "__pycache__") projectile-globally-ignored-directories))
+        ;(setq projectile-globally-ignored-files
+        ;    (append '() projectile-globaly-ignore-files))
 )
 
 (use-package ace-window :ensure t :pin melpa
@@ -1540,6 +1549,8 @@ list)
 :config (setq lsp-inhibit-message t)
         (setq lsp-message-project-root-warning t)
         (setq create-lockfiles nil)
+        ;(setq lsp-enable-file-watchers nil)
+        (setq company-lsp-enable-snippet t)
         (lsp-ui-mode)
 )
 
@@ -1604,15 +1615,15 @@ list)
 :mode (("\\.h\\'" . c++-mode))
 :commands cpp-mode
 :init (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-    (add-hook 'c++-mode-hook  'cpp-mode)
-    (add-hook 'c-mode-hook    'cpp-mode)
-    (add-hook 'objc-mode-hook 'cpp-mode)
+      (add-hook 'c++-mode-hook  'cpp-mode)
+      (add-hook 'c-mode-hook    'cpp-mode)
+      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
 (use-package cppm :no-require t
 :after cpp-mode
 :config (evil-leader/set-key "hcb" (lambda () (eshell-command "cppm build"))
-                            "hcr" (lambda () (eshell-command "cppm run")))
+                             "hcr" (lambda () (eshell-command "cppm run")))
 )
 
 (use-package company-c-headers :ensure t :pin melpa
@@ -1670,7 +1681,7 @@ list)
     (setq rtags-completions-enabled t)
     (rtags-start-process-unless-running)
     (evil-leader/set-key "hcfs" 'rtags-find-symbol
-                        "hcfr" 'rtags-find-references)
+                         "hcfr" 'rtags-find-references)
 )
 
 (use-package ivy-rtags :ensure t :pin melpa
@@ -1690,11 +1701,14 @@ list)
         (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
         (setq-local flycheck-check-syntax-automatically nil))
 :config
-    (add-hook 'c-mode-hook    #'my-flycheck-rtags-setup)
-    (add-hook 'c++-mode-hook  #'my-flycheck-rtags-setup)
-    (add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
-    (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
-    (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
+    (add-hook 'cpp-mode-hook #'my-flycheck-rtags-setup)
+    (add-hook 'cpp-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
+    (add-hook 'cpp-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
+    ;(add-hook 'c-mode-hook    #'my-flycheck-rtags-setup)
+    ;(add-hook 'c++-mode-hook  #'my-flycheck-rtags-setup)
+    ;(add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
+    ;(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
+    ;(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 )
 
 (use-package cmake-ide :ensure t :pin melpa
@@ -1714,18 +1728,22 @@ list)
     ;)
 )
 
+(use-package ccls :ensure t :pin melpa ;:disabled
+:after cpp-mode
+:init (add-hook 'cpp-mode-hook 'lsp)
+)
+
 (use-package dap-mode :ensure t :pin melpa
 :commands (dap-debug)
 :init   (evil-leader/set-key "dd" 'dap-debug)
-:config (setq dap-gdb-lldb-path (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/"))
-        (setq dap-gdb-lldb-debug-program (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js"))
+:config ;(setq dap-gdb-lldb-path (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/"))
+        ;(setq dap-gdb-lldb-debug-program (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js"))
         (require 'dap-gdb-lldb) ; gdb mode
         (dap-ui-mode 1)
         (dap-mode 1)
 )
 
-(use-package gdb-mi
-:load-path "lisp/emacs-gdb"
+(use-package gdb-mi :load-path "lisp/emacs-gdb"
 :commands gdb-executable
 :init   (evil-leader/set-key "de" 'gdb-executable)
 :config (setq-default gdb-show-main t)
@@ -1917,20 +1935,19 @@ list)
 :mode   ("\\.py\\'" . python-mode)
         ("\\.wsgi$" . python-mode)
 :interpreter ("python" . python-mode)
-:custom (python-indent-guess-indent-offset t)
+:custom (python-indent-offset 4)
 :init   (setq-default indent-tabs-mode nil)
-:config (setq python-indent-offset 4)
-        (eldoc-mode 0)
+:config (eldoc-mode 0)
 )
 
 (use-package pyvenv :ensure t :pin melpa
-:after python-mode
-:hook (python-mode . pyvenv-mode)
+:after  python-mode
+:hook   (python-mode . pyvenv-mode)
 :config (pyvenv-tracking-mode)
 )
 
 (use-package pyenv-mode :ensure t :pin melpa
-:after python-mode
+:after  python-mode
 :hook  (python-mode . pyenv-mode)
 :preface
     (defun projectile-pyenv-mode-set ()
@@ -1962,6 +1979,7 @@ list)
 :ensure-system-package ((jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic"))
 :after python-mode
 :hook (python-mode . elpy-enable)
+:config (eldoc-mode 0)
 )
 
 ;(use-package anaconda-mode :ensure t :pin melpa

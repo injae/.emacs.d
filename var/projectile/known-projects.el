@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/dev/loopang-server/" "~/dev/Loopang/" "~/dev/cppm/" "~/dev/nlpo/" "~/dev/cppm_tools/" "~/dev/rust-study/")
+("~/.emacs.d/" "~/dev/cppm_tools/" "~/dev/cppm/" "~/dev/nlpo/" "~/dev/cppkg/" "~/dev/loopang-server/" "~/dev/Loopang/" "~/dev/rust-study/")

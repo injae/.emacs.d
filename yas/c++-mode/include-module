@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cpp include global
+# key: incg
+# --
+#include <$1>

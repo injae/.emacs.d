@@ -25,16 +25,17 @@
 
 ;;; Code:
 (defgroup cpp-mode nil "cpp-mode" :group 'tools)
-;(defvar cpp-mode-hook nil "cpp-mode hook")
 
 (defcustom cpp-mode-on-p nil
     "cpp mode on off flag"
     :type 'boolean
     :group 'cpp-mode)
 
-(defun cpp-mode-is-on () (interactive)
+(defun cpp-mode-is-on ()
+    "cpp mode is on off"
+    (interactive)
     (if cpp-mode-on-p
-        (progn (message "true")) 
+        (progn (message "true"))
         (message "false")
     )
 )
@@ -45,7 +46,10 @@
 :group 'cpp-mode
 :lighter " cpp-mode"
 :global nil
-(if cpp-mode (progn (setq cpp-mode-on-p t)) (setq cpp-mode-on-p nil) )
+    (if cpp-mode
+        (progn
+            (setq cpp-mode-on-p t))
+        (setq cpp-mode-on-p nil))
 )
 
 (provide 'cpp-mode)
