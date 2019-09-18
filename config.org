@@ -758,7 +758,7 @@ list)
 
 (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
 
-(use-package ivy-rich
+(use-package ivy-rich :ensure t :pin melpa
 :defines (all-the-icons-dir-icon-alist bookmark-alist)
 :functions (all-the-icons-icon-family
             all-the-icons-match-to-alist
@@ -1194,7 +1194,8 @@ list)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
 )
 
-(use-package vterm-toggle :load-path "lisp/vterm-toggle" :after vterm
+(use-package vterm-toggle :ensure t :pin melpa
+:after vterm
 :init   (evil-leader/set-key "ut" 'vterm-toggle
                                 "tl" 'vterm-toggle-forward
                                 "th" 'vterm-toggle-backward
