@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: cpp include local
-# key: incl
+# key: inl
 # --
 #include "$1"

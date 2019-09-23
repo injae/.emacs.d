@@ -689,7 +689,7 @@ list)
 
 (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
 
-(use-package ivy-rich
+(use-package ivy-rich :ensure t :pin melpa
 :defines (all-the-icons-dir-icon-alist bookmark-alist)
 :functions (all-the-icons-icon-family
             all-the-icons-match-to-alist
@@ -1011,7 +1011,7 @@ list)
 :bind (:map org-agenda-mode-map ("p" . org-pomodoro))
 )
 
-(use-package org-gcal :ensure t :pin melpa
+(use-package org-gcal :ensure t :pin melpa :disabled
 :after  org-agenda
 :config (setq org-gcal-client-id     "354752650679-2rrgv1qctk75ceg0r9vtaghi4is7iad4.apps.googleusercontent.com"
             org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4                                                "
@@ -1079,7 +1079,7 @@ list)
 
 (use-package mu4e :ensure t :pin melpa :disabled :commands (mu4e))
 
-(use-package rainbow-mode :ensure t :pin melpa
+(use-package rainbow-mode :ensure t :pin gnu
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
@@ -1097,7 +1097,8 @@ list)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
 )
 
-(use-package vterm-toggle :load-path "lisp/vterm-toggle" :after vterm
+(use-package vterm-toggle :ensure t :pin melpa
+:after vterm
 :init   (evil-leader/set-key "ut" 'vterm-toggle
                                 "tl" 'vterm-toggle-forward
                                 "th" 'vterm-toggle-backward
@@ -1394,21 +1395,21 @@ list)
 ;                                                     :back "#\\+END_SRC"))))
 
 (use-package company :ensure t :pin melpa
-:init (global-company-mode 1)
-:config
-    (setq company-idle-delay 0)
-    (setq company-tooltip-align-annotations t)
-    (setq company-minimum-prefix-length 1)
-    (add-to-list 'company-backends 'company-capf)
-    (define-key company-active-map (kbd "M-n")        nil)
-    (define-key company-active-map (kbd "M-p")        nil)
-    (define-key company-active-map (kbd "C-n")        'company-select-next)
-    (define-key company-active-map (kbd "C-p")        'company-select-previous)
-    (define-key company-active-map (kbd "C-<return>") 'company-complete-selection)
+:custom
+    (company-idle-delay 0)
+    (company-tooltip-align-annotations t)
+    (company-minimum-prefix-length 1)
+:bind (:map company-active-map 
+        ("M-n"        . nil)
+        ("M-p"        . nil)
+        ("C-n"        . company-select-next)
+        ("C-p"        . company-select-previous)
+        ("C-<return>" . company-complete-selection))
+:init   (global-company-mode 1)
+:config (add-to-list 'company-backends 'company-capf)
 )
 
-(use-package company-yasnippet :no-require t
-:after company
+(use-package company-yasnippet :ensure nil :after (company yasnippet)
 :preface
 (defun company-mode/backend-with-yas (backend)
     (if (and (listp backend) (member 'company-yasnippet backend))
@@ -1416,17 +1417,18 @@ list)
 :config (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 )
 
+
 (use-package company-quickhelp :ensure t :pin melpa
-:after  company
+:after company
+:bind (:map company-active-map ("C-c h" . company-quickhelp-manual-begin))
 :config (company-quickhelp-mode)
-        (define-key company-active-map (kbd "C-c h") #'company-quickhelp-manual-begin)
 )
 
 (use-package company-dict :ensure t :pin melpa
-:after  company
-:config (setq company-dict-dir (concat user-emacs-directory "dict/"))
-        (setq company-dict-enable-yasnippet t)
-        (add-to-list 'company-backends 'company-dict)
+:after   company
+:custom (company-dict-dir (concat user-emacs-directory "dict/"))
+        (company-dict-enable-yasnippet t)
+:config (add-to-list 'company-backends 'company-dict)
 )
 
 (use-package company-statistics :ensure t :pin melpa
@@ -1435,7 +1437,7 @@ list)
 )
 
 (use-package company-flx :ensure t :pin melpa :disabled
-:after company
+:after  company
 :config (company-flx-mode +1)
 )
 
@@ -1461,8 +1463,8 @@ list)
     (add-to-list 'company-backends #'company-tabnine)
     (company-tng-configure-default)
     (setq company-frontends '(company-tng-frontend
-                                company-pseudo-tooltip-frontend
-                                company-echo-metadata-frontend))
+                              company-pseudo-tooltip-frontend
+                              company-echo-metadata-frontend))
 )
 (use-package company-box :ensure t :pin melpa :disabled
     :diminish
@@ -1470,10 +1472,10 @@ list)
     :hook (company-mode . company-box-mode)
     :config
     (setq company-box-backends-colors nil
-        company-box-show-single-candidate t
-        company-box-max-candidates 50
-        company-box-doc-delay 0.5
-        company-box-icons-alist 'company-box-icons-all-the-icons)
+          company-box-show-single-candidate t
+          company-box-max-candidates 50
+          company-box-doc-delay 0.5
+          company-box-icons-alist 'company-box-icons-all-the-icons)
 
     ;; Support `company-common'
     (defun my-company-box--make-line (candidate)
@@ -1548,9 +1550,9 @@ list)
 :commands lsp
 :config (setq lsp-inhibit-message t)
         (setq lsp-message-project-root-warning t)
+        (setq lsp-enable-snippet t)
         (setq create-lockfiles nil)
-        ;(setq lsp-enable-file-watchers nil)
-        (setq company-lsp-enable-snippet t)
+        (setq lsp-file-watch-threshold nil)
         (lsp-ui-mode)
 )
 
@@ -1565,7 +1567,10 @@ list)
 
 (use-package company-lsp :ensure t :pin melpa
 :commands company-lsp
-:after  (company lsp-mode)
+:after  (:all company lsp-mode)
+:custom (company-lsp-async t)
+        (company-lsp-enable-snippet t)
+        (company-lsp-enable-recompletion t)
 :config (add-to-list 'company-backends #'company-lsp)
 )
 
@@ -1597,9 +1602,9 @@ list)
 (use-package yasnippet :ensure t :pin melpa
 ;https://github.com/joaotavora/yasnippet
 :after (company)
+:custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
 :config
 (evil-leader/set-key "hyl" 'company-yasnippet)
-(setq yas-snippet-dirs '("~/.emacs.d/yas/"))
 (yas-global-mode t)
 (yas-reload-all t)
 )
@@ -1636,7 +1641,7 @@ list)
 :config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
 
-(use-package irony :ensure t :pin melpa :diminish irony-mode
+(use-package irony :ensure t :pin melpa :diminish irony-mode :disabled
 :after (cpp-mode)
 :hook  (cpp-mode . irony-mode)
 ;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
@@ -1664,7 +1669,7 @@ list)
 :config (add-to-list 'company-backends 'company-irony-c-headers)
 )
 
-(use-package rtags :ensure t :pin melpa
+(use-package rtags :ensure t :pin melpa :disabled
 :after  cpp-mode
 :custom (rtags-verify-protocol-version nil "rtags version bug fix")
 :preface
@@ -1730,6 +1735,9 @@ list)
 
 (use-package ccls :ensure t :pin melpa ;:disabled
 :after cpp-mode
+:custom
+      (ccls-sem-highlight-method 'font-lock)
+      (ccls-use-default-rainbow-sem-highlight)
 :init (add-hook 'cpp-mode-hook 'lsp)
 )
 
@@ -1937,7 +1945,6 @@ list)
 :interpreter ("python" . python-mode)
 :custom (python-indent-offset 4)
 :init   (setq-default indent-tabs-mode nil)
-:config (eldoc-mode 0)
 )
 
 (use-package pyvenv :ensure t :pin melpa
@@ -1963,9 +1970,9 @@ list)
 )
 (use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
 (use-package company-jedi :ensure t :pin melpa
+:ensure-system-package (virtualenv . "pip install --user virtualenv")
 :after  (company python-mode)
-:config ;(add-hook 'python-mode 'jedi:setup)
-        (add-to-list 'company-backends #'company-jedi)
+:config (add-to-list 'company-backends #'company-jedi)
 )
 
 (use-package lsp-python-ms :ensure t :pin melpa :disabled 
@@ -1975,21 +1982,21 @@ list)
 :hook  (python-mode . lsp)
 )
 
-(use-package elpy :ensure t :pin melpa
-:ensure-system-package ((jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic"))
+(use-package elpy :ensure t :pin melpa :disabled
+:ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
 :after python-mode
 :hook (python-mode . elpy-enable)
 :config (eldoc-mode 0)
 )
 
-;(use-package anaconda-mode :ensure t :pin melpa
-;:after  python-mode
-;:config (add-hook 'python-mode-hook 'anaconda-mode)
-;        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+(use-package anaconda-mode :ensure t :pin melpa
+:after  python-mode
+:config (add-hook 'python-mode-hook 'anaconda-mode)
+        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
-;(use-package company-anaconda :ensure t :pin melpa
-;:after  (company-mode anaconda-mode)
-;:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+(use-package company-anaconda :ensure t :pin melpa
+:after  (company-mode anaconda-mode)
+:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 
 ;(use-package virtualenvwrapper
 ;:after  python-mode
