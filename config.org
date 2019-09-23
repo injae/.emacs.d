@@ -1,6 +1,9 @@
 #+TITLE: InJae Emacs Configure File
 #+OPTIONS: toc:4 h:4
 #+PROPERTY: header-args:emacs-lisp :tangle "~/.emacs.d/config.el"
+
+[[image/emacs_icon.png]]
+
 * Emacs Default Settings
 ** emacs config load
 #+BEGIN_SRC emacs-lisp
