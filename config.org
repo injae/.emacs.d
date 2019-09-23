@@ -970,7 +970,7 @@ list)
         (setq magithub-clone-default-directory "~/github")
 )
 
-(use-package magit-todos :ensure t :pin melpa :after magit)
+(use-package magit-todos :ensure t :pin melpa :after magit :disabled)
 
 (use-package gitignore-mode :ensure t :pin melpa :commands gitignore-mode)
 (use-package gitconfig-mode :ensure t :pin melpa :commands gitconfig-mode)
@@ -1539,6 +1539,7 @@ list)
     (company-idle-delay 0)
     (company-tooltip-align-annotations t)
     (company-minimum-prefix-length 1)
+    (company-dabbrev-downcase nil)
 :bind (:map company-active-map 
         ("M-n"        . nil)
         ("M-p"        . nil)

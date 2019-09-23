@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: make lambda
-# key: [{
+# key: {}
 # --
  [&]($1){ $2 }
