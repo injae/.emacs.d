@@ -350,9 +350,9 @@ list)
        (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
        (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
        (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
+:config
        (evil-collection-pdf-setup)
        (evil-collection-minibuffer-setup)
-       (evil-collection-ivy-setup)
        (evil-collection-occur-setup)
        (evil-collection-wgrep-setup)
        (evil-collection-buff-menu-setup)
@@ -362,11 +362,13 @@ list)
        (evil-collection-which-key-setup)
        (evil-collection-evil-mc-setup)
        (evil-collection-calc-setup)
-:config
        (evil-collection-init)
 )
 (use-package evil-leader :ensure t :pin melpa
 :after (evil-collection which-key)
+:init  (evil-define-key 'normal 'messages-buffer-mode-map (kbd "<SPC>") nil)
+       (evil-define-key 'visual 'messages-buffer-mode-map (kbd "<SPC>") nil)
+       (evil-define-key 'motion 'messages-buffer-mode-map (kbd "<SPC>") nil)
 :config
      (global-evil-leader-mode t)
      (setq evil-leader/leader "<SPC>")
@@ -615,20 +617,18 @@ list)
 :ensure-system-package (rg . "cargo install ripgrep")
 :after evil-collection
 :commands counsel-M-x
-:bind   (("M-x" . counsel-M-x) :map ivy-minibuffer-map ("S-SPC" . toggle-input-method))
  ;ivy S-SPC remapping toogle-input-method
+:bind   (("M-x" . counsel-M-x) :map ivy-minibuffer-map ("S-SPC" . toggle-input-method))
+:custom (ivy-use-virtual-buffers t)
+        (ivy-use-selectable-prompt t)
+        (enable-recursive-minibuffers t)
+        (ivy-height 20)
+        (ivy-count-format "(%d/%d) ")
+        (ivy-display-style 'fancy)
+        (ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
+        (ivy-format-function 'ivy-format-function-line)
+        (ivy-initial-inputs-alist nil)
 :config (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-use-selectable-prompt t)
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-height 20)
-    (setq ivy-count-format "(%d/%d) ")
-    (setq ivy-display-style 'fancy)
-    (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
-    (setq ivy-format-function 'ivy-format-function-line)
-    (setq ivy-initial-inputs-alist nil)
-    ;(evil-set-initial-state   'ivy-occur-grep-mode 'normal)
-    ;(evil-make-overriding-map  ivy-occur-mode-map  'normal)
 )
 (use-package counsel
 :after ivy
@@ -791,9 +791,9 @@ list)
         counsel-projectile-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
         counsel-org-capture (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
         counsel-projectile-find-dir (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))))
-(setq ivy-rich-parse-remote-buffer nil)
-:config
-(ivy-rich-mode 1))
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+:custom (ivy-rich-parse-remote-buffer nil)
+:config (ivy-rich-mode 1))
 
 (use-package smex :ensure t :pin melpa
 :init (smex-initialize)
@@ -816,6 +816,25 @@ list)
         ;(setq projectile-globally-ignored-files
         ;    (append '() projectile-globaly-ignore-files))
 )
+
+(use-package neotree :ensure t :pin melpa
+:after (projectile all-the-icons)
+:commands (neotree-toggle)
+:init
+    (setq projectile-switch-project-action 'neotree-projectile-action)
+    (setq-default neo-smart-open t)
+    (evil-leader/set-key "n" #'neotree-toggle)
+:config
+    (setq-default neo-window-width 30)
+    (setq-default neo-dont-be-alone t)
+    (add-hook 'neotree-mode-hook (lambda () (display-line-numbers-mode -1) ))
+    (setq neo-force-change-root t)
+    (setq neo-theme 'icons)
+    (setq neo-show-hidden-files t)
+)
+(use-package all-the-icons-dired :ensure t :pin melpa
+:after all-the-icons
+:init  (add-hook 'dired-mode-hook 'all-the-dired-mode))
 
 (use-package ace-window :ensure t :pin melpa
 :commands (ace-window)
@@ -878,6 +897,9 @@ list)
 :init   (evil-leader/set-key "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
 )
+
+(use-package forge :ensure t :pin melpa :after magit)
+
 
 (use-package evil-magit :ensure t :pin melpa
 :after (evil magit)
@@ -1021,6 +1043,11 @@ list)
 )
 
 (use-package orgtbl-aggregate :ensure t :pin melpa :defer t)
+
+(use-package toc-org :ensure t :pin melpa :after org
+:config (add-hook 'org-mode-hook 'toc-org-mode)
+)
+
 
 (use-package calfw :ensure t :pin melpa
 :commands cfw:open-calendar-buffer
@@ -1551,7 +1578,7 @@ list)
 :commands lsp
 :config (setq lsp-inhibit-message t)
         (setq lsp-message-project-root-warning t)
-        (setq lsp-enable-snippet t)
+        (setq lsp-enable-snippet nil)
         (setq create-lockfiles nil)
         (setq lsp-file-watch-threshold nil)
         (lsp-ui-mode)
@@ -1561,15 +1588,16 @@ list)
 :commands lsp-ui-mode
 :after  (lsp-mode flycheck)
 :config (setq scroll-margin 0)
-        ;(lsp-ui-flycheck-enable)
-        ;(lsp-ui-sideline-mode)
-        ;(lsp-ui-peek-mode)
+        (setq lsp-ui-flycheck-enable t)
+        (lsp-ui-sideline-mode)
+        (lsp-ui-peek-mode)
 )
 
 (use-package company-lsp :ensure t :pin melpa
 :commands company-lsp
 :after  (:all company lsp-mode)
-:custom (company-lsp-async t)
+:custom (company-lsp-cache-candidates nil)
+        (company-lsp-async t)
         (company-lsp-enable-snippet t)
         (company-lsp-enable-recompletion t)
 :config (add-to-list 'company-backends #'company-lsp)
@@ -1642,7 +1670,7 @@ list)
 :config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
 
-(use-package irony :ensure t :pin melpa :diminish irony-mode :disabled
+(use-package irony :ensure t :pin melpa :diminish irony-mode
 :after (cpp-mode)
 :hook  (cpp-mode . irony-mode)
 ;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
@@ -1670,16 +1698,16 @@ list)
 :config (add-to-list 'company-backends 'company-irony-c-headers)
 )
 
-(use-package rtags :ensure t :pin melpa :disabled
+(use-package rtags :ensure t :pin melpa 
 :after  cpp-mode
 :custom (rtags-verify-protocol-version nil "rtags version bug fix")
 :preface
 (defun setup-flycheck-rtags ()
-(interactive)
-(flycheck-select-checker 'rtags)
-;; RTags creates more accurate overlays.
-(setq-local flycheck-highlighting-mode nil)
-(setq-local flycheck-check-syntax-automatically nil))
+    (interactive)
+    (flycheck-select-checker 'rtags)
+    ;; RTags creates more accurate overlays.
+    (setq-local flycheck-highlighting-mode nil)
+    (setq-local flycheck-check-syntax-automatically nil))
 :config
     (rtags-enable-standard-keybindings)
     (setq rtags-autostart-diagnostics t)
@@ -1734,11 +1762,10 @@ list)
     ;)
 )
 
-(use-package ccls :ensure t :pin melpa ;:disabled
+(use-package ccls :ensure t :pin melpa :disabled
 :after cpp-mode
-:custom
-      (ccls-sem-highlight-method 'font-lock)
-      (ccls-use-default-rainbow-sem-highlight)
+:custom (ccls-sem-highlight-method 'font-lock)
+        (ccls-use-default-rainbow-sem-highlight)
 :init (add-hook 'cpp-mode-hook 'lsp)
 )
 
@@ -1940,12 +1967,11 @@ list)
         (setq easy-jekyll-previewtime "300")
 )
 
-(use-package python-mode :ensure t :pin melpa
+(use-package python-mode
 :mode   ("\\.py\\'" . python-mode)
         ("\\.wsgi$" . python-mode)
 :interpreter ("python" . python-mode)
 :custom (python-indent-offset 4)
-:init   (setq-default indent-tabs-mode nil)
 )
 
 (use-package pyvenv :ensure t :pin melpa
@@ -1983,7 +2009,7 @@ list)
 :hook  (python-mode . lsp)
 )
 
-(use-package elpy :ensure t :pin melpa :disabled
+(use-package elpy :ensure t :pin melpa
 :ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
 :after python-mode
 :hook (python-mode . elpy-enable)
@@ -2040,14 +2066,14 @@ list)
 
 (use-package dumb-jump :ensure t :pin melpa
 :after  company
+:custom (dumb-jump-selector 'ivy)
+        (dumb-jump-force-searcher 'rg)
+        (dumb-jump-default-project "~/build")
 :init   (evil-leader/set-key "hdo" 'dumb-jump-go-other-window)
         (evil-leader/set-key "hdj" 'dumb-jump-go)
         (evil-leader/set-key "hdi" 'dumb-jump-go-prompt)
         (evil-leader/set-key "hdx" 'dumb-jump-go-prefer-external)
         (evil-leader/set-key "hdz" 'dumb-jump-go-prefer-external-other-window)
-:config (setq dumb-jump-selector 'ivy)
-        (setq dumb-jump-force-searcher 'rg)
-        (setq dumb-jump-default-project "~/build")
 )
 
 (use-package web-mode :ensure t :pin melpa
