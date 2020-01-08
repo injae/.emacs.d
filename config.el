@@ -41,6 +41,15 @@
 :init (xterm-mouse-mode)
 )
 
+(use-package ns-auto-titlebar :ensure t :pin melpa
+:if *is-mac*
+:config (ns-auto-titlebar-mode)
+        (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+        (add-to-list 'default-frame-alist '(ns-appearance . dark)) ;; assuming you are using a dark theme
+        (setq ns-use-proxy-icon nil)
+        (setq frame-title-format nil)
+)
+
 (set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
 (set-variable 'cursor-type '(hbar . 10))
@@ -75,9 +84,9 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(set-face-attribute   'default            nil       :family "D2Coding" :height 120)
-(set-fontset-font nil 'hangul            (font-spec :family "D2Coding" :pixelsize 18))
-(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding" :pixelsize 18))
+(set-face-attribute   'default            nil       :family "D2Coding" :height 130)
+(set-fontset-font nil 'hangul            (font-spec :family "D2Coding" :pixelsize 19))
+(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding" :pixelsize 19))
 (setq face-font-rescale-alist '(("D2coding" . 1.0)))
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
@@ -141,7 +150,7 @@
 
 (use-package esup :ensure t :pin melpa :defer t)
 
-;(server-start)
+(server-start)
 
 ;(setq warning-minimum-level :error)
 
@@ -234,6 +243,7 @@ list)
         (evil-want-C-u-scroll t)
         (evil-symbol-word-search t)
 :init   (evil-mode 1)
+:config (define-key evil-normal-state-map (kbd "q") 'nil)
 )
 
 (use-package evil-surround :ensure t :pin melpa
@@ -357,8 +367,8 @@ list)
        (evil-collection-wgrep-setup)
        (evil-collection-buff-menu-setup)
        (evil-collection-package-menu-setup)
-       (evil-collection-eshell-setup)
-       (evil-collection-vterm-setup)
+       ;(evil-collection-eshell-setup)
+       (evil-collection-vterm-setup) 
        (evil-collection-which-key-setup)
        (evil-collection-evil-mc-setup)
        (evil-collection-calc-setup)
@@ -614,7 +624,7 @@ list)
 )
 
 (use-package ivy :ensure t :pin melpa
-:ensure-system-package (rg . "cargo install ripgrep")
+;:ensure-system-package (rg . "cargo install ripgrep")
 :after evil-collection
 :commands counsel-M-x
  ;ivy S-SPC remapping toogle-input-method
@@ -670,8 +680,9 @@ list)
 
 (use-package counsel-projectile :ensure t :pin melpa
 :after  (counsel projectile)
-:config (setq projectile-completion-system 'ivy)
-        (counsel-projectile-mode 1)
+:custom (projectile-completion-system 'ivy)
+        (counsel-find-file-ignore-regexp ".ccls-cache/")
+:config (counsel-projectile-mode 1)
         (evil-leader/set-key "fp" 'counsel-projectile-find-file
                              "fG" 'counsel-projectile-rg)
 )
@@ -1120,18 +1131,17 @@ list)
 (use-package dockerfile-mode :ensure t :pin melpa
 :mode   ("Dockerfile\\'" . dockerfile-mode))
 
-(use-package vterm :ensure t :pin melpa
+(use-package vterm :ensure t :pin melpa ;:disabled ;macport version not working
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
 )
 
-(use-package vterm-toggle :ensure t :pin melpa
+(use-package vterm-toggle :ensure t :pin melpa 
 :after vterm
-:init   (evil-leader/set-key "ut" 'vterm-toggle
-                                "tl" 'vterm-toggle-forward
-                                "th" 'vterm-toggle-backward
-                                "tn" 'vterm)
-
-:config (setq vterm-toggle-fullscreen-p nil)
+:config (evil-leader/set-key "ut" 'vterm-toggle
+                             "tl" 'vterm-toggle-forward
+                             "th" 'vterm-toggle-backward
+                             "tn" 'vterm)
+        (setq vterm-toggle-fullscreen-p nil)
         (add-to-list 'display-buffer-alist
                         '("^v?term.*"
                         (display-buffer-reuse-window display-buffer-at-bottom)
@@ -1141,15 +1151,17 @@ list)
 )
 
 (use-package shell-pop :ensure t :pin melpa
-:init (setq shell-pop-shell-type '("term" "* vterm *" (lambda () (vterm))))
-        ;(setq shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
-        ;(setq shell-pop-universal-key "C-1")
-        ;(evil-leader/set-key "ut" 'shell-pop)
-        (setq shell-pop-full-span t)
-        ;(global-set-key (kbd "<C-t>") 'shell-pop)
+:custom (shell-pop-shell-type '("term" "* vterm *" (lambda () (vterm))))
+        (shell-pop-universal-key "C-1")
+        (shell-pop-term-shell    "/bin/zsh")
+        (shell-pop-full-span t)
+        ;(shell-pop-shell-type '("ansi-term" "*ansi-term*" (lambda () (ansi-term shell-pop-term-shell))))
+        ;(shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
+:init (evil-leader/set-key "ut"     'shell-pop)
+      (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package eshell
+(use-package eshell :disabled
 :commands eshell
 :config  (setq eshell-buffer-maximum-lines 1000)
         (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
@@ -1158,8 +1170,8 @@ list)
 
 (use-package exec-path-from-shell :ensure t :pin melpa
 :after eshell
-:custom (exec-path-from-shell-check-startup-files nil)
-:config (exec-path-from-shell-copy-env "PATH")
+;:custom (exec-path-from-shell-check-startup-files nil)
+:config ;(exec-path-from-shell-copy-env "PATH")
         (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
 )
 
@@ -1196,7 +1208,7 @@ list)
 (use-package eshell-up :ensure t :pin melpa
 :after eshell
 :config (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
-                                            (eshell/alias "pk" "eshell-up-peek $1")))
+                                          (eshell/alias "pk" "eshell-up-peek $1")))
 )
 
 (use-package execute-shell :no-require t
@@ -1598,7 +1610,7 @@ list)
 :after  (:all company lsp-mode)
 :custom (company-lsp-cache-candidates nil)
         (company-lsp-async t)
-        (company-lsp-enable-snippet t)
+        (company-lsp-enable-snippet t) ;lsp auto complete bugfix
         (company-lsp-enable-recompletion t)
 :config (add-to-list 'company-backends #'company-lsp)
 )
@@ -1670,7 +1682,7 @@ list)
 :config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
 
-(use-package irony :ensure t :pin melpa :diminish irony-mode
+(use-package irony :ensure t :pin melpa :diminish irony-mode :disabled
 :after (cpp-mode)
 :hook  (cpp-mode . irony-mode)
 ;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
@@ -1698,7 +1710,7 @@ list)
 :config (add-to-list 'company-backends 'company-irony-c-headers)
 )
 
-(use-package rtags :ensure t :pin melpa 
+(use-package rtags :ensure t :pin melpa :disabled
 :after  cpp-mode
 :custom (rtags-verify-protocol-version nil "rtags version bug fix")
 :preface
@@ -1762,7 +1774,7 @@ list)
     ;)
 )
 
-(use-package ccls :ensure t :pin melpa :disabled
+(use-package ccls :ensure t :pin melpa 
 :after cpp-mode
 :custom (ccls-sem-highlight-method 'font-lock)
         (ccls-use-default-rainbow-sem-highlight)
