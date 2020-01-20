@@ -1169,7 +1169,6 @@ list)
 )
 
 (use-package exec-path-from-shell :ensure t :pin melpa
-:after eshell
 ;:custom (exec-path-from-shell-check-startup-files nil)
 :config ;(exec-path-from-shell-copy-env "PATH")
         (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
@@ -1434,22 +1433,27 @@ list)
 ;                                                     :back "#\\+END_SRC"))))
 
 (use-package company :ensure t :pin melpa
+; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 :custom
     (company-idle-delay 0)
-    (company-tooltip-align-annotations t)
+    (company-tooltip-align-annotations nil)
     (company-minimum-prefix-length 1)
     (company-dabbrev-downcase nil)
+    ;(company-transformers '(company-sort-prefer-same-case-prefix))
 :bind (:map company-active-map 
         ("M-n"        . nil)
         ("M-p"        . nil)
         ("C-n"        . company-select-next)
         ("C-p"        . company-select-previous)
+        ("<tab>"      . company-complete-selection)  
+        ("<return>"   . company-complete-selection)  
         ("C-<return>" . company-complete-selection))
+    
 :init   (global-company-mode 1)
-:config (add-to-list 'company-backends 'company-capf)
+:config (add-to-list 'company-backends '(company-capf :with company-dabbrev))
 )
 
-(use-package company-yasnippet :ensure nil :after (company yasnippet)
+(use-package company-yasnippet :ensure nil :after (company yasnippet) :disabled
 :preface
 (defun company-mode/backend-with-yas (backend)
     (if (and (listp backend) (member 'company-yasnippet backend))
@@ -1476,7 +1480,7 @@ list)
 :config (company-statistics-mode)
 )
 
-(use-package company-flx :ensure t :pin melpa :disabled
+(use-package company-flx :ensure t :pin melpa
 :after  company
 :config (company-flx-mode +1)
 )
@@ -1506,7 +1510,7 @@ list)
                               company-pseudo-tooltip-frontend
                               company-echo-metadata-frontend))
 )
-(use-package company-box :ensure t :pin melpa :disabled
+(use-package company-box :ensure t :pin melpa
     :diminish
     :functions (my-company-box--make-line my-company-box-icons--elisp)
     :hook (company-mode . company-box-mode)
@@ -1588,37 +1592,46 @@ list)
 
 (use-package lsp-mode :ensure t :pin melpa
 :commands lsp
-:config (setq lsp-inhibit-message t)
-        (setq lsp-message-project-root-warning t)
-        (setq lsp-enable-snippet nil)
-        (setq create-lockfiles nil)
-        (setq lsp-file-watch-threshold nil)
+:custom (lsp-inhibit-message t)
+        (lsp-message-project-root-warning t)
+        (lsp-enable-snippet t)
+        (lsp-enable-completion-at-point t)
+        (lsp-prefer-flymake nil)
+        (create-lockfiles nil)
+        (lsp-file-watch-threshold nil)
+:config
         (lsp-ui-mode)
 )
 
 (use-package lsp-ui :ensure t :pin melpa
 :commands lsp-ui-mode
 :after  (lsp-mode flycheck)
-:config (setq scroll-margin 0)
-        (setq lsp-ui-flycheck-enable t)
-        (lsp-ui-sideline-mode)
+:custom (scroll-margin 0)
+        (lsp-ui-flycheck-enable t)
+:config (lsp-ui-sideline-mode)
         (lsp-ui-peek-mode)
 )
 
 (use-package company-lsp :ensure t :pin melpa
-:commands company-lsp
 :after  (:all company lsp-mode)
 :custom (company-lsp-cache-candidates nil)
         (company-lsp-async t)
+        (company--transform-candidates nil)
+        (company-lsp-enable-recompletion nil)
         (company-lsp-enable-snippet t) ;lsp auto complete bugfix
-        (company-lsp-enable-recompletion t)
-:config (add-to-list 'company-backends #'company-lsp)
+:config
+    (add-to-list 'company-backends #'company-lsp)
+    (push '(company-lsp :with company-yasnippet) company-backends)
+)
+
+(use-package eglot :ensure t :pin melpa :disabled
+:hook (c-mode-common . eglot-ensure)
 )
 
 (use-package flycheck :ensure t :pin melpa
 :after  company
-:config (setq flycheck-clang-language-standard "c++17")
-        (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+:custom (flycheck-clang-language-standard "c++17")
+:config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode t)
 )
 (use-package flycheck-pos-tip :ensure t :pin melpa
@@ -1644,10 +1657,9 @@ list)
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
-:config
-(evil-leader/set-key "hyl" 'company-yasnippet)
-(yas-global-mode t)
-(yas-reload-all t)
+:config (evil-leader/set-key "hyl" 'company-yasnippet)
+        (yas-global-mode t)
+        (yas-reload-all t)
 )
 (use-package yasnippet-snippets :ensure t :pin melpa :after yasnippet)
 (use-package auto-yasnippet :ensure t :pin melpa
@@ -1660,10 +1672,19 @@ list)
 (use-package cpp-mode :load-path "lisp/cpp-mode"
 :mode (("\\.h\\'" . c++-mode))
 :commands cpp-mode
+:hook (c-mode-common . 'cpp-mode)
 :init (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
       (add-hook 'c++-mode-hook  'cpp-mode)
       (add-hook 'c-mode-hook    'cpp-mode)
       (add-hook 'objc-mode-hook 'cpp-mode)
+)
+
+(use-package ccls :ensure t :pin melpa  ; with lsp or eglot mode
+:hook   ((c-mode-common) . (lambda () (lsp)))
+:custom (ccls-sem-highlight-method 'font-lock)
+        (ccls-use-default-rainbow-sem-highlight)
+        (ccls-extra-init-params '(:client (:snippetSupport :json-false)))
+:config (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
 )
 
 (use-package cppm :no-require t
@@ -1682,7 +1703,7 @@ list)
 :config (evil-leader/set-key "hccf" 'clang-format-regieon)
 )
 
-(use-package irony :ensure t :pin melpa :diminish irony-mode :disabled
+(use-package irony :ensure t :pin melpa :diminish irony-mode :disabled ; no lsp or eglot mode 
 :after (cpp-mode)
 :hook  (cpp-mode . irony-mode)
 ;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
@@ -1772,13 +1793,6 @@ list)
     ;      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
     ;      (cmake-ide--message "[advice] couldn't find compile_commands.json" ))
     ;)
-)
-
-(use-package ccls :ensure t :pin melpa 
-:after cpp-mode
-:custom (ccls-sem-highlight-method 'font-lock)
-        (ccls-use-default-rainbow-sem-highlight)
-:init (add-hook 'cpp-mode-hook 'lsp)
 )
 
 (use-package dap-mode :ensure t :pin melpa
@@ -2034,8 +2048,7 @@ list)
         (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 (use-package company-anaconda :ensure t :pin melpa
-:after  (company-mode anaconda-mode)
-:config (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+:after  (company-mode anaconda-mode))
 
 ;(use-package virtualenvwrapper
 ;:after  python-mode
@@ -2118,4 +2131,41 @@ list)
 (use-package company-restclient :ensure t :pin melpa
 :after  (company restclient)
 :config (add-to-list 'company-backends 'company-restclient)
+)
+
+(use-package ruby-mode :ensure t :pin melpa
+:mode "\\.rb\\'"
+:mode "Rakefile\\'"
+:mode "Gemfile\\'"
+:mode "Berksfile\\'"
+:mode "Vagrantfile\\'"
+:interpreter "ruby"
+:custom (ruby-indent-level 4)
+        (ruby-indent-tabs-mode nil)
+)
+
+(use-package rvm :ensure t :pin melpa
+:after ruby-mode
+:ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
+:config (rvm-use-default)
+)
+
+(use-package yari :ensure t :pin melpa :after ruby-mode)
+
+(use-package rubocop :ensure t :pin melpa :disabled
+:ensure-system-package (rubocop . "sudo gem install rubocop")
+:after ruby-mode
+:init (add-hook 'ruby-mode-hook 'rubocop-mode)
+)
+
+(use-package robe :ensure t :pin melpa
+:after (ruby-mode company)
+:ensure-system-package (pry . "sudo gem install pry pry-doc")
+:init (add-hook 'ruby-mode-hook 'robe-mode)
+:config (push 'company-robe company-backends)
+)
+
+(use-package ruby-tools :ensure t :pin melpa
+:after ruby-mode
+:init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 )
