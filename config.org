@@ -144,18 +144,6 @@
     (load-file (expand-file-name "~/.emacs.d/config.el"))
 )
 #+END_SRC
-** Sudo file open
-#+BEGIN_SRC emacs-lisp
-(use-package sudo-mode :no-require t
-:after evil-leader
-:preface
-(defun sudo-find-file (file-name)
-    "sudo open"
-    (interactive "FSudo Find File: ")
-    (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-        (find-file tramp-file-name)))
-:init (evil-leader/set-key "fs" #'sudo-find-file))
-#+END_SRC
 ** Modern Package Menu
 #+BEGIN_SRC emacs-lisp
 (use-package paradox :ensure t :pin melpa :defer t :disabled
@@ -169,14 +157,6 @@
 :after evil
 :init (drag-stuff-global-mode t)
         (drag-stuff-define-keys)
-)
-#+END_SRC
-** Goto Last Change
-#+BEGIN_SRC emacs-lisp
-(use-package goto-last-change :ensure t :pin melpa :defer t
-;https://github.com/camdez/goto-last-change.el
-:after evil-leader
-:init (evil-leader/set-key "fl" 'goto-last-change)
 )
 #+END_SRC
 ** Emacs Profiler
@@ -194,12 +174,6 @@ https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
 #+END_SRC
 ** Emacs Buffer
 #+BEGIN_SRC emacs-lisp
-(use-package buffer-zoom :no-require t
-:after evil-leader
-:config (evil-leader/set-key "tu" 'text-scale-increase
-                             "td" 'text-scale-decrease)
-)
-
 (defun new-buffer-save (name buffer-major-mode)
     (interactive)
     (let ((buffer (generate-new-buffer name)))
@@ -221,7 +195,6 @@ https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
     (interactive)
     (new-buffer "untitled" 'text-mode)
 )
-
 
 #+END_SRC
 ** Text Editing
@@ -293,6 +266,48 @@ list)
 :config (define-key evil-normal-state-map (kbd "q") 'nil)
 )
 
+(use-package general :ensure t :pin melpa
+:after evil
+:init (setq general-override-states '(insert
+                                      emacs
+                                      hybrid
+                                      normal
+                                      visual
+                                      motion
+                                      override
+                                      operator
+                                      replace))
+:config
+      (general-evil-setup :with-shortname-maps)
+      (general-create-definer leader :keymaps '(global override) :states '(n v ) :prefix "SPC")
+      (leader "<SPC>" 'counsel-M-x
+              "e"     '(:wk "Emacs")
+              "b"     '(:wk "Buffer")
+              "s"     '(:wk "Spell Check")
+              "d"     '(:wk "Debug")
+              "n"     '(:wk "File Manger")
+              "f"     '(:wk "Find")
+              "g"     '(:wk "Git")
+              "o"     '(:wk "Org")
+              "p"     '(:wk "Paren")
+              "t"     '(:wk "Tabbar")
+              "u"     '(:wk "Utils")
+              "w"     '(:wk "Windows")
+              "h"     '(:wk "Hacking")
+              "er"    '(restart-emacs :wk "Restart")
+              "el"    '-reload-emacs
+              "ff"    'find-file
+              "fu"    'browse-url
+              "up"    'list-processes
+              "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
+              "wf"    'toggle-frame-fullscreen
+              "wh"    'shrink-window-horizontally
+              "wj"    'enlarge-window
+              "wk"    'shrink-window
+              "wl"    'enlarge-window-horizontally)
+)
+
+
 (use-package evil-surround :ensure t :pin melpa
 ; ${target}( 바꾸고싶은거 ), ${change}(바뀔거)
 ; 감싸기:     => y-s-i-w-${change}( "(", "{", "[")
@@ -331,23 +346,22 @@ list)
       (defun user-evil-mc-make-cursor-here ()
           (evil-mc-pause-cursors)
           (evil-mc-make-cursor-here))
-:config
-      (evil-leader/set-key "emh" #'evil-mc-make-cursors-here
-                           "ema" #'evil-mc-make-all-cursors
-                           "emp" #'evil-mc-pause-cursors
-                           "emr" #'evil-mc-resume-cursors
-                           "emu" #'evil-mc-undo-all-cursors)
-      (global-evil-mc-mode 1)
+:general (leader "emh" #'evil-mc-make-cursors-here
+                 "ema" #'evil-mc-make-all-cursors
+                 "emp" #'evil-mc-pause-cursors
+                 "emr" #'evil-mc-resume-cursors
+                 "emu" #'evil-mc-undo-all-cursors)
+:config (global-evil-mc-mode 1)
 )
 
 (use-package evil-nerd-commenter :ensure t :pin melpa :after evil
-:init (evil-leader/set-key "ci" 'evilnc-comment-or-uncomment-lines
-                           "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
-                           "cc" 'evilnc-copy-and-comment-lines
-                           "cp" 'evilnc-comment-or-uncomment-paragraphs
-                           "cr" 'comment-or-uncomment-region
-                           "cv" 'evilnc-toggle-invert-comment-line-by-line
-                           "\\" 'evilnc-comment-operator)
+:general (leader "ci" 'evilnc-comment-or-uncomment-lines
+                 "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
+                 "cc" 'evilnc-copy-and-comment-lines
+                 "cp" 'evilnc-comment-or-uncomment-paragraphs
+                 "cr" 'comment-or-uncomment-region
+                 "cv" 'evilnc-toggle-invert-comment-line-by-line
+                 "\\" 'evilnc-comment-operator)
 )
 
 (use-package evil-args :ensure t :pin melpa :after evil
@@ -386,20 +400,19 @@ list)
 (use-package evil-numbers :ensure t :pin melpa
 ;https://github.com/cofi/evil-numbers
 :after evil
+:general (leader "+" 'evil-number/inc-at-pt
+                 "-" 'evil-number/dec-at-pt)
 :config
     (global-set-key (kbd "C-c +") 'evil-number/inc-at-pt)
     (global-set-key (kbd "C-c -") 'evil-number/dec-at-pt)
     (define-key evil-normal-state-map (kbd "C-c =") #'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
-    (evil-leader/set-key "+" 'evil-number/inc-at-pt)
-    (evil-leader/set-key "-" 'evil-number/dec-at-pt)
 )
 
 (use-package evil-extra-operator :ensure t :pin melpa :after (evil fold-this)
 :config (global-evil-extra-operator-mode 1)
 )
 
-;(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
 (use-package evil-collection :ensure t :pin melpa
 :after (evil)
 :init  (setq evil-collection-setup-minibuffer t)
@@ -421,7 +434,7 @@ list)
        (evil-collection-calc-setup)
        (evil-collection-init)
 )
-(use-package evil-leader :ensure t :pin melpa
+(use-package evil-leader :ensure t :pin melpa :disabled
 :after (evil-collection which-key)
 :init  (evil-define-key 'normal 'messages-buffer-mode-map (kbd "<SPC>") nil)
        (evil-define-key 'visual 'messages-buffer-mode-map (kbd "<SPC>") nil)
@@ -471,6 +484,32 @@ list)
      (which-key-declare-prefixes "SPC f g" "Google")
      (which-key-declare-prefixes "SPC f a" "Agrep")
      (which-key-declare-prefixes "SPC f p" "Projectile")
+)
+#+END_SRC
+** Text Scaling
+#+BEGIN_SRC emacs-lisp
+(use-package buffer-zoom :no-require t
+:general (leader "tu" 'text-scale-increase
+                 "td" 'text-scale-decrease)
+)
+#+END_SRC
+** Sudo file open
+#+BEGIN_SRC emacs-lisp
+(use-package sudo-mode :no-require t
+:preface
+(defun sudo-find-file (file-name)
+    "sudo open"
+    (interactive "FSudo Find File: ")
+    (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+        (find-file tramp-file-name)))
+:general (leader "fs" #'sudo-find-file)
+)
+#+END_SRC
+** Goto Last Change
+#+BEGIN_SRC emacs-lisp
+(use-package goto-last-change :ensure t :pin melpa :defer t
+;https://github.com/camdez/goto-last-change.el
+:general (leader "fl" 'goto-last-change)
 )
 #+END_SRC
 ** Clean Emacs Config Mode
@@ -672,13 +711,12 @@ list)
 
 (use-package smartparens :ensure t :pin melpa
 ;:evil-leader (("pu"  'sp-unwrap-sexp))
+:general (leader "pr " 'sp-rewrap-sexp
+                 "pll" 'sp-forward-slurp-sexp
+                 "phh" 'sp-backward-slurp-sexp
+                 "plh" 'sp-forward-barf-sexp
+                 "phl" 'sp-backward-barf-sexp)
 :init (smartparens-global-mode)
-      (evil-leader/set-key "pr "  'sp-rewrap-sexp
-                          ;"pu "  'sp-unwrap-sexp
-                           "pll" 'sp-forward-slurp-sexp
-                           "phh" 'sp-backward-slurp-sexp
-                           "plh" 'sp-forward-barf-sexp
-                           "phl" 'sp-backward-barf-sexp)
 )
 
 #+END_SRC
@@ -701,21 +739,23 @@ list)
 :commands counsel-M-x
  ;ivy S-SPC remapping toogle-input-method
 :bind   (("M-x" . counsel-M-x) :map ivy-minibuffer-map ("S-SPC" . toggle-input-method))
-:custom (ivy-use-virtual-buffers t)
-        (ivy-use-selectable-prompt t)
+:custom (ivy-use-virtual-buffers      t)
+        (ivy-use-selectable-prompt    t)
         (enable-recursive-minibuffers t)
         (ivy-height 20)
         (ivy-count-format "(%d/%d) ")
         (ivy-display-style 'fancy)
         (ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
         (ivy-format-function 'ivy-format-function-line)
-        (ivy-initial-inputs-alist nil)
 :config (ivy-mode 1)
+        (setq ivy-initial-inputs-alist nil)
 )
+
 (use-package counsel
 :after ivy
 :config (counsel-mode)
 )
+
 (use-package swiper :ensure t :pin melpa
 :after ivy
 :bind ("C-s"   . swiper)
@@ -723,6 +763,15 @@ list)
 :config (setq swiper-action-recenter t)
         (setq swiper-goto-start-of-match t)
         (setq swiper-stay-on-quit t)
+)
+
+(use-package ivy-posframe :ensure t :pin melpa
+:after ivy
+:custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
+        (ivy-posframe-height-alist            '((t . 20)))
+        (ivy-posframe-parameters              '((internal-border-width . 10)))
+        (ivy-posframe-width 120)
+:config (ivy-posframe-mode t)
 )
 
 (use-package ivy-yasnippet :ensure t :pin melpa
@@ -754,9 +803,10 @@ list)
 :after  (counsel projectile)
 :custom (projectile-completion-system 'ivy)
         (counsel-find-file-ignore-regexp ".ccls-cache/")
+:general (leader "fp" 'counsel-projectile-find-file
+                 "fG" 'counsel-projectile-rg)
 :config (counsel-projectile-mode 1)
-        (evil-leader/set-key "fp" 'counsel-projectile-find-file
-                             "fG" 'counsel-projectile-rg)
+
 )
 (use-package counsel-world-clock :ensure t :pin melpa
 :after (counsel)
@@ -790,18 +840,18 @@ list)
 (defun ivy-rich-org-capture-icon (candidate)
 "Display repo icons in `ivy-rich`."
 (pcase (car (last (split-string (car (split-string candidate)) "-")))
-    ("emacs" (all-the-icons-fileicon "emacs" :height .68 :v-adjust .001))
-    ("schedule" (all-the-icons-faicon "calendar" :height .68 :v-adjust .005))
-    ("tweet" (all-the-icons-faicon "commenting" :height .7 :v-adjust .01))
-    ("link" (all-the-icons-faicon "link" :height .68 :v-adjust .01))
-    ("memo" (all-the-icons-faicon "pencil" :height .7 :v-adjust .01))
-    (_       (all-the-icons-octicon "inbox" :height .68 :v-adjust .01))))
+       ("emacs"    (all-the-icons-fileicon "emacs"      :height .68 :v-adjust .001))
+       ("schedule" (all-the-icons-faicon   "calendar"   :height .68 :v-adjust .005))
+       ("tweet"    (all-the-icons-faicon   "commenting" :height .7  :v-adjust .01))
+       ("link"     (all-the-icons-faicon   "link"       :height .68 :v-adjust .01))
+       ("memo"     (all-the-icons-faicon   "pencil"     :height .7  :v-adjust .01))
+       (_          (all-the-icons-octicon  "inbox"      :height .68 :v-adjust .01))))
 
 (defun ivy-rich-org-capture-title (candidate)
-(let* ((octl (split-string candidate))
-        (title (pop octl))
-        (desc (mapconcat 'identity octl " ")))
-    (format "%-25s %s" title (propertize desc 'face `(:inherit font-lock-doc-face)))))
+(let* ((octl  (split-string candidate))
+       (title (pop octl))
+       (desc  (mapconcat 'identity octl " ")))
+      (format "%-25s %s" title (propertize desc 'face `(:inherit font-lock-doc-face)))))
 
 (defun ivy-rich-buffer-icon (candidate)
 "Display buffer icons in `ivy-rich'."
@@ -859,21 +909,22 @@ list)
         (ivy-rich-switch-buffer-project (:width 15 :face success))
         (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
         :predicate (lambda (cand) (get-buffer cand)))
-        counsel-M-x (:columns ((counsel-M-x-transformer (:width 40)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-        counsel-describe-function (:columns ((counsel-describe-function-transformer (:width 45)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-        counsel-describe-variable (:columns ((counsel-describe-variable-transformer (:width 45)) (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-        counsel-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-file-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-dired-jump (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-git (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-recentf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate (:width 110)))) counsel-bookmark (:columns ((ivy-rich-bookmark-type) (ivy-rich-bookmark-name (:width 30)) (ivy-rich-bookmark-info (:width 80))))
-        counsel-projectile-switch-project (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-fzf (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        ivy-ghq-open (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
+        counsel-M-x          (:columns ((counsel-M-x-transformer (:width 35)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+        counsel-find-file    (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-file-jump    (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-dired-jump   (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-git          (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        counsel-recentf      (:columns ((ivy-rich-file-icon) (ivy-rich-candidate (:width 110))))
+        counsel-bookmark     (:columns ((ivy-rich-bookmark-type) (ivy-rich-bookmark-name (:width 30)) (ivy-rich-bookmark-info (:width 80))))
+        counsel-fzf          (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
+        ivy-ghq-open         (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
         ivy-ghq-open-and-fzf (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
+        counsel-org-capture  (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
+        counsel-describe-function    (:columns ((counsel-describe-function-transformer (:width 45)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+        counsel-describe-variable    (:columns ((counsel-describe-variable-transformer (:width 45)) (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
         counsel-projectile-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-org-capture (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
-        counsel-projectile-find-dir (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))))
+        counsel-projectile-find-dir  (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))
+        counsel-projectile-switch-project (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))))
     (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
 :custom (ivy-rich-parse-remote-buffer nil)
 :config (ivy-rich-mode 1))
@@ -881,8 +932,8 @@ list)
 ** Smex Mode
 #+BEGIN_SRC emacs-lisp
 (use-package smex :ensure t :pin melpa
+:general (leader "fm" #'smex-major-mode-commands)
 :init (smex-initialize)
-      (evil-leader/set-key "fm" #'smex-major-mode-commands)
      ;(global-set-key [remap execute-extended-command] #'helm-smex)
 )
 
@@ -911,10 +962,10 @@ list)
 (use-package neotree :ensure t :pin melpa
 :after (projectile all-the-icons)
 :commands (neotree-toggle)
+:general (leader "n" #'neotree-toggle)
 :init
     (setq projectile-switch-project-action 'neotree-projectile-action)
     (setq-default neo-smart-open t)
-    (evil-leader/set-key "n" #'neotree-toggle)
 :config
     (setq-default neo-window-width 30)
     (setq-default neo-dont-be-alone t)
@@ -932,24 +983,21 @@ list)
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window :ensure t :pin melpa
 :commands (ace-window)
-:init   (evil-leader/set-key "wo" 'ace-window)
+:general (leader "wo" 'ace-window)
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
 (use-package eyebrowse :ensure t :pin melpa :defer t
 :init (eyebrowse-mode t)
-:config
-    (evil-leader/set-key
-        "w;" 'eyebrowse-last-window-config
-        "w0" 'eyebrowse-close-window-config
-        "w1" 'eyebrowse-switch-to-window-config-1
-        "w2" 'eyebrowse-switch-to-window-config-2
-        "w3" 'eyebrowse-switch-to-window-config-3
-        "w4" 'eyebrowse-switch-to-window-config-4
-        "w5" 'eyebrowse-switch-to-window-config-5
-        "w6" 'eyebrowse-switch-to-window-config-6
-        "w7" 'eyebrowse-switch-to-window-config-7
-    )
+:general (leader "w;" 'eyebrowse-last-window-config
+                 "w0" 'eyebrowse-close-window-config
+                 "w1" 'eyebrowse-switch-to-window-config-1
+                 "w2" 'eyebrowse-switch-to-window-config-2
+                 "w3" 'eyebrowse-switch-to-window-config-3
+                 "w4" 'eyebrowse-switch-to-window-config-4
+                 "w5" 'eyebrowse-switch-to-window-config-5
+                 "w6" 'eyebrowse-switch-to-window-config-6
+                 "w7" 'eyebrowse-switch-to-window-config-7)
 )
 
 (use-package window-purpose :ensure t :pin melpa :disabled)
@@ -990,7 +1038,7 @@ list)
  #+BEGIN_SRC emacs-lisp
 (use-package magit :ensure t :pin melpa
 :commands magit-status
-:init   (evil-leader/set-key "gs" 'magit-status)
+:general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
 )
 
@@ -1004,8 +1052,8 @@ list)
 
 (use-package magithub :ensure t :pin melpa 
 :after magit
+:general (leader "gd" 'magithub-dashboard)
 :init (magithub-feature-autoinject t)
-        (evil-leader/set-key "gd" 'magithub-dashboard)
         (setq magithub-clone-default-directory "~/github")
 )
 
@@ -1026,9 +1074,9 @@ list)
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree :ensure t :pin melpa :diminish undo-tree-mode
 :commands (undo-tree-undo undo-tree-redo)
+:general (leader "uu" 'undo-tree-undo
+                 "ur" 'undo-tree-redo)
 :init
-    (evil-leader/set-key "uu"    'undo-tree-undo)
-    (evil-leader/set-key "ur"    'undo-tree-redo)
     (evil-define-key 'normal 'global (kbd "C-r") #'undo-tree-redo)
     (evil-define-key 'normal 'global "u" #'undo-tree-undo)
     (defalias 'redo 'undo-tree-redo)
@@ -1050,16 +1098,14 @@ list)
 ** Org Mode
 #+BEGIN_SRC emacs-lisp
 (use-package org
+:general (leader "oa" 'org-agenda
+                 "ob" 'org-iswitchb
+                 "oc" 'org-capture
+                 "oe" 'org-edit-src-code
+                 "ok" 'org-edit-src-exit
+                 "ol" 'org-store-link)
 :init (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
       (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
-      (evil-leader/set-key
-          "oa" 'org-agenda
-          "ob" 'org-iswitchb
-          "oc" 'org-capture
-          "oe" 'org-edit-src-code
-          "ok" 'org-edit-src-exit
-          "ol" 'org-store-link
-      )
 )
 
 (use-package org-bullets :ensure t :pin melpa
@@ -1225,7 +1271,7 @@ list)
 #+BEGIN_SRC emacs-lisp
 (use-package docker :ensure t :pin melpa 
 :commands docker
-:init   (evil-leader/set-key "hud" 'docker)
+:general (leader "hud" 'docker)
 :custom (docker-image-run-arguments '("-i", "-t", "--rm"))
 )
 
@@ -1240,10 +1286,11 @@ list)
 
 (use-package vterm-toggle :ensure t :pin melpa 
 :after vterm
-:config (evil-leader/set-key "ut" 'vterm-toggle
-                             "tl" 'vterm-toggle-forward
-                             "th" 'vterm-toggle-backward
-                             "tn" 'vterm)
+:general (leader "ut" 'vterm-toggle
+                 "tl" 'vterm-toggle-forward
+                 "th" 'vterm-toggle-backward
+                 "tn" 'vterm)
+:config 
         (setq vterm-toggle-fullscreen-p nil)
         (add-to-list 'display-buffer-alist
                         '("^v?term.*"
@@ -1260,23 +1307,28 @@ list)
         (shell-pop-full-span t)
         ;(shell-pop-shell-type '("ansi-term" "*ansi-term*" (lambda () (ansi-term shell-pop-term-shell))))
         ;(shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
-:init (evil-leader/set-key "ut"     'shell-pop)
-      (global-set-key (kbd "<C-t>") 'shell-pop)
+:general (leader "ut"'shell-pop)
+:init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 #+END_SRC
 ** Eshell
 #+BEGIN_SRC emacs-lisp
-(use-package eshell :disabled
+(use-package eshell
 :commands eshell
-:config  (setq eshell-buffer-maximum-lines 1000)
-        (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions nil)))
+:config (setq eshell-buffer-maximum-lines 1000)
+        (require 'xterm-color)
+        (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions     nil)))
+        (add-hook 'eshell-mode-hook (lambda () (setq xterm-color-preserve-properties t)
+                                          (setenv "TERM" "xterm-256color")))
+        (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+        (setq eshell-output-filter-functions (remove 'eshell-handle-asni-color eshell-output-filter-functions))
         (setq eshell-cmpl-cycle-completions nil)
 )
 
 (use-package exec-path-from-shell :ensure t :pin melpa
-;:custom (exec-path-from-shell-check-startup-files nil)
-:config ;(exec-path-from-shell-copy-env "PATH")
-        (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
+:if     (memq window-system '(mac ns x))
+:custom (exec-path-from-shell-variables '("PATH"))
+        (exec-path-from-shell-initialize)
 )
 
 (use-package eshell-did-you-mean :ensure t :pin melpa
@@ -1292,16 +1344,16 @@ list)
 (use-package eshell-prompt-extras :ensure t :pin melpa
 :after eshell
 :config
-    (autoload 'epe-theme-lambda "eshell-prompt-extras")
-    (setq eshell-highlight-prompt nil
-            eshell-prompt-function 'epe-theme-lambda)
+    (autoload 'epe-theme-lambda   "eshell-prompt-extras")
+    (setq eshell-highlight-prompt nil)
+    (setq eshell-prompt-function  'epe-theme-lambda)
 )
 
 (use-package fish-completion :ensure t :pin melpa
 :after eshell
 :config (when (and (executable-find "fish")
-                    (require 'fish-completion nil t))
-                (global-fish-completion-mode))
+                   (require 'fish-completion nil t))
+              (global-fish-completion-mode))
 )
 
 (use-package esh-autosuggest :ensure t :pin melpa
@@ -1343,20 +1395,17 @@ list)
 ** Buffer Management
 #+BEGIN_SRC emacs-lisp
 (use-package buffer-move :ensure t :pin melpa :defer t
+:general (leader "b s" 'switch-to-buffer
+                 "b r" 'eval-buffer
+                 "b h" 'buf-move-left
+                 "b j" 'buf-move-down
+                 "b k" 'buf-move-up
+                 "b l" 'buf-move-right
+                 "b m" 'switch-to-buffer
+                 "b n" 'next-buffer
+                 "b p" 'previous-buffer)
 :init
-    (evil-leader/set-key
-        "b s" 'switch-to-buffer
-        "b r" 'eval-buffer
-        "b h" 'buf-move-left
-        "b j" 'buf-move-down
-        "b k" 'buf-move-up
-        "b l" 'buf-move-right
-        "b m" 'switch-to-buffer
-        "b n" 'next-buffer
-        "b p" 'previous-buffer
-    )
     (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-
     (setq ibuffer-saved-filter-groups
         '(("home"
                 ("emacs-config" (or (filename . ".emacs.d")
@@ -1399,12 +1448,12 @@ list)
 ** Ialign
  #+BEGIN_SRC emacs-lisp
  (use-package ialign :ensure t :pin melpa :defer t
- :init (evil-leader/set-key "ta" 'ialign))
+ :general (leader "ta" 'ialign))
  #+END_SRC
 ** DashBoard
  #+BEGIN_SRC emacs-lisp
 (use-package page-break-lines :ensure t :pin melpa :defer t)
-(use-package dashboard :ensure t :pin melpa :defer t
+(use-package dashboard :ensure t :pin melpa
 :init (dashboard-setup-startup-hook)
 :config
     (setq dashboard-banner-logo-title "We are Emacsian!")
@@ -1443,8 +1492,8 @@ list)
      (setq tabbar-scroll-left-button  nil)
      (setq tabbar-scroll-right-button nil)
      (setq tabbar-home-button nil)
-     (evil-leader/set-key "th" 'tabbar-forward-tab)
-     (evil-leader/set-key "tl" 'tabbar-backward-tab)
+:general (leader  "th" 'tabbar-forward-tab
+                  "tl" 'tabbar-backward-tab)
 )
 
 (use-package centaur-tabs :ensure t :pin melpa :disabled
@@ -1454,8 +1503,8 @@ list)
         (setq centaur-tabs-height "32")
         (setq centaur-tabs-set-icons t)
         (setq centaur-tabs-set-close-button t)
-        (evil-leader/set-key "th" 'centaur-tabs-backward
-                             "tl" 'centaur-tabs-forward)
+:general (leader "th" 'centaur-tabs-backward
+                 "tl" 'centaur-tabs-forward)
 )
 #+END_SRC
 ** System Monitor
@@ -1466,7 +1515,7 @@ list)
 #+BEGIN_SRC emacs-lisp
 (use-package google-this :ensure t :pin melpa
 :commands google-this
-:init    (evil-leader/set-key "fw" 'google-this)
+:general (leader "fw" 'google-this)
 :config  (google-this-mode 1)
 )
 #+END_SRC
@@ -1474,7 +1523,7 @@ list)
 #+BEGIN_SRC emacs-lisp
 (use-package google-translate :ensure t :pin melpa
 :commands (google-translate-smooth-translate)
-:init (evil-leader/set-key "tw" 'google-translate-smooth-translate)
+:general (leader "tw" 'google-translate-smooth-translate)
 :config (require 'google-translate-smooth-ui)
        ;(require 'google-translate-default-ui)
        ;(evil-leader/set-key "ft" 'google-translate-at-point)
@@ -1498,16 +1547,17 @@ list)
     (add-hook 'text-mode-hook 'flyspell-mode)
     (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US")
-    (evil-leader/set-key "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)))
-    (evil-leader/set-key "se" (lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)))
+:init
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+:general (leader "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer))
+                 "se" (lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)))
 )
 
 (use-package flyspell-correct-ivy :ensure t :pin melpa
 :after (flyspell ivy)
 :bind ((:map flyspell-mode-map ("C-c $" . flyspell-correct-word-generic))
        (:map flyspell-mode-map ([remap flyspell-correct-word-before-point] . flyspell-correct-previous-word-generic)))
-:init  (evil-leader/set-key "ss" 'flyspell-correct-word-generic)
+:general (leader "ss" 'flyspell-correct-word-generic)
 )
 #+END_SRC
 ** Grep
@@ -1522,7 +1572,7 @@ list)
 ** IEdit
  #+BEGIN_SRC emacs-lisp
 (use-package iedit :ensure t :pin melpa
-:init (evil-leader/set-key "fi" 'iedit-mode)
+:general (leader "fi" 'iedit-mode)
 )
  #+END_SRC
 ** Package Manage
@@ -1537,11 +1587,10 @@ list)
     (interactive)
     (org-babel-execute-maybe)
     (undo-tree-undo))
-:config
-    (evil-leader/set-key "oi" 'org-use-package-install
-                         "ot" 'polymode-next-chunk
-                         "oh" 'polymode-previous-chunk
-                         "or" 'save-buffer)
+:general (leader "oi" 'org-use-package-install
+                 "ot" 'polymode-next-chunk
+                 "oh" 'polymode-previous-chunk
+                 "or" 'save-buffer)
 )
 #+END_SRC
 ** Helm Mode
@@ -1656,17 +1705,15 @@ list)
                               company-pseudo-tooltip-frontend
                               company-echo-metadata-frontend))
 )
-(use-package company-box :ensure t :pin melpa
-    :diminish
-    :functions (my-company-box--make-line my-company-box-icons--elisp)
-    :hook (company-mode . company-box-mode)
-    :config
-    (setq company-box-backends-colors nil
-          company-box-show-single-candidate t
-          company-box-max-candidates 50
-          company-box-doc-delay 0.5
-          company-box-icons-alist 'company-box-icons-all-the-icons)
-
+(use-package company-box :ensure t :pin melpa :diminish
+:hook   (company-mode . company-box-mode)
+:custom ;(company-box-backends-colors t)
+        (company-box-show-single-candidate t)
+        (company-box-max-candidates 50)
+        (company-box-icons-alist 'company-box-icons-all-the-icons)
+        (company-box-doc-delay 0.5)
+:functions (my-company-box--make-line my-company-box-icons--elisp)
+:preface
     ;; Support `company-common'
     (defun my-company-box--make-line (candidate)
         (-let* (((candidate annotation len-c len-a backend) candidate)
@@ -1734,7 +1781,7 @@ list)
                 (Operator . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
                 (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
                 (Template . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2)))))
-    )
+)
 #+END_SRC
 ** Language Server Protocol Mode
 #+BEGIN_SRC emacs-lisp
@@ -1811,16 +1858,16 @@ list)
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
-:config (evil-leader/set-key "hyl" 'company-yasnippet)
-        (yas-global-mode t)
+:general (leader "hyl" 'company-yasnippet)
+:config (yas-global-mode t)
         (yas-reload-all t)
 )
 (use-package yasnippet-snippets :ensure t :pin melpa :after yasnippet)
 (use-package auto-yasnippet :ensure t :pin melpa
 ;https://github.com/abo-abo/auto-yasnippet
 :after yasnippet
-:config (evil-leader/set-key "hyc" 'aya-create)
-        (evil-leader/set-key "hye" 'aya-expand)
+:general (leader "hyc" 'aya-create
+                 "hye" 'aya-expand)
 )
 #+END_SRC
 ** Cpp Mode
@@ -1845,8 +1892,8 @@ list)
 
 (use-package cppm :no-require t
 :after cpp-mode
-:config (evil-leader/set-key "hcb" (lambda () (eshell-command "cppm build"))
-                             "hcr" (lambda () (eshell-command "cppm run")))
+:general (leader "hcb" (lambda () (eshell-command "cppm build"))
+                 "hcr" (lambda () (eshell-command "cppm run  ")))
 )
 
 (use-package company-c-headers :ensure t :pin melpa
@@ -1856,7 +1903,7 @@ list)
 (use-package clang-format :ensure t :pin melpa
 :after  (cpp-mode)
 :init   (add-hook 'c++-mode-hook 'clang-format)
-:config (evil-leader/set-key "hccf" 'clang-format-regieon)
+:general (leader "hccf" 'clang-format-regieon)
 )
 
 (use-package irony :ensure t :pin melpa :diminish irony-mode :disabled ; no lsp or eglot mode 
@@ -1903,8 +1950,8 @@ list)
     (rtags-diagnostics)
     (setq rtags-completions-enabled t)
     (rtags-start-process-unless-running)
-    (evil-leader/set-key "hcfs" 'rtags-find-symbol
-                         "hcfr" 'rtags-find-references)
+:general (leader "hcfs" 'rtags-find-symbol
+                 "hcfr" 'rtags-find-references)
 )
 
 (use-package ivy-rtags :ensure t :pin melpa
@@ -1954,26 +2001,32 @@ list)
 #+END_SRC
 ** Debuger mode
 #+BEGIN_SRC emacs-lisp
+               
+  (use-package lsp-treemacs :ensure t :pin melpa
+  :after lsp-mode
+  :config (lsp-metals-treeview-enable t)
+          (setq lsp-metals-treeview-show-when-views-received t)
+  ) 
+
   (use-package dap-mode :ensure t :pin melpa
+  :after lsp-treemacs
   :commands (dap-debug)
-  :init   (evil-leader/set-key "dd" 'dap-debug)
-  :config ;(setq dap-gdb-lldb-path (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/"))
-          ;(setq dap-gdb-lldb-debug-program (expand-file-name "~/.vscode/extensions/webfreak.debug-0.22.0/out/src/gdb.js"))
-          (require 'dap-gdb-lldb) ; gdb mode
+  :general (leader "dd" 'dap-debug)
+  :config (require 'dap-gdb-lldb) ; gdb mode
           (dap-ui-mode 1)
           (dap-mode 1)
   )
 
   (use-package gdb-mi :load-path "lisp/emacs-gdb"
   :commands gdb-executable
-  :init   (evil-leader/set-key "de" 'gdb-executable)
+  :general (leader "de" 'gdb-executable
+                   "dn" 'gdb-next
+                   "di" 'gdb-step
+                   "df" 'gdb-finish)
   :config (setq-default gdb-show-main t)
           (setq-default gdb-many-windows t)
           (fmakunbound 'gdb)
           (fmakunbound 'gdb-enable-debug)
-          (evil-leader/set-key "dn" 'gdb-next)
-          (evil-leader/set-key "di" 'gdb-step)
-          (evil-leader/set-key "df" 'gdb-finish)
       ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gub-tbreak) (call-interactively 'gud-cont)))
   )
 #+END_SRC
@@ -2076,7 +2129,7 @@ list)
 :mode (("\\.rs\\'" . rust-mode))
 :commands rust-mode
 :init   (add-hook 'rust-mode 'lsp)
-:config (evil-leader/set-key "hrf" 'rust-format-buffer)
+:general (leader "hrf" 'rust-format-buffer)
         (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
         ;(setq rust-format-on-save t)
         ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
@@ -2106,9 +2159,9 @@ list)
 :after  rust-mode
 :hook (rust-mode . cargo-minor-mode)
 :commands cargo-minor-mode
-:config (evil-leader/set-key "hrb" 'cargo-process-build
-                            "hrr" 'cargo-process-run
-                            "hrt" 'cargo-process-test)
+:general (leader "hrb" 'cargo-process-build
+                 "hrr" 'cargo-process-run
+                 "hrt" 'cargo-process-test)
 )
 
 ;(use-package rustic :ensure t :pin melpa
@@ -2159,7 +2212,7 @@ list)
 
 (use-package markdown-preview-mode :ensure t :pin melpa :defer t)
 (use-package gh-md :ensure t :pin melpa :defer t
-:init (evil-leader/set-key "hmr" 'gh-md-render-buffer)
+:general (leader "hmr" 'gh-md-render-buffer)
 )
 
 #+END_SRC
@@ -2287,11 +2340,11 @@ list)
 :custom (dumb-jump-selector 'ivy)
         (dumb-jump-force-searcher 'rg)
         (dumb-jump-default-project "~/build")
-:init   (evil-leader/set-key "hdo" 'dumb-jump-go-other-window)
-        (evil-leader/set-key "hdj" 'dumb-jump-go)
-        (evil-leader/set-key "hdi" 'dumb-jump-go-prompt)
-        (evil-leader/set-key "hdx" 'dumb-jump-go-prefer-external)
-        (evil-leader/set-key "hdz" 'dumb-jump-go-prefer-external-other-window)
+:general (leader "hdo" 'dumb-jump-go-other-window
+                 "hdj" 'dumb-jump-go
+                 "hdi" 'dumb-jump-go-prompt
+                 "hdx" 'dumb-jump-go-prefer-external
+                 "hdz" 'dumb-jump-go-prefer-external-other-window)
 )
 #+END_SRC
 ** Web Mode
