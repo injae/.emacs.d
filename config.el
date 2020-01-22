@@ -134,7 +134,7 @@
 
 (use-package esup :ensure t :pin melpa :defer t)
 
-(server-start)
+(use-package server :config (unless (server-running-p) (server-start)))
 
 ;(setq warning-minimum-level :error)
 
@@ -241,6 +241,7 @@ list)
       (leader "<SPC>" 'counsel-M-x
               "e"     '(:wk "Emacs")
               "b"     '(:wk "Buffer")
+              "r"     '(repeat :wk "Repeat Before Command")
               "s"     '(:wk "Spell Check")
               "d"     '(:wk "Debug")
               "n"     '(:wk "File Manger")
@@ -253,17 +254,19 @@ list)
               "w"     '(:wk "Windows")
               "h"     '(:wk "Hacking")
               "er"    '(restart-emacs :wk "Restart")
-              "el"    '-reload-emacs
-              "ff"    'find-file
-              "fu"    'browse-url
-              "up"    'list-processes
-              "ef"    (lambda ()(interactive)(find-file "~/.emacs.d/config.org"))
-              "wf"    'toggle-frame-fullscreen
-              "wh"    'shrink-window-horizontally
-              "wj"    'enlarge-window
-              "wk"    'shrink-window
-              "wl"    'enlarge-window-horizontally)
+              "el"    '(-reload-emacs :wk "Reload")
+              "ff"    '(find-file :wk "Find File")
+              "fu"    '(browse-url :wl "Search Url")
+              "ep"    '(list-processes :wl "Process")
+              "ef"    '((lambda ()(interactive)(find-file "~/.emacs.d/config.org")) :wl "Config File")
+              "wf"    '(toggle-frame-fullscreen :wk "FullScreen")
+              "wh"    '(shrink-window-horizontally :wk "Right size up")
+              "wj"    '(enlarge-window :wk "Right size down")
+              "wk"    '(shrink-window :wk "Bottom size up")
+              "wl"    '(enlarge-window-horizontally :wk "Bootom size down"))
 )
+
+
 
 
 (use-package evil-surround :ensure t :pin melpa
@@ -353,25 +356,26 @@ list)
 
 (use-package evil-smartparens :ensure t :pin melpa
 :after (evil smartparens)
-:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+:hook (smartparens-enable . evil-smartparens-mode)
+;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+)
 
 (use-package evil-numbers :ensure t :pin melpa
 ;https://github.com/cofi/evil-numbers
 :after evil
-:general (leader "+" 'evil-number/inc-at-pt
-                 "-" 'evil-number/dec-at-pt)
-:config
-    (global-set-key (kbd "C-c +") 'evil-number/inc-at-pt)
-    (global-set-key (kbd "C-c -") 'evil-number/dec-at-pt)
-    (define-key evil-normal-state-map (kbd "C-c =") #'evil-numbers/inc-at-pt)
-    (define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
+:general (       "C-c +" 'evil-numbers/inc-at-pt
+                 "C-c =" 'evil-numbers/inc-at-pt
+                 "C-c -" 'evil-numbers/dec-at-pt)
+         (leader "="     'evil-numbers/inc-at-pt
+                 "-"     'evil-numbers/dec-at-pt)
+         (nmap   "C-c +" 'evil-numbers/inc-at-pt
+                 "C-c -" 'evil-numbers/dec-at-pt)
 )
 
 (use-package evil-extra-operator :ensure t :pin melpa :after (evil fold-this)
 :config (global-evil-extra-operator-mode 1)
 )
 
-;(use-package use-package-evil-leader :load-path "lisp/use-package-evil-leader")
 (use-package evil-collection :ensure t :pin melpa
 :after (evil)
 :init  (setq evil-collection-setup-minibuffer t)
@@ -415,34 +419,12 @@ list)
          "wk"    'shrink-window
          "wl"    'enlarge-window-horizontally
      )
-     (which-key-declare-prefixes "SPC b  " "Buffer")
-     (which-key-declare-prefixes "SPC s  " "Spell Check")
-     (which-key-declare-prefixes "SPC s e" "Spell Dictionary English")
-     (which-key-declare-prefixes "SPC s k" "Spell Dictionary Korean")
      (which-key-declare-prefixes "SPC s s" "Spell Suggestion")
-     (which-key-declare-prefixes "SPC d  " "Debug")
-     (which-key-declare-prefixes "SPC e  " "Emacs")
      (which-key-declare-prefixes "SPC e f" "Emacs Config")
      (which-key-declare-prefixes "SPC e c" "Evil MultiEdit")
-     (which-key-declare-prefixes "SPC f  " "Find")
      (which-key-declare-prefixes "SPC f w" "Find Word")
      (which-key-declare-prefixes "SPC f u" "Find Url")
-     (which-key-declare-prefixes "SPC n  " "File Manager")
-     (which-key-declare-prefixes "SPC g  " "Git")
-     (which-key-declare-prefixes "SPC o  " "Org")
-     (which-key-declare-prefixes "SPC p  " "Paren")
-     (which-key-declare-prefixes "SPC t  " "Tabbar")
-     (which-key-declare-prefixes "SPC u  " "Utils")
-     (which-key-declare-prefixes "SPC w  " "Windows")
-     (which-key-declare-prefixes "SPC h  " "Hacking")
      (which-key-declare-prefixes "SPC h r" "Rust")
-     (which-key-declare-prefixes "SPC h c" "C/C++")
-     (which-key-declare-prefixes "SPC h y" "Yasnippet")
-     (which-key-declare-prefixes "SPC h m" "Markdown")
-     (which-key-declare-prefixes "SPC h d" "Definition Jump")
-     (which-key-declare-prefixes "SPC f g" "Google")
-     (which-key-declare-prefixes "SPC f a" "Agrep")
-     (which-key-declare-prefixes "SPC f p" "Projectile")
 )
 
 (use-package buffer-zoom :no-require t
@@ -480,8 +462,9 @@ list)
     (setq-default display-line-numbers-width 3)
     (global-git-gutter-mode t)
 :config
-    (global-display-line-numbers-mode t)
-    (global-hl-line-mode t)
+    (git-gutter:linum-setup)
+    ;(global-display-line-numbers-mode t)
+    ;(global-hl-line-mode t)
     (setq git-gutter:lighter       " gg")
     (setq git-gutter:window-width  1)
     (setq git-gutter:modified-sign ".")
@@ -664,9 +647,10 @@ list)
 (use-package ivy :ensure t :pin melpa
 ;:ensure-system-package (rg . "cargo install ripgrep")
 :after evil-collection
-:commands counsel-M-x
  ;ivy S-SPC remapping toogle-input-method
-:bind   (("M-x" . counsel-M-x) :map ivy-minibuffer-map ("S-SPC" . toggle-input-method))
+:general ("M-x" 'counsel-M-x )
+         (:keymaps 'ivy-minibuffer-map
+                   "S-SPC" 'toggle-input-method)
 :custom (ivy-use-virtual-buffers      t)
         (ivy-use-selectable-prompt    t)
         (enable-recursive-minibuffers t)
@@ -686,8 +670,9 @@ list)
 
 (use-package swiper :ensure t :pin melpa
 :after ivy
-:bind ("C-s"   . swiper)
-      ("C-S-s" . swiper-all)
+:general ("C-s"    'swiper)
+         ("C-S-s"  'swiper-all)
+
 :config (setq swiper-action-recenter t)
         (setq swiper-goto-start-of-match t)
         (setq swiper-stay-on-quit t)
@@ -702,9 +687,14 @@ list)
 :config (ivy-posframe-mode t)
 )
 
+(use-package counsel-osx-app :ensure t :pin melpa
+:after counsel
+:general (leader "fa" '(counsel-osx-app :wk "Execute OSX App"))
+)
+
 (use-package ivy-yasnippet :ensure t :pin melpa
 :after (ivy yasnippet)
-:bind  ("C-c C-y" . ivy-yasnippet)
+:general  ("C-c C-y" 'ivy-yasnippet)
 :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
@@ -727,24 +717,29 @@ list)
 :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 )
 
+(use-package lsp-ivy :ensure t :pin melpa
+:general (leader "hs" '(lsp-ivy-workspace-symbol :wk "Search Symbol")
+                 "hS" '(lsp-ivy-global-workspace-symbol :wk "Search Global Symbol"))
+)
+
 (use-package counsel-projectile :ensure t :pin melpa
 :after  (counsel projectile)
 :custom (projectile-completion-system 'ivy)
         (counsel-find-file-ignore-regexp ".ccls-cache/")
-:general (leader "fp" 'counsel-projectile-find-file
-                 "fG" 'counsel-projectile-rg)
+:general (leader "fp" '(counsel-projectile-find-file :wk "Search in Project")
+                 "fG" '(counsel-projectile-rg        :wk "Grep in Project"))
 :config (counsel-projectile-mode 1)
 
 )
 (use-package counsel-world-clock :ensure t :pin melpa
 :after (counsel)
-:bind (:map counsel-mode-map ("C-c c k" . counsel-world-clock))
+:general (:keymaps 'counsel-mode-map "C-c c k"  'counsel-world-clock)
 )
 
 (use-package counsel-tramp :ensure t :pin melpa
 :after counsel
 :commands counsel-tramp
-:bind ("C-c s" . 'counsel-tramp)
+:general ("C-c s" 'counsel-tramp)
 :init (setq tramp-default-method "ssh")
 )
 
@@ -860,14 +855,7 @@ list)
 (use-package smex :ensure t :pin melpa
 :general (leader "fm" #'smex-major-mode-commands)
 :init (smex-initialize)
-     ;(global-set-key [remap execute-extended-command] #'helm-smex)
 )
-
-(use-package helm-smex :ensure t :pin melpa :disabled
-:after (helm smex)
-:bind  ("M-x" . #'helm-smex-major-mode-commands)
-:init  (global-set-key [remap execute-extended-command] #'helm-smex)
-       (evil-leader/set-key "fm" #'helm-smex-major-mode-commands))
 
 (use-package projectile :ensure t :pin melpa :defer t
 :init   (projectile-mode t)
@@ -1087,7 +1075,7 @@ list)
         :title "org-pomodoro"
         :body "Well done! Take a break."
         :app-icon "~/.emacs.d/img/004-beer.png")))
-:bind (:map org-agenda-mode-map ("p" . org-pomodoro))
+:general (:keymaps 'org-agenda-mode-map "p"  'org-pomodoro)
 )
 
 (use-package org-gcal :ensure t :pin melpa :disabled
@@ -1392,7 +1380,7 @@ list)
 
 (use-package google-this :ensure t :pin melpa
 :commands google-this
-:general (leader "fw" 'google-this)
+:general (leader "fw" '(google-this :wk "Search Word"))
 :config  (google-this-mode 1)
 )
 
@@ -1420,15 +1408,15 @@ list)
     (setq ispell-dictionary "en_US")
 :init
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
-:general (leader "sk" (lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer))
-                 "se" (lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)))
+:general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
+                 "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
 )
 
 (use-package flyspell-correct-ivy :ensure t :pin melpa
 :after (flyspell ivy)
-:bind ((:map flyspell-mode-map ("C-c $" . flyspell-correct-word-generic))
-       (:map flyspell-mode-map ([remap flyspell-correct-word-before-point] . flyspell-correct-previous-word-generic)))
-:general (leader "ss" 'flyspell-correct-word-generic)
+:general  (:keymaps 'flyspell-mode-map "C-c $" 'flyspell-correct-word-generic)
+          (:keymaps 'flyspell-mode-map [remap flyspell-correct-word-before-point]  'flyspell-correct-previous-word-generic)
+          (leader "ss" 'flyspell-correct-word-generic)
 )
 
 (use-package wgrep :ensure t :pin melpa
@@ -1471,15 +1459,6 @@ list)
 (use-package poly-org :ensure t :pin melpa :hook (org-mode . poly-org-mode)
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
-;(use-package mmm-mode :load-path "lisp/mmm-mode" ; too slow
-;:hook   (org-mode . mmm-mode)
-;:config (setq mmm-global-mode 'buffers-with-submode-classes)
-;        (setq mmm-submode-decoration-level 2)
-;        (mmm-add-mode-ext-class 'org-mode nil 'org-elisp)
-;        (mmm-add-group 'org-elisp '((elisp-src-block :submode emacs-lisp-mode
-;                                                     :face org-block
-;                                                     :front "#\\+BEGIN_SRC emacs-lisp.*\n"
-;                                                     :back "#\\+END_SRC"))))
 
 (use-package company :ensure t :pin melpa
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
@@ -1488,15 +1467,14 @@ list)
     (company-tooltip-align-annotations nil)
     (company-minimum-prefix-length 1)
     (company-dabbrev-downcase nil)
-    ;(company-transformers '(company-sort-prefer-same-case-prefix))
-:bind (:map company-active-map 
-        ("M-n"        . nil)
-        ("M-p"        . nil)
-        ("C-n"        . company-select-next)
-        ("C-p"        . company-select-previous)
-        ("<tab>"      . company-complete-selection)  
-        ("<return>"   . company-complete-selection)  
-        ("C-<return>" . company-complete-selection))
+:general (:keymaps 'company-active-map 
+            "M-n"        'nil
+            "M-p"        'nil
+            "C-n"        'company-select-next
+            "C-p"        'company-select-previous
+            "<tab>"      'company-complete-selection 
+            "<return>"   'company-complete-selection  
+            "C-<return>" 'company-complete-selection)
     
 :init   (global-company-mode 1)
 :config (add-to-list 'company-backends '(company-capf :with company-dabbrev))
@@ -1513,11 +1491,11 @@ list)
 
 (use-package company-quickhelp :ensure t :pin melpa
 :after company
-:bind (:map company-active-map ("C-c h" . company-quickhelp-manual-begin))
+:general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :config (company-quickhelp-mode)
 )
 
-(use-package company-dict :ensure t :pin melpa
+(use-package company-dict :ensure t :pin melpa :disabled
 :after   company
 :custom (company-dict-dir (concat user-emacs-directory "dict/"))
         (company-dict-enable-yasnippet t)
@@ -1704,7 +1682,8 @@ list)
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
-:general (leader "hyl" 'company-yasnippet)
+:general (leader  "hy"  '(:wk "Yasnippet")
+                  "hyl" 'company-yasnippet)
 :config (yas-global-mode t)
         (yas-reload-all t)
 )
@@ -1719,6 +1698,7 @@ list)
 (use-package cpp-mode :load-path "lisp/cpp-mode"
 :mode (("\\.h\\'" . c++-mode))
 :commands cpp-mode
+:general (leader "hc" '(:wk "C/C++"))
 :hook (c-mode-common . 'cpp-mode)
 :init (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
       (add-hook 'c++-mode-hook  'cpp-mode)
@@ -1945,7 +1925,7 @@ list)
 
 (use-package parinfer :ensure t :pin melpa :disabled
 :after (evil)
-:bind ("C-," . parinfer-toggle-mode)
+:general ("C-,"  'parinfer-toggle-mode)
 :init 
 (add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
 (add-hook 'common-lisp-mode-hook #'parinfer-mode)
@@ -2026,8 +2006,9 @@ list)
 (use-package markdown-mode :ensure t :pin melpa
 :commands (markdown-mode gfm-mode)
 :mode   (("\\README.md\\'" . gfm-mode)
-        ("\\.md\\'"       . markdown-mode)
-        ("\\.markdown\\'" . markdown-mode))
+         ("\\.md\\'"       . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+:general (leader "hm" '(:wk "Markdown"))
 :config (setq markdown-command "multimarkdown")
 )
 
@@ -2126,7 +2107,7 @@ list)
 
 (use-package flutter :ensure t :pin melpa
 :after dart-mode
-:bind (:map dart-mode-map ("C-M-x" . #'flutter-run-or-hot-reload))
+:general (:keymaps 'dart-mode-map "C-M-x" 'flutter-run-or-hot-reload)
 :custom (flutter-sdk-path (expand-file-name "~/dev/flutter/"))
 )
 
@@ -2146,7 +2127,8 @@ list)
 :custom (dumb-jump-selector 'ivy)
         (dumb-jump-force-searcher 'rg)
         (dumb-jump-default-project "~/build")
-:general (leader "hdo" 'dumb-jump-go-other-window
+:general (leader "hd"  '(:wk "Definition Jump")
+                 "hdo" 'dumb-jump-go-other-window
                  "hdj" 'dumb-jump-go
                  "hdi" 'dumb-jump-go-prompt
                  "hdx" 'dumb-jump-go-prefer-external

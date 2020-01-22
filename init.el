@@ -25,13 +25,16 @@
 :mode ("\\.org\\'" . org-mode)
 )
 
-;(defun my/tangle-on-save-eamcs-config-org-file ()
-;    "message"
-;    (when (string= buffer-file-name (file-truename "~/.emacs.d/config.org")) (org-babel-tangle)))
-;(add-hook 'after-save-hook 'my/tangle-on-save-eamcs-config-org-file)
+;(use-package org-tanglesync :ensure t :pin melpa
+;:hook ((org-mode . org-tanglesync-mode)
+;       ((prog-mode text-mode) . org-tanglesync-watch-mode))
+;;:custom (org-tanglesync-watch-files '("~/.emacs.d/config.org"))
+;:bind (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
+;       ( "C-c M-a" . org-tanglesync-process-buffer-automatic))
+;)
 
 ;(setq-default config-file "~/.emacs.d/config.el")
-;(when (file-exists-p config-file) (load config-file))
+;(load "~/.emacs.d/config.el")
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
