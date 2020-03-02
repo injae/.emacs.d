@@ -1,3 +1,8 @@
+;;; init.el --- Emacs Configuration -*- lexical-binding: t -*-
+;;; Commentary:
+;; This config start here
+;;; Code:
+(setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
 (when (eval-when-compile (version< emacs-version "27"))
     (load "~/.emacs.d/early-init.el")
     (package-initialize))
@@ -19,27 +24,18 @@
 (use-package use-package-ensure-system-package :ensure t :pin melpa)
 
 ;(use-package quelpa-use-package :ensure t :pin melpa)
-
-(use-package org :ensure t :pin melpa
+(use-package org :ensure t :pin melpa :mode ("\\.org\\'" . org-mode)
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
-:mode ("\\.org\\'" . org-mode)
 )
 
-;(use-package org-tanglesync :ensure t :pin melpa
-;:hook ((org-mode . org-tanglesync-mode)
-;       ((prog-mode text-mode) . org-tanglesync-watch-mode))
-;;:custom (org-tanglesync-watch-files '("~/.emacs.d/config.org"))
-;:bind (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-;       ( "C-c M-a" . org-tanglesync-process-buffer-automatic))
+; same work this code -> (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+;(use-package literate-elisp :ensure t :pin melpa
+;:config (literate-elisp-load (expand-file-name "config.org" user-emacs-directory))
 ;)
-
-;(setq-default config-file "~/.emacs.d/config.el")
-;(load "~/.emacs.d/config.el")
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
-
-
+;;;

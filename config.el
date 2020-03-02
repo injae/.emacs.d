@@ -1,4 +1,11 @@
+;;; config.el --- Emacs Configuration -*- lexical-binding: t -*-
+;;; Commentary:
+;; This config start here
+;;; Code:
+
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+(use-package bug-hunter :load-path "lisp/elisp-bug-hunter")
 
 (setq ad-redefinition-action 'accept)
 
@@ -8,7 +15,7 @@
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
 (setq *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
-(use-package scroll-bar :ensure nil
+(use-package scroll-bar :no-require t
 :if window-system
 :init (scroll-bar-mode -1)
 :config
@@ -16,27 +23,27 @@
     (setq scroll-conservatively 10000)
 )
 
-(use-package tool-bar :ensure nil :no-require t
+(use-package tool-bar :no-require t
 :if window-system
 :init (tool-bar-mode -1)
 )
 
-(use-package menu-bar :ensure nil :no-require t
+(use-package menu-bar :no-require t
 :if window-system
 :init (menu-bar-mode -1)
 )
 
-(use-package tooltip-mode :ensure nil :no-require t
+(use-package tooltip-mode :no-require t
 :if window-system
 :init (tooltip-mode -1)
 )
 
-(use-package fringe-mode :ensure nil :no-require t
+(use-package fringe-mode  :no-require t
 :if window-system
 :init (fringe-mode -1)
 )
 
-(use-package mouse :ensure nil :no-require t
+(use-package mouse :no-require t
 :if window-system
 :init (xterm-mouse-mode)
 )
@@ -83,11 +90,12 @@
 (set-keyboard-coding-system  'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+; 한글과 영어의 글자 간격문제 해결을 위한 방법 and Fira Code 지정 방법 아직 맥에서만 적용
+(set-face-attribute   'default            nil       :family "Fira Code" :height 120)
+(set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
+(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
+(setq face-font-rescale-alist '(("D2coding" . 1.16)))
 
-(set-face-attribute   'default            nil       :family "D2Coding" :height 130)
-(set-fontset-font nil 'hangul            (font-spec :family "D2Coding" :pixelsize 19))
-(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding" :pixelsize 19))
-(setq face-font-rescale-alist '(("D2coding" . 1.0)))
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
 
@@ -96,16 +104,16 @@
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
 (setq default-korean-keyboard 'korean-hangul2)
-(global-set-key [?\S- ] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
+;(global-set-key [S-SPC] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
+;(global-set-key [?\S- ] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
+(global-set-key (kbd "S-SPC") 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
+(global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
 
 (use-package restart-emacs :ensure t :pin melpa :defer t)
 
-(defun launch-separate-emacs-in-terminal ()
-(suspend-emacs "fg ; emacs -nw"))
-
-(defun launch-separate-emacs-under-x ()
-(call-process "sh" nil nil nil "-c" "emacs &"))
+(defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
+(defun launch-separate-emacs-under-x () (call-process "sh" nil nil nil "-c" "emacs &"))
 
 (defun -restart-emacs ()
     (interactive)
@@ -123,7 +131,7 @@
 
 (use-package paradox :ensure t :pin melpa :defer t :disabled
 ;https://github.com/Malabarba/paradox
-:init (setq paradox-github-token "e1a1518b1f89990587ec97b601a1d0801c5a40c6")
+:init (setq paradox-github-token "")
 )
 
 (use-package drag-stuff :ensure t :pin melpa :defer t
@@ -385,7 +393,6 @@ list)
        (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
 :config
        (evil-collection-pdf-setup)
-       (evil-collection-minibuffer-setup)
        (evil-collection-occur-setup)
        (evil-collection-wgrep-setup)
        (evil-collection-buff-menu-setup)
@@ -456,20 +463,20 @@ list)
 
 (use-package elmacro :ensure t :pin melpa :config (elmacro-mode))
 
-(use-package beacon :ensure t :pin melpa :defer t :init (beacon-mode t))
+(use-package beacon :ensure t :pin melpa :init (beacon-mode t))
 (use-package git-gutter :ensure t :pin melpa :defer t
 :init
     (setq-default display-line-numbers-width 3)
-    (global-git-gutter-mode t)
+    (global-display-line-numbers-mode t)
+    (global-hl-line-mode t)
+:custom
+    (git-gutter:lighter       " gg")
+    (git-gutter:window-width  1)
+    (git-gutter:modified-sign ".")
+    (git-gutter:added-sign    "+")
+    (git-gutter:deleted-sign  "-")
 :config
-    (git-gutter:linum-setup)
-    ;(global-display-line-numbers-mode t)
-    ;(global-hl-line-mode t)
-    (setq git-gutter:lighter       " gg")
-    (setq git-gutter:window-width  1)
-    (setq git-gutter:modified-sign ".")
-    (setq git-gutter:added-sign    "+")
-    (setq git-gutter:deleted-sign  "-")
+    (global-git-gutter-mode t)
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
@@ -548,12 +555,12 @@ list)
 ;    (add-hook 'perl-mode-hook         'hs-minor-mode)
 ;    (add-hook 'sh-mode-hook           'hs-minor-mode)
 
-;(use-package aggressive-indent :ensure t :pin melpa :defer t
-;https://github.com/Malabarba/aggressive-indent-mode
-;:init (global-aggressive-indent-mode)
-    ;exclud mode
-    ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
-;)
+(use-package aggressive-indent :ensure t :pin melpa :disabled
+; https://github.com/Malabarba/aggressive-indent-mode
+:config (electric-indent-mode nil)
+;exclud mode
+;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
+)
 
 (use-package smart-tabs-mode :ensure t :pin melpa :defer t :disabled
 :config (smart-tabs-insinuate 'c 'c++)
@@ -603,7 +610,7 @@ list)
         (save-excursion
         (save-match-data
         (beginning-of-line)
-            ;; get rid of tabs at beginning of line
+        ;; get rid of tabs at beginning of line
         (when (looking-at "^\\s-+")
         (untabify (match-beginning 0) (match-end 0)))
             (when (looking-at "^    ")
@@ -650,7 +657,8 @@ list)
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
          (:keymaps 'ivy-minibuffer-map
-                   "S-SPC" 'toggle-input-method)
+             "S-SPC" 'toggle-input-method
+             "<f17>" 'toggle-input-method)
 :custom (ivy-use-virtual-buffers      t)
         (ivy-use-selectable-prompt    t)
         (enable-recursive-minibuffers t)
@@ -999,8 +1007,9 @@ list)
                  "oe" 'org-edit-src-code
                  "ok" 'org-edit-src-exit
                  "ol" 'org-store-link)
-:init (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
-      (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
+:init   (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
+        (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
+:config (setq org-startup-indented   nil)
 )
 
 (use-package org-bullets :ensure t :pin melpa
@@ -1080,9 +1089,9 @@ list)
 
 (use-package org-gcal :ensure t :pin melpa :disabled
 :after  org-agenda
-:config (setq org-gcal-client-id     "354752650679-2rrgv1qctk75ceg0r9vtaghi4is7iad4.apps.googleusercontent.com"
-            org-gcal-client-secret "j3UUjHX4L0huIxNGp_Kw3Aj4                                                "
-            org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
+:config (setq org-gcal-client-id     ""
+              org-gcal-client-secret ""
+              org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
         (add-hook 'org-agenda-mode-hook            (lambda () (org-gcal-sync)))
         (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
@@ -1196,13 +1205,16 @@ list)
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
+(use-package with-editor :ensure t :pin melpa
+:hook ((shell-mode term-exec eshll-mode) . with-editor-export-editor)
+)
+
 (use-package eshell
 :commands eshell
 :config (setq eshell-buffer-maximum-lines 1000)
-        (require 'xterm-color)
+        ;(require 'xterm-color)
         (add-hook 'eshell-mode-hook (lambda () (setq pcomplete-cycle-completions     nil)))
-        (add-hook 'eshell-mode-hook (lambda () (setq xterm-color-preserve-properties t)
-                                          (setenv "TERM" "xterm-256color")))
+        ;(add-hook 'eshell-mode-hook (lambda () (setq xterm-color-preserve-properties t) (setenv "TERM" "xterm-256color")))
         (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
         (setq eshell-output-filter-functions (remove 'eshell-handle-asni-color eshell-output-filter-functions))
         (setq eshell-cmpl-cycle-completions nil)
@@ -1438,6 +1450,7 @@ list)
 (defun org-use-package-install ()
     "org babel emacs config evaluate"
     (interactive)
+    (org-babel-tangle)
     (org-babel-execute-maybe)
     (undo-tree-undo))
 :general (leader "oi" 'org-use-package-install
@@ -1460,8 +1473,24 @@ list)
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
 
-(use-package company :ensure t :pin melpa
+(use-package tldr :ensure t :pin melpa
+:commands tldr
+:custom (tldr-enabled-categories '("common" "linux" "osx" "sunos"))
+)
+
+(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
+;(use-package fira-code :no-require t
+;:if *is-mac*
+;:config (if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
+;)
+;(use-package fira-code-mode :load-path "lisp/fira-code-mode"
+;:custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
+;
+;:hook prog-mode ;; Enables fira-code-mode automatically for programming major modes  
+;)
+
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
+(use-package company :ensure t :pin melpa
 :custom
     (company-idle-delay 0)
     (company-tooltip-align-annotations nil)
@@ -1487,7 +1516,6 @@ list)
     backend (append (if (consp backend) backend (list backend)) '(:with company-yasnippet))))
 :config (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 )
-
 
 (use-package company-quickhelp :ensure t :pin melpa
 :after company
@@ -1627,7 +1655,6 @@ list)
 :config
         (lsp-ui-mode)
 )
-
 (use-package lsp-ui :ensure t :pin melpa
 :commands lsp-ui-mode
 :after  (lsp-mode flycheck)
@@ -1997,9 +2024,10 @@ list)
 :mode ("\\.toml\\'" . toml-mode))
 
 (use-package cmake-mode :ensure t :pin melpa
+;:ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
-        ("CMakeLists.txt" . cmake-mode))
+       ("CMakeLists.txt" . cmake-mode))
 :init (setq cmake-tab-width 4)
 )
 
@@ -2139,14 +2167,66 @@ list)
 :commands (web-mode)
 :mode     (("\\.html?\\'"  . web-mode)
            ("\\.xhtml$\\'" . web-mode)
+           ("\\.tsx$"      . web-mode)
            ("\\.vue\\'"    . web-mode))
-:config   (setq web-mode-enable-engine-detection t)
+:custom (web-mode-enable-engine-detection t)
+        (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+)
+
+(use-package js2-mode :ensure t :pin melpa
+:mode (("\\.js\\'" . js2-mode))
+)
+
+(use-package js2-refactor :ensure t :pin melpa :disabled
+:after js2-mode
+:hook (js2-mode . js2-refactor)
+)
+
+(use-package rjsx-mode :ensure t :pin melpa :disabled
+:after js2-mode
+:mode (("\\.jsx$" . rjsx-mode)
+       ("components/.+\\.js$" . rjsx-mode))
+:hook (js2-mode . rjsx-mode)
+:preface
+(defun +javascript-jsx-file-p ()
+    "Detect React or preact imports early in the file."
+    (and buffer-file-name
+         (string= (file-name-extension buffer-file-name) "js")
+         (re-search-forward "\\(^\\s-*import +React\\|\\( from \\|require(\\)[\"']p?react\\)"
+                            magic-mode-regexp-match-limit t)
+         (progn (goto-char (match-beginning 1))
+                (not (sp-point-in-string-or-comment)))))
+:init (add-to-list 'magic-mode-alist '(+javascript-jsx-file-p . rjsx-mode))
+)
+
+(use-package xref-js2 :ensure t :pin melpa
+:after (js2-mode xref)
+:config (add-hook 'js2-mode-hook (lambda () (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+)
+
+(use-package skewer-mode :ensure t :pin melpa
+:after js2-mode
+:hook (js2-mode  . skewer-mode)
+      (css-mode  . skewer-css-mode)
+      (html-mode . skewer-html-mode)
+)
+
+(use-package typescript-mode :ensure t :pin melpa
+:mode (("\\.ts\\'"  . typescript-mode)
+       ("\\.tsx\\'" . typescript-mode))
+)
+
+(use-package tide :ensure t :pin melpa
+:after (typescript-mode company flycheck)
+:hook ((typescript-mode . tide-setup)
+       (typescript-mode . tide-hl-identifier-mode)
+       (before-save . tide-format-before-save))
 )
 
 (use-package json-mode :ensure t :pin melpa
 :commands json-mode
 :mode (("\\.json\\'"       . json-mode)
-    ("/Pipfile.lock\\'" . json-mode))
+       ("/Pipfile.lock\\'" . json-mode))
 )
 
 (use-package json-reformat :ensure t :pin melpa
@@ -2202,4 +2282,9 @@ list)
 (use-package ruby-tools :ensure t :pin melpa
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
+)
+
+; brew cask install karabiner-elements
+(use-package karabiner :no-require t
+:if *is-mac*
 )
