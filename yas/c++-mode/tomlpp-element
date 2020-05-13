@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: tomlpp define element
+# key: tomle 
+# --
+
+element(TOML_D($1), $2)

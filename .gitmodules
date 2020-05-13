@@ -13,3 +13,9 @@
 [submodule "lisp/centaur-tabs"]
 	path = lisp/centaur-tabs
 	url = https://github.com/ema2159/centaur-tabs.git
+[submodule "elisp-bug-hunter"]
+	path = lisp/elisp-bug-hunter
+	url = https://github.com/Malabarba/elisp-bug-hunter.git
+[submodule "fira-code-mode"]
+	path = lisp/fira-code-mode
+	url = https://github.com/jming422/fira-code-mode.git

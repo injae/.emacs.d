@@ -2,7 +2,8 @@
 # name: include guard
 # key: incg
 # --
-
+#pragma once
+    
 #ifndef $1
 #define $1
 

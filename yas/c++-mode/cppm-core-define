@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: define cppm core
+# key: cppmcore
+# --
+
+#pragma once
+
+#ifndef __CPPM_CORE_$1_HPP__
+#define __CPPM_CORE_$1_HPP__
+
+#include "core/config_interface.hpp"
+
+namespace cppm::core {
+    class $2 : public toml::orm::table {
+    public:
+        template<typename Def>
+        void parse(Def defn) {
+        }
+    private:
+    
+    };
+}
+
+#endif

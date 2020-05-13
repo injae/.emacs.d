@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: tomlpp new orm table
+# key: ormtoml
+# --
+
+class $1 : public config_interface {
+public:
+    template<typename Def>
+    void parse(Def defn) {
+        
+    }
+private:
+
+};
