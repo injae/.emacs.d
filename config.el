@@ -8,7 +8,12 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+
+
 (use-package bug-hunter :load-path "lisp/elisp-bug-hunter")
+(use-package explain-pause-mode :load-path "lisp/explain-pause-mode" :disabled
+:config (explain-pause-mode t)
+)
 
 (setq ad-redefinition-action 'accept)
 (setq max-lisp-eval-depth 10000)
@@ -101,6 +106,13 @@
 (set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
 (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
 (setq face-font-rescale-alist '(("D2coding" . 1.16)))
+(when *is-mac*
+    (progn
+        (require 'ucs-normalize)
+        (set-file-name-coding-system 'utf-8-hfs)
+        (setq default-process-coding-system '(utf-8-hfs . utf-8-hfs))
+        (set-terminal-coding-system  'utf-8-hfs)
+        ))
 
 (setq-default line-spacing 3)
 (global-font-lock-mode t)
@@ -313,8 +325,18 @@ list)
 :config (global-evil-visualstar-mode t)
 )
 
-
 (use-package evil-surround :ensure t :pin melpa
+; @call-function
+; visual mode S- or gS-
+; normal mode ys- or yS-
+; change surround cs-
+; delete surround ds-
+; @select area
+; {call-function}- - ;현재부터 단어 끝까지
+; {call-function}-i- ;현재 단어
+; {call-function}-s- ;현재 줄
+; @wrap function
+; {select-area}-w
 ; ${target}( 바꾸고싶은거 ), ${change}(바뀔거)
 ; 감싸기:     => y-s-i-w-${change}( "(", "{", "[")
 ; 전부 감싸기 => y-s-s-${change}
@@ -470,7 +492,7 @@ list)
         (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 )
 
-(use-package elmacro :ensure t :pin melpa :config (elmacro-mode))
+(use-package elmacro :ensure t :pin melpa :disabled :config (elmacro-mode))
 
 (use-package beacon :ensure t :pin melpa :init (beacon-mode t))
 (use-package git-gutter :ensure t :pin melpa :defer t
@@ -493,10 +515,25 @@ list)
 
 (setq custom-safe-themes t)
 (use-package doom-themes :ensure t :pin melpa
-:init    (load-theme   'doom-one t)
-         (enable-theme 'doom-one)
+:init    (load-theme   'doom-vibrant t)
+         ;(enable-theme 'doom-nord)
 :config  (doom-themes-neotree-config)
          (doom-themes-org-config)
+)
+
+;(load-theme 'doom-one t t) ;;load the theme
+;(run-at-time "05:00" (* 60 60 24) (lambda () (enable-theme 'doom-one)))
+
+(use-package mac-dark-mode :no-require t
+:if *is-mac*
+:preface 
+(defun set-system-dark-mode ()
+    (interactive)
+    (if (string= (shell-command-to-string "printf %s \"$( osascript -e \'tell application \"System Events\" to tell appearance preferences to return dark mode\' )\"") "true")
+        (load-theme 'doom-one t) ; dark-mode
+        (load-theme 'doom-city-lights t)) ; light-mode
+)
+;:config (set-system-dark-mode)
 )
 
 (use-package all-the-icons :ensure t :pin melpa
@@ -659,8 +696,16 @@ list)
 (use-package hydra :ensure t :pin melpa :defer t)
 
 (use-package which-key :ensure t :pin melpa
-:init     (which-key-mode t)
-:config   (setq which-key-allow-evil-operators t)
+:init   (which-key-mode t)
+:config (setq which-key-allow-evil-operators t)
+        (setq which-key-show-operator-state-maps t)
+        ;(which-key-setup-minibuffer)
+        
+)
+
+(use-package avy :ensure t :pin melpa
+:general (leader "jl" '(avy-goto-line :wk "Jump to line")
+                 "jw" '(avy-goto-char :wk "Jump to word"))
 )
 
 (use-package ivy :ensure t :pin melpa
@@ -882,12 +927,14 @@ list)
 :init (smex-initialize)
 )
 
-(use-package projectile :ensure t :pin melpa :defer t
+(use-package projectile :ensure t :pin melpa
+:after ivy
 :init   (projectile-mode t)
 :config (setq projectile-require-project-root nil)
         (setq projectile-enable-caching t)
         (setq projectile-globally-ignored-directories
             (append '(".ccls-cache" ".git" "__pycache__") projectile-globally-ignored-directories))
+        (setq projectile-completion-system 'ivy)
         ;(setq projectile-globally-ignored-files
         ;    (append '() projectile-globaly-ignore-files))
 )
@@ -986,6 +1033,20 @@ list)
 )
 
 (use-package magit-todos :ensure t :pin melpa :after magit :disabled)
+
+
+;; git history view mode
+(use-package smeargle :ensure t :pin melpa
+:commands smeagle
+)
+
+;(use-package magit-delta :ensure t :pin melpa
+;:after magit
+;:ensure-system-package 
+;    :config
+;    )
+
+
 
 (use-package gitignore-mode :ensure t :pin melpa :commands gitignore-mode)
 (use-package gitconfig-mode :ensure t :pin melpa :commands gitconfig-mode)
@@ -1230,18 +1291,15 @@ list)
           "`vmacs-awesome-tab-buffer-groups' control buffers' group rules. "
           (list
            (cond
-            ((derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode)
-             "Term")
-            ((string-match-p (rx (or
-                                  "\*Helm"
-                                  "\*helm"
-                                  "\*tramp"
-                                  "\*Completions\*"
-                                  "\*sdcv\*"
-                                  "\*Messages\*"
-                                  "\*Ido Completions\*"
-                                  ))
-                             (buffer-name))
+            ((derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode) "Term")
+            ((string-match-p (rx (or "\*Helm"
+                                     "\*helm"
+                                     "\*tramp"
+                                     "\*Completions\*"
+                                     "\*sdcv\*"
+                                     "\*Messages\*"
+                                     "\*Ido Completions\*"))
+                                     (buffer-name))
              "Emacs")
             (t "Common"))))
         ;(defun vmacs-term-mode-p(&optional args)
@@ -1414,8 +1472,28 @@ shell exits, the buffer is killed."
 (use-package ibuffer-projectile :ensure t :pin melpa :disabled
 :after (projectile)
 :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
-                                    (unless (eq ibuffer-sorting-mode 'alphabetic)
-                                            (ibuffer-do-sort-by-alphabetic))))
+                                     (unless (eq ibuffer-sorting-mode 'alphabetic)
+                                             (ibuffer-do-sort-by-alphabetic))))
+)
+
+(use-package org-roam :ensure t :pin melpa
+:hook (after-init . org-roam-mode)
+:custom (org-roeam-directory "~/GoogleDrive/Org/")
+;:general (leader "on" '(org-roam-mode-map :wk "Note"))
+)
+
+(use-package org-roam-server :ensure t :pin melpa
+:commands org-roam-server-mode
+:config
+    (setq org-roam-server-host "127.0.0.1"
+          org-roam-server-port 8080
+          org-roam-server-export-inline-images t
+          org-roam-server-authenticate nil
+          org-roam-server-network-poll t
+          org-roam-server-network-arrows nil
+          org-roam-server-network-label-truncate t
+          org-roam-server-network-label-truncate-length 60
+          org-roam-server-network-label-wrap-length 20)
 )
 
 (use-package dash :ensure t :pin melpa :defer t
@@ -1459,6 +1537,7 @@ shell exits, the buffer is killed."
 :init   (centaur-tabs-mode t)
 :config (setq centaur-tabs-height 26)
         (centaur-tabs-headline-match)
+        (centaur-tabs-group-by-projectile-project)
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 )
@@ -1470,19 +1549,24 @@ shell exits, the buffer is killed."
 :general (leader "fw" '(google-this :wk "Search Word"))
 :config  (google-this-mode 1)
 )
+(use-package osa :load-path "lisp/osa")
+(use-package osa-chrome :load-path "lisp/osa-chrome"
+:after osa
+:commands osa-chrome
+:general (leader "fc" '(osa-chrome :wk "Chrome manage"))
+)
 
 (use-package google-translate :ensure t :pin melpa
 :commands (google-translate-smooth-translate)
-:general (leader "tw" 'google-translate-smooth-translate)
+:general (leader "ft" 'google-translate-smooth-translate)
+:custom (google-translate-default-source-language "auto")
+        (google-translate-default-target-language "ko")
+        (google-translate-translation-directions-alist
+            '(("en" . "ko")
+              ("ko" . "en")
+              ("jp" . "ko")
+              ("ko" . "jp")))
 :config (require 'google-translate-smooth-ui)
-       ;(require 'google-translate-default-ui)
-       ;(evil-leader/set-key "ft" 'google-translate-at-point)
-       ;(evil-leader/set-key "fT" 'google-translate-query-translate)
-       (setq google-translate-translation-directions-alist
-           '(("en" . "ko")
-             ("ko" . "en")
-             ("jp" . "ko")
-             ("ko" . "jp")))
 )
 
 (use-package esup :ensure t :pin melpa :defer t)
@@ -1493,13 +1577,13 @@ shell exits, the buffer is killed."
     (add-hook 'text-mode-hook 'flyspell-mode)
     (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US")
-:init
-    (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+;:init
+;    (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
 :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
                  "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
 )
 
-(use-package flyspell-correct-ivy :ensure t :pin melpa
+(use-package flyspell-correct-ivy :ensure t :pin melpa 
 :after (flyspell ivy)
 :general  (:keymaps 'flyspell-mode-map "C-c $" 'flyspell-correct-word-generic)
           (:keymaps 'flyspell-mode-map [remap flyspell-correct-word-before-point]  'flyspell-correct-previous-word-generic)
@@ -1568,7 +1652,7 @@ shell exits, the buffer is killed."
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t :pin melpa
 :custom
-    (company-idle-delay 0)
+    (company-idle-delay .3)
     (company-tooltip-align-annotations nil)
     (company-minimum-prefix-length 1)
     (company-dabbrev-downcase nil)
@@ -1595,6 +1679,7 @@ shell exits, the buffer is killed."
 
 (use-package company-quickhelp :ensure t :pin melpa
 :after company
+:unless (featurep 'lsp)
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :config (company-quickhelp-mode)
 )
@@ -1721,6 +1806,7 @@ shell exits, the buffer is killed."
 
 (use-package lsp-mode :ensure t :pin melpa
 :commands lsp
+:general (leader "hh" '(lsp-execute-code-action :wk "wizard"))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
         (lsp-enable-snippet t)
@@ -1763,12 +1849,14 @@ shell exits, the buffer is killed."
         (global-flycheck-mode t)
         (setq flycheck-clang-language-standard "c++17")
 )
-(use-package flycheck-pos-tip :ensure t :pin melpa
-:after   flycheck
+(use-package flycheck-pos-tip :ensure t :pin melpa :disabled
+:if (not (featurep 'lsp))
+:after  flycheck
 :config (flycheck-pos-tip-mode))
 
-(use-package quick-peek :ensure t :pin melpa :after flycheck)
-(use-package flycheck-inline :ensure t :pin melpa
+(use-package quick-peek :ensure t :pin melpa :after flycheck :disabled)
+(use-package flycheck-inline :ensure t :pin melpa :disabled
+:if (not (featurep 'lsp))
 :after (flycheck quick-peek)
 :config
     (setq flycheck-inline-display-function
@@ -1935,7 +2023,7 @@ shell exits, the buffer is killed."
     ;)
 )
 
-(use-package lsp-treemacs :ensure t :pin melpa
+(use-package lsp-treemacs :ensure t :pin melpa :disabled
 :after lsp-mode
 :config (lsp-metals-treeview-enable t)
         (setq lsp-metals-treeview-show-when-views-received t)
@@ -2041,6 +2129,10 @@ shell exits, the buffer is killed."
 
 (use-package emacs-lisp :no-require t
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
+)
+
+(use-package scratch-comment :ensure t :pin melpa
+:general (:keymaps 'lisp-interaction-mode-map "C-j" 'scratch-comment-eval-sexp)
 )
   
 (use-package slime :ensure t :pin melpa :disabled
@@ -2402,6 +2494,10 @@ shell exits, the buffer is killed."
 (use-package ruby-tools :ensure t :pin melpa
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
+)
+
+(use-package gdscript-mode :ensure t :pin melpa
+:custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
 )
 
 ; brew install rust base system command
