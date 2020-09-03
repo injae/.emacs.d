@@ -2,28 +2,29 @@
 ;;; Commentary:
 ;; This config start here
 ;;; Code:
-(setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
+
+;(require 'esup) ; emacs config profiling
 (when (eval-when-compile (version< emacs-version "27"))
     (load "~/.emacs.d/early-init.el")
     (package-initialize))
 
-    (setq use-package-compute-statistics t)
-    (unless (and (package-installed-p 'delight)
-                 (package-installed-p 'use-package))
+    (unless (package-installed-p 'use-package)
         (package-refresh-contents)
-        (package-install 'delight t)
         (package-install 'use-package t))
-    ;(setq-default use-package-always-defer t)
 
-(use-package auto-package-update :ensure t :pin melpa
-:init (setq auto-package-update-delete-old-versions t)
-      (setq auto-package-update-hide-results t)
-      (auto-package-update-maybe)
+(use-package use-package :ensure t :pin melpa
+:custom (use-package-compute-statistics t)
 )
 
+(use-package auto-package-update :ensure t :pin melpa
+:custom (auto-package-update-delete-old-versions t)
+        (auto-package-update-prompt-before-update t)
+        ;(auto-package-update-hide-results t)
+:config (auto-package-update-maybe)
+)
 (use-package use-package-ensure-system-package :ensure t :pin melpa)
 
-;(use-package quelpa-use-package :ensure t :pin melpa)
+;(use-package quelpa-use-package :ensure t :pin melpa :config (setq quelpa-update-melpa-p nil))
 (use-package org :ensure t :pin melpa :mode ("\\.org\\'" . org-mode)
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
@@ -56,3 +57,10 @@
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
 ;;; 
+
+
+   ; (unless (and (package-installed-p 'delight)
+   ;              (package-installed-p 'use-package))
+   ;     (package-refresh-contents)
+   ;     (package-install 'delight t)
+   ;     (package-install 'use-package t))

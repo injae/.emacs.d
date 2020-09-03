@@ -8,12 +8,19 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-
-
-(use-package bug-hunter :load-path "lisp/elisp-bug-hunter")
-(use-package explain-pause-mode :load-path "lisp/explain-pause-mode" :disabled
-:config (explain-pause-mode t)
+(use-package emacs-gc-setting :no-require t
+:init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
+      (setq read-process-output-max (* 1024 1024))
+      ;(run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
+(use-package esup :ensure t :pin melpa)
+
+
+
+;(use-package bug-hunter :ensure t :pin melpa)
+;(use-package explain-pause-mode :quelpa (explain-pause-mode :fetcher github :repo "lastquestion/explain-pause-mode")
+;    :config (explain-pause-mode t)
+;)
 
 (setq ad-redefinition-action 'accept)
 (setq max-lisp-eval-depth 10000)
@@ -132,7 +139,6 @@
 
 (defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
 (defun launch-separate-emacs-under-x () (call-process "sh" nil nil nil "-c" "emacs &"))
-
 (defun -restart-emacs ()
     (interactive)
     ;; We need the new emacs to be spawned after all kill-emacs-hooks
@@ -158,8 +164,6 @@
 :init (drag-stuff-global-mode t)
         (drag-stuff-define-keys)
 )
-
-(use-package esup :ensure t :pin melpa :defer t)
 
 (use-package server :config (unless (server-running-p) (server-start)))
 
@@ -521,10 +525,8 @@ list)
          (doom-themes-org-config)
 )
 
-;(load-theme 'doom-one t t) ;;load the theme
-;(run-at-time "05:00" (* 60 60 24) (lambda () (enable-theme 'doom-one)))
-
-(use-package mac-dark-mode :no-require t
+; 자동으로 Dark mode Light mode 변환
+(use-package mac-dark-mode :no-require t :disabled
 :if *is-mac*
 :preface 
 (defun set-system-dark-mode ()
@@ -533,7 +535,7 @@ list)
         (load-theme 'doom-one t) ; dark-mode
         (load-theme 'doom-city-lights t)) ; light-mode
 )
-;:config (set-system-dark-mode)
+:config (run-with-idle-timer 60 t (lambda () (set-system-dark-mode)))  ; 1분마다, repeat
 )
 
 (use-package all-the-icons :ensure t :pin melpa
@@ -673,7 +675,7 @@ list)
     (setq-default indent-tabs-mode nil)
 )
 
-(use-package paren :ensure t :pin melpa :defer t
+(use-package paren :ensure t :pin melpa
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
@@ -684,7 +686,6 @@ list)
 )
 
 (use-package smartparens :ensure t :pin melpa
-;:evil-leader (("pu"  'sp-unwrap-sexp))
 :general (leader "pr " 'sp-rewrap-sexp
                  "pll" 'sp-forward-slurp-sexp
                  "phh" 'sp-backward-slurp-sexp
@@ -692,6 +693,8 @@ list)
                  "phl" 'sp-backward-barf-sexp)
 :init (smartparens-global-mode)
 )
+; elisp double quote problem fix setting
+(use-package smartparens-config :ensure smartparens)
 
 (use-package hydra :ensure t :pin melpa :defer t)
 
@@ -1267,6 +1270,7 @@ list)
 
 (use-package vterm :ensure t :pin melpa ;:disabled ;macport version not working
 :general (leader "tn" 'vterm)
+:custom (vterm-always-compile-module t)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
 )
 
@@ -1476,13 +1480,13 @@ shell exits, the buffer is killed."
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :ensure t :pin melpa
+(use-package org-roam :ensure t :pin melpa 
 :hook (after-init . org-roam-mode)
 :custom (org-roeam-directory "~/GoogleDrive/Org/")
 ;:general (leader "on" '(org-roam-mode-map :wk "Note"))
 )
 
-(use-package org-roam-server :ensure t :pin melpa
+(use-package org-roam-server :ensure t :pin melpa :after (org-roam)
 :commands org-roam-server-mode
 :config
     (setq org-roam-server-host "127.0.0.1"
@@ -1569,8 +1573,6 @@ shell exits, the buffer is killed."
 :config (require 'google-translate-smooth-ui)
 )
 
-(use-package esup :ensure t :pin melpa :defer t)
-
 (use-package flyspell :ensure t :pin melpa :defer t :disabled
 :config
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -1652,10 +1654,12 @@ shell exits, the buffer is killed."
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t :pin melpa
 :custom
-    (company-idle-delay .3)
     (company-tooltip-align-annotations nil)
-    (company-minimum-prefix-length 1)
+    (company-show-numbers t)
+    (company-idle-delay 0)
+    (company--transform-candidates nil)
     (company-dabbrev-downcase nil)
+    (company-minimum-prefix-length 0)
 :general (:keymaps 'company-active-map 
             "M-n"        'nil
             "M-p"        'nil
@@ -1664,182 +1668,87 @@ shell exits, the buffer is killed."
             "<tab>"      'company-complete-selection 
             "<return>"   'company-complete-selection  
             "C-<return>" 'company-complete-selection)
-    
 :init   (global-company-mode 1)
-:config (add-to-list 'company-backends '(company-capf :with company-dabbrev))
-)
-
-(use-package company-yasnippet :ensure nil :after (company yasnippet) :disabled
-:preface
-(defun company-mode/backend-with-yas (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend))
-    backend (append (if (consp backend) backend (list backend)) '(:with company-yasnippet))))
-:config (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+;:config (add-to-list 'company-backends '(company-capf :with company-dabbrev))
+:config (add-to-list 'company-backends 'company-capf)
+;:config (add-to-list 'company-backends '(company-capf :with company-yasnippet))
 )
 
 (use-package company-quickhelp :ensure t :pin melpa
 :after company
 :unless (featurep 'lsp)
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
+:custom (company-quickhelp-delay nil)
 :config (company-quickhelp-mode)
 )
 
-(use-package company-dict :ensure t :pin melpa :disabled
-:after   company
+(use-package company-dict :ensure t :pin melpa
+:after  company
 :custom (company-dict-dir (concat user-emacs-directory "dict/"))
         (company-dict-enable-yasnippet t)
-:config (add-to-list 'company-backends 'company-dict)
+   ;     (company-dict-enable-fuzzy t)
+:config (add-to-list 'company-backends #'company-dict)
+        (define-key evil-insert-state-map (kbd "C-x C-k") 'company-dict)
+        (setq company-dict-minor-mode-list t)
 )
+
 
 (use-package company-statistics :ensure t :pin melpa
 :after  company
 :config (company-statistics-mode)
 )
 
-(use-package company-flx :ensure t :pin melpa
-:after  company
-:config (company-flx-mode +1)
+;company-quickhelp speed up setting
+(use-package company-posframe :ensure t :pin melpa
+:config (company-posframe-mode)
 )
 
-(use-package company-tabnine :ensure t :pin melpa :disabled
-;first install: company-tabnine-install-binary
+(use-package company-tabnine :ensure t :pin melpa :disabled 
+;first in
 :after  company
-;:preface
-;    (setq company-tabnine--disable-next-transform nil)
-;    (defun my-company--transform-candidates (func &rest args)
-;    (if (not company-tabnine--disable-next-transform)
-;        (apply func args)
-;        (setq company-tabnine--disable-next-transform nil)
-;        (car args)))
-
-;    (defun my-company-tabnine (func &rest args)
-;    (when (eq (car args) 'candidates)
-;        (setq company-tabnine--disable-next-transform t))
-;    (apply func args))
-
-;    (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
-;    (advice-add #'company-tabnine :around #'my-company-tabnine)
 :config
     (add-to-list 'company-backends #'company-tabnine)
-    (company-tng-configure-default)
-    (setq company-frontends '(company-tng-frontend
-                              company-pseudo-tooltip-frontend
-                              company-echo-metadata-frontend))
+    (setq company-tabnine-annotations t)
+    (setq company-tabnine-always-trigger nil)
 )
-(use-package company-box :ensure t :pin melpa :diminish
+
+(use-package company-box :ensure t :pin melpa :diminish ""
 :hook   (company-mode . company-box-mode)
-:custom ;(company-box-backends-colors t)
-        (company-box-show-single-candidate t)
-        (company-box-max-candidates 50)
-        (company-box-icons-alist 'company-box-icons-all-the-icons)
-        (company-box-doc-delay 0.5)
-:functions (my-company-box--make-line my-company-box-icons--elisp)
-:preface
-    ;; Support `company-common'
-    (defun my-company-box--make-line (candidate)
-        (-let* (((candidate annotation len-c len-a backend) candidate)
-                (color (company-box--get-color backend))
-                ((c-color a-color i-color s-color) (company-box--resolve-colors color))
-                (icon-string (and company-box--with-icons-p (company-box--add-icon candidate)))
-                (candidate-string (concat (propertize (or company-common "") 'face 'company-tooltip-common)
-                                        (substring (propertize candidate 'face 'company-box-candidate) (length company-common) nil)))
-                (align-string (when annotation
-                                (concat " " (and company-tooltip-align-annotations
-                                                (propertize " " 'display `(space :align-to (- right-fringe ,(or len-a 0) 1)))))))
-                (space company-box--space)
-                (icon-p company-box-enable-icon)
-                (annotation-string (and annotation (propertize annotation 'face 'company-box-annotation)))
-                (line (concat (unless (or (and (= space 2) icon-p) (= space 0))
-                                (propertize " " 'display `(space :width ,(if (or (= space 1) (not icon-p)) 1 0.75))))
-                            (company-box--apply-color icon-string i-color)
-                            (company-box--apply-color candidate-string c-color)
-                            align-string
-                            (company-box--apply-color annotation-string a-color)))
-                (len (length line)))
-        (add-text-properties 0 len (list 'company-box--len (+ len-c len-a) 'company-box--color s-color) line) line))
-    (advice-add #'company-box--make-line :override #'my-company-box--make-line)
-
-    ;; Prettify icons
-    (defun my-company-box-icons--elisp (candidate)
-        (when (derived-mode-p 'emacs-lisp-mode)
-        (let ((sym (intern candidate)))
-            (cond ((fboundp sym) 'Function)
-                ((featurep sym) 'Module)
-                ((facep sym) 'Color)
-                ((boundp sym) 'Variable)
-                ((symbolp sym) 'Text)
-                (t . nil)))))
-    (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp)
-
-    (with-eval-after-load 'all-the-icons
-        (declare-function all-the-icons-faicon 'all-the-icons)
-        (declare-function all-the-icons-material 'all-the-icons)
-        (setq company-box-icons-all-the-icons
-            `((Unknown . ,(all-the-icons-material "find_in_page" :height 0.9 :v-adjust -0.2))
-                (Text . ,(all-the-icons-faicon "text-width" :height 0.85 :v-adjust -0.05))
-                (Method . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                (Function . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                (Constructor . ,(all-the-icons-faicon "cube" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-purple))
-                (Field . ,(all-the-icons-faicon "tag" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-lblue))
-                (Variable . ,(all-the-icons-faicon "tag" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-lblue))
-                (Class . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                (Interface . ,(all-the-icons-material "share" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Module . ,(all-the-icons-material "view_module" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Property . ,(all-the-icons-faicon "wrench" :height 0.85 :v-adjust -0.05))
-                (Unit . ,(all-the-icons-material "settings_system_daydream" :height 0.9 :v-adjust -0.2))
-                (Value . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Enum . ,(all-the-icons-material "storage" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                (Keyword . ,(all-the-icons-material "filter_center_focus" :height 0.9 :v-adjust -0.2))
-                (Snippet . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2))
-                (Color . ,(all-the-icons-material "palette" :height 0.9 :v-adjust -0.2))
-                (File . ,(all-the-icons-faicon "file-o" :height 0.9 :v-adjust -0.05))
-                (Reference . ,(all-the-icons-material "collections_bookmark" :height 0.9 :v-adjust -0.2))
-                (Folder . ,(all-the-icons-faicon "folder-open" :height 0.9 :v-adjust -0.05))
-                (EnumMember . ,(all-the-icons-material "format_align_right" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-lblue))
-                (Constant . ,(all-the-icons-faicon "square-o" :height 0.9 :v-adjust -0.05))
-                (Struct . ,(all-the-icons-material "settings_input_component" :height 0.9 :v-adjust -0.2 :face 'all-the-icons-orange))
-                (Event . ,(all-the-icons-faicon "bolt" :height 0.85 :v-adjust -0.05 :face 'all-the-icons-orange))
-                (Operator . ,(all-the-icons-material "control_point" :height 0.9 :v-adjust -0.2))
-                (TypeParameter . ,(all-the-icons-faicon "arrows" :height 0.85 :v-adjust -0.05))
-                (Template . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2)))))
+:custom (company-box-max-candidates 30)
+:config (setq company-box-icons-unknown   'fa_question_circle)
+        (setq company-box-icons-yasnippet 'fa_bookmark)
+        ;(company-box-show-single-candidate t)
+        ;(company-box-icons-alist 'company-box-icons-all-the-icons)
+        ;(company-box-doc-delay 0.5)
 )
 
 (use-package lsp-mode :ensure t :pin melpa
 :commands lsp
 :general (leader "hh" '(lsp-execute-code-action :wk "wizard"))
+:hook   ((lsp-mode . lsp-enable-which-key-integration))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
         (lsp-enable-snippet t)
+        (lsp-enable-file-watchers nil)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
         (create-lockfiles nil)
         (lsp-file-watch-threshold nil)
-:config
-        (lsp-ui-mode)
+        (lsp-response-timeout 25)
+        (lsp-completion-provider :capf)
+:config (lsp-ui-mode)
+        (lsp-lens-mode)
 )
 (use-package lsp-ui :ensure t :pin melpa
 :commands lsp-ui-mode
 :after  (lsp-mode flycheck)
 :custom (scroll-margin 0)
         (lsp-ui-flycheck-enable t)
+        (lsp-ui-sideline-show-diagnostics t)
+        ;(lsp-ui-sideline-show-hover t)
+        (lsp-ui-sideline-show-code-actions t)
 :config (lsp-ui-sideline-mode)
         (lsp-ui-peek-mode)
-)
-
-(use-package company-lsp :ensure t :pin melpa
-:after  (:all company lsp-mode)
-:custom (company-lsp-cache-candidates nil)
-        (company-lsp-async t)
-        (company--transform-candidates nil)
-        (company-lsp-enable-recompletion nil)
-        (company-lsp-enable-snippet t) ;lsp auto complete bugfix
-:config
-    (add-to-list 'company-backends #'company-lsp)
-    (push '(company-lsp :with company-yasnippet) company-backends)
-)
-
-(use-package eglot :ensure t :pin melpa :disabled
-:hook (c-mode-common . eglot-ensure)
 )
 
 (use-package flycheck :ensure t :pin melpa
@@ -1879,6 +1788,7 @@ shell exits, the buffer is killed."
 :config (yas-global-mode t)
         (yas-reload-all t)
 )
+
 (use-package yasnippet-snippets :ensure t :pin melpa :after yasnippet)
 (use-package auto-yasnippet :ensure t :pin melpa
 ;https://github.com/abo-abo/auto-yasnippet
@@ -2038,6 +1948,7 @@ shell exits, the buffer is killed."
         (dap-mode 1)
         (dap-tooltip-mode 1)
         (dap-ui-mode 1)
+        (dap-auto-configure-mode)
 )
 
 (use-package dap-ui-setting :no-require t
@@ -2182,6 +2093,8 @@ shell exits, the buffer is killed."
 :general (leader "hrf" 'rust-format-buffer)
 :config  (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
          (setq lsp-rust-server 'rust-analyzer)
+         ;(lsp-rust-analyzer-inlay-hints-mode t) ; display type hint 
+         ;(setq lsp-rust-analyzer-cargo-watch-enable nil)
          ;(setq rust-format-on-save t)
          ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
@@ -2201,7 +2114,7 @@ shell exits, the buffer is killed."
 ;:init  (add-hook 'racer-mode-hook  #'eldoc-mode)
 )
 
-(use-package company-racer :ensure t :pin melpa 
+(use-package company-racer :ensure t :pin melpa
 :after  (company racer)
 :config (add-to-list 'company-backends 'company-racer)
 )
@@ -2233,7 +2146,9 @@ shell exits, the buffer is killed."
 
 (use-package toml-mode :ensure t :pin melpa
 :commands toml-mode
-:mode ("\\.toml\\'" . toml-mode))
+:mode (("\\.toml\\'" . toml-mode)
+       ("Pipfile\\'" . toml-mode))
+    )
 
 (use-package cmake-mode :ensure t :pin melpa
 ;:ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
@@ -2270,6 +2185,8 @@ shell exits, the buffer is killed."
 :mode   ("\\.py\\'" . python-mode)
         ("\\.wsgi$" . python-mode)
 :interpreter ("python" . python-mode)
+:ensure-system-package ((pyenv . "brew install pyenv")
+                        (pipenv . "pip install pipenv"))
 :custom (python-indent-offset 4)
 )
 
@@ -2295,32 +2212,32 @@ shell exits, the buffer is killed."
 :config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 )
 (use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
-(use-package company-jedi :ensure t :pin melpa
-:ensure-system-package (virtualenv . "pip install --user virtualenv")
-:after  (company python-mode)
-:config (add-to-list 'company-backends #'company-jedi)
+
+(use-package lsp-pyright :ensure t :pin melpa 
+:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
-(use-package lsp-python-ms :ensure t :pin melpa :disabled 
-; pyvenv not working 
-:ensure-system-package (pyls . "pip install python-language-server")
-:after (python-mode)
-:hook  (python-mode . lsp)
+(use-package pip-requirements :ensure t :pin melpa :after python-mode
+:hook (python-mode . pip-requirements-mode)
 )
+(use-package pipenv :ensure t :pin melpa :after python-mode
+    :hook (python-mode . pipenv-mode)
+    :config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+    )
 
-(use-package elpy :ensure t :pin melpa
+(use-package elpy :ensure t :pin melpa :disabled
 :ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
 :after python-mode
 :hook (python-mode . elpy-enable)
 :config (eldoc-mode 0)
 )
 
-(use-package anaconda-mode :ensure t :pin melpa
+(use-package anaconda-mode :ensure t :pin melpa :disabled
 :after  python-mode
 :config (add-hook 'python-mode-hook 'anaconda-mode)
         (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
-(use-package company-anaconda :ensure t :pin melpa
+(use-package company-anaconda :ensure t :pin melpa :disabled
 :after  (company-mode anaconda-mode))
 
 ;(use-package virtualenvwrapper
@@ -2498,6 +2415,18 @@ shell exits, the buffer is killed."
 
 (use-package gdscript-mode :ensure t :pin melpa
 :custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
+:hook (gdscript-mode . lsp)
+)
+;(use-package company-godot-gdscript :quelpa (company-godot-gdscript :fetcher github :repo "francogarcia/company-godot-gdscript.el") :disabled
+;:after (gdscript-mode company)
+;:config (add-to-list 'company-backends 'company-godot-gdscript)
+;)
+
+(use-package lsp-java :ensure t :pin melpa :config (add-hook 'java-mode-hook 'lsp))
+(use-package dap-java :ensure nil)
+(use-package gradle-mode :ensure t :pin melpa :config (add-hook 'java-mode-hook 'gradle-mode))
+(use-package groovy-mode :ensure t :pin melpa 
+:mode (".gradle\\'" . groovy-mode)
 )
 
 ; brew install rust base system command
