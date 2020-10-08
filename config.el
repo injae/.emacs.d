@@ -92,6 +92,15 @@
 (setq global-hl-line-mode +1)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode)
+;; emacs large file setting
+(use-package so-long-mode :no-require t
+;; default text parsing direction left -> right 
+:if (version<= "27.1" emacs-version)
+:config
+    (setq bidi-paragraph-direction 'left-to-right)
+    (setq bidi-inhibit-bpa t)
+    (global-so-long-mode 1)
+)
 
 ;; +------------+------------+
 ;; | 일이삼사오 | 일이삼사오 |
@@ -169,6 +178,9 @@
 
 ;(setq warning-minimum-level :error)
 
+; large date blob read
+(setq read-process-output-max (* 1024 1024)) ; 1mb
+  
 (defun new-buffer-save (name buffer-major-mode)
     (interactive)
     (let ((buffer (generate-new-buffer name)))
@@ -450,8 +462,8 @@ list)
 
 (use-package evil-collection :ensure t :pin melpa
 :after (evil)
-:init  (setq evil-collection-setup-minibuffer t)
-       (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
+:custom (evil-collection-setup-minibuffer t)
+:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
        (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
        (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
        (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
@@ -521,8 +533,7 @@ list)
 (use-package doom-themes :ensure t :pin melpa
 :init    (load-theme   'doom-vibrant t)
          ;(enable-theme 'doom-nord)
-:config  (doom-themes-neotree-config)
-         (doom-themes-org-config)
+:config (doom-themes-org-config)
 )
 
 ; 자동으로 Dark mode Light mode 변환
@@ -539,7 +550,8 @@ list)
 )
 
 (use-package all-the-icons :ensure t :pin melpa
-:config (all-the-icons-dired-mode t))
+:config  (all-the-icons-dired-mode)
+)
 (use-package doom-modeline :ensure t :pin melpa
 :hook   (after-init . doom-modeline-init)
 :init   (setq find-file-visit-truename t)
@@ -818,112 +830,13 @@ list)
 
 (use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
 
+(use-package all-the-icons-ivy-rich :ensure t :pin melpa
+:config (all-the-icons-ivy-rich-mode t)
+)
+
 (use-package ivy-rich :ensure t :pin melpa
-:defines (all-the-icons-dir-icon-alist bookmark-alist)
-:functions (all-the-icons-icon-family
-            all-the-icons-match-to-alist
-            all-the-icons-auto-mode-match?
-            all-the-icons-octicon
-            all-the-icons-dir-is-submodule)
-:preface
-(defun ivy-rich-bookmark-name (candidate)
-(car (assoc candidate bookmark-alist)))
-
-(defun ivy-rich-repo-icon (candidate)
-"Display repo icons in `ivy-rich`."
-(all-the-icons-octicon "repo" :height .9))
-
-(defun ivy-rich-org-capture-icon (candidate)
-"Display repo icons in `ivy-rich`."
-(pcase (car (last (split-string (car (split-string candidate)) "-")))
-       ("emacs"    (all-the-icons-fileicon "emacs"      :height .68 :v-adjust .001))
-       ("schedule" (all-the-icons-faicon   "calendar"   :height .68 :v-adjust .005))
-       ("tweet"    (all-the-icons-faicon   "commenting" :height .7  :v-adjust .01))
-       ("link"     (all-the-icons-faicon   "link"       :height .68 :v-adjust .01))
-       ("memo"     (all-the-icons-faicon   "pencil"     :height .7  :v-adjust .01))
-       (_          (all-the-icons-octicon  "inbox"      :height .68 :v-adjust .01))))
-
-(defun ivy-rich-org-capture-title (candidate)
-(let* ((octl  (split-string candidate))
-       (title (pop octl))
-       (desc  (mapconcat 'identity octl " ")))
-      (format "%-25s %s" title (propertize desc 'face `(:inherit font-lock-doc-face)))))
-
-(defun ivy-rich-buffer-icon (candidate)
-"Display buffer icons in `ivy-rich'."
-(when (display-graphic-p)
-    (when-let* ((buffer (get-buffer candidate))
-                (major-mode (buffer-local-value 'major-mode buffer))
-                (icon (if (and (buffer-file-name buffer)
-                                (all-the-icons-auto-mode-match? candidate))
-                        (all-the-icons-icon-for-file candidate)
-                        (all-the-icons-icon-for-mode major-mode))))
-    (if (symbolp icon)
-        (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
-    (unless (symbolp icon)
-        (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
-
-(defun ivy-rich-file-icon (candidate)
-"Display file icons in `ivy-rich'."
-(when (display-graphic-p)
-    (let ((icon (if (file-directory-p candidate)
-                    (cond
-                    ((and (fboundp 'tramp-tramp-file-p)
-                            (tramp-tramp-file-p default-directory))
-                    (all-the-icons-octicon "file-directory"))
-                    ((file-symlink-p candidate)
-                    (all-the-icons-octicon "file-symlink-directory"))
-                    ((all-the-icons-dir-is-submodule candidate)
-                    (all-the-icons-octicon "file-submodule"))
-                    ((file-exists-p (format "%s/.git" candidate))
-                    (all-the-icons-octicon "repo"))
-                    (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
-                        (apply (car matcher) (list (cadr matcher))))))
-                (all-the-icons-icon-for-file candidate))))
-    (unless (symbolp icon) (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
-:hook (ivy-rich-mode . (lambda () (setq ivy-virtual-abbreviate (or (and ivy-rich-mode 'abbreviate) 'name))))
-:init
-(setq ivy-rich-display-transformers-list
-    '(ivy-switch-buffer
-        (:columns
-        ((ivy-rich-buffer-icon)
-        (ivy-rich-candidate (:width 30))
-        (ivy-rich-switch-buffer-size (:width 7))
-        (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-        (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-        (ivy-rich-switch-buffer-project (:width 15 :face success))
-        (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-        :predicate
-        (lambda (cand) (get-buffer cand)))
-        ivy-switch-buffer-other-window
-        (:columns
-        ((ivy-rich-buffer-icon)
-        (ivy-rich-candidate (:width 30))
-        (ivy-rich-switch-buffer-size (:width 7))
-        (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-        (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-        (ivy-rich-switch-buffer-project (:width 15 :face success))
-        (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-        :predicate (lambda (cand) (get-buffer cand)))
-        counsel-M-x          (:columns ((counsel-M-x-transformer (:width 35)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-        counsel-find-file    (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-file-jump    (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-dired-jump   (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-git          (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-recentf      (:columns ((ivy-rich-file-icon) (ivy-rich-candidate (:width 110))))
-        counsel-bookmark     (:columns ((ivy-rich-bookmark-type) (ivy-rich-bookmark-name (:width 30)) (ivy-rich-bookmark-info (:width 80))))
-        counsel-fzf          (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        ivy-ghq-open         (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
-        ivy-ghq-open-and-fzf (:columns ((ivy-rich-repo-icon) (ivy-rich-candidate)))
-        counsel-org-capture  (:columns ((ivy-rich-org-capture-icon) (ivy-rich-org-capture-title)))
-        counsel-describe-function    (:columns ((counsel-describe-function-transformer (:width 45)) (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-        counsel-describe-variable    (:columns ((counsel-describe-variable-transformer (:width 45)) (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-        counsel-projectile-find-file (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))
-        counsel-projectile-find-dir  (:columns ((ivy-rich-file-icon) (counsel-projectile-find-dir-transformer)))
-        counsel-projectile-switch-project (:columns ((ivy-rich-file-icon) (ivy-rich-candidate)))))
-    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-:custom (ivy-rich-parse-remote-buffer nil)
-:config (ivy-rich-mode 1))
+:config (ivy-rich-mode 1)
+)
 
 (use-package smex :ensure t :pin melpa
 :general (leader "fm" #'smex-major-mode-commands)
@@ -954,12 +867,21 @@ list)
     (setq-default neo-dont-be-alone t)
     (add-hook 'neotree-mode-hook (lambda () (display-line-numbers-mode -1) ))
     (setq neo-force-change-root t)
-    (setq neo-theme 'icons)
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-show-hidden-files t)
 )
 (use-package all-the-icons-dired :ensure t :pin melpa
 :after all-the-icons
 :init  (add-hook 'dired-mode-hook 'all-the-dired-mode))
+
+(defun copy-file-name-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((filename (if (equal major-mode 'dired-mode) default-directory (buffer-file-name))))
+        (when filename
+        (kill-new filename)
+            (message "Copied buffer file name '%s' to the clipboard." filename)))
+)
 
 (use-package ace-window :ensure t :pin melpa
 :commands (ace-window)
@@ -1473,6 +1395,12 @@ shell exits, the buffer is killed."
     (add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 )
 
+(use-package all-the-icons-ibuffer :ensure t :pin melpa
+:after all-the-icons
+:hook (ibuffer-mode . all-the-icons-ibuffer-mode)
+)
+
+
 (use-package ibuffer-projectile :ensure t :pin melpa :disabled
 :after (projectile)
 :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
@@ -1654,58 +1582,62 @@ shell exits, the buffer is killed."
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t :pin melpa
 :custom
-    (company-tooltip-align-annotations nil)
-    (company-show-numbers t)
+    ;(company-show-numbers t)
     (company-idle-delay 0)
     (company--transform-candidates nil)
-    (company-dabbrev-downcase nil)
-    (company-minimum-prefix-length 0)
-:general (:keymaps 'company-active-map 
-            "M-n"        'nil
-            "M-p"        'nil
-            "C-n"        'company-select-next
-            "C-p"        'company-select-previous
-            "<tab>"      'company-complete-selection 
-            "<return>"   'company-complete-selection  
-            "C-<return>" 'company-complete-selection)
+    (company-minimum-prefix-length 1)
+    (company-tooltip-align-annotations nil)
 :init   (global-company-mode 1)
-;:config (add-to-list 'company-backends '(company-capf :with company-dabbrev))
-:config (add-to-list 'company-backends 'company-capf)
-;:config (add-to-list 'company-backends '(company-capf :with company-yasnippet))
+:config (add-to-list 'company-backends '(company-capf :with company-yasnippet))
+        (setq company-dabbrev-downcase nil)
+        (company-tng-configure-default)
+
 )
 
 (use-package company-quickhelp :ensure t :pin melpa
-:after company
 :unless (featurep 'lsp)
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :custom (company-quickhelp-delay nil)
 :config (company-quickhelp-mode)
 )
 
-(use-package company-dict :ensure t :pin melpa
-:after  company
+(use-package company-dict :ensure t :pin melpa :disabled
+:after company
 :custom (company-dict-dir (concat user-emacs-directory "dict/"))
         (company-dict-enable-yasnippet t)
-   ;     (company-dict-enable-fuzzy t)
-:config (add-to-list 'company-backends #'company-dict)
+        (company-dict-enable-fuzzy t)
+:config (add-to-list 'company-backends 'company-dict)
         (define-key evil-insert-state-map (kbd "C-x C-k") 'company-dict)
         (setq company-dict-minor-mode-list t)
 )
 
 
 (use-package company-statistics :ensure t :pin melpa
-:after  company
+:after company
 :config (company-statistics-mode)
 )
 
 ;company-quickhelp speed up setting
 (use-package company-posframe :ensure t :pin melpa
+:after company
 :config (company-posframe-mode)
 )
 
+(use-package company-flx :ensure t :pin melpa
+:after company
+:config (company-flx-mode 1)
+)
+
+
+(use-package company-fuzzy :ensure t :pin melpa :disabled
+:after company
+:config (company-fuzzy-mode)
+        (setq company-fuzzy-sorting-backend 'flx)
+        ;(setq company-fuzzy-prefix-ontop t)
+)
+
+; deep learning completion
 (use-package company-tabnine :ensure t :pin melpa :disabled 
-;first in
-:after  company
 :config
     (add-to-list 'company-backends #'company-tabnine)
     (setq company-tabnine-annotations t)
@@ -1715,10 +1647,39 @@ shell exits, the buffer is killed."
 (use-package company-box :ensure t :pin melpa :diminish ""
 :hook   (company-mode . company-box-mode)
 :custom (company-box-max-candidates 30)
-:config (setq company-box-icons-unknown   'fa_question_circle)
+:config (setq company-box-icons-unknown 'fa_question_circle)
+        (setq company-box-color-icon t)
+        (setq company-box-backends-colors nil)
         (setq company-box-icons-yasnippet 'fa_bookmark)
+        (setq company-box-icons-lsp
+            '((1 . fa_text_height) ;; Text
+                (2 . (fa_tags :face font-lock-function-name-face)) ;; Method
+                (3 . (fa_tag :face font-lock-function-name-face)) ;; Function
+                (4 . (fa_tag :face font-lock-function-name-face)) ;; Constructor
+                (5 . (fa_cog :foreground "#FF9800")) ;; Field
+                (6 . (fa_cog :foreground "#FF9800")) ;; Variable
+                (7 . (fa_cube :foreground "#7C4DFF")) ;; Class
+                (8 . (fa_cube :foreground "#7C4DFF")) ;; Interface
+                (9 . (fa_cube :foreground "#7C4DFF")) ;; Module
+                (10 . (fa_cog :foreground "#FF9800")) ;; Property
+                (11 . md_settings_system_daydream) ;; Unit
+                (12 . (fa_cog :foreground "#FF9800")) ;; Value
+                (13 . (md_storage :face font-lock-type-face)) ;; Enum
+                (14 . (md_closed_caption :foreground "#009688")) ;; Keyword
+                (15 . md_closed_caption) ;; Snippet
+                (16 . (md_color_lens :face font-lock-doc-face)) ;; Color
+                (17 . fa_file_text_o) ;; File
+                (18 . md_refresh) ;; Reference
+                (19 . fa_folder_open) ;; Folder
+                (20 . (md_closed_caption :foreground "#009688")) ;; EnumMember
+                (21 . (fa_square :face font-lock-constant-face)) ;; Constant
+                (22 . (fa_cube :face font-lock-type-face)) ;; Struct
+                (23 . fa_calendar) ;; Event
+                (24 . fa_square_o) ;; Operator
+                (25 . fa_arrows)) ;; TypeParameter
+            )
         ;(company-box-show-single-candidate t)
-        ;(company-box-icons-alist 'company-box-icons-all-the-icons)
+        ;(setq company-box-icons-alist 'company-box-icons-all-the-icons)
         ;(company-box-doc-delay 0.5)
 )
 
@@ -2093,8 +2054,8 @@ shell exits, the buffer is killed."
 :general (leader "hrf" 'rust-format-buffer)
 :config  (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
          (setq lsp-rust-server 'rust-analyzer)
+         (setq lsp-rust-analyzer-cargo-watch-enable nil) ;; large project에서 cargo crate를 check하는것을 방지
          ;(lsp-rust-analyzer-inlay-hints-mode t) ; display type hint 
-         ;(setq lsp-rust-analyzer-cargo-watch-enable nil)
          ;(setq rust-format-on-save t)
          ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
@@ -2369,6 +2330,7 @@ shell exits, the buffer is killed."
     (interactive)
     (new-buffer "*RC Client*" #'restclient-mode)
     (restclient-response-mode))
+:commands new-restclient-buffer
 )
 
 (use-package company-restclient :ensure t :pin melpa
