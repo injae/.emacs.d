@@ -53,4 +53,4 @@
 )
 
 (provide 'cpp-mode)
-;;; test.el ends here
+;;; cpp-mode.el ends here

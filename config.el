@@ -56,11 +56,6 @@
 :init (tooltip-mode -1)
 )
 
-;(use-package modern-fringe-mode  :no-require t
-;:if window-system
-;:init (fringe-mode -1)
-;)
-
 (use-package mouse :no-require t
 :if window-system
 :init (xterm-mouse-mode)
@@ -117,6 +112,10 @@
 (set-keyboard-coding-system  'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
+; some font use mode speed up config (ex: org-superstar)
+(setq inhibit-compacting-font-caches t)
+
 ; 한글과 영어의 글자 간격문제 해결을 위한 방법 and Fira Code 지정 방법 아직 맥에서만 적용
 (set-face-attribute   'default            nil       :family "Fira Code" :height 120)
 (set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
@@ -258,9 +257,9 @@ temp
     (setq i (1+ i))))
 list)
 
-(use-package modern-fringes :ensure t :pin melpa :disabled
-:config (modern-fringes-mode)
-        (modern-fringes-invert-arrows)
+(use-package modern-fringes :ensure t :pin melpa
+:config (modern-fringes-invert-arrows)
+        (modern-fringes-mode)
 )
 
 ;(use-package composite 
@@ -289,8 +288,8 @@ list)
 )
 
 (use-package evil :ensure t :pin melpa
-:custom (evil-want-keybinding nil)
-        (evil-want-integration t)
+:custom (evil-want-integration t)
+        (evil-want-keybinding nil)
         (evil-want-C-u-scroll t)
         (evil-symbol-word-search t)
 :init   (evil-mode 1)
@@ -363,6 +362,7 @@ list)
 )
 
 (use-package evil-exchange :ensure t :pin melpa
+; gx gx (gx로 선택한 영역 교환)
 :after evil
 :config (evil-exchange-install)
 )
@@ -440,7 +440,7 @@ list)
 
 (use-package evil-smartparens :ensure t :pin melpa
 :after (evil smartparens)
-:hook (smartparens-enable . evil-smartparens-mode)
+:hook (smartparens-mode . evil-smartparens-mode)
 ;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 )
 
@@ -457,7 +457,7 @@ list)
 )
 
 (use-package evil-extra-operator :ensure t :pin melpa :after (evil fold-this)
-:config (global-evil-extra-operator-mode 1)
+    :config (global-evil-extra-operator-mode 1)
 )
 
 (use-package evil-collection :ensure t :pin melpa
@@ -474,9 +474,9 @@ list)
        (evil-collection-buff-menu-setup)
        (evil-collection-package-menu-setup)
        ;(evil-collection-eshell-setup)
+       (evil-collection-ivy-setup)
        (evil-collection-vterm-setup) 
        (evil-collection-which-key-setup)
-       (evil-collection-evil-mc-setup)
        (evil-collection-calc-setup)
        (evil-collection-init)
 )
@@ -509,6 +509,10 @@ list)
 )
 
 (use-package elmacro :ensure t :pin melpa :disabled :config (elmacro-mode))
+; C-x ( 메크로 시작
+; C-x ) 메크로 종료
+; C-x e 메크로 실행
+; C-u 10 C-x e
 
 (use-package beacon :ensure t :pin melpa :init (beacon-mode t))
 (use-package git-gutter :ensure t :pin melpa :defer t
@@ -565,7 +569,7 @@ list)
         (setq doom-modeline-current-window t)
         (setq doom-modeline-env-version t)
         (setq doom-modeline-env-enable-python t)
-        (setq doom-modeline-python-executable "python")
+        (setq doom-modeline-python-executable "pipenv")
         (setq doom-modeline-env-enable-ruby t)
         (setq doom-modeline-env-ruby-executable "ruby")
         (setq doom-modeline-env-enable-elixir t)
@@ -693,6 +697,11 @@ list)
 :config (setq show-paren-delay 0)
 )
 
+(use-package expand-region :ensure t :pin melpa
+:general (leader "tw" '(er/expand-region :wk "Text Wrap"))
+)
+
+
 (use-package rainbow-delimiters :ensure t :pin melpa
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
@@ -715,7 +724,13 @@ list)
 :config (setq which-key-allow-evil-operators t)
         (setq which-key-show-operator-state-maps t)
         ;(which-key-setup-minibuffer)
-        
+)
+(use-package which-key-posframe :ensure t :pin melpa :disabled
+:after which-key
+:config
+    (setq which-key-posframe-border-width 15)
+    (setq which-key-posframe-poshandler 'posframe-poshandler-window-top-center)
+    (which-key-posframe-mode)
 )
 
 (use-package avy :ensure t :pin melpa
@@ -751,7 +766,6 @@ list)
 :after ivy
 :general ("C-s"    'swiper)
          ("C-S-s"  'swiper-all)
-
 :config (setq swiper-action-recenter t)
         (setq swiper-goto-start-of-match t)
         (setq swiper-stay-on-quit t)
@@ -811,8 +825,10 @@ list)
 :after  (counsel projectile)
 :custom (projectile-completion-system 'ivy)
         (counsel-find-file-ignore-regexp ".ccls-cache/")
-:general (leader "fp" '(counsel-projectile-find-file :wk "Search in Project")
-                 "fG" '(counsel-projectile-rg        :wk "Grep in Project"))
+:general (leader "fp" '(counsel-projectile-find-file-dwim   :wk "Search in Project")
+                 "fG" '(counsel-projectile-rg               :wk "Grep in Project")
+                 "bS" '(counsel-projectile-switch-to-buffer :wk "Search Buffer in Project"))
+          
 :config (counsel-projectile-mode 1)
 
 )
@@ -885,7 +901,9 @@ list)
 
 (use-package ace-window :ensure t :pin melpa
 :commands (ace-window)
-:general (leader "wo" 'ace-window)
+:general (leader "wo" 'ace-window
+                 "wd" 'delete-other-windows)
+         ;("C-w C-o" 'ace-window)
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
@@ -982,7 +1000,7 @@ list)
 :config (evil-ediff-init)
 )
 
-(use-package undo-tree :ensure t :pin melpa :diminish undo-tree-mode
+(use-package undo-tree :ensure t :pin melpa :diminish undo-tree-mode :disabled
 :commands (undo-tree-undo undo-tree-redo)
 :general (leader "uu" 'undo-tree-undo
                  "ur" 'undo-tree-redo)
@@ -993,6 +1011,22 @@ list)
     (defalias 'undo 'undo-tree-undo)
 :config
     (global-undo-tree-mode)
+)
+
+(use-package undo-fu :ensure t :pin melpa
+:after evil
+:general (leader "uu" 'undo-fu-only-undo
+                 "ur" 'undo-fu-only-redo)
+:config
+    (global-undo-tree-mode -1) ; evil-mode auto call undo-tree-mode
+    (evil-define-key 'normal 'global "u"         #'undo-fu-only-undo)
+    (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
+)
+
+(use-package undo-fu-session :ensure t :pin melpa
+:after undo-fu
+:custom (undo-fu-session-incompletiable-files '("/COMMENT_EDITMSG\\'" "/git-rebase-todo\\'"))
+:config (global-undo-fu-session-mode)
 )
 
 ;(use-package undo-propose :ensure t :pin melpa
@@ -1013,6 +1047,25 @@ list)
 :init   (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
         (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
 :config (setq org-startup-indented   nil)
+)
+
+; |:TODO:|
+(use-package svg-tag-mode :load-path "lisp/svg-tag-mode" :disabled
+:config
+    (defface svg-tag-custom-face
+        `((t :foreground "white"
+             :background "orange"
+             :box (:line-width 1 :color "orange" :style nil)
+             :family ,(face-attribute 'default :family)
+             :weight ,(face-attribute 'default :weight)
+              :height ,(- (face-attribute 'default :height) 5)))
+        "Custom face for tag"
+        :group 'svg-tag-mode)
+    (setq svg-tag-normal (svg-tag-make "TODO" 'svg-tag-custom-face 2 1 3))
+    (setq svg-tag-note   (svg-tag-make "NOTE" nil 2 1 3))
+    (setq svg-tags '(("\\(:TODO:\\)" 1 `(face nil display ,svg-tag-normal))
+                     ("\\(:NOTE:\\)" 1 `(face nil display ,svg-tag-note))))
+    (svg-tag-mode)
 )
 
 (use-package org-superstar :ensure t :pin melpa
@@ -1770,20 +1823,22 @@ shell exits, the buffer is killed."
 ;      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
-(use-package ccls :ensure t :pin melpa ; with lsp or eglot mode
+(use-package ccls :ensure t :pin melpa ;:disabled; with lsp or eglot mode
 :hook   ((c-mode-common) . (lambda () (lsp)))
 :custom (ccls-sem-highlight-method 'font-lock)
         (ccls-use-default-rainbow-sem-highlight)
         (ccls-extra-init-params '(:client (:snippetSupport :json-false)))
 :config ;(setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-        ;(setq ccls-initialization-options '(:clang (:extraArgs ["-isystem/usr/local/opt/llvm/include/c++/v1"
-        ;                                                        "-isystem/usr/local/Cellar/llvm/10.0.0_3/lib/clang/10.0.0/include"
-        ;                                                       ; "-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1/"   
-        ;                                                        "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
-        ;                                                        "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-        ;                                                       ; "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/"
-        ;                                                       ]
-        ;                                            :resourceDir "/usr/local/Cellar/llvm/10.0.0_3/lib/clang/10.0.0")))
+    (setq ccls-initialization-options '(:clang (:extraArgs ["-isystem /usr/local/opt/llvm/include/c++/v1"
+                                                            "-isystem /usr/local/opt/llvm/lib/clang/11.0.0/include"
+                                                           ;"-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+                                                            "-isystem /usr/local/Cellar/llvm/11.0.0_1/lib/clang/11.0.0/include"
+                                                           ;"-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1/"   
+                                                           ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
+                                                           ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+                                                           ; "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/"
+                                                             ]
+                                                    :resourceDir "/usr/local/Cellar/llvm/11.0.0_1/lib/clang/11.0.0")))
 )
 
 (use-package cppm :no-require t
@@ -2017,7 +2072,6 @@ shell exits, the buffer is killed."
     (slime-setup '(slime-fancy))
 )
 (use-package elisp-slime-nav :ensure t :pin melpa :diminish elisp-slime-nav-mode
-:after slime
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
 
@@ -2144,15 +2198,15 @@ shell exits, the buffer is killed."
 
 (use-package python-mode
 :mode   ("\\.py\\'" . python-mode)
-        ("\\.wsgi$" . python-mode)
-:interpreter ("python" . python-mode)
+;        ("\\.wsgi$" . python-mode)
+;:interpreter ("python" . python-mode)
 :ensure-system-package ((pyenv . "brew install pyenv")
                         (pipenv . "pip install pipenv"))
-:custom (python-indent-offset 4)
+:config (setq python-indent-offset 4)
 )
 
 (use-package pyvenv :ensure t :pin melpa
-:after  python-mode
+;:after  python-mode
 :hook   (python-mode . pyvenv-mode)
 :config (pyvenv-tracking-mode)
 )
@@ -2178,13 +2232,13 @@ shell exits, the buffer is killed."
 :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
-(use-package pip-requirements :ensure t :pin melpa :after python-mode
+(use-package pip-requirements :ensure t :pin melpa :disabled;:after python-mode
 :hook (python-mode . pip-requirements-mode)
 )
-(use-package pipenv :ensure t :pin melpa :after python-mode
-    :hook (python-mode . pipenv-mode)
-    :config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
-    )
+(use-package pipenv :ensure t :pin melpa ;:after python-mode
+:hook (python-mode . pipenv-mode)
+:init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+)
 
 (use-package elpy :ensure t :pin melpa :disabled
 :ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
@@ -2384,11 +2438,15 @@ shell exits, the buffer is killed."
 ;:config (add-to-list 'company-backends 'company-godot-gdscript)
 ;)
 
-(use-package lsp-java :ensure t :pin melpa :config (add-hook 'java-mode-hook 'lsp))
-(use-package dap-java :ensure nil)
+;(use-package lsp-java :ensure t :pin melpa :config (add-hook 'java-mode-hook 'lsp))
+;(use-package dap-java :ensure nil)
 (use-package gradle-mode :ensure t :pin melpa :config (add-hook 'java-mode-hook 'gradle-mode))
 (use-package groovy-mode :ensure t :pin melpa 
 :mode (".gradle\\'" . groovy-mode)
+)
+
+(use-package kotlin-mode :ensure t :pin melpa
+:config (add-hook 'kotlin-mode-hook 'lsp)
 )
 
 ; brew install rust base system command
