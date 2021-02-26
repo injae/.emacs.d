@@ -5,27 +5,50 @@
 
 ;(require 'esup) ; emacs config profiling
 (when (eval-when-compile (version< emacs-version "27"))
-    (load "~/.emacs.d/early-init.el")
-    (package-initialize))
+    (load "~/.emacs.d/early-init.el"))
+   ; (package-initialize)
+   ;)
+   ;)
 
-    (unless (package-installed-p 'use-package)
-        (package-refresh-contents)
-        (package-install 'use-package t))
+;(unless (package-installed-p 'use-package)
+;    (package-refresh-contents)
+;    (package-install 'use-package t))
 
-(use-package use-package :ensure t :pin melpa
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+(setq straight-vc-git-default-clone-depth 1)
+
+
+(use-package use-package :straight t
 :custom (use-package-compute-statistics t)
 )
 
-(use-package auto-package-update :ensure t :pin melpa
+(use-package el-patch :straight t)
+
+(use-package auto-package-update :straight t
 :custom (auto-package-update-delete-old-versions t)
         (auto-package-update-prompt-before-update t)
         ;(auto-package-update-hide-results t)
 :config (auto-package-update-maybe)
 )
-(use-package use-package-ensure-system-package :ensure t :pin melpa)
 
-;(use-package quelpa-use-package :ensure t :pin melpa :config (setq quelpa-update-melpa-p nil))
-(use-package org :ensure t :pin melpa :mode ("\\.org\\'" . org-mode)
+(use-package use-package-ensure-system-package :straight t)
+
+(use-package org :straight t :mode ("\\.org\\'" . org-mode)
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 
@@ -33,7 +56,7 @@
 ; "Org Tangle Speed up to use emacs-lisp byte compile config.org -> config.elc"
 ;    (interactive)
 ;    (when (equal (buffer-file-name) (expand-file-name "config.org" user-emacs-directory))
-;        (org-babel-tangle nil (expand-file-name "tconfig.el" user-emacs-directory))
+
 ;        (byte-compile-file    (expand-file-name "tconfig.el" user-emacs-directory))))
 ;
 ;(add-hook 'after-save-hook #'tangle-byte-compile-config-org-file)
@@ -46,8 +69,8 @@
 ;:config (literate-elisp-load (expand-file-name "config.org" user-emacs-directory))
 ;)
 
-(setq-default custom-file "~/.emacs.d/custom-variable.el")
-(when (file-exists-p custom-file) (load-file custom-file))
+;(setq-default custom-file "~/.emacs.d/custom-variable.el")
+;(when (file-exists-p custom-file) (load-file custom-file))
 
 
 
@@ -59,8 +82,3 @@
 ;;; 
 
 
-   ; (unless (and (package-installed-p 'delight)
-   ;              (package-installed-p 'use-package))
-   ;     (package-refresh-contents)
-   ;     (package-install 'delight t)
-   ;     (package-install 'use-package t))

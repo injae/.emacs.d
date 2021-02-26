@@ -8,19 +8,19 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-(use-package emacs-gc-setting :no-require t
+(use-package emacs-gc-setting :no-require :straight nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
       (setq read-process-output-max (* 1024 1024))
       ;(run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
-(use-package esup :ensure t :pin melpa)
+(use-package esup :straight t)
 
 
 
-;(use-package bug-hunter :ensure t :pin melpa)
-;(use-package explain-pause-mode :quelpa (explain-pause-mode :fetcher github :repo "lastquestion/explain-pause-mode")
-;    :config (explain-pause-mode t)
-;)
+;(use-package bug-hunter :ensure t )
+(use-package explain-pause-mode :straight (explain-pause-mode :type git :host github
+                                              :repo "lastquestion/explain-pause-mode")
+  :config (explain-pause-mode))
 
 (setq ad-redefinition-action 'accept)
 (setq max-lisp-eval-depth 10000)
@@ -33,7 +33,7 @@
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
 (setq *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
-(use-package scroll-bar :no-require t
+(use-package scroll-bar :no-require t :straight nil
 :if window-system
 :init (scroll-bar-mode -1)
 :config
@@ -41,27 +41,27 @@
     (setq scroll-conservatively 10000)
 )
 
-(use-package tool-bar :no-require t
+(use-package tool-bar :no-require t :straight nil
 :if window-system
 :init (tool-bar-mode -1)
 )
 
-(use-package menu-bar :no-require t
+(use-package menu-bar :no-require t :straight nil
 :if window-system
 :init (menu-bar-mode -1)
 )
 
-(use-package tooltip-mode :no-require t
+(use-package tooltip-mode :no-require t :straight nil
 :if window-system
 :init (tooltip-mode -1)
 )
 
-(use-package mouse :no-require t
+(use-package mouse :no-require t :straight nil
 :if window-system
 :init (xterm-mouse-mode)
 )
 
-(use-package ns-auto-titlebar :ensure t :pin melpa
+(use-package ns-auto-titlebar :straight t
 :if *is-mac*
 :config (ns-auto-titlebar-mode)
         (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -80,6 +80,7 @@
 ; layout save setting
 (winner-mode t)
 ;(desktop-save-mode 1)
+(setq frame-resize-pixelwise t) ; emacs plus fullscreen bugfix option
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message t)
 (setq inhibit-splash-screen t)
@@ -88,7 +89,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode)
 ;; emacs large file setting
-(use-package so-long-mode :no-require t
+(use-package so-long-mode :no-require t :straight nil
 ;; default text parsing direction left -> right 
 :if (version<= "27.1" emacs-version)
 :config
@@ -143,7 +144,7 @@
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
 
-(use-package restart-emacs :ensure t :pin melpa :defer t)
+(use-package restart-emacs :straight t)
 
 (defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
 (defun launch-separate-emacs-under-x () (call-process "sh" nil nil nil "-c" "emacs &"))
@@ -161,13 +162,13 @@
     (load-file (expand-file-name "~/.emacs.d/config.el"))
 )
 
-(use-package paradox :ensure t :pin melpa
-;https://github.com/Malabarba/paradox
-:commands (package-list-packages)
-:config (paradox-enable)
-)
+;(use-package paradox :ensure t :disabled
+;;https://github.com/Malabarba/paradox
+;:commands (package-list-packages)
+;:config (paradox-enable)
+;)
 
-(use-package drag-stuff :ensure t :pin melpa :defer t
+(use-package drag-stuff :straight t  :defer t
 :after evil
 :init (drag-stuff-global-mode t)
         (drag-stuff-define-keys)
@@ -202,12 +203,12 @@
     (new-buffer "untitled" 'text-mode)
 )
 
-(use-package hungry-delete :ensure t :pin melpa :defer t :disabled
+(use-package hungry-delete :straight t  :defer t :disabled
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
 
-(use-package face-picker :no-require t
+(use-package face-picker :no-require t :straight nil
 :preface
 (defun what-face (pos)
      (interactive "d")
@@ -257,7 +258,7 @@ temp
     (setq i (1+ i))))
 list)
 
-(use-package modern-fringes :ensure t :pin melpa
+(use-package modern-fringes :straight t 
 :config (modern-fringes-invert-arrows)
         (modern-fringes-mode)
 )
@@ -274,7 +275,7 @@ list)
 ;                                   `([,(cdr char-regexp) 0 font-shape-gstring]))))
 ;)
 
-(use-package keypression :ensure t :pin melpa
+(use-package keypression :straight t 
 :commands keypression-mode
 :custom (keypression-use-child-frame t)
         (keypression-fade-out-delay 1.0)
@@ -287,7 +288,7 @@ list)
         (keypression-font-face-attribute '(:width normal :height 200 :weight bold))
 )
 
-(use-package evil :ensure t :pin melpa
+(use-package evil :straight t 
 :custom (evil-want-integration t)
         (evil-want-keybinding nil)
         (evil-want-C-u-scroll t)
@@ -297,7 +298,7 @@ list)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
 )
 
-(use-package general :ensure t :pin melpa
+(use-package general :straight t 
 :after evil
 :init (setq general-override-states '(insert emacs  hybrid   normal
                                       visual motion override operator replace))
@@ -334,13 +335,13 @@ list)
               "wl"    '(enlarge-window-horizontally :wk "Bootom size down"))
 )
 
-(use-package evil-visualstar :ensure t :pin melpa
+(use-package evil-visualstar :straight t 
 ; vim visual mode에서 * #를 사용해서 같은 단어 검색가능
 :after evil
 :config (global-evil-visualstar-mode t)
 )
 
-(use-package evil-surround :ensure t :pin melpa
+(use-package evil-surround :straight t 
 ; @call-function
 ; visual mode S- or gS-
 ; normal mode ys- or yS-
@@ -361,30 +362,30 @@ list)
 :config (global-evil-surround-mode 1)
 )
 
-(use-package evil-exchange :ensure t :pin melpa
+(use-package evil-exchange :straight t 
 ; gx gx (gx로 선택한 영역 교환)
 :after evil
 :config (evil-exchange-install)
 )
 
-(use-package evil-indent-plus :ensure t :pin melpa
+(use-package evil-indent-plus :straight t 
 :after evil
 :config (evil-indent-plus-default-bindings)
 )
 
-(use-package evil-goggles :ensure t :pin melpa :after evil
+(use-package evil-goggles :straight t  :after evil
 :config (evil-goggles-mode)
         (setq evil-goggles-pulse t)
         (setq evil-goggles-duration 0.500)
 )
 
-(use-package evil-traces :ensure t :pin melpa :after evil
+(use-package evil-traces :straight t  :after evil
 ; move: m +{n}, delete: +{n},+{n}d, join: .,+{n}j glboal: g/{target}/{change}
 :config (evil-traces-use-diff-faces)
         (evil-traces-mode)
 )
 
-(use-package evil-mc :ensure t :pin melpa :disabled
+(use-package evil-mc :straight t  :disabled
 :after evil
 :preface
       (defun user-evil-mc-make-cursor-here ()
@@ -398,7 +399,7 @@ list)
 :config (global-evil-mc-mode 1)
 )
 
-(use-package evil-nerd-commenter :ensure t :pin melpa :after evil
+(use-package evil-nerd-commenter :straight t  :after evil
 :general (leader "c" '(:wk "comment")
                  "ci" 'evilnc-comment-or-uncomment-lines
                  "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -409,7 +410,7 @@ list)
                  "\\" 'evilnc-comment-operator)
 )
 
-(use-package evil-args :ensure t :pin melpa :after evil
+(use-package evil-args :straight t  :after evil
 ; change argument: c-i-a, delete arguemnt: d-a-a
 :config (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
         (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
@@ -421,30 +422,30 @@ list)
 )
 
 
-(use-package evil-multiedit :ensure t :pin melpa :disabled)
-(use-package evil-iedit-state :ensure t :pin melpa :after (evil iedit))
+(use-package evil-multiedit :straight t  :disabled)
+(use-package evil-iedit-state :straight t  :after (evil iedit))
 
-(use-package evil-matchit :ensure t :pin melpa
+(use-package evil-matchit :straight t 
 :after evil
 :config (global-evil-matchit-mode 1)
 )
 
-(use-package evil-lion :ensure t :pin melpa
+(use-package evil-lion :straight t 
 ; gl ${operator}
 :config (evil-lion-mode)
 )
 
-(use-package evil-escape :ensure t :pin melpa :disabled
+(use-package evil-escape :straight t  :disabled
 :config (setq-default evil-escape-key-sequence "jk")
 )
 
-(use-package evil-smartparens :ensure t :pin melpa
+(use-package evil-smartparens :straight t 
 :after (evil smartparens)
 :hook (smartparens-mode . evil-smartparens-mode)
 ;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 )
 
-(use-package evil-numbers :ensure t :pin melpa
+(use-package evil-numbers :straight t 
 ;https://github.com/cofi/evil-numbers
 :after evil
 :general (leader "="     '(evil-numbers/inc-at-pt :wk "++")
@@ -456,11 +457,11 @@ list)
                  "C-c -" '(evil-numbers/dec-at-pt :wk "--"))
 )
 
-(use-package evil-extra-operator :ensure t :pin melpa :after (evil fold-this)
+(use-package evil-extra-operator :straight t  :after (evil fold-this)
     :config (global-evil-extra-operator-mode 1)
 )
 
-(use-package evil-collection :ensure t :pin melpa
+(use-package evil-collection :straight t 
 :after (evil)
 :custom (evil-collection-setup-minibuffer t)
 :init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
@@ -481,12 +482,12 @@ list)
        (evil-collection-init)
 )
 
-(use-package buffer-zoom :no-require t
+(use-package buffer-zoom :no-require t :straight nil
 :general (leader "tu" 'text-scale-increase
                  "td" 'text-scale-decrease)
 )
 
-(use-package sudo-mode :no-require t
+(use-package sudo-mode :no-require t :straight nil
 :preface
 (defun sudo-find-file (file-name)
     "sudo open"
@@ -496,26 +497,26 @@ list)
 :general (leader "fs" #'sudo-find-file)
 )
 
-(use-package goto-last-change :ensure t :pin melpa :defer t
+(use-package goto-last-change :straight t  :defer t
 ;https://github.com/camdez/goto-last-change.el
 :general (leader "fl" 'goto-last-change)
 )
 
-(use-package no-littering :ensure t :pin melpa
+(use-package no-littering :straight t 
 :config (require 'recentf)
         (add-to-list 'recentf-exclude no-littering-var-directory)
         (add-to-list 'recentf-exclude no-littering-etc-directory)
         (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 )
 
-(use-package elmacro :ensure t :pin melpa :disabled :config (elmacro-mode))
+(use-package elmacro :straight t  :disabled :config (elmacro-mode))
 ; C-x ( 메크로 시작
 ; C-x ) 메크로 종료
 ; C-x e 메크로 실행
 ; C-u 10 C-x e
 
-(use-package beacon :ensure t :pin melpa :init (beacon-mode t))
-(use-package git-gutter :ensure t :pin melpa :defer t
+(use-package beacon :straight t  :init (beacon-mode t))
+(use-package git-gutter :straight t  :defer t
 :init
     (setq-default display-line-numbers-width 3)
     (global-display-line-numbers-mode t)
@@ -534,7 +535,7 @@ list)
 )
 
 (setq custom-safe-themes t)
-(use-package doom-themes :ensure t :pin melpa
+(use-package doom-themes :straight t 
 :init    (load-theme   'doom-vibrant t)
          ;(enable-theme 'doom-nord)
 :config (doom-themes-org-config)
@@ -553,10 +554,10 @@ list)
 :config (run-with-idle-timer 60 t (lambda () (set-system-dark-mode)))  ; 1분마다, repeat
 )
 
-(use-package all-the-icons :ensure t :pin melpa
-:config  (all-the-icons-dired-mode)
+(use-package all-the-icons :straight t 
+:config  
 )
-(use-package doom-modeline :ensure t :pin melpa
+(use-package doom-modeline :straight t 
 :hook   (after-init . doom-modeline-init)
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
@@ -581,32 +582,32 @@ list)
         (setq doom-modeline-env-enable-rust t)
         (setq doom-modeline-env-rust-executable "rustc")
         (setq doom-modeline-github t)
-        (setq doom-modeline-iconer-state-icon t)
-        (setq doom-modeline--battery-status t)
+        ;(setq doom-modeline-iconer-state-icon t)
+        ;(setq doom-modeline--battery-status t)
         (setq doom-modeline--flycheck-icon t)
         (setq doom-modeline-current-window t)
         (setq doom-modeline-major-mode-color-icon t)
 )
 
-(use-package hide-mode-line :ensure t :pin melpa
+(use-package hide-mode-line :straight t 
 :after (neotree)
 :hook  (neotree-mode . hide-mode-line-mode)
 )
 
-(use-package nyan-mode :ensure t :pin melpa
+(use-package nyan-mode :straight t 
 ;:after  (doom-modeline)
 :config (nyan-mode)
         (setq-default nyan-wavy-trail t)
         (nyan-start-animation)
         (nyan-refresh)
 )
-(use-package fancy-battery :ensure t :pin melpa
+(use-package fancy-battery :straight t 
 :hook   (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t)
 )
 
-(use-package diminish :ensure t :pin melpa :defer t
+(use-package diminish :straight t  :defer t
 :init
     (diminish 'c++-mode "C++ Mode")
     (diminish 'c-mode   "C Mode"  )
@@ -622,18 +623,18 @@ list)
 ;    (add-hook 'perl-mode-hook         'hs-minor-mode)
 ;    (add-hook 'sh-mode-hook           'hs-minor-mode)
 
-(use-package aggressive-indent :ensure t :pin melpa :disabled
+(use-package aggressive-indent :straight t  :disabled
 ; https://github.com/Malabarba/aggressive-indent-mode
 :config (electric-indent-mode nil)
 ;exclud mode
 ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 )
 
-(use-package smart-tabs-mode :ensure t :pin melpa :defer t :disabled
+(use-package smart-tabs-mode :straight t  :defer t :disabled
 :config (smart-tabs-insinuate 'c 'c++)
 )
 
-(use-package indent-guide :ensure t :disabled
+(use-package indent-guide :straight t :disabled
 ; 문자로 표시하기 때문에 예쁘지 않음
 :hook (prog-mode text-mode)
 :config
@@ -644,13 +645,13 @@ list)
     (indent-guide-mode)
 )
 
-(use-package highlight-indentation :ensure t :pin melpa :disabled
+(use-package highlight-indentation :straight t  :disabled
 :hook   (prog-mode text-mode)
 :config ;(highlight-indentation-mode)
 )
 
 
-(use-package highlight-indent-guides :ensure t :disabled
+(use-package highlight-indent-guides :straight t :disabled
 :hook (prog-mode text-mode)
 :config
     (highlight-indent-guides-mode)
@@ -662,7 +663,7 @@ list)
     (setq highlight-indent-guides-method 'column)
 )
 
-(use-package indent4-mode :no-require t
+(use-package indent4-mode :no-require t :straight nil
 :preface
     (defun my-set-indent (n)
         (setq-default tab-width n)
@@ -691,22 +692,22 @@ list)
     (setq-default indent-tabs-mode nil)
 )
 
-(use-package paren :ensure t :pin melpa
+(use-package paren :straight t 
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
 )
 
-(use-package expand-region :ensure t :pin melpa
+(use-package expand-region :straight t 
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
 
 
-(use-package rainbow-delimiters :ensure t :pin melpa
+(use-package rainbow-delimiters :straight t 
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package smartparens :ensure t :pin melpa
+(use-package smartparens :straight t 
 :general (leader "pr " 'sp-rewrap-sexp
                  "pll" 'sp-forward-slurp-sexp
                  "phh" 'sp-backward-slurp-sexp
@@ -715,17 +716,17 @@ list)
 :init (smartparens-global-mode)
 )
 ; elisp double quote problem fix setting
-(use-package smartparens-config :ensure smartparens)
+;(use-package smartparens-config :straight smartparens :straight nil)
 
-(use-package hydra :ensure t :pin melpa :defer t)
+(use-package hydra :straight t  :defer t)
 
-(use-package which-key :ensure t :pin melpa
+(use-package which-key :straight t 
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
         (setq which-key-show-operator-state-maps t)
         ;(which-key-setup-minibuffer)
 )
-(use-package which-key-posframe :ensure t :pin melpa :disabled
+(use-package which-key-posframe :straight t  :disabled
 :after which-key
 :config
     (setq which-key-posframe-border-width 15)
@@ -733,12 +734,12 @@ list)
     (which-key-posframe-mode)
 )
 
-(use-package avy :ensure t :pin melpa
+(use-package avy :straight t 
 :general (leader "jl" '(avy-goto-line :wk "Jump to line")
                  "jw" '(avy-goto-char :wk "Jump to word"))
 )
 
-(use-package ivy :ensure t :pin melpa
+(use-package ivy :straight t 
 :after evil-collection
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
@@ -762,7 +763,7 @@ list)
 :config (counsel-mode)
 )
 
-(use-package swiper :ensure t :pin melpa
+(use-package swiper :straight t 
 :after ivy
 :general ("C-s"    'swiper)
          ("C-S-s"  'swiper-all)
@@ -771,7 +772,7 @@ list)
         (setq swiper-stay-on-quit t)
 )
 
-(use-package ivy-posframe :ensure t :pin melpa
+(use-package ivy-posframe :straight t 
 :after ivy
 :custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
         (ivy-posframe-height-alist            '((t . 20)))
@@ -780,48 +781,48 @@ list)
 :config (ivy-posframe-mode t)
 )
 
-(use-package counsel-osx-app :ensure t :pin melpa
+(use-package counsel-osx-app :straight t 
 :after counsel
 :general (leader "fa" '(counsel-osx-app :wk "Execute OSX App"))
 )
 
-(use-package counsel-fd :ensure t :pin melpa :disabled
+(use-package counsel-fd :straight t  :disabled
 :after counsel
 :commands (counsel-fd-dired-jump counsel-fd-file-jump)
 )
 
 
-(use-package ivy-yasnippet :ensure t :pin melpa
+(use-package ivy-yasnippet :straight t 
 :after (ivy yasnippet)
 :general  ("C-c C-y" 'ivy-yasnippet)
 :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
-(use-package historian :ensure t :pin melpa
+(use-package historian :straight t 
 :after  (ivy)
 :config (historian-mode)
 )
 
-(use-package ivy-historian :ensure t :pin melpa
+(use-package ivy-historian :straight t 
 :after  (ivy historian)
 :config (ivy-historian-mode)
 )
 
-(use-package all-the-icons-ivy :ensure t :pin melpa
+(use-package all-the-icons-ivy :straight t 
 :config (all-the-icons-ivy-setup)
 )
 
-(use-package ivy-xref :ensure t :pin melpa :disabled
+(use-package ivy-xref :straight t  :disabled
 :after (ivy xref)
 :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 )
 
-(use-package lsp-ivy :ensure t :pin melpa
+(use-package lsp-ivy :straight t 
 :general (leader "hs" '(lsp-ivy-workspace-symbol :wk "Search Symbol")
                  "hS" '(lsp-ivy-global-workspace-symbol :wk "Search Global Symbol"))
 )
 
-(use-package counsel-projectile :ensure t :pin melpa
+(use-package counsel-projectile :straight t 
 :after  (counsel projectile)
 :custom (projectile-completion-system 'ivy)
         (counsel-find-file-ignore-regexp ".ccls-cache/")
@@ -832,34 +833,34 @@ list)
 :config (counsel-projectile-mode 1)
 
 )
-(use-package counsel-world-clock :ensure t :pin melpa
+(use-package counsel-world-clock :straight t 
 :after (counsel)
 :general (:keymaps 'counsel-mode-map "C-c c k"  'counsel-world-clock)
 )
 
-(use-package counsel-tramp :ensure t :pin melpa
+(use-package counsel-tramp :straight t 
 :after counsel
 :commands counsel-tramp
 :general ("C-c s" 'counsel-tramp)
 :init (setq tramp-default-method "ssh")
 )
 
-(use-package counsel-org-clock :ensure t :pin melpa :after (counsel org))
+(use-package counsel-org-clock :straight t  :after (counsel org))
 
-(use-package all-the-icons-ivy-rich :ensure t :pin melpa
+(use-package all-the-icons-ivy-rich :straight t 
 :config (all-the-icons-ivy-rich-mode t)
 )
 
-(use-package ivy-rich :ensure t :pin melpa
+(use-package ivy-rich :straight t 
 :config (ivy-rich-mode 1)
 )
 
-(use-package smex :ensure t :pin melpa
+(use-package smex :straight t 
 :general (leader "fm" #'smex-major-mode-commands)
 :init (smex-initialize)
 )
 
-(use-package projectile :ensure t :pin melpa
+(use-package projectile :straight t 
 :after ivy
 :init   (projectile-mode t)
 :config (setq projectile-require-project-root nil)
@@ -871,7 +872,7 @@ list)
         ;    (append '() projectile-globaly-ignore-files))
 )
 
-(use-package neotree :ensure t :pin melpa
+(use-package neotree :straight t 
 :after (projectile all-the-icons)
 :commands (neotree-toggle)
 :general (leader "n" #'neotree-toggle)
@@ -886,9 +887,9 @@ list)
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-show-hidden-files t)
 )
-(use-package all-the-icons-dired :ensure t :pin melpa
+(use-package all-the-icons-dired :straight t 
 :after all-the-icons
-:init  (add-hook 'dired-mode-hook 'all-the-dired-mode))
+:init  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (defun copy-file-name-to-clipboard ()
     "Copy the current buffer file name to the clipboard."
@@ -899,7 +900,7 @@ list)
             (message "Copied buffer file name '%s' to the clipboard." filename)))
 )
 
-(use-package ace-window :ensure t :pin melpa
+(use-package ace-window :straight t 
 :commands (ace-window)
 :general (leader "wo" 'ace-window
                  "wd" 'delete-other-windows)
@@ -907,7 +908,7 @@ list)
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
-(use-package eyebrowse :ensure t :pin melpa :defer t
+(use-package eyebrowse :straight t  :defer t
 :init (eyebrowse-mode t)
 :general (leader "w;" 'eyebrowse-last-window-config
                  "w0" 'eyebrowse-close-window-config
@@ -920,9 +921,9 @@ list)
                  "w7" 'eyebrowse-switch-to-window-config-7)
 )
 
-(use-package window-purpose :ensure t :pin melpa :disabled)
+(use-package window-purpose :straight t  :disabled)
 
-(use-package exwm :ensure t :pin melpa :disabled
+(use-package exwm :straight t  :disabled
 :if window-system
 :commands (exwm-init)
 :config
@@ -954,36 +955,36 @@ list)
                             (start-process-shell-command command nil command)))
 )
 
-(use-package magit :ensure t :pin melpa
+(use-package magit :straight t 
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
 )
 
-(use-package forge :ensure t :pin melpa :after magit)
+(use-package forge :straight t  :after magit)
 
 
-(use-package evil-magit :ensure t :pin melpa
+(use-package evil-magit :straight t :disabled
 :after (evil magit)
 :config  (evil-magit-init)
 )
 
-(use-package magithub :ensure t :pin melpa 
+(use-package magithub :straight t  
 :after magit
 :general (leader "gd" 'magithub-dashboard)
 :init (magithub-feature-autoinject t)
         (setq magithub-clone-default-directory "~/github")
 )
 
-(use-package magit-todos :ensure t :pin melpa :after magit :disabled)
+(use-package magit-todos :straight t  :after magit :disabled)
 
 
 ;; git history view mode
-(use-package smeargle :ensure t :pin melpa
+(use-package smeargle :straight t 
 :commands smeagle
 )
 
-;(use-package magit-delta :ensure t :pin melpa
+;(use-package magit-delta :straight t 
 ;:after magit
 ;:ensure-system-package 
 ;    :config
@@ -991,16 +992,16 @@ list)
 
 
 
-(use-package gitignore-mode :ensure t :pin melpa :commands gitignore-mode)
-(use-package gitconfig-mode :ensure t :pin melpa :commands gitconfig-mode)
-(use-package gitattributes-mode :ensure t :pin melpa :commands gitattributes-mode)
+(use-package gitignore-mode :straight t  :commands gitignore-mode)
+(use-package gitconfig-mode :straight t  :commands gitconfig-mode)
+(use-package gitattributes-mode :straight t  :commands gitattributes-mode)
 
-(use-package evil-ediff :ensure t :pin melpa
+(use-package evil-ediff :straight t 
 :after evil
 :config (evil-ediff-init)
 )
 
-(use-package undo-tree :ensure t :pin melpa :diminish undo-tree-mode :disabled
+(use-package undo-tree :straight t  :diminish undo-tree-mode :disabled
 :commands (undo-tree-undo undo-tree-redo)
 :general (leader "uu" 'undo-tree-undo
                  "ur" 'undo-tree-redo)
@@ -1013,7 +1014,7 @@ list)
     (global-undo-tree-mode)
 )
 
-(use-package undo-fu :ensure t :pin melpa
+(use-package undo-fu :straight t 
 :after evil
 :general (leader "uu" 'undo-fu-only-undo
                  "ur" 'undo-fu-only-redo)
@@ -1023,13 +1024,13 @@ list)
     (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
 )
 
-(use-package undo-fu-session :ensure t :pin melpa
+(use-package undo-fu-session :straight t 
 :after undo-fu
 :custom (undo-fu-session-incompletiable-files '("/COMMENT_EDITMSG\\'" "/git-rebase-todo\\'"))
 :config (global-undo-fu-session-mode)
 )
 
-;(use-package undo-propose :ensure t :pin melpa
+;(use-package undo-propose :straight t 
 ;:after evil
 ;:commands undo-propose
 ;:init   (evil-define-key 'normal 'global (kbd "C-r") #'undo-propose)
@@ -1049,26 +1050,7 @@ list)
 :config (setq org-startup-indented   nil)
 )
 
-; |:TODO:|
-(use-package svg-tag-mode :load-path "lisp/svg-tag-mode" :disabled
-:config
-    (defface svg-tag-custom-face
-        `((t :foreground "white"
-             :background "orange"
-             :box (:line-width 1 :color "orange" :style nil)
-             :family ,(face-attribute 'default :family)
-             :weight ,(face-attribute 'default :weight)
-              :height ,(- (face-attribute 'default :height) 5)))
-        "Custom face for tag"
-        :group 'svg-tag-mode)
-    (setq svg-tag-normal (svg-tag-make "TODO" 'svg-tag-custom-face 2 1 3))
-    (setq svg-tag-note   (svg-tag-make "NOTE" nil 2 1 3))
-    (setq svg-tags '(("\\(:TODO:\\)" 1 `(face nil display ,svg-tag-normal))
-                     ("\\(:NOTE:\\)" 1 `(face nil display ,svg-tag-note))))
-    (svg-tag-mode)
-)
-
-(use-package org-superstar :ensure t :pin melpa
+(use-package org-superstar :straight t 
 :after org
 :hook (org-mode . org-superstar-mode)
 :custom (org-superstar-special-todo-items t)
@@ -1080,7 +1062,7 @@ list)
 ;    (org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
 
-(use-package org-journal :ensure t :pin melpa :disabled
+(use-package org-journal :straight t  :disabled
 :after org
 :preface
     (defun org-journal-find-location ()
@@ -1099,7 +1081,7 @@ list)
     (org-icalendar-combine-agenda-files)
 )
 
-(use-package org-capture
+(use-package org-capture :straight nil
 :after org
 :config (setq org-reverse-note-order t)
     (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/notes"))
@@ -1116,9 +1098,9 @@ list)
     )
 )
 
-(use-package org-agenda
+(use-package org-agenda :straight nil
 :after org
-:config (use-package evil-org :ensure t :pin melpa
+:config (use-package evil-org :straight t 
         :after (org evil)
         :init (add-hook 'org-mode-hook 'evil-org-mode)
             (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
@@ -1128,7 +1110,7 @@ list)
         )
 )
 
-(use-package org-pomodoro :ensure t :pin melpa
+(use-package org-pomodoro :straight t 
 :after org-agenda
 :custom
     (org-pomodoro-ask-upon-killing t)
@@ -1150,12 +1132,12 @@ list)
 :general (:keymaps 'org-agenda-mode-map "p"  'org-pomodoro)
 )
 
-(use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode"
+(use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode" :straight nil
 :after org
 :hook (org-mode . org-table-auto-align-mode)
 )
 
-(use-package org-gcal :ensure t :pin melpa :disabled
+(use-package org-gcal :straight t  :disabled
 :after org-agenda
 :custom (org-gcal-client-id     "")
         (org-gcal-client-secret "")
@@ -1164,27 +1146,27 @@ list)
         (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
-(use-package orgtbl-aggregate :ensure t :pin melpa :defer t)
+(use-package orgtbl-aggregate :straight t  :defer t)
 
-(use-package toc-org :ensure t :pin melpa :after org
+(use-package toc-org :straight t  :after org
 :hook (org-mode . toc-org-mode)
 ;:config (add-hook 'org-mode-hook 'toc-org-mode)
 )
 
 
-(use-package calfw :ensure t :pin melpa
+(use-package calfw :straight t 
 :commands cfw:open-calendar-buffer
 :config (use-package calfw-org :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp)))
 )
-(use-package calfw-gcal :ensure t :pin melpa :disabled
+(use-package calfw-gcal :straight t  :disabled
 :init (require 'calfw-gcal))
 
-(use-package ob-restclient :ensure t :pin melpa
+(use-package ob-restclient :straight t 
 :after  (org restclient)
 :config (org-babel-do-load-languages 'org-babel-load-languages '((restclient . t)))
 )
 
-(use-package org-babel :no-require t
+(use-package org-babel :no-require t :straight nil
 :after org
 :config (org-babel-do-load-languages
         'org-babel-load-languages
@@ -1199,13 +1181,13 @@ list)
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 
-(use-package olivetti :ensure t :pin melpa
+(use-package olivetti :straight t 
 :commands (olivetti-mode)
 :config (setq olivetti-body-width 120))
-(use-package typo :ensure t :pin melpa
+(use-package typo :straight t 
 :commands (type-mode))
-(use-package poet-theme :ensure t :pin melpa :defer t)
-(use-package writeroom-mode :ensure t :pin melpa
+(use-package poet-theme :straight t  :defer t)
+(use-package writeroom-mode :straight t 
 :commands (writeroom-mode)
 :config (setq writeroom-width 100)
 )
@@ -1227,44 +1209,46 @@ list)
         (git-gutter-mode 1)
         (writeroom-mode 0)))
 
-(use-package mu4e :ensure t :pin melpa :disabled :commands (mu4e))
+(use-package mu4e :straight t  :disabled :commands (mu4e))
 
-(use-package rainbow-mode :ensure t :pin gnu
+(use-package rainbow-mode :straight t 
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
 
-(use-package docker :ensure t :pin melpa 
+(use-package docker :straight t  
 :commands docker
 :general (leader "hud" 'docker)
 :custom (docker-image-run-arguments '("-i", "-t", "--rm"))
 )
 
-(use-package dockerfile-mode :ensure t :pin melpa
+(use-package dockerfile-mode :straight t 
 :mode   ("Dockerfile\\'" . dockerfile-mode))
 
-(use-package vterm :ensure t :pin melpa ;:disabled ;macport version not working
+(use-package vterm :straight t  ;:disabled ;macport version not working
 :general (leader "tn" 'vterm)
 :custom (vterm-always-compile-module t)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
 )
 
-(use-package vterm-toggle :ensure t :pin melpa :disabled
-:after vterm
-:general (leader "ut" 'vterm-toggle
-                 "tl" 'vterm-toggle-forward
-                 "th" 'vterm-toggle-backward
-                 "tn" 'vterm)
+(use-package vterm-toggle :straight t :disabled
+:general (leader "ut" '(vterm-toggle    :wk "toggle vterm buffer")
+                 "tc" '(vterm-toggle-cd :wk "cd current dicectory")
+                 "tn" '(vterm           :ew "open new vterm"))
 :config (setq vterm-toggle-fullscreen-p nil)
+        (setq vterm-toggle-project-root t)
+        ;(setq vterm-toggle-cd-auto-create-buffer nil)
+        (define-key vterm-toggle-map [(control return) #'vterm-toggle-insert-cd])
         (add-to-list 'display-buffer-alist
                      '((lambda(bufname _) (with-current-buffer bufname (equal major-mode 'vterm-mode)))
                                      (display-buffer-reuse-window display-buffer-in-direction)
                                      (direction . bottom)
                                      (reusable-frames . visible)
                                      (window-height . 0.3)))
+       ;(add-hook 'counsel-tramp-post-command-hook (lambda () (vterm-toggle-cd)))
 )
 
-(use-package vterm-with-centaur-tab :no-require t
+(use-package vterm-with-centaur-tab :no-require t :straight nil
 :after (vterm-toggle centaur-tabs)
 :preface (defun vmacs-awesome-tab-buffer-groups ()
           "`vmacs-awesome-tab-buffer-groups' control buffers' group rules. "
@@ -1281,28 +1265,25 @@ list)
                                      (buffer-name))
              "Emacs")
             (t "Common"))))
-        ;(defun vmacs-term-mode-p(&optional args)
-        ;    (derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode))
+        (defun vmacs-term-mode-p(&optional args)
+            (derived-mode-p 'eshell-mode 'term-mode 'shell-mode 'vterm-mode))
 :config (setq centaur-tabs-buffer-groups-function   'vmacs-awesome-tab-buffer-groups)
-        ;(setq vterm-toggle--vterm-buffer-p-function 'vmacs-term-mode-p)
+        (setq vterm-toggle--vterm-buffer-p-function 'vmacs-term-mode-p)
 )
 
-(use-package shell-pop :ensure t :pin melpa
+(use-package shell-pop :straight t
 :custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm))))
-        ;(shell-pop-universal-key "C-1")
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)
-        ;(shell-pop-shell-type '("ansi-term" "*ansi-term*" (lambda () (ansi-term shell-pop-term-shell))))
-        ;(shell-pop-shell-type '("eshell" "* eshell *" (lambda () (eshell))))
 :general (leader "ut"'shell-pop)
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package with-editor :ensure t :pin melpa
+(use-package with-editor :straight t 
 :hook ((shell-mode term-exec eshll-mode) . with-editor-export-editor)
 )
 
-(use-package vterm-command :no-require t
+(use-package vterm-command :no-require t :straight nil
 :after (vterm)
 :preface
 (defun run-in-vterm-kill (process event)
@@ -1350,23 +1331,23 @@ shell exits, the buffer is killed."
         (setq eshell-cmpl-cycle-completions nil)
 )
 
-(use-package exec-path-from-shell :ensure t :pin melpa
+(use-package exec-path-from-shell :straight t 
 :if     (memq window-system '(mac ns x))
 :custom (exec-path-from-shell-variables '("PATH"))
-        (exec-path-from-shell-initialize)
+:config (exec-path-from-shell-initialize)
 )
 
-(use-package eshell-did-you-mean :ensure t :pin melpa
+(use-package eshell-did-you-mean :straight t 
 :after  eshell
 :config (eshell-did-you-mean-setup)
 )
 
-(use-package esh-help :ensure t :pin melpa
+(use-package esh-help :straight t 
 :after (eshell eldoc)
 :config (setup-esh-help-eldoc)
 )
 
-(use-package eshell-prompt-extras :ensure t :pin melpa
+(use-package eshell-prompt-extras :straight t 
 :after eshell
 :config
     (autoload 'epe-theme-lambda   "eshell-prompt-extras")
@@ -1374,25 +1355,25 @@ shell exits, the buffer is killed."
     (setq eshell-prompt-function  'epe-theme-lambda)
 )
 
-(use-package fish-completion :ensure t :pin melpa
+(use-package fish-completion :straight t 
 :after eshell
 :config (when (and (executable-find "fish")
                    (require 'fish-completion nil t))
               (global-fish-completion-mode))
 )
 
-(use-package esh-autosuggest :ensure t :pin melpa
+(use-package esh-autosuggest :straight t 
 :after eshell
 :hook (eshell-mode . esh-autosuggest-mode)
 )
 
-(use-package eshell-up :ensure t :pin melpa
+(use-package eshell-up :straight t 
 :after eshell
 :config (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
                                           (eshell/alias "pk" "eshell-up-peek $1")))
 )
 
-(use-package execute-shell :no-require t
+(use-package execute-shell :no-require t :straight nil
 :after eshell
 :preface
 (defun background-shell-command (command)
@@ -1403,9 +1384,9 @@ shell exits, the buffer is killed."
         (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 )
 
-(use-package command-log-mode :ensure t :pin melpa :defer t)
+(use-package command-log-mode :straight t  :defer t)
 
-(use-package emojify :ensure t :pin melpa :defer t
+(use-package emojify :straight t  :defer t
 :if window-system
 :config (global-emojify-mode 1)
         (setq emojify-display-style 'image)
@@ -1413,7 +1394,7 @@ shell exits, the buffer is killed."
         (setq emojify-emoji-set "emojione-v2.2.6")
 )
 
-(use-package buffer-move :ensure t :pin melpa :defer t
+(use-package buffer-move :straight t  :defer t
 :general (leader "b s" 'switch-to-buffer
                  "b r" 'eval-buffer
                  "b h" 'buf-move-left
@@ -1448,26 +1429,26 @@ shell exits, the buffer is killed."
     (add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 )
 
-(use-package all-the-icons-ibuffer :ensure t :pin melpa
+(use-package all-the-icons-ibuffer :straight t 
 :after all-the-icons
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
 )
 
 
-(use-package ibuffer-projectile :ensure t :pin melpa :disabled
+(use-package ibuffer-projectile :straight t  :disabled
 :after (projectile)
 :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
                                      (unless (eq ibuffer-sorting-mode 'alphabetic)
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :ensure t :pin melpa 
+(use-package org-roam :straight t  
 :hook (after-init . org-roam-mode)
 :custom (org-roeam-directory "~/GoogleDrive/Org/")
 ;:general (leader "on" '(org-roam-mode-map :wk "Note"))
 )
 
-(use-package org-roam-server :ensure t :pin melpa :after (org-roam)
+(use-package org-roam-server :straight t  :after (org-roam)
 :commands org-roam-server-mode
 :config
     (setq org-roam-server-host "127.0.0.1"
@@ -1481,18 +1462,18 @@ shell exits, the buffer is killed."
           org-roam-server-network-label-wrap-length 20)
 )
 
-(use-package dash :ensure t :pin melpa :defer t
+(use-package dash :straight t  :defer t
 :init (dash-enable-font-lock)
 )
-(use-package dash-functional :ensure t :pin melpa
+(use-package dash-functional :straight t 
 :after dash
 )
 
-(use-package ialign :ensure t :pin melpa :defer t
+(use-package ialign :straight t  :defer t
 :general (leader "ta" 'ialign))
 
-(use-package page-break-lines :ensure t :pin melpa :defer t)
-(use-package dashboard :ensure t :pin melpa
+(use-package page-break-lines :straight t  :defer t)
+(use-package dashboard :straight t 
 :init (dashboard-setup-startup-hook)
 :config
     (setq dashboard-banner-logo-title "We are Emacsian!")
@@ -1512,36 +1493,30 @@ shell exits, the buffer is killed."
     (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
 )
 
-(use-package centaur-tabs :ensure t :pin melpa
+(use-package centaur-tabs :straight t 
 :custom (centaur-tabs-background-color (face-background 'default))
         (centaur-tabs-set-icons t)
         (centaur-tabs-set-close-button t)
         (centaure-tabs-set-bar t)
-        (centaur-tabs-style "zigzag")
-        ;(centaur-tabs-set-bar 'left) with tabs-stype "bar"
+        (centaur-tabs-style "chamfer")
 :init   (centaur-tabs-mode t)
 :config (setq centaur-tabs-height 26)
+        (setq centaur-tabs-cycle-scope 'tabs)
         (centaur-tabs-headline-match)
         (centaur-tabs-group-by-projectile-project)
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 )
 
-(use-package symon :ensure t :pin melpa :defer t)
+(use-package symon :straight t  :defer t)
 
-(use-package google-this :ensure t :pin melpa
+(use-package google-this :straight t 
 :commands google-this
 :general (leader "fw" '(google-this :wk "Search Word"))
 :config  (google-this-mode 1)
 )
-(use-package osa :load-path "lisp/osa")
-(use-package osa-chrome :load-path "lisp/osa-chrome"
-:after osa
-:commands osa-chrome
-:general (leader "fc" '(osa-chrome :wk "Chrome manage"))
-)
 
-(use-package google-translate :ensure t :pin melpa
+(use-package google-translate :straight t 
 :commands (google-translate-smooth-translate)
 :general (leader "ft" 'google-translate-smooth-translate)
 :custom (google-translate-default-source-language "auto")
@@ -1554,7 +1529,7 @@ shell exits, the buffer is killed."
 :config (require 'google-translate-smooth-ui)
 )
 
-(use-package flyspell :ensure t :pin melpa :defer t :disabled
+(use-package flyspell :straight t  :defer t :disabled
 :config
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
@@ -1566,28 +1541,28 @@ shell exits, the buffer is killed."
                  "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
 )
 
-(use-package flyspell-correct-ivy :ensure t :pin melpa 
+(use-package flyspell-correct-ivy :straight t  
 :after (flyspell ivy)
 :general  (:keymaps 'flyspell-mode-map "C-c $" 'flyspell-correct-word-generic)
           (:keymaps 'flyspell-mode-map [remap flyspell-correct-word-before-point]  'flyspell-correct-previous-word-generic)
           (leader "ss" '(flyspell-correct-word-generic :wk "Suggestion"))
 )
 
-(use-package wgrep :ensure t :pin melpa
+(use-package wgrep :straight t 
 :after evil-collection
 :config (setq wgrep-auto-save-buffer t)
         (evil-collection-wgrep-setup)
        ;(setq wgrep-enable-key "r")
 )
 
-(use-package iedit :ensure t :pin melpa
+(use-package iedit :straight t 
 :general (leader "fi" 'iedit-mode)
 )
 
 ; package testing 
-(use-package try :ensure t :pin melpa :defer t)
+(use-package try :straight t  :defer t)
 
-(use-package org-use-package :no-require t
+(use-package org-use-package :no-require t :straight nil
 :after (evil org)
 :preface
 (defun org-use-package-install ()
@@ -1605,35 +1580,58 @@ shell exits, the buffer is killed."
 (setq helm-mode nil)
 (use-package helm :if helm-mode :config (load-file "~/.emacs.d/lisp/helm-mode.el"))
 
-(use-package pdf-tools :ensure t :pin melpa :defer t)
+(use-package pdf-tools :straight t  :defer t)
 
-(use-package smeargle :ensure t :pin melpa)
+(use-package smeargle :straight t )
 
-(use-package polymode :ensure t :pin melpa
+(use-package polymode :straight t
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
 )
-(use-package poly-org :ensure t :pin melpa :hook (org-mode . poly-org-mode)
+(use-package poly-org :straight t :hook (org-mode . poly-org-mode)
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
 
-(use-package tldr :ensure t :pin melpa
+(use-package tldr :straight t 
 :commands tldr
 :custom (tldr-enabled-categories '("common" "linux" "osx" "sunos"))
 )
 
-(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
-;(use-package fira-code :no-require t
-;:if *is-mac*
-;:config (if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
-;)
-;(use-package fira-code-mode :load-path "lisp/fira-code-mode"
-;:custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
-;
-;:hook prog-mode ;; Enables fira-code-mode automatically for programming major modes  
-;)
+; FiraCode같은 텍스트모드 활성 모드
+(use-package ligature :straight (:host github :repo "mickeynp/ligature.el")
+:config
+;; Enable the www ligature in every possible major mode
+(ligature-set-ligatures 't '("www"))
+;; Enable ligatures in programming modes                                                           
+(ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+                                     ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+                                     "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+                                     "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+                                     "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+                                     "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+                                     "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+                                     "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+                                     "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+                                     "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
+
+(global-ligature-mode 't)
+)
+; emacs mac-port option
+;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
+
+(use-package ssh-config-mode :straight t
+:config (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'" . ssh-config-mode))
+)
+
+(use-package ssh-deploy :straight t
+:hook ((after-save . ssh-deploy-after-save)
+        (find-file . ssh-deploy-find-file))
+:config
+    (ssh-deploy-line-mode)
+    (ssh-deploy-add-menu)
+)
 
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
-(use-package company :ensure t :pin melpa
+(use-package company :straight t 
 :custom
     ;(company-show-numbers t)
     (company-idle-delay 0)
@@ -1647,14 +1645,14 @@ shell exits, the buffer is killed."
 
 )
 
-(use-package company-quickhelp :ensure t :pin melpa
+(use-package company-quickhelp :straight t 
 :unless (featurep 'lsp)
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :custom (company-quickhelp-delay nil)
 :config (company-quickhelp-mode)
 )
 
-(use-package company-dict :ensure t :pin melpa :disabled
+(use-package company-dict :straight t  :disabled
 :after company
 :custom (company-dict-dir (concat user-emacs-directory "dict/"))
         (company-dict-enable-yasnippet t)
@@ -1665,24 +1663,29 @@ shell exits, the buffer is killed."
 )
 
 
-(use-package company-statistics :ensure t :pin melpa
+(use-package company-statistics :straight t 
 :after company
 :config (company-statistics-mode)
 )
 
 ;company-quickhelp speed up setting
-(use-package company-posframe :ensure t :pin melpa
+(use-package company-posframe :straight t 
 :after company
 :config (company-posframe-mode)
 )
 
-(use-package company-flx :ensure t :pin melpa
+(use-package company-flx :straight t 
 :after company
 :config (company-flx-mode 1)
 )
 
+(use-package company-suggest :straight t
+:config (setq company-suggest-complete-sentence t)
+        (add-to-list 'company-backend 'company-suggest-google)
+)
 
-(use-package company-fuzzy :ensure t :pin melpa :disabled
+
+(use-package company-fuzzy :straight t  :disabled
 :after company
 :config (company-fuzzy-mode)
         (setq company-fuzzy-sorting-backend 'flx)
@@ -1690,14 +1693,14 @@ shell exits, the buffer is killed."
 )
 
 ; deep learning completion
-(use-package company-tabnine :ensure t :pin melpa :disabled 
+(use-package company-tabnine :straight t  :disabled 
 :config
     (add-to-list 'company-backends #'company-tabnine)
     (setq company-tabnine-annotations t)
     (setq company-tabnine-always-trigger nil)
 )
 
-(use-package company-box :ensure t :pin melpa :diminish ""
+(use-package company-box :straight t  :diminish ""
 :hook   (company-mode . company-box-mode)
 :custom (company-box-max-candidates 30)
 :config (setq company-box-icons-unknown 'fa_question_circle)
@@ -1736,7 +1739,7 @@ shell exits, the buffer is killed."
         ;(company-box-doc-delay 0.5)
 )
 
-(use-package lsp-mode :ensure t :pin melpa
+(use-package lsp-mode :straight t 
 :commands lsp
 :general (leader "hh" '(lsp-execute-code-action :wk "wizard"))
 :hook   ((lsp-mode . lsp-enable-which-key-integration))
@@ -1747,38 +1750,39 @@ shell exits, the buffer is killed."
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
         (create-lockfiles nil)
+        (make-backup-files nil)
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
         (lsp-completion-provider :capf)
 :config (lsp-ui-mode)
         (lsp-lens-mode)
 )
-(use-package lsp-ui :ensure t :pin melpa
+(use-package lsp-ui :straight t 
 :commands lsp-ui-mode
 :after  (lsp-mode flycheck)
 :custom (scroll-margin 0)
-        (lsp-ui-flycheck-enable t)
-        (lsp-ui-sideline-show-diagnostics t)
+:config (setq lsp-ui-sideline-show-code-actions t)
+        (setq lsp-ui-doc-enable t)
+        (setq lsp-ui-peek-enable t)
+        (setq lsp-ui-flycheck-enable t)
+        ;(lsp-ui-sideline-show-diagnostics t)
         ;(lsp-ui-sideline-show-hover t)
-        (lsp-ui-sideline-show-code-actions t)
-:config (lsp-ui-sideline-mode)
-        (lsp-ui-peek-mode)
 )
 
-(use-package flycheck :ensure t :pin melpa
+(use-package flycheck :straight t 
 :after  company
 :custom (flycheck-clang-language-standard "c++17")
 :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode t)
         (setq flycheck-clang-language-standard "c++17")
 )
-(use-package flycheck-pos-tip :ensure t :pin melpa :disabled
+(use-package flycheck-pos-tip :straight t  :disabled
 :if (not (featurep 'lsp))
 :after  flycheck
 :config (flycheck-pos-tip-mode))
 
-(use-package quick-peek :ensure t :pin melpa :after flycheck :disabled)
-(use-package flycheck-inline :ensure t :pin melpa :disabled
+(use-package quick-peek :straight t  :after flycheck :disabled)
+(use-package flycheck-inline :straight t  :disabled
 :if (not (featurep 'lsp))
 :after (flycheck quick-peek)
 :config
@@ -1793,7 +1797,7 @@ shell exits, the buffer is killed."
     (global-flycheck-inline-mode)
 )
 
-(use-package yasnippet :ensure t :pin melpa
+(use-package yasnippet :straight t 
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
@@ -1803,8 +1807,8 @@ shell exits, the buffer is killed."
         (yas-reload-all t)
 )
 
-(use-package yasnippet-snippets :ensure t :pin melpa :after yasnippet)
-(use-package auto-yasnippet :ensure t :pin melpa
+(use-package yasnippet-snippets :straight t  :after yasnippet)
+(use-package auto-yasnippet :straight t 
 ;https://github.com/abo-abo/auto-yasnippet
 :after yasnippet
 :general (leader "hyc" 'aya-create
@@ -1813,6 +1817,7 @@ shell exits, the buffer is killed."
 
 (use-package cpp-mode ;:load-path "lisp/cpp-mode"
 :no-require t
+:straight nil
 :mode (("\\.h\\'" . c++-mode))
 ;:commands cpp-mode
 :general (leader "hc" '(:wk "C/C++"))
@@ -1823,200 +1828,109 @@ shell exits, the buffer is killed."
 ;      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
-(use-package ccls :ensure t :pin melpa ;:disabled; with lsp or eglot mode
+(use-package ccls :straight t  ;:disabled; with lsp or eglot mode
 :hook   ((c-mode-common) . (lambda () (lsp)))
 :custom (ccls-sem-highlight-method 'font-lock)
         (ccls-use-default-rainbow-sem-highlight)
         (ccls-extra-init-params '(:client (:snippetSupport :json-false)))
 :config ;(setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-    (setq ccls-initialization-options '(:clang (:extraArgs ["-isystem /usr/local/opt/llvm/include/c++/v1"
-                                                            "-isystem /usr/local/opt/llvm/lib/clang/11.0.0/include"
-                                                           ;"-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
-                                                            "-isystem /usr/local/Cellar/llvm/11.0.0_1/lib/clang/11.0.0/include"
+    (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/"
+                                        :clang (:extraArgs ["-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+                                                            "-isystem /usr/local/opt/llvm/include/c++/v1"
+                                                            "-isystem /usr/local/opt/llvm/lib/clang/11.1.0/include"
+                                                            "-isystem /usr/local/Cellar/llvm/11.1.0/lib/clang/11.1.0/include"
+                                                            "-std=c++17"
+                                                           ; "-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
                                                            ;"-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1/"   
                                                            ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
                                                            ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-                                                           ; "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/"
                                                              ]
-                                                    :resourceDir "/usr/local/Cellar/llvm/11.0.0_1/lib/clang/11.0.0")))
+                                                   :resourceDir "/usr/local/Cellar/llvm/11.1.0/lib/clang/11.1.0")))
 )
 
-(use-package cppm :no-require t
+(use-package cppm :no-require t :straight nil
 :after c++-mode
 :general (leader "hcb" (lambda () (eshell-command "cppm build"))
                  "hcr" (lambda () (eshell-command "cppm run  ")))
 )
 
-(use-package company-c-headers :ensure t :pin melpa
+(use-package company-c-headers :straight t 
 :after  (company c++-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
 )
-(use-package clang-format :ensure t :pin melpa
+(use-package clang-format :straight t 
 :after  (c++-mode)
 :init   (add-hook 'c++-mode-hook 'clang-format)
 :general (leader "hccf" 'clang-format-regieon)
 )
 
-(use-package irony :ensure t :pin melpa :diminish irony-mode :disabled ; no lsp or eglot mode 
-:after (c++-mode)
-:hook  (c++-mode . irony-mode)
-;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
-;         (irony-additional-clang-options '("-std=c++17")))
-:config
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-    (setq irony-additional-clang-options '("-std=c++17"))
-    (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
-)
+(use-package lsp-treemacs :straight t  :disabled
+  :after lsp-mode
+  :config (lsp-metals-treeview-enable t)
+          (setq lsp-metals-treeview-show-when-views-received t)
+  ) 
 
-(use-package irony-eldoc :ensure t :pin melpa
-:after (irony eldoc)
-:config (add-hook 'irony-mode-hook #'irony-eldoc)
-)
+  (use-package dap-mode :straight t 
+  :after lsp-mode
+  :commands (dap-debug)
+  :general (leader "dd" 'dap-debug)
+  :custom (dap-lldb-debug-program `("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
+  :config (require 'dap-gdb-lldb) ; gdb mode
+          (dap-mode 1)
+          (dap-tooltip-mode 1)
+          (dap-ui-mode 1)
+          (dap-auto-configure-mode)
+  )
 
-(use-package company-irony :ensure t :pin melpa
-:after  (company irony)
-:config (add-to-list 'company-backends 'company-irony)
-)
+  (use-package dap-ui-setting :no-require t :straight nil
+  :after dap-mode
+  :preface
+    (defun my/window-visible (b-name)
+        "Return whether B-NAME is visible."
+        (-> (-compose 'buffer-name 'window-buffer)
+            (-map (window-list))
+            (-contains? b-name)))
 
-(use-package flycheck-irony :ensure t :pin melpa :after (flycheck irony) :config (flycheck-irony-setup))
+    (defun my/show-debug-windows (session)
+        "Show debug windows."
+        (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
+            (save-excursion
+            ;; display locals
+            (unless (my/window-visible dap-ui--locals-buffer)
+                (dap-ui-locals))
+            ;; display sessions
+            (unless (my/window-visible dap-ui--sessions-buffer)
+                (dap-ui-sessions)))))
 
-(use-package company-irony-c-headers :ensure t :pin melpa
-:after  (company-c-headers irony)
-:config (add-to-list 'company-backends 'company-irony-c-headers)
-)
+    (defun my/hide-debug-windows (session)
+        "Hide debug windows when all debug sessions are dead."
+        (unless (-filter 'dap--session-running (dap--get-sessions))
+            (and (get-buffer dap-ui--sessions-buffer)
+                (kill-buffer dap-ui--sessions-buffer))
+            (and (get-buffer dap-ui--locals-buffer)
+                (kill-buffer dap-ui--locals-buffer))))
+  :config
+      (add-hook 'dap-terminated-hook 'my/hide-debug-windows)
+      (add-hook 'dap-stopped-hook 'my/show-debug-windows)
+  )
 
-(use-package rtags :ensure t :pin melpa :disabled
-:after  c++-mode
-:custom (rtags-verify-protocol-version nil "rtags version bug fix")
-:preface
-(defun setup-flycheck-rtags ()
-    (interactive)
-    (flycheck-select-checker 'rtags)
-    ;; RTags creates more accurate overlays.
-    (setq-local flycheck-highlighting-mode nil)
-    (setq-local flycheck-check-syntax-automatically nil))
-:config
-    (rtags-enable-standard-keybindings)
-    (setq rtags-autostart-diagnostics t)
-    (rtags-diagnostics)
-    (setq rtags-completions-enabled t)
-    (rtags-start-process-unless-running)
-:general (leader "hcfs" 'rtags-find-symbol
-                 "hcfr" 'rtags-find-references)
-)
-
-(use-package ivy-rtags :ensure t :pin melpa
-:after  (ivy rtags)
-:config (setq rtags-display-result-backend 'ivy)
-)
-
-(use-package company-rtags :ensure t :pin melpa
-:after  (company rtags)
-:config (add-to-list 'company-backends 'company-rtags))
-
-(use-package flycheck-rtags :ensure t :pin melpa
-:after (flycheck rtags)
-:preface
-    (defun my-flycheck-rtags-setup ()
-        (flycheck-select-checker 'rtags)
-        (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-        (setq-local flycheck-check-syntax-automatically nil))
-:config
-    (add-hook 'c++-mode-hook #'my-flycheck-rtags-setup)
-    (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
-    (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-    ;(add-hook 'c-mode-hook    #'my-flycheck-rtags-setup)
-    ;(add-hook 'c++-mode-hook  #'my-flycheck-rtags-setup)
-    ;(add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
-    ;(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
-    ;(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-)
-
-(use-package cmake-ide :ensure t :pin melpa
-:after (rtags)
-:config
-    (require 'subr-x)
-    (cmake-ide-setup)
-    (setq cmake-ide-flags-c++ (append '("-std=c++17")))
-    ;(defadvice cmake-ide--run-cmake-impl
-    ;  (after copy-compile-commands-to-project-dir activate)
-    ;  (if (file-exists-p (concat project-dir "/build/compile_commands.json"))
-    ;  (progn
-    ;      (cmake-ide--message "[advice] found compile_commands.json" )
-    ;      (copy-file (concat project-dir "compile_commands.json") cmake-dir)
-    ;      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
-    ;      (cmake-ide--message "[advice] couldn't find compile_commands.json" ))
-    ;)
-)
-
-(use-package lsp-treemacs :ensure t :pin melpa :disabled
-:after lsp-mode
-:config (lsp-metals-treeview-enable t)
-        (setq lsp-metals-treeview-show-when-views-received t)
-) 
-
-(use-package dap-mode :ensure t :pin melpa
-:after lsp-mode
-:commands (dap-debug)
-:general (leader "dd" 'dap-debug)
-:custom (dap-lldb-debug-program `("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
-:config (require 'dap-gdb-lldb) ; gdb mode
-        (dap-mode 1)
-        (dap-tooltip-mode 1)
-        (dap-ui-mode 1)
-        (dap-auto-configure-mode)
-)
-
-(use-package dap-ui-setting :no-require t
-:after dap-mode
-:preface
-  (defun my/window-visible (b-name)
-      "Return whether B-NAME is visible."
-      (-> (-compose 'buffer-name 'window-buffer)
-          (-map (window-list))
-          (-contains? b-name)))
-
-  (defun my/show-debug-windows (session)
-      "Show debug windows."
-      (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
-          (save-excursion
-          ;; display locals
-          (unless (my/window-visible dap-ui--locals-buffer)
-              (dap-ui-locals))
-          ;; display sessions
-          (unless (my/window-visible dap-ui--sessions-buffer)
-              (dap-ui-sessions)))))
-
-  (defun my/hide-debug-windows (session)
-      "Hide debug windows when all debug sessions are dead."
-      (unless (-filter 'dap--session-running (dap--get-sessions))
-          (and (get-buffer dap-ui--sessions-buffer)
-              (kill-buffer dap-ui--sessions-buffer))
-          (and (get-buffer dap-ui--locals-buffer)
-              (kill-buffer dap-ui--locals-buffer))))
-:config
-    (add-hook 'dap-terminated-hook 'my/hide-debug-windows)
-    (add-hook 'dap-stopped-hook 'my/show-debug-windows)
-)
-
-(use-package gdb-mi :load-path "lisp/emacs-gdb"
-:commands gdb-executable
-:general (leader "de" 'gdb-executable
-                 "dn" 'gdb-next
-                 "di" 'gdb-step
-                 "df" 'gdb-finish)
-:config (setq-default gdb-show-main t)
-        (setq-default gdb-many-windows t)
-        (fmakunbound 'gdb)
-        (fmakunbound 'gdb-enable-debug)
-    ;(evil-leader/set-key "dt" '(lambda () (call-interactively 'gub-tbreak) (call-interactively 'gud-cont)))
-)
+;(use-package gdb-mi
+;:straight (:host github :repo "weirdNox/emacs-gdb" :files ("*.el" "*.c" "*.h" "Makefile"))
+;:general (leader "de" 'gdb-executable
+;                "dn" 'gdb-next
+;                "di" 'gdb-step
+;                "df" 'gdb-finish)
+;:config (setq-default gdb-show-main t)
+;        (setq-default gdb-many-windows t)
+;        (fmakunbound 'gdb)
+;        (fmakunbound 'gdb-enable-debug)
+;)
 
 ; only c/c++
-(use-package disaster :ensure t :pin melpa :commands disaster)
+(use-package disaster :straight t  :commands disaster)
 
-(use-package eldoc :ensure t :pin melpa :diminish eldoc-mode :commands eldoc-mode)
-(use-package eldoc-rtags :no-require t
+(use-package eldoc :straight t  :diminish eldoc-mode :commands eldoc-mode)
+(use-package eldoc-rtags :no-require t :straight nil
 :after (eldoc rtags)
 :preface
     (defun fontify-string (str mode)
@@ -2054,15 +1968,15 @@ shell exits, the buffer is killed."
     (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
 )
 
-(use-package emacs-lisp :no-require t
+(use-package emacs-lisp :no-require t :straight nil
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
 )
 
-(use-package scratch-comment :ensure t :pin melpa
+(use-package scratch-comment :straight t 
 :general (:keymaps 'lisp-interaction-mode-map "C-j" 'scratch-comment-eval-sexp)
 )
   
-(use-package slime :ensure t :pin melpa :disabled
+(use-package slime :straight t  :disabled
 :commands slime
 :config
     (setq inferior-lisp-program (or (executable-find "sbcl")
@@ -2071,13 +1985,14 @@ shell exits, the buffer is killed."
     (require 'slime-autoloads)
     (slime-setup '(slime-fancy))
 )
-(use-package elisp-slime-nav :ensure t :pin melpa :diminish elisp-slime-nav-mode
+(use-package elisp-slime-nav :straight t  :diminish elisp-slime-nav-mode
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
 
-(use-package prettify-symbols :no-require t :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode))
+(use-package prettify-symbols :no-require t :straight nil
+    :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode))
 
-(use-package paredit :ensure t :pin melpa :disabled
+(use-package paredit :straight t  :disabled
 :init
 (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
 ;; enable in the *scratch* buffer
@@ -2088,7 +2003,7 @@ shell exits, the buffer is killed."
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
 )
 
-(use-package parinfer :ensure t :pin melpa :disabled
+(use-package parinfer :straight t  :disabled
 :after (evil)
 :general ("C-,"  'parinfer-toggle-mode)
 :init 
@@ -2101,7 +2016,7 @@ shell exits, the buffer is killed."
 (setq parinfer-extensions '(defaults evil paredit pretty-parens)) ;lispy smart-tab smart-yank
 )
 
-(use-package rust-mode :ensure t :pin melpa
+(use-package rust-mode :straight t 
 :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 :mode (("\\.rs\\'" . rust-mode))
 :hook (rust-mode . lsp)
@@ -2114,12 +2029,12 @@ shell exits, the buffer is killed."
          ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
 
-(use-package flycheck-rust :ensure t :pin melpa
+(use-package flycheck-rust :straight t 
 :after  (flycheck rust-mode)
 :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 )
 
-(use-package racer :ensure t :pin melpa :disabled
+(use-package racer :straight t  :disabled
 :ensure-system-package ((racer . "rustup toolchain add nightly")
                         (racer . "rustup component add rust-src")
                         (racer . "cargo +nightly install racer"))
@@ -2129,12 +2044,12 @@ shell exits, the buffer is killed."
 ;:init  (add-hook 'racer-mode-hook  #'eldoc-mode)
 )
 
-(use-package company-racer :ensure t :pin melpa
+(use-package company-racer :straight t 
 :after  (company racer)
 :config (add-to-list 'company-backends 'company-racer)
 )
 
-(use-package cargo :ensure t :pin melpa
+(use-package cargo :straight t 
 :after  rust-mode
 :hook (rust-mode . cargo-minor-mode)
 :commands cargo-minor-mode
@@ -2143,7 +2058,7 @@ shell exits, the buffer is killed."
                  "hrt" 'cargo-process-test)
 )
 
-;(use-package rustic :ensure t :pin melpa
+;(use-package rustic :straight t 
 ;:commands (rustic-mode)
 ;:mode   ("\\.rs" . rustic-mode)
 ;:config ;(add-hook 'rustic-mode-hook 'racer-mode)
@@ -2151,21 +2066,21 @@ shell exits, the buffer is killed."
 ;        (add-hook 'rustic-mode-hook 'lsp)
 ;)
 
-(use-package haskell-mode :ensure t :pin melpa :defer t)
+(use-package haskell-mode :straight t  :defer t)
 
-(use-package yaml-mode :ensure t :pin melpa
+(use-package yaml-mode :straight t 
 :commands yaml-mode
 :mode (("\\.yaml\\'" . yaml-mode)
         ("\\.yml\\'"  . yaml-mode))
 )
 
-(use-package toml-mode :ensure t :pin melpa
+(use-package toml-mode :straight t 
 :commands toml-mode
 :mode (("\\.toml\\'" . toml-mode)
        ("Pipfile\\'" . toml-mode))
     )
 
-(use-package cmake-mode :ensure t :pin melpa
+(use-package cmake-mode :straight t 
 ;:ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
@@ -2173,7 +2088,7 @@ shell exits, the buffer is killed."
 :init (setq cmake-tab-width 4)
 )
 
-(use-package markdown-mode :ensure t :pin melpa
+(use-package markdown-mode :straight t 
 :commands (markdown-mode gfm-mode)
 :mode   (("\\README.md\\'" . gfm-mode)
          ("\\.md\\'"       . markdown-mode)
@@ -2182,12 +2097,12 @@ shell exits, the buffer is killed."
 :config (setq markdown-command "multimarkdown")
 )
 
-(use-package markdown-preview-mode :ensure t :pin melpa :defer t)
-(use-package gh-md :ensure t :pin melpa :defer t
+(use-package markdown-preview-mode :straight t  :defer t)
+(use-package gh-md :straight t  :defer t
 :general (leader "hmr" 'gh-md-render-buffer)
 )
 
-(use-package easy-jekyll :ensure t :pin melpa
+(use-package easy-jekyll :straight t 
 :commands easy-jekyll
 :config (setq easy-jekyll-basedir "~/dev/blog/")
         (setq easy-jekyll-url "https://injae.github.io")
@@ -2205,13 +2120,13 @@ shell exits, the buffer is killed."
 :config (setq python-indent-offset 4)
 )
 
-(use-package pyvenv :ensure t :pin melpa
+(use-package pyvenv :straight t 
 ;:after  python-mode
 :hook   (python-mode . pyvenv-mode)
 :config (pyvenv-tracking-mode)
 )
 
-(use-package pyenv-mode :ensure t :pin melpa
+(use-package pyenv-mode :straight t 
 :after  python-mode
 :hook  (python-mode . pyenv-mode)
 :preface
@@ -2226,33 +2141,33 @@ shell exits, the buffer is killed."
     )
 :config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 )
-(use-package pyenv-mode-auto :ensure t :pin melpa :after pyenv-mode)
+(use-package pyenv-mode-auto :straight t  :after pyenv-mode)
 
-(use-package lsp-pyright :ensure t :pin melpa 
+(use-package lsp-pyright :straight t  
 :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
-(use-package pip-requirements :ensure t :pin melpa :disabled;:after python-mode
+(use-package pip-requirements :straight t  :disabled;:after python-mode
 :hook (python-mode . pip-requirements-mode)
 )
-(use-package pipenv :ensure t :pin melpa ;:after python-mode
+(use-package pipenv :straight t  ;:after python-mode
 :hook (python-mode . pipenv-mode)
 :init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
-(use-package elpy :ensure t :pin melpa :disabled
+(use-package elpy :straight t  :disabled
 :ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
 :after python-mode
 :hook (python-mode . elpy-enable)
 :config (eldoc-mode 0)
 )
 
-(use-package anaconda-mode :ensure t :pin melpa :disabled
+(use-package anaconda-mode :straight t  :disabled
 :after  python-mode
 :config (add-hook 'python-mode-hook 'anaconda-mode)
         (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
-(use-package company-anaconda :ensure t :pin melpa :disabled
+(use-package company-anaconda :straight t  :disabled
 :after  (company-mode anaconda-mode))
 
 ;(use-package virtualenvwrapper
@@ -2268,7 +2183,7 @@ shell exits, the buffer is killed."
 ;        (add-hook 'venv-postactivate-hook (lambda () (workon-venv)))
 ;)
 
-(use-package dart-mode :ensure t :pin melpa
+(use-package dart-mode :straight t 
 :after lsp
 :mode ("\\.dart\\'" . dart-mode)
 :custom (dart-format-on-save t)
@@ -2277,24 +2192,24 @@ shell exits, the buffer is killed."
 :init (add-hook 'dart-mode-hook 'lsp)
 )
 
-(use-package flutter :ensure t :pin melpa
+(use-package flutter :straight t 
 :after dart-mode
 :general (:keymaps 'dart-mode-map "C-M-x" 'flutter-run-or-hot-reload)
 :custom (flutter-sdk-path (expand-file-name "~/dev/flutter/"))
 )
 
-(use-package i3wm :ensure t :pin melpa :defer t :disabled)
+(use-package i3wm :straight t  :defer t :disabled)
 
-(use-package company-shell :ensure t :pin melpa :defer t
+(use-package company-shell :straight t  :defer t
 :after (company eshell)
 :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
 )
 
-(use-package go-mode :ensure t :pin melpa
+(use-package go-mode :straight t 
 :mode ("\\.go\\''" . go-mode)
 )
 
-(use-package dumb-jump :ensure t :pin melpa
+(use-package dumb-jump :straight t 
 :after  company
 :custom (dumb-jump-selector 'ivy)
         (dumb-jump-force-searcher 'rg)
@@ -2307,7 +2222,7 @@ shell exits, the buffer is killed."
                  "hdz" 'dumb-jump-go-prefer-external-other-window)
 )
 
-(use-package web-mode :ensure t :pin melpa
+(use-package web-mode :straight t 
 :commands (web-mode)
 :mode     (("\\.html?\\'"  . web-mode)
            ("\\.xhtml$\\'" . web-mode)
@@ -2317,16 +2232,16 @@ shell exits, the buffer is killed."
         (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
 )
 
-(use-package js2-mode :ensure t :pin melpa
+(use-package js2-mode :straight t 
 :mode (("\\.js\\'" . js2-mode))
 )
 
-(use-package js2-refactor :ensure t :pin melpa :disabled
+(use-package js2-refactor :straight t  :disabled
 :after js2-mode
 :hook (js2-mode . js2-refactor)
 )
 
-(use-package rjsx-mode :ensure t :pin melpa :disabled
+(use-package rjsx-mode :straight t  :disabled
 :after js2-mode
 :mode (("\\.jsx$" . rjsx-mode)
        ("components/.+\\.js$" . rjsx-mode))
@@ -2343,41 +2258,41 @@ shell exits, the buffer is killed."
 :init (add-to-list 'magic-mode-alist '(+javascript-jsx-file-p . rjsx-mode))
 )
 
-(use-package xref-js2 :ensure t :pin melpa
+(use-package xref-js2 :straight t 
 :after (js2-mode xref)
 :config (add-hook 'js2-mode-hook (lambda () (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 )
 
-(use-package skewer-mode :ensure t :pin melpa
+(use-package skewer-mode :straight t 
 :after js2-mode
 :hook (js2-mode  . skewer-mode)
       (css-mode  . skewer-css-mode)
       (html-mode . skewer-html-mode)
 )
 
-(use-package typescript-mode :ensure t :pin melpa
+(use-package typescript-mode :straight t 
 :mode (("\\.ts\\'"  . typescript-mode)
        ("\\.tsx\\'" . typescript-mode))
 )
 
-(use-package tide :ensure t :pin melpa
+(use-package tide :straight t 
 :after (typescript-mode company flycheck)
 :hook ((typescript-mode . tide-setup)
        (typescript-mode . tide-hl-identifier-mode)
        (before-save . tide-format-before-save))
 )
 
-(use-package json-mode :ensure t :pin melpa
+(use-package json-mode :straight t 
 :commands json-mode
 :mode (("\\.json\\'"       . json-mode)
        ("/Pipfile.lock\\'" . json-mode))
 )
 
-(use-package json-reformat :ensure t :pin melpa
+(use-package json-reformat :straight t 
 :commands json-reformat-region
 )
 
-(use-package restclient :ensure t :pin melpa
+(use-package restclient :straight t 
 :preface 
 (defun new-restclient-buffer ()
     "restclient buffer open"
@@ -2387,12 +2302,12 @@ shell exits, the buffer is killed."
 :commands new-restclient-buffer
 )
 
-(use-package company-restclient :ensure t :pin melpa
+(use-package company-restclient :straight t 
 :after  (company restclient)
 :config (add-to-list 'company-backends 'company-restclient)
 )
 
-(use-package ruby-mode :ensure t :pin melpa
+(use-package ruby-mode :straight t 
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
 :mode "Gemfile\\'"
@@ -2403,33 +2318,33 @@ shell exits, the buffer is killed."
         (ruby-indent-tabs-mode nil)
 )
 
-(use-package rvm :ensure t :pin melpa
+(use-package rvm :straight t 
 :after ruby-mode
 :ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
 )
 
-(use-package yari :ensure t :pin melpa :after ruby-mode)
+(use-package yari :straight t  :after ruby-mode)
 
-(use-package rubocop :ensure t :pin melpa :disabled
+(use-package rubocop :straight t  :disabled
 :ensure-system-package (rubocop . "sudo gem install rubocop")
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe :ensure t :pin melpa
+(use-package robe :straight t 
 :after (ruby-mode company)
 :ensure-system-package (pry . "sudo gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)
 :config (push 'company-robe company-backends)
 )
 
-(use-package ruby-tools :ensure t :pin melpa
+(use-package ruby-tools :straight t 
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 )
 
-(use-package gdscript-mode :ensure t :pin melpa
+(use-package gdscript-mode :straight t 
 :custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
 :hook (gdscript-mode . lsp)
 )
@@ -2438,19 +2353,19 @@ shell exits, the buffer is killed."
 ;:config (add-to-list 'company-backends 'company-godot-gdscript)
 ;)
 
-;(use-package lsp-java :ensure t :pin melpa :config (add-hook 'java-mode-hook 'lsp))
-;(use-package dap-java :ensure nil)
-(use-package gradle-mode :ensure t :pin melpa :config (add-hook 'java-mode-hook 'gradle-mode))
-(use-package groovy-mode :ensure t :pin melpa 
+;(use-package lsp-java :straight t  :config (add-hook 'java-mode-hook 'lsp))
+;(use-package dap-java :straight nil)
+(use-package gradle-mode :straight t  :config (add-hook 'java-mode-hook 'gradle-mode))
+(use-package groovy-mode :straight t  
 :mode (".gradle\\'" . groovy-mode)
 )
 
-(use-package kotlin-mode :ensure t :pin melpa
+(use-package kotlin-mode :straight t 
 :config (add-hook 'kotlin-mode-hook 'lsp)
 )
 
 ; brew install rust base system command
-(use-package rust-system-command :no-require t
+(use-package rust-system-command :no-require t :straight nil
 :if *is-mac*
 :ensure-system-package (rg    . "brew install ripgrep")    
 :ensure-system-package (exa   . "brew install exa")    
@@ -2461,6 +2376,6 @@ shell exits, the buffer is killed."
 )
 
 ; brew cask install karabiner-elements
-(use-package karabiner :no-require t
+(use-package karabiner :no-require t :straight nil
 :if *is-mac*
 )

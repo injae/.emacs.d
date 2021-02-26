@@ -93,6 +93,7 @@
  '(spaceline-all-the-icons-separators-invert-direction t)
  '(spaceline-all-the-icons-window-number-always-visible t)
  '(use-package-compute-statistics t)
+ '(warning-suppress-types '((comp) (comp) (comp)))
  '(yas-snippet-dirs '("~/.emacs.d/yas/")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

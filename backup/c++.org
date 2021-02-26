@@ -1,0 +1,94 @@
+* C++ None Lsp settings
+#+BEGIN_SRC emacs-lisp
+(use-package irony :ensure t  :diminish irony-mode :disabled ; no lsp or eglot mode 
+:after (c++-mode)
+:hook  (c++-mode . irony-mode)
+;:custom ((irony-cdb-search-directory-list (quote ("." "build" "bin")))
+;         (irony-additional-clang-options '("-std=c++17")))
+:config
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+    (setq irony-additional-clang-options '("-std=c++17"))
+    (setq irony-cdb-search-directory-list (quote ("." "build" "bin")))
+)
+
+(use-package irony-eldoc :ensure t 
+:after (irony eldoc)
+:config (add-hook 'irony-mode-hook #'irony-eldoc)
+)
+
+(use-package company-irony :ensure t 
+:after  (company irony)
+:config (add-to-list 'company-backends 'company-irony)
+)
+
+(use-package flycheck-irony :ensure t  :after (flycheck irony) :config (flycheck-irony-setup))
+
+(use-package company-irony-c-headers :ensure t 
+:after  (company-c-headers irony)
+:config (add-to-list 'company-backends 'company-irony-c-headers)
+)
+
+(use-package rtags :ensure t  :disabled
+:after  c++-mode
+:custom (rtags-verify-protocol-version nil "rtags version bug fix")
+:preface
+(defun setup-flycheck-rtags ()
+    (interactive)
+    (flycheck-select-checker 'rtags)
+    ;; RTags creates more accurate overlays.
+    (setq-local flycheck-highlighting-mode nil)
+    (setq-local flycheck-check-syntax-automatically nil))
+:config
+    (rtags-enable-standard-keybindings)
+    (setq rtags-autostart-diagnostics t)
+    (rtags-diagnostics)
+    (setq rtags-completions-enabled t)
+    (rtags-start-process-unless-running)
+:general (leader "hcfs" 'rtags-find-symbol
+                 "hcfr" 'rtags-find-references)
+)
+
+(use-package ivy-rtags :ensure t 
+:after  (ivy rtags)
+:config (setq rtags-display-result-backend 'ivy)
+)
+
+(use-package company-rtags :ensure t 
+:after  (company rtags)
+:config (add-to-list 'company-backends 'company-rtags))
+
+(use-package flycheck-rtags :ensure t 
+:after (flycheck rtags)
+:preface
+    (defun my-flycheck-rtags-setup ()
+        (flycheck-select-checker 'rtags)
+        (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+        (setq-local flycheck-check-syntax-automatically nil))
+:config
+    (add-hook 'c++-mode-hook #'my-flycheck-rtags-setup)
+    (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
+    (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
+    ;(add-hook 'c-mode-hook    #'my-flycheck-rtags-setup)
+    ;(add-hook 'c++-mode-hook  #'my-flycheck-rtags-setup)
+    ;(add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
+    ;(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard   "c++17")))
+    ;(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
+)
+
+(use-package cmake-ide :ensure t 
+:after (rtags)
+:config
+    (require 'subr-x)
+    (cmake-ide-setup)
+    (setq cmake-ide-flags-c++ (append '("-std=c++17")))
+    ;(defadvice cmake-ide--run-cmake-impl
+    ;  (after copy-compile-commands-to-project-dir activate)
+    ;  (if (file-exists-p (concat project-dir "/build/compile_commands.json"))
+    ;  (progn
+    ;      (cmake-ide--message "[advice] found compile_commands.json" )
+    ;      (copy-file (concat project-dir "compile_commands.json") cmake-dir)
+    ;      (cmake-ide--message "[advice] copying compile_commands.json to %s" cmake-dir))
+    ;      (cmake-ide--message "[advice] couldn't find compile_commands.json" ))
+    ;)
+)
+#+END_SRC
