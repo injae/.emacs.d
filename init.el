@@ -1,4 +1,5 @@
-;;; init.el --- Emacs Configuration -*- lexical-binding: t -*-
+;; -*- lexical-binding: t -*-
+;;; init.el --- Emacs Configuration
 ;;; Commentary:
 ;; This config start here
 ;;; Code:
@@ -48,7 +49,8 @@
 
 (use-package use-package-ensure-system-package :straight t)
 
-(use-package org :straight t :mode ("\\.org\\'" . org-mode)
+(use-package org :straight t
+:mode (("\\.org\\'" . org-mode))
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 

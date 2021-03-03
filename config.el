@@ -18,9 +18,10 @@
 
 
 ;(use-package bug-hunter :ensure t )
-(use-package explain-pause-mode :straight (explain-pause-mode :type git :host github
-                                              :repo "lastquestion/explain-pause-mode")
-  :config (explain-pause-mode))
+(use-package explain-pause-mode :straight (explain-pause-mode :type git
+                                            :host github :repo "lastquestion/explain-pause-mode")
+:config (explain-pause-mode)
+)
 
 (setq ad-redefinition-action 'accept)
 (setq max-lisp-eval-depth 10000)
@@ -969,12 +970,12 @@ list)
 :config  (evil-magit-init)
 )
 
-(use-package magithub :straight t  
-:after magit
-:general (leader "gd" 'magithub-dashboard)
-:init (magithub-feature-autoinject t)
-        (setq magithub-clone-default-directory "~/github")
-)
+;(use-package magithub :straight t  
+;:after magit
+;:general (leader "gd" 'magithub-dashboard)
+;:init (magithub-feature-autoinject t)
+;      (setq magithub-clone-default-directory "~/github")
+;)
 
 (use-package magit-todos :straight t  :after magit :disabled)
 
