@@ -25,3 +25,4 @@
 ;;    (add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/") t)
 
 
+(setq package-enable-at-startup nil)

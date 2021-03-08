@@ -1,10 +1,11 @@
-(setq user-full-name "Injae Lee")
-(setq user-mail-address "8687lee@gmail.com")
-
-;;; config.el --- Emacs Configuration -*- lexical-binding: t -*-
+;; -*- lexical-binding: t -*-
+;;; config.el --- Emacs Configuration
 ;;; Commentary:
 ;; This config start here
 ;;; Code:
+
+(setq user-full-name "Injae Lee")
+(setq user-mail-address "8687lee@gmail.com")
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -363,7 +364,7 @@ list)
 :config (global-evil-surround-mode 1)
 )
 
-(use-package evil-exchange :straight t 
+(use-package evil-exchange :straight t  :disabled
 ; gx gx (gx로 선택한 영역 교환)
 :after evil
 :config (evil-exchange-install)
@@ -1046,8 +1047,8 @@ list)
                  "oe" 'org-edit-src-code
                  "ok" 'org-edit-src-exit
                  "ol" 'org-store-link)
-:init   (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
-        (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
+;:init   (setq org-directory          (expand-file-name     "~/Dropbox/org   "))
+;        (setq org-default-notes-file (concat org-directory "/notes/notes.org"))
 :config (setq org-startup-indented   nil)
 )
 
@@ -1865,10 +1866,11 @@ shell exits, the buffer is killed."
 :general (leader "hccf" 'clang-format-regieon)
 )
 
-(use-package lsp-treemacs :straight t  :disabled
-  :after lsp-mode
-  :config (lsp-metals-treeview-enable t)
-          (setq lsp-metals-treeview-show-when-views-received t)
+(use-package lsp-treemacs :straight t 
+  :after (lsp-mode doom-modeline)
+  :config ;(setq lsp-metals-treeview-enable t)
+          ;(setq lsp-metals-treeview-show-when-views-received t)
+          (lsp-treemacs-sync-mode 1)
   ) 
 
   (use-package dap-mode :straight t 
@@ -2274,6 +2276,7 @@ shell exits, the buffer is killed."
 (use-package typescript-mode :straight t 
 :mode (("\\.ts\\'"  . typescript-mode)
        ("\\.tsx\\'" . typescript-mode))
+:hook (typescript-mode . (lambda () (lsp)))
 )
 
 (use-package tide :straight t 
@@ -2345,9 +2348,9 @@ shell exits, the buffer is killed."
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 )
 
-(use-package gdscript-mode :straight t 
-:custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
+(use-package gdscript-mode :straight t :disabled
 :hook (gdscript-mode . lsp)
+:custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
 )
 ;(use-package company-godot-gdscript :quelpa (company-godot-gdscript :fetcher github :repo "francogarcia/company-godot-gdscript.el") :disabled
 ;:after (gdscript-mode company)
@@ -2365,15 +2368,14 @@ shell exits, the buffer is killed."
 :config (add-hook 'kotlin-mode-hook 'lsp)
 )
 
+(use-package lsp-grammarly :straight t :disabled
+:hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
+)
+
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :straight nil
 :if *is-mac*
-:ensure-system-package (rg    . "brew install ripgrep")    
-:ensure-system-package (exa   . "brew install exa")    
-:ensure-system-package (bat   . "brew install bat")    
-:ensure-system-package (fd    . "brew install fd")    
-:ensure-system-package (procs . "brew install procs")    
-:ensure-system-package (ytop  . "brew install ytop")    
+:ensure-system-package (rg exa bat fd procs ytop)    
 )
 
 ; brew cask install karabiner-elements
