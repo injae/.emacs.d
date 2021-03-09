@@ -800,7 +800,7 @@ list)
 :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
-(use-package historian :straight t 
+(use-package historian :straight t :disabled
 :after  (ivy)
 :config (historian-mode)
 )
@@ -1335,8 +1335,8 @@ shell exits, the buffer is killed."
 
 (use-package exec-path-from-shell :straight t 
 :if     (memq window-system '(mac ns x))
-:custom (exec-path-from-shell-variables '("PATH"))
 :config (exec-path-from-shell-initialize)
+        (exec-path-from-shell-copy-env "PATH")
 )
 
 (use-package eshell-did-you-mean :straight t 
@@ -1444,7 +1444,7 @@ shell exits, the buffer is killed."
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :straight t  
+(use-package org-roam :straight t :disabled 
 :hook (after-init . org-roam-mode)
 :custom (org-roeam-directory "~/GoogleDrive/Org/")
 ;:general (leader "on" '(org-roam-mode-map :wk "Note"))

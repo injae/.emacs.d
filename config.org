@@ -892,7 +892,7 @@ list)
 :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
-(use-package historian :straight t 
+(use-package historian :straight t :disabled
 :after  (ivy)
 :config (historian-mode)
 )
@@ -1462,8 +1462,8 @@ shell exits, the buffer is killed."
 
 (use-package exec-path-from-shell :straight t 
 :if     (memq window-system '(mac ns x))
-:custom (exec-path-from-shell-variables '("PATH"))
 :config (exec-path-from-shell-initialize)
+        (exec-path-from-shell-copy-env "PATH")
 )
 
 (use-package eshell-did-you-mean :straight t 
@@ -1577,7 +1577,7 @@ shell exits, the buffer is killed."
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :straight t  
+(use-package org-roam :straight t :disabled 
 :hook (after-init . org-roam-mode)
 :custom (org-roeam-directory "~/GoogleDrive/Org/")
 ;:general (leader "on" '(org-roam-mode-map :wk "Note"))
@@ -2741,7 +2741,8 @@ export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.plat
 :if *is-mac*
 )
 #+END_SRC
-#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
+//#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
+#+BEGIN_SRC json :tangle no
 {
     "title": "Emacs MacOS Keyboard Setting",
     "rules": [{
@@ -2780,8 +2781,7 @@ add_newline = false
     
 [directory]
 truncate_to_repo = false
-    
-[battery]
+
 full_symbol = "🔋"
 charging_symbol = "⚡️"
 discharging_symbol = "💀"   
