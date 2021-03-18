@@ -19,8 +19,8 @@
 
 
 ;(use-package bug-hunter :ensure t )
-(use-package explain-pause-mode :straight (explain-pause-mode :type git
-                                            :host github :repo "lastquestion/explain-pause-mode")
+(use-package explain-pause-mode :disabled
+    :straight (explain-pause-mode :type git :host github :repo "lastquestion/explain-pause-mode")
 :config (explain-pause-mode)
 )
 
@@ -2126,6 +2126,7 @@ shell exits, the buffer is killed."
 (use-package pyvenv :straight t 
 ;:after  python-mode
 :hook   (python-mode . pyvenv-mode)
+:init   (setenv "WORKON_HOME" "~/.pyenv/versions")
 :config (pyvenv-tracking-mode)
 )
 
@@ -2156,6 +2157,10 @@ shell exits, the buffer is killed."
 (use-package pipenv :straight t  ;:after python-mode
 :hook (python-mode . pipenv-mode)
 :init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+)
+
+(use-package lsp-pyright :straight t
+:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
 (use-package elpy :straight t  :disabled

@@ -75,8 +75,8 @@
 ;:config (literate-elisp-load (expand-file-name "config.org" user-emacs-directory))
 ;)
 
-;(setq-default custom-file "~/.emacs.d/custom-variable.el")
-;(when (file-exists-p custom-file) (load-file custom-file))
+(setq-default custom-file "~/.emacs.d/custom-variable.el")
+(when (file-exists-p custom-file) (load-file custom-file))
 
 
 
@@ -86,34 +86,3 @@
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
 
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-ex-substitute-matches ((t (:inherit diff-removed :foreground unspecified :background unspecified))))
- '(evil-ex-substitute-replacement ((t (:inherit diff-added :foreground unspecified :background unspecified))))
- '(evil-traces-change ((t (:inherit diff-removed))))
- '(evil-traces-copy-preview ((t (:inherit diff-added))))
- '(evil-traces-copy-range ((t (:inherit diff-changed))))
- '(evil-traces-delete ((t (:inherit diff-removed))))
- '(evil-traces-global-match ((t (:inherit diff-added))))
- '(evil-traces-global-range ((t (:inherit diff-changed))))
- '(evil-traces-join-indicator ((t (:inherit diff-added))) t)
- '(evil-traces-join-range ((t (:inherit diff-changed))))
- '(evil-traces-move-preview ((t (:inherit diff-added))))
- '(evil-traces-move-range ((t (:inherit diff-removed))))
- '(evil-traces-normal ((t (:inherit diff-changed))))
- '(evil-traces-shell-command ((t (:inherit diff-changed))))
- '(evil-traces-substitute-range ((t (:inherit diff-changed))))
- '(evil-traces-yank ((t (:inherit diff-changed))))
- '(org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
- '(org-pomodoro-mode-line-break ((t (:foreground "#50fa7b")))))
