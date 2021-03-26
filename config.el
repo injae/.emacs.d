@@ -1234,6 +1234,8 @@ list)
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil :straight t :after kubernetes)
 
+(use-package docker-compose-mode :straight t)
+
 (use-package vterm :straight t  ;:disabled ;macport version not working
 :general (leader "tn" 'vterm)
 :custom (vterm-always-compile-module t)

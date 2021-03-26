@@ -1354,6 +1354,7 @@ list)
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil :straight t :after kubernetes)
 
+(use-package docker-compose-mode :straight t)
 #+END_SRC
 ** Shell
 #+BEGIN_SRC emacs-lisp
