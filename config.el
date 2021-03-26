@@ -178,7 +178,7 @@
 
 (use-package server :config (unless (server-running-p) (server-start)))
 
-;(setq warning-minimum-level :error)
+(setq warning-minimum-level :error)
 
 ; large date blob read
 (setq read-process-output-max (* 1024 1024)) ; 1mb
@@ -470,6 +470,7 @@ list)
        (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
        (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
        (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
+       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
 :config
        (evil-collection-pdf-setup)
        (evil-collection-occur-setup)
@@ -1064,7 +1065,7 @@ list)
 ;    (org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
 
-(use-package org-journal :straight t  :disabled
+(use-package org-journal :straight t :disabled
 :after org
 :preface
     (defun org-journal-find-location ()
@@ -1083,7 +1084,7 @@ list)
     (org-icalendar-combine-agenda-files)
 )
 
-(use-package org-capture :straight nil
+(use-package org-capture :straight nil :disabled
 :after org
 :config (setq org-reverse-note-order t)
     (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/notes"))
@@ -1100,7 +1101,7 @@ list)
     )
 )
 
-(use-package org-agenda :straight nil
+(use-package org-agenda :straight nil :disabled
 :after org
 :config (use-package evil-org :straight t 
         :after (org evil)
@@ -1225,7 +1226,13 @@ list)
 )
 
 (use-package dockerfile-mode :straight t 
-:mode   ("Dockerfile\\'" . dockerfile-mode))
+:mode ("Dockerfile\\'" . dockerfile-mode))
+
+(use-package kubernetes :straight t
+  :commands (kubernetes-overview))
+
+;; If you want to pull in the Evil compatibility package.
+(use-package kubernetes-evil :straight t :after kubernetes)
 
 (use-package vterm :straight t  ;:disabled ;macport version not working
 :general (leader "tn" 'vterm)
@@ -2072,16 +2079,14 @@ shell exits, the buffer is killed."
 (use-package haskell-mode :straight t  :defer t)
 
 (use-package yaml-mode :straight t 
-:commands yaml-mode
 :mode (("\\.yaml\\'" . yaml-mode)
-        ("\\.yml\\'"  . yaml-mode))
+       ("\\.yml\\'"  . yaml-mode))
 )
 
 (use-package toml-mode :straight t 
-:commands toml-mode
 :mode (("\\.toml\\'" . toml-mode)
        ("Pipfile\\'" . toml-mode))
-    )
+)
 
 (use-package cmake-mode :straight t 
 ;:ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
@@ -2118,12 +2123,12 @@ shell exits, the buffer is killed."
 :mode   ("\\.py\\'" . python-mode)
 ;        ("\\.wsgi$" . python-mode)
 ;:interpreter ("python" . python-mode)
-:ensure-system-package ((pyenv . "brew install pyenv")
+:ensure-system-package (;(pyenv . "")
                         (pipenv . "pip install pipenv"))
 :config (setq python-indent-offset 4)
 )
 
-(use-package pyvenv :straight t 
+(use-package pyvenv :straight t  :disabled
 ;:after  python-mode
 :hook   (python-mode . pyvenv-mode)
 :init   (setenv "WORKON_HOME" "~/.pyenv/versions")
@@ -2147,20 +2152,18 @@ shell exits, the buffer is killed."
 )
 (use-package pyenv-mode-auto :straight t  :after pyenv-mode)
 
-(use-package lsp-pyright :straight t  
-:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
-)
 
 (use-package pip-requirements :straight t  :disabled;:after python-mode
 :hook (python-mode . pip-requirements-mode)
 )
-(use-package pipenv :straight t  ;:after python-mode
-:hook (python-mode . pipenv-mode)
-:init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+
+(use-package lsp-pyright :straight t  
+:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
-(use-package lsp-pyright :straight t
-:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
+(use-package pipenv :straight t  ;:after python-mode
+:hook (python-mode . pipenv-mode)
+;:init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
 (use-package elpy :straight t  :disabled
