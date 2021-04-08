@@ -2768,6 +2768,9 @@ shell exits, the buffer is killed."
   alias ps='procs'
   alias top='ytop'
 
+  # kubernetes
+  source <(kubectl completion zsh)
+
   antigen apply
 
 #+END_SRC
