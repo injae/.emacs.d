@@ -968,6 +968,11 @@ list)
         (setq projectile-globally-ignored-directories
             (append '(".ccls-cache" ".git" "__pycache__") projectile-globally-ignored-directories))
         (setq projectile-completion-system 'ivy)
+        (setq projectile-current-project-on-switch t)
+        (setq projectile-project-root-files-functions #'(projectile-root-top-down
+                                                         projectile-root-top-down-recurring
+                                                         projectile-root-bottom-up
+                                                         projectile-root-local))
         ;(setq projectile-globally-ignored-files
         ;    (append '() projectile-globaly-ignore-files))
 )
@@ -1380,6 +1385,11 @@ list)
        ;(add-hook 'counsel-tramp-post-command-hook (lambda () (vterm-toggle-cd)))
 )
 
+(use-package multi-vterm :straight t 
+:general (leader "tn" #'multi-vterm)
+)
+
+
 (use-package vterm-with-centaur-tab :no-require t :straight nil
 :after (vterm-toggle centaur-tabs)
 :preface (defun vmacs-awesome-tab-buffer-groups ()
@@ -1646,8 +1656,38 @@ shell exits, the buffer is killed."
 ** Tabbar
  #+BEGIN_SRC emacs-lisp
 (use-package centaur-tabs :straight t 
+:preface 
+    (defun centaur-tabs-hide-tab (x)
+    "Do no to show buffer X in tabs."
+    (let ((name (format "%s" x)))
+        (or
+        ;; Current window is not dedicated window.
+        (window-dedicated-p (selected-window))
+
+        ;; Buffer name not match below blacklist.
+        (string-prefix-p "*epc" name)
+        (string-prefix-p "*helm" name)
+        (string-prefix-p "*Helm" name)
+        (string-prefix-p "*Compile-Log*" name)
+        (string-prefix-p "*lsp" name)
+        (string-prefix-p "*company" name)
+        (string-prefix-p "*Flycheck" name)
+        (string-prefix-p "*tramp" name)
+        (string-prefix-p " *Mini" name)
+        (string-prefix-p "*help" name)
+        (string-prefix-p "*straight" name)
+        (string-prefix-p " *temp" name)
+        (string-prefix-p "*Help" name)
+        (string-prefix-p "*pyright*" name)
+        (string-prefix-p "*pyright::stderr*" name)
+        (string-prefix-p "*Async-native-compile-log*" name)
+        ;; Is not magit buffer.
+        (and (string-prefix-p "magit" name)
+        (not (file-name-extension name)))
+        )))
 :custom (centaur-tabs-background-color (face-background 'default))
         (centaur-tabs-set-icons t)
+        (centaur-tabs-set-bar 'over)
         (centaur-tabs-set-close-button t)
         (centaure-tabs-set-bar t)
         (centaur-tabs-style "chamfer")
@@ -1656,6 +1696,7 @@ shell exits, the buffer is killed."
         (setq centaur-tabs-cycle-scope 'tabs)
         (centaur-tabs-headline-match)
         (centaur-tabs-group-by-projectile-project)
+        (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 )
