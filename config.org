@@ -1,3 +1,4 @@
+
 #+TITLE: InJae's Emacs Configure File
 #+OPTIONS: toc:4 h:4
 #+PROPERTY: header-args :cache yes :mkdir yes
@@ -23,12 +24,12 @@
 #+END_SRC
 ** Emacs Profiler
 #+BEGIN_SRC emacs-lisp
-(use-package emacs-gc-setting :no-require :straight nil
+(use-package emacs-gc-setting :no-require t :ensure nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
       (setq read-process-output-max (* 1024 1024))
       ;(run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
-(use-package esup :straight t)
+(use-package esup :ensure t)
 
 #+END_SRC
 ** use-package expand
@@ -37,8 +38,7 @@
 ** Emacs Config Debugger
 #+BEGIN_SRC emacs-lisp
   ;(use-package bug-hunter :ensure t )
-(use-package explain-pause-mode :disabled
-    :straight (explain-pause-mode :type git :host github :repo "lastquestion/explain-pause-mode")
+(use-package explain-pause-mode :disabled ;:ensure (explain-pause-mode :type git :host github :repo "lastquestion/explain-pause-mode")
 :config (explain-pause-mode)
 )
 #+END_SRC
@@ -59,7 +59,7 @@
 #+END_SRC
 ** Window Setting
 #+BEGIN_SRC emacs-lisp
-(use-package scroll-bar :no-require t :straight nil
+(use-package scroll-bar :no-require t :ensure nil
 :if window-system
 :init (scroll-bar-mode -1)
 :config
@@ -67,27 +67,27 @@
     (setq scroll-conservatively 10000)
 )
 
-(use-package tool-bar :no-require t :straight nil
+(use-package tool-bar :no-require t :ensure nil
 :if window-system
 :init (tool-bar-mode -1)
 )
 
-(use-package menu-bar :no-require t :straight nil
+(use-package menu-bar :no-require t :ensure nil
 :if window-system
 :init (menu-bar-mode -1)
 )
 
-(use-package tooltip-mode :no-require t :straight nil
+(use-package tooltip-mode :no-require t :ensure nil
 :if window-system
 :init (tooltip-mode -1)
 )
 
-(use-package mouse :no-require t :straight nil
+(use-package mouse :no-require t :ensure nil
 :if window-system
 :init (xterm-mouse-mode)
 )
 
-(use-package ns-auto-titlebar :straight t
+(use-package ns-auto-titlebar :ensure t
 :if *is-mac*
 :config (ns-auto-titlebar-mode)
         (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -120,7 +120,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode)
 ;; emacs large file setting
-(use-package so-long-mode :no-require t :straight nil
+(use-package so-long-mode :no-require t :ensure nil
 ;; default text parsing direction left -> right 
 :if (version<= "27.1" emacs-version)
 :config
@@ -179,7 +179,7 @@
 #+END_SRC
 ** Emacs restart
 #+BEGIN_SRC emacs-lisp
-(use-package restart-emacs :straight t)
+(use-package restart-emacs :ensure t)
 
 (defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
 (defun launch-separate-emacs-under-x () (call-process "sh" nil nil nil "-c" "emacs &"))
@@ -207,7 +207,7 @@
 #+END_SRC
 ** Move Text
 #+BEGIN_SRC emacs-lisp
-(use-package drag-stuff :straight t  :defer t
+(use-package drag-stuff :ensure t  :defer t
 :after evil
 :init (drag-stuff-global-mode t)
         (drag-stuff-define-keys)
@@ -252,12 +252,12 @@ https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
 #+END_SRC
 ** Text Editing
 #+BEGIN_SRC emacs-lisp
-(use-package hungry-delete :straight t  :defer t :disabled
+(use-package hungry-delete :ensure t  :defer t :disabled
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
 
-(use-package face-picker :no-require t :straight nil
+(use-package face-picker :no-require t :ensure nil
 :preface
 (defun what-face (pos)
      (interactive "d")
@@ -311,7 +311,7 @@ list)
 #+END_SRC
 ** Fringes Mode
 #+BEGIN_SRC emacs-lisp
-(use-package modern-fringes :straight t 
+(use-package modern-fringes :ensure t 
 :config (modern-fringes-invert-arrows)
         (modern-fringes-mode)
 )
@@ -332,7 +332,7 @@ list)
     #+END_SRC
 ** Keypression Visualizer
    #+BEGIN_SRC emacs-lisp
-     (use-package keypression :straight t 
+     (use-package keypression :ensure t 
      :commands keypression-mode
      :custom (keypression-use-child-frame t)
              (keypression-fade-out-delay 1.0)
@@ -348,7 +348,7 @@ list)
 * Emacs Mode Settings
 ** Vim KeyMap (Evil-mode)
 #+BEGIN_SRC emacs-lisp
-(use-package evil :straight t 
+(use-package evil :ensure t 
 :custom (evil-want-integration t)
         (evil-want-keybinding nil)
         (evil-want-C-u-scroll t)
@@ -358,7 +358,7 @@ list)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
 )
 
-(use-package general :straight t 
+(use-package general :ensure t 
 :after evil
 :init (setq general-override-states '(insert emacs  hybrid   normal
                                       visual motion override operator replace))
@@ -395,13 +395,13 @@ list)
               "wl"    '(enlarge-window-horizontally :wk "Bootom size down"))
 )
 
-(use-package evil-visualstar :straight t 
+(use-package evil-visualstar :ensure t 
 ; vim visual mode에서 * #를 사용해서 같은 단어 검색가능
 :after evil
 :config (global-evil-visualstar-mode t)
 )
 
-(use-package evil-surround :straight t 
+(use-package evil-surround :ensure t 
 ; @call-function
 ; visual mode S- or gS-
 ; normal mode ys- or yS-
@@ -422,30 +422,30 @@ list)
 :config (global-evil-surround-mode 1)
 )
 
-(use-package evil-exchange :straight t  :disabled
+(use-package evil-exchange :ensure t  :disabled
 ; gx gx (gx로 선택한 영역 교환)
 :after evil
 :config (evil-exchange-install)
 )
 
-(use-package evil-indent-plus :straight t 
+(use-package evil-indent-plus :ensure t 
 :after evil
 :config (evil-indent-plus-default-bindings)
 )
 
-(use-package evil-goggles :straight t  :after evil
+(use-package evil-goggles :ensure t  :after evil
 :config (evil-goggles-mode)
         (setq evil-goggles-pulse t)
         (setq evil-goggles-duration 0.500)
 )
 
-(use-package evil-traces :straight t  :after evil
+(use-package evil-traces :ensure t  :after evil
 ; move: m +{n}, delete: +{n},+{n}d, join: .,+{n}j glboal: g/{target}/{change}
 :config (evil-traces-use-diff-faces)
         (evil-traces-mode)
 )
 
-(use-package evil-mc :straight t  :disabled
+(use-package evil-mc :ensure t  :disabled
 :after evil
 :preface
       (defun user-evil-mc-make-cursor-here ()
@@ -459,7 +459,7 @@ list)
 :config (global-evil-mc-mode 1)
 )
 
-(use-package evil-nerd-commenter :straight t  :after evil
+(use-package evil-nerd-commenter :ensure t  :after evil
 :general (leader "c" '(:wk "comment")
                  "ci" 'evilnc-comment-or-uncomment-lines
                  "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -470,7 +470,7 @@ list)
                  "\\" 'evilnc-comment-operator)
 )
 
-(use-package evil-args :straight t  :after evil
+(use-package evil-args :ensure t  :after evil
 ; change argument: c-i-a, delete arguemnt: d-a-a
 :config (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
         (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
@@ -482,30 +482,30 @@ list)
 )
 
 
-(use-package evil-multiedit :straight t  :disabled)
-(use-package evil-iedit-state :straight t  :after (evil iedit))
+(use-package evil-multiedit :ensure t  :disabled)
+(use-package evil-iedit-state :ensure t  :after (evil iedit))
 
-(use-package evil-matchit :straight t 
+(use-package evil-matchit :ensure t 
 :after evil
 :config (global-evil-matchit-mode 1)
 )
 
-(use-package evil-lion :straight t 
+(use-package evil-lion :ensure t 
 ; gl ${operator}
 :config (evil-lion-mode)
 )
 
-(use-package evil-escape :straight t  :disabled
+(use-package evil-escape :ensure t  :disabled
 :config (setq-default evil-escape-key-sequence "jk")
 )
 
-(use-package evil-smartparens :straight t 
+(use-package evil-smartparens :ensure t 
 :after (evil smartparens)
 :hook (smartparens-mode . evil-smartparens-mode)
 ;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 )
 
-(use-package evil-numbers :straight t 
+(use-package evil-numbers :ensure t 
 ;https://github.com/cofi/evil-numbers
 :after evil
 :general (leader "="     '(evil-numbers/inc-at-pt :wk "++")
@@ -517,11 +517,11 @@ list)
                  "C-c -" '(evil-numbers/dec-at-pt :wk "--"))
 )
 
-(use-package evil-extra-operator :straight t  :after (evil fold-this)
+(use-package evil-extra-operator :ensure t  :after (evil fold-this)
     :config (global-evil-extra-operator-mode 1)
 )
 
-(use-package evil-collection :straight t 
+(use-package evil-collection :ensure t 
 :after (evil)
 :custom (evil-collection-setup-minibuffer t)
 :init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
@@ -545,14 +545,14 @@ list)
 #+END_SRC
 ** Text Scaling
 #+BEGIN_SRC emacs-lisp
-(use-package buffer-zoom :no-require t :straight nil
+(use-package buffer-zoom :no-require t :ensure nil
 :general (leader "tu" 'text-scale-increase
                  "td" 'text-scale-decrease)
 )
 #+END_SRC
 ** Sudo file open
 #+BEGIN_SRC emacs-lisp
-(use-package sudo-mode :no-require t :straight nil
+(use-package sudo-mode :no-require t :ensure nil
 :preface
 (defun sudo-find-file (file-name)
     "sudo open"
@@ -564,14 +564,14 @@ list)
 #+END_SRC
 ** Goto Last Change
 #+BEGIN_SRC emacs-lisp
-(use-package goto-last-change :straight t  :defer t
+(use-package goto-last-change :ensure t  :defer t
 ;https://github.com/camdez/goto-last-change.el
 :general (leader "fl" 'goto-last-change)
 )
 #+END_SRC
 ** Clean Emacs Config Mode
 #+BEGIN_SRC emacs-lisp
-(use-package no-littering :straight t 
+(use-package no-littering :ensure t 
 :config (require 'recentf)
         (add-to-list 'recentf-exclude no-littering-var-directory)
         (add-to-list 'recentf-exclude no-littering-etc-directory)
@@ -580,7 +580,7 @@ list)
 #+END_SRC
 ** Macro
 #+BEGIN_SRC emacs-lisp
-(use-package elmacro :straight t  :disabled :config (elmacro-mode))
+(use-package elmacro :ensure t  :disabled :config (elmacro-mode))
 ; C-x ( 메크로 시작
 ; C-x ) 메크로 종료
 ; C-x e 메크로 실행
@@ -589,8 +589,8 @@ list)
 #+END_SRC
 ** Line Number and Highlighting
 #+BEGIN_SRC emacs-lisp
-(use-package beacon :straight t  :init (beacon-mode t))
-(use-package git-gutter :straight t  :defer t
+(use-package beacon :ensure t  :init (beacon-mode t))
+(use-package git-gutter :ensure t  :defer t
 :init
     (setq-default display-line-numbers-width 3)
     (global-display-line-numbers-mode t)
@@ -611,7 +611,7 @@ list)
 ** Theme Setting
 #+BEGIN_SRC emacs-lisp
 (setq custom-safe-themes t)
-(use-package doom-themes :straight t 
+(use-package doom-themes :ensure t 
 :init    (load-theme   'doom-vibrant t)
          ;(enable-theme 'doom-nord)
 :config (doom-themes-org-config)
@@ -632,10 +632,10 @@ list)
 #+END_SRC
 ** Modeline Setting
 #+BEGIN_SRC emacs-lisp
-(use-package all-the-icons :straight t 
+(use-package all-the-icons :ensure t 
 :config  
 )
-(use-package doom-modeline :straight t 
+(use-package doom-modeline :ensure t 
 :hook   (after-init . doom-modeline-init)
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
@@ -667,27 +667,27 @@ list)
         (setq doom-modeline-major-mode-color-icon t)
 )
 
-(use-package hide-mode-line :straight t 
+(use-package hide-mode-line :ensure t 
 :after (neotree)
 :hook  (neotree-mode . hide-mode-line-mode)
 )
 #+END_SRC
 ** Modeline Minor Mode
 #+BEGIN_SRC emacs-lisp
-(use-package nyan-mode :straight t 
+(use-package nyan-mode :ensure t 
 ;:after  (doom-modeline)
 :config (nyan-mode)
         (setq-default nyan-wavy-trail t)
         (nyan-start-animation)
         (nyan-refresh)
 )
-(use-package fancy-battery :straight t 
+(use-package fancy-battery :ensure t 
 :hook   (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t)
 )
 
-(use-package diminish :straight t  :defer t
+(use-package diminish :ensure t  :defer t
 :init
     (diminish 'c++-mode "C++ Mode")
     (diminish 'c-mode   "C Mode"  )
@@ -707,18 +707,18 @@ list)
 #+END_SRC
 ** Emacs Indent Setting
 #+BEGIN_SRC emacs-lisp
-(use-package aggressive-indent :straight t  :disabled
+(use-package aggressive-indent :ensure t  :disabled
 ; https://github.com/Malabarba/aggressive-indent-mode
 :config (electric-indent-mode nil)
 ;exclud mode
 ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 )
 
-(use-package smart-tabs-mode :straight t  :defer t :disabled
+(use-package smart-tabs-mode :ensure t  :defer t :disabled
 :config (smart-tabs-insinuate 'c 'c++)
 )
 
-(use-package indent-guide :straight t :disabled
+(use-package indent-guide :ensure t :disabled
 ; 문자로 표시하기 때문에 예쁘지 않음
 :hook (prog-mode text-mode)
 :config
@@ -729,13 +729,13 @@ list)
     (indent-guide-mode)
 )
 
-(use-package highlight-indentation :straight t  :disabled
+(use-package highlight-indentation :ensure t  :disabled
 :hook   (prog-mode text-mode)
 :config ;(highlight-indentation-mode)
 )
 
 
-(use-package highlight-indent-guides :straight t :disabled
+(use-package highlight-indent-guides :ensure t :disabled
 :hook (prog-mode text-mode)
 :config
     (highlight-indent-guides-mode)
@@ -747,7 +747,7 @@ list)
     (setq highlight-indent-guides-method 'column)
 )
 
-(use-package indent4-mode :no-require t :straight nil
+(use-package indent4-mode :no-require t :ensure nil
 :preface
     (defun my-set-indent (n)
         (setq-default tab-width n)
@@ -778,22 +778,22 @@ list)
 #+END_SRC
 ** Paren Mode
 #+BEGIN_SRC emacs-lisp
-(use-package paren :straight t 
+(use-package paren :ensure t 
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
 )
 
-(use-package expand-region :straight t 
+(use-package expand-region :ensure t 
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
 
 
-(use-package rainbow-delimiters :straight t 
+(use-package rainbow-delimiters :ensure t 
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package smartparens :straight t 
+(use-package smartparens :ensure t 
 :general (leader "pr " 'sp-rewrap-sexp
                  "pll" 'sp-forward-slurp-sexp
                  "phh" 'sp-backward-slurp-sexp
@@ -802,22 +802,22 @@ list)
 :init (smartparens-global-mode)
 )
 ; elisp double quote problem fix setting
-;(use-package smartparens-config :straight smartparens :straight nil)
+;(use-package smartparens-config :ensure smartparens :ensure nil)
 
 #+END_SRC
 ** Hydra KeyMap
 #+BEGIN_SRC emacs-lisp
-(use-package hydra :straight t  :defer t)
+(use-package hydra :ensure t  :defer t)
 #+END_SRC
 ** Key map buffer make
 #+BEGIN_SRC emacs-lisp
-(use-package which-key :straight t 
+(use-package which-key :ensure t 
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
         (setq which-key-show-operator-state-maps t)
         ;(which-key-setup-minibuffer)
 )
-(use-package which-key-posframe :straight t  :disabled
+(use-package which-key-posframe :ensure t  :disabled
 :after which-key
 :config
     (setq which-key-posframe-border-width 15)
@@ -827,14 +827,14 @@ list)
 #+END_SRC
 ** Avy
 #+BEGIN_SRC emacs-lisp
-(use-package avy :straight t 
+(use-package avy :ensure t 
 :general (leader "jl" '(avy-goto-line :wk "Jump to line")
                  "jw" '(avy-goto-char :wk "Jump to word"))
 )
 #+END_SRC
 ** Ivy Mode
 #+BEGIN_SRC emacs-lisp
-(use-package ivy :straight t 
+(use-package ivy :ensure t 
 :after evil-collection
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
@@ -858,7 +858,7 @@ list)
 :config (counsel-mode)
 )
 
-(use-package swiper :straight t 
+(use-package swiper :ensure t 
 :after ivy
 :general ("C-s"    'swiper)
          ("C-S-s"  'swiper-all)
@@ -867,7 +867,7 @@ list)
         (setq swiper-stay-on-quit t)
 )
 
-(use-package ivy-posframe :straight t 
+(use-package ivy-posframe :ensure t 
 :after ivy
 :custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
         (ivy-posframe-height-alist            '((t . 20)))
@@ -876,48 +876,48 @@ list)
 :config (ivy-posframe-mode t)
 )
 
-(use-package counsel-osx-app :straight t 
+(use-package counsel-osx-app :ensure t 
 :after counsel
 :general (leader "fa" '(counsel-osx-app :wk "Execute OSX App"))
 )
 
-(use-package counsel-fd :straight t  :disabled
+(use-package counsel-fd :ensure t  :disabled
 :after counsel
 :commands (counsel-fd-dired-jump counsel-fd-file-jump)
 )
 
 
-(use-package ivy-yasnippet :straight t 
+(use-package ivy-yasnippet :ensure t 
 :after (ivy yasnippet)
 :general  ("C-c C-y" 'ivy-yasnippet)
 :config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
-(use-package historian :straight t :disabled
+(use-package historian :ensure t :disabled
 :after  (ivy)
 :config (historian-mode)
 )
 
-(use-package ivy-historian :straight t 
+(use-package ivy-historian :ensure t 
 :after  (ivy historian)
 :config (ivy-historian-mode)
 )
 
-(use-package all-the-icons-ivy :straight t 
+(use-package all-the-icons-ivy :ensure t 
 :config (all-the-icons-ivy-setup)
 )
 
-(use-package ivy-xref :straight t  :disabled
+(use-package ivy-xref :ensure t  :disabled
 :after (ivy xref)
 :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 )
 
-(use-package lsp-ivy :straight t 
+(use-package lsp-ivy :ensure t 
 :general (leader "hs" '(lsp-ivy-workspace-symbol :wk "Search Symbol")
                  "hS" '(lsp-ivy-global-workspace-symbol :wk "Search Global Symbol"))
 )
 
-(use-package counsel-projectile :straight t 
+(use-package counsel-projectile :ensure t 
 :after  (counsel projectile)
 :custom (projectile-completion-system 'ivy)
         (counsel-find-file-ignore-regexp ".ccls-cache/")
@@ -928,39 +928,39 @@ list)
 :config (counsel-projectile-mode 1)
 
 )
-(use-package counsel-world-clock :straight t 
+(use-package counsel-world-clock :ensure t 
 :after (counsel)
 :general (:keymaps 'counsel-mode-map "C-c c k"  'counsel-world-clock)
 )
 
-(use-package counsel-tramp :straight t 
+(use-package counsel-tramp :ensure t 
 :after counsel
 :commands counsel-tramp
 :general ("C-c s" 'counsel-tramp)
 :init (setq tramp-default-method "ssh")
 )
 
-(use-package counsel-org-clock :straight t  :after (counsel org))
+(use-package counsel-org-clock :ensure t  :after (counsel org))
 
-(use-package all-the-icons-ivy-rich :straight t 
+(use-package all-the-icons-ivy-rich :ensure t 
 :config (all-the-icons-ivy-rich-mode t)
 )
 
-(use-package ivy-rich :straight t 
+(use-package ivy-rich :ensure t 
 :config (ivy-rich-mode 1)
 )
 
 #+END_SRC
 ** Smex Mode
 #+BEGIN_SRC emacs-lisp
-(use-package smex :straight t 
+(use-package smex :ensure t 
 :general (leader "fm" #'smex-major-mode-commands)
 :init (smex-initialize)
 )
 #+END_SRC
 ** Projectile Mode
 #+BEGIN_SRC emacs-lisp
-(use-package projectile :straight t 
+(use-package projectile :ensure t 
 :after ivy
 :init   (projectile-mode t)
 :config (setq projectile-require-project-root nil)
@@ -980,7 +980,7 @@ list)
 
 ** File Manager
 #+BEGIN_SRC emacs-lisp
-(use-package neotree :straight t 
+(use-package neotree :ensure t 
 :after (projectile all-the-icons)
 :commands (neotree-toggle)
 :general (leader "n" #'neotree-toggle)
@@ -995,7 +995,7 @@ list)
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-show-hidden-files t)
 )
-(use-package all-the-icons-dired :straight t 
+(use-package all-the-icons-dired :ensure t 
 :after all-the-icons
 :init  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
@@ -1010,7 +1010,7 @@ list)
 #+END_SRC
 ** Window Manager
 #+BEGIN_SRC emacs-lisp
-(use-package ace-window :straight t 
+(use-package ace-window :ensure t 
 :commands (ace-window)
 :general (leader "wo" 'ace-window
                  "wd" 'delete-other-windows)
@@ -1018,7 +1018,7 @@ list)
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
-(use-package eyebrowse :straight t  :defer t
+(use-package eyebrowse :ensure t  :defer t
 :init (eyebrowse-mode t)
 :general (leader "w;" 'eyebrowse-last-window-config
                  "w0" 'eyebrowse-close-window-config
@@ -1031,9 +1031,9 @@ list)
                  "w7" 'eyebrowse-switch-to-window-config-7)
 )
 
-(use-package window-purpose :straight t  :disabled)
+(use-package window-purpose :ensure t  :disabled)
 
-(use-package exwm :straight t  :disabled
+(use-package exwm :ensure t  :disabled
 :if window-system
 :commands (exwm-init)
 :config
@@ -1067,36 +1067,36 @@ list)
 #+END_SRC
 ** Git
  #+BEGIN_SRC emacs-lisp
-(use-package magit :straight t 
+(use-package magit :ensure t 
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
 )
 
-(use-package forge :straight t  :after magit)
+(use-package forge :ensure t  :after magit)
 
 
-(use-package evil-magit :straight t :disabled
+(use-package evil-magit :ensure t :disabled
 :after (evil magit)
 :config  (evil-magit-init)
 )
 
-;(use-package magithub :straight t  
+;(use-package magithub :ensure t  
 ;:after magit
 ;:general (leader "gd" 'magithub-dashboard)
 ;:init (magithub-feature-autoinject t)
 ;      (setq magithub-clone-default-directory "~/github")
 ;)
 
-(use-package magit-todos :straight t  :after magit :disabled)
+(use-package magit-todos :ensure t  :after magit :disabled)
 
 
 ;; git history view mode
-(use-package smeargle :straight t 
+(use-package smeargle :ensure t 
 :commands smeagle
 )
 
-;(use-package magit-delta :straight t 
+;(use-package magit-delta :ensure t 
 ;:after magit
 ;:ensure-system-package 
 ;    :config
@@ -1104,20 +1104,20 @@ list)
 
 
 
-(use-package gitignore-mode :straight t  :commands gitignore-mode)
-(use-package gitconfig-mode :straight t  :commands gitconfig-mode)
-(use-package gitattributes-mode :straight t  :commands gitattributes-mode)
+(use-package gitignore-mode :ensure t  :commands gitignore-mode)
+(use-package gitconfig-mode :ensure t  :commands gitconfig-mode)
+(use-package gitattributes-mode :ensure t  :commands gitattributes-mode)
  #+END_SRC
 ** Ediff
  #+BEGIN_SRC emacs-lisp
-(use-package evil-ediff :straight t 
+(use-package evil-ediff :ensure t 
 :after evil
 :config (evil-ediff-init)
 )
  #+END_SRC
 ** Undo Redo
 #+BEGIN_SRC emacs-lisp
-(use-package undo-tree :straight t  :diminish undo-tree-mode :disabled
+(use-package undo-tree :ensure t  :diminish undo-tree-mode :disabled
 :commands (undo-tree-undo undo-tree-redo)
 :general (leader "uu" 'undo-tree-undo
                  "ur" 'undo-tree-redo)
@@ -1130,7 +1130,7 @@ list)
     (global-undo-tree-mode)
 )
 
-(use-package undo-fu :straight t 
+(use-package undo-fu :ensure t 
 :after evil
 :general (leader "uu" 'undo-fu-only-undo
                  "ur" 'undo-fu-only-redo)
@@ -1140,13 +1140,13 @@ list)
     (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
 )
 
-(use-package undo-fu-session :straight t 
+(use-package undo-fu-session :ensure t 
 :after undo-fu
 :custom (undo-fu-session-incompletiable-files '("/COMMENT_EDITMSG\\'" "/git-rebase-todo\\'"))
 :config (global-undo-fu-session-mode)
 )
 
-;(use-package undo-propose :straight t 
+;(use-package undo-propose :ensure t 
 ;:after evil
 ;:commands undo-propose
 ;:init   (evil-define-key 'normal 'global (kbd "C-r") #'undo-propose)
@@ -1170,7 +1170,7 @@ list)
 :config (setq org-startup-indented   nil)
 )
 
-(use-package org-superstar :straight t 
+(use-package org-superstar :ensure t 
 :after org
 :hook (org-mode . org-superstar-mode)
 :custom (org-superstar-special-todo-items t)
@@ -1182,7 +1182,7 @@ list)
 ;    (org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
 
-(use-package org-journal :straight t :disabled
+(use-package org-journal :ensure t :disabled
 :after org
 :preface
     (defun org-journal-find-location ()
@@ -1201,7 +1201,7 @@ list)
     (org-icalendar-combine-agenda-files)
 )
 
-(use-package org-capture :straight nil :disabled
+(use-package org-capture :ensure nil :disabled
 :after org
 :config (setq org-reverse-note-order t)
     (add-to-list 'org-agenda-files (expand-file-name "~/Dropbox/org/notes"))
@@ -1218,9 +1218,9 @@ list)
     )
 )
 
-(use-package org-agenda :straight nil :disabled
+(use-package org-agenda :ensure nil :disabled
 :after org
-:config (use-package evil-org :straight t 
+:config (use-package evil-org :ensure t 
         :after (org evil)
         :init (add-hook 'org-mode-hook 'evil-org-mode)
             (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
@@ -1230,7 +1230,7 @@ list)
         )
 )
 
-(use-package org-pomodoro :straight t 
+(use-package org-pomodoro :ensure t 
 :after org-agenda
 :custom
     (org-pomodoro-ask-upon-killing t)
@@ -1252,12 +1252,12 @@ list)
 :general (:keymaps 'org-agenda-mode-map "p"  'org-pomodoro)
 )
 
-(use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode" :straight nil
+(use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode" :ensure nil
 :after org
 :hook (org-mode . org-table-auto-align-mode)
 )
 
-(use-package org-gcal :straight t  :disabled
+(use-package org-gcal :ensure t  :disabled
 :after org-agenda
 :custom (org-gcal-client-id     "")
         (org-gcal-client-secret "")
@@ -1266,27 +1266,27 @@ list)
         (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
-(use-package orgtbl-aggregate :straight t  :defer t)
+(use-package orgtbl-aggregate :ensure t  :defer t)
 
-(use-package toc-org :straight t  :after org
+(use-package toc-org :ensure t  :after org
 :hook (org-mode . toc-org-mode)
 ;:config (add-hook 'org-mode-hook 'toc-org-mode)
 )
 
 
-(use-package calfw :straight t 
+(use-package calfw :ensure t 
 :commands cfw:open-calendar-buffer
 :config (use-package calfw-org :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp)))
 )
-(use-package calfw-gcal :straight t  :disabled
+(use-package calfw-gcal :ensure t  :disabled
 :init (require 'calfw-gcal))
 
-(use-package ob-restclient :straight t 
+(use-package ob-restclient :ensure t 
 :after  (org restclient)
 :config (org-babel-do-load-languages 'org-babel-load-languages '((restclient . t)))
 )
 
-(use-package org-babel :no-require t :straight nil
+(use-package org-babel :no-require t :ensure nil
 :after org
 :config (org-babel-do-load-languages
         'org-babel-load-languages
@@ -1303,13 +1303,13 @@ list)
 #+END_SRC
 ** Note
 #+BEGIN_SRC emacs-lisp
-(use-package olivetti :straight t 
+(use-package olivetti :ensure t 
 :commands (olivetti-mode)
 :config (setq olivetti-body-width 120))
-(use-package typo :straight t 
+(use-package typo :ensure t 
 :commands (type-mode))
-(use-package poet-theme :straight t  :defer t)
-(use-package writeroom-mode :straight t 
+(use-package poet-theme :ensure t  :defer t)
+(use-package writeroom-mode :ensure t 
 :commands (writeroom-mode)
 :config (setq writeroom-width 100)
 )
@@ -1333,43 +1333,43 @@ list)
 #+END_SRC
 ** Mailing Mu4e
 #+BEGIN_SRC emacs-lisp
-(use-package mu4e :straight t  :disabled :commands (mu4e))
+(use-package mu4e :ensure t  :disabled :commands (mu4e))
 #+END_SRC
 ** Color Code Paint Rainbow mode
 #+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode :straight t 
+(use-package rainbow-mode :ensure t 
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
 #+END_SRC
 ** Docker
 #+BEGIN_SRC emacs-lisp
-(use-package docker :straight t  
+(use-package docker :ensure t  
 :commands docker
 :general (leader "hud" 'docker)
 :custom (docker-image-run-arguments '("-i", "-t", "--rm"))
 )
 
-(use-package dockerfile-mode :straight t 
+(use-package dockerfile-mode :ensure t 
 :mode ("Dockerfile\\'" . dockerfile-mode))
 
-(use-package kubernetes :straight t
+(use-package kubernetes :ensure t
   :commands (kubernetes-overview))
 
 ;; If you want to pull in the Evil compatibility package.
-(use-package kubernetes-evil :straight t :after kubernetes)
+(use-package kubernetes-evil :ensure t :after kubernetes)
 
-(use-package docker-compose-mode :straight t)
+(use-package docker-compose-mode :ensure t)
 #+END_SRC
 ** Shell
 #+BEGIN_SRC emacs-lisp
-(use-package vterm :straight t  ;:disabled ;macport version not working
+(use-package vterm :ensure t  ;:disabled ;macport version not working
 :general (leader "tn" 'vterm)
 :custom (vterm-always-compile-module t)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
 )
 
-(use-package vterm-toggle :straight t :disabled
+(use-package vterm-toggle :ensure t :disabled
 :general (leader "ut" '(vterm-toggle    :wk "toggle vterm buffer")
                  "tc" '(vterm-toggle-cd :wk "cd current dicectory")
                  "tn" '(vterm           :ew "open new vterm"))
@@ -1386,12 +1386,12 @@ list)
        ;(add-hook 'counsel-tramp-post-command-hook (lambda () (vterm-toggle-cd)))
 )
 
-(use-package multi-vterm :straight t 
+(use-package multi-vterm :ensure t 
 :general (leader "tn" #'multi-vterm)
 )
 
 
-(use-package vterm-with-centaur-tab :no-require t :straight nil
+(use-package vterm-with-centaur-tab :no-require t :ensure nil
 :after (vterm-toggle centaur-tabs)
 :preface (defun vmacs-awesome-tab-buffer-groups ()
           "`vmacs-awesome-tab-buffer-groups' control buffers' group rules. "
@@ -1414,7 +1414,7 @@ list)
         (setq vterm-toggle--vterm-buffer-p-function 'vmacs-term-mode-p)
 )
 
-(use-package shell-pop :straight t
+(use-package shell-pop :ensure t
 :custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm))))
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)
@@ -1422,11 +1422,11 @@ list)
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package with-editor :straight t 
+(use-package with-editor :ensure t 
 :hook ((shell-mode term-exec eshll-mode) . with-editor-export-editor)
 )
 
-(use-package vterm-command :no-require t :straight nil
+(use-package vterm-command :no-require t :ensure nil
 :after (vterm)
 :preface
 (defun run-in-vterm-kill (process event)
@@ -1479,23 +1479,23 @@ shell exits, the buffer is killed."
         (setq eshell-cmpl-cycle-completions nil)
 )
 
-(use-package exec-path-from-shell :straight t 
+(use-package exec-path-from-shell :ensure t 
 :if     (memq window-system '(mac ns x))
 :config (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "PATH")
 )
 
-(use-package eshell-did-you-mean :straight t 
+(use-package eshell-did-you-mean :ensure t 
 :after  eshell
 :config (eshell-did-you-mean-setup)
 )
 
-(use-package esh-help :straight t 
+(use-package esh-help :ensure t 
 :after (eshell eldoc)
 :config (setup-esh-help-eldoc)
 )
 
-(use-package eshell-prompt-extras :straight t 
+(use-package eshell-prompt-extras :ensure t 
 :after eshell
 :config
     (autoload 'epe-theme-lambda   "eshell-prompt-extras")
@@ -1503,25 +1503,25 @@ shell exits, the buffer is killed."
     (setq eshell-prompt-function  'epe-theme-lambda)
 )
 
-(use-package fish-completion :straight t 
+(use-package fish-completion :ensure t 
 :after eshell
 :config (when (and (executable-find "fish")
                    (require 'fish-completion nil t))
               (global-fish-completion-mode))
 )
 
-(use-package esh-autosuggest :straight t 
+(use-package esh-autosuggest :ensure t 
 :after eshell
 :hook (eshell-mode . esh-autosuggest-mode)
 )
 
-(use-package eshell-up :straight t 
+(use-package eshell-up :ensure t 
 :after eshell
 :config (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
                                           (eshell/alias "pk" "eshell-up-peek $1")))
 )
 
-(use-package execute-shell :no-require t :straight nil
+(use-package execute-shell :no-require t :ensure nil
 :after eshell
 :preface
 (defun background-shell-command (command)
@@ -1534,11 +1534,11 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Command log mode
 #+BEGIN_SRC emacs-lisp
-(use-package command-log-mode :straight t  :defer t)
+(use-package command-log-mode :ensure t  :defer t)
 #+END_SRC
 ** Emoji Mode
 #+BEGIN_SRC emacs-lisp
-(use-package emojify :straight t  :defer t
+(use-package emojify :ensure t  :defer t
 :if window-system
 :config (global-emojify-mode 1)
         (setq emojify-display-style 'image)
@@ -1548,7 +1548,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Buffer Management
 #+BEGIN_SRC emacs-lisp
-(use-package buffer-move :straight t  :defer t
+(use-package buffer-move :ensure t  :defer t
 :general (leader "b s" 'switch-to-buffer
                  "b r" 'eval-buffer
                  "b h" 'buf-move-left
@@ -1583,26 +1583,26 @@ shell exits, the buffer is killed."
     (add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 )
 
-(use-package all-the-icons-ibuffer :straight t 
+(use-package all-the-icons-ibuffer :ensure t 
 :after all-the-icons
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
 )
 
 
-(use-package ibuffer-projectile :straight t  :disabled
+(use-package ibuffer-projectile :ensure t  :disabled
 :after (projectile)
 :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
                                      (unless (eq ibuffer-sorting-mode 'alphabetic)
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :straight t :disabled 
+(use-package org-roam :ensure t :disabled 
 :hook (after-init . org-roam-mode)
 :custom (org-roeam-directory "~/GoogleDrive/Org/")
 ;:general (leader "on" '(org-roam-mode-map :wk "Note"))
 )
 
-(use-package org-roam-server :straight t  :after (org-roam)
+(use-package org-roam-server :ensure t  :after (org-roam)
 :commands org-roam-server-mode
 :config
     (setq org-roam-server-host "127.0.0.1"
@@ -1619,22 +1619,22 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Dash
 #+BEGIN_SRC emacs-lisp
-(use-package dash :straight t  :defer t
+(use-package dash :ensure t  :defer t
 :init (dash-enable-font-lock)
 )
-(use-package dash-functional :straight t 
+(use-package dash-functional :ensure t 
 :after dash
 )
 #+END_SRC
 ** Ialign
  #+BEGIN_SRC emacs-lisp
- (use-package ialign :straight t  :defer t
+ (use-package ialign :ensure t  :defer t
  :general (leader "ta" 'ialign))
  #+END_SRC
 ** DashBoard
  #+BEGIN_SRC emacs-lisp
-(use-package page-break-lines :straight t  :defer t)
-(use-package dashboard :straight t 
+(use-package page-break-lines :ensure t  :defer t)
+(use-package dashboard :ensure t 
 :init (dashboard-setup-startup-hook)
 :config
     (setq dashboard-banner-logo-title "We are Emacsian!")
@@ -1656,7 +1656,7 @@ shell exits, the buffer is killed."
  #+END_SRC
 ** Tabbar
  #+BEGIN_SRC emacs-lisp
-(use-package centaur-tabs :straight t 
+(use-package centaur-tabs :ensure t 
 :preface 
     (defun centaur-tabs-hide-tab (x)
     "Do no to show buffer X in tabs."
@@ -1705,11 +1705,11 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** System Monitor
 #+BEGIN_SRC emacs-lisp
-(use-package symon :straight t  :defer t)
+(use-package symon :ensure t  :defer t)
 #+END_SRC
 ** Google Search
 #+BEGIN_SRC emacs-lisp
-(use-package google-this :straight t 
+(use-package google-this :ensure t 
 :commands google-this
 :general (leader "fw" '(google-this :wk "Search Word"))
 :config  (google-this-mode 1)
@@ -1717,7 +1717,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Google Translate
 #+BEGIN_SRC emacs-lisp
-(use-package google-translate :straight t 
+(use-package google-translate :ensure t 
 :commands (google-translate-smooth-translate)
 :general (leader "ft" 'google-translate-smooth-translate)
 :custom (google-translate-default-source-language "auto")
@@ -1732,7 +1732,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** FlySpell
 #+BEGIN_SRC emacs-lisp
-(use-package flyspell :straight t  :defer t :disabled
+(use-package flyspell :ensure t  :defer t :disabled
 :config
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
@@ -1744,7 +1744,7 @@ shell exits, the buffer is killed."
                  "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
 )
 
-(use-package flyspell-correct-ivy :straight t  
+(use-package flyspell-correct-ivy :ensure t  
 :after (flyspell ivy)
 :general  (:keymaps 'flyspell-mode-map "C-c $" 'flyspell-correct-word-generic)
           (:keymaps 'flyspell-mode-map [remap flyspell-correct-word-before-point]  'flyspell-correct-previous-word-generic)
@@ -1753,7 +1753,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Grep
 #+BEGIN_SRC emacs-lisp
- (use-package wgrep :straight t 
+ (use-package wgrep :ensure t 
  :after evil-collection
  :config (setq wgrep-auto-save-buffer t)
          (evil-collection-wgrep-setup)
@@ -1762,16 +1762,16 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** IEdit
 #+BEGIN_SRC emacs-lisp
-(use-package iedit :straight t 
+(use-package iedit :ensure t 
 :general (leader "fi" 'iedit-mode)
 )
 #+END_SRC
 ** Package Manage
 #+BEGIN_SRC emacs-lisp
 ; package testing 
-(use-package try :straight t  :defer t)
+(use-package try :ensure t  :defer t)
 
-(use-package org-use-package :no-require t :straight nil
+(use-package org-use-package :no-require t :ensure nil
 :after (evil org)
 :preface
 (defun org-use-package-install ()
@@ -1793,24 +1793,24 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** PDF Viewer
 #+BEGIN_SRC emacs-lisp
-(use-package pdf-tools :straight t  :defer t)
+(use-package pdf-tools :ensure t  :defer t)
 #+END_SRC
 ** Show Code Age
 #+BEGIN_SRC emacs-lisp
-(use-package smeargle :straight t )
+(use-package smeargle :ensure t )
 #+END_SRC
 ** Multi Mode 
 #+BEGIN_SRC emacs-lisp
-(use-package polymode :straight t
+(use-package polymode :ensure t
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
 )
-(use-package poly-org :straight t :hook (org-mode . poly-org-mode)
+(use-package poly-org :ensure t :hook (org-mode . poly-org-mode)
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
 #+END_SRC
 ** Document Mode
 #+BEGIN_SRC emacs-lisp 
- (use-package tldr :straight t 
+ (use-package tldr :ensure t 
  :commands tldr
  :custom (tldr-enabled-categories '("common" "linux" "osx" "sunos"))
  )
@@ -1818,11 +1818,12 @@ shell exits, the buffer is killed."
 ** Symbol Mode Fira Code
 #+BEGIN_SRC emacs-lisp
 ; FiraCode같은 텍스트모드 활성 모드
-(use-package ligature :straight (:host github :repo "mickeynp/ligature.el")
+(use-package ligature :load-path "lisp/ligature.el"
+;:ensure (:host github :repo "mickeynp/ligature.el")
 :config
-;; Enable the www ligature in every possible major mode
+; Enable the www ligature in every possible major mode
 (ligature-set-ligatures 't '("www"))
-;; Enable ligatures in programming modes                                                           
+; Enable ligatures in programming mo;des                                                           
 (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
                                      ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
                                      "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
@@ -1836,16 +1837,20 @@ shell exits, the buffer is killed."
 
 (global-ligature-mode 't)
 )
+;(use-package fira-code-mode :ensure t
+;:custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
+;:hook prog-mode) ;; Enables fira-code-mode automatically for programming major modes
+
 ; emacs mac-port option
 ;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 #+END_SRC
 ** Tramp Mode 
 #+BEGIN_SRC emacs-lisp
-(use-package ssh-config-mode :straight t
+(use-package ssh-config-mode :ensure t
 :config (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'" . ssh-config-mode))
 )
 
-(use-package ssh-deploy :straight t
+(use-package ssh-deploy :ensure t
 :hook ((after-save . ssh-deploy-after-save)
         (find-file . ssh-deploy-find-file))
 :config
@@ -1858,7 +1863,7 @@ shell exits, the buffer is killed."
 ** Company mode
 #+BEGIN_SRC emacs-lisp
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
-(use-package company :straight t 
+(use-package company :ensure t 
 :custom
     ;(company-show-numbers t)
     (company-idle-delay 0)
@@ -1872,14 +1877,14 @@ shell exits, the buffer is killed."
 
 )
 
-(use-package company-quickhelp :straight t 
+(use-package company-quickhelp :ensure t 
 :unless (featurep 'lsp)
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :custom (company-quickhelp-delay nil)
 :config (company-quickhelp-mode)
 )
 
-(use-package company-dict :straight t  :disabled
+(use-package company-dict :ensure t  :disabled
 :after company
 :custom (company-dict-dir (concat user-emacs-directory "dict/"))
         (company-dict-enable-yasnippet t)
@@ -1890,29 +1895,29 @@ shell exits, the buffer is killed."
 )
 
 
-(use-package company-statistics :straight t 
+(use-package company-statistics :ensure t 
 :after company
 :config (company-statistics-mode)
 )
 
 ;company-quickhelp speed up setting
-(use-package company-posframe :straight t 
+(use-package company-posframe :ensure t 
 :after company
 :config (company-posframe-mode)
 )
 
-(use-package company-flx :straight t 
+(use-package company-flx :ensure t 
 :after company
 :config (company-flx-mode 1)
 )
 
-(use-package company-suggest :straight t
+(use-package company-suggest :ensure t
 :config (setq company-suggest-complete-sentence t)
         (add-to-list 'company-backend 'company-suggest-google)
 )
 
 
-(use-package company-fuzzy :straight t  :disabled
+(use-package company-fuzzy :ensure t  :disabled
 :after company
 :config (company-fuzzy-mode)
         (setq company-fuzzy-sorting-backend 'flx)
@@ -1920,14 +1925,14 @@ shell exits, the buffer is killed."
 )
 
 ; deep learning completion
-(use-package company-tabnine :straight t  :disabled 
+(use-package company-tabnine :ensure t  :disabled 
 :config
     (add-to-list 'company-backends #'company-tabnine)
     (setq company-tabnine-annotations t)
     (setq company-tabnine-always-trigger nil)
 )
 
-(use-package company-box :straight t  :diminish ""
+(use-package company-box :ensure t  :diminish ""
 :hook   (company-mode . company-box-mode)
 :custom (company-box-max-candidates 30)
 :config (setq company-box-icons-unknown 'fa_question_circle)
@@ -1968,7 +1973,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Language Server Protocol Mode
 #+BEGIN_SRC emacs-lisp
-(use-package lsp-mode :straight t 
+(use-package lsp-mode :ensure t 
 :commands lsp
 :general (leader "hh" '(lsp-execute-code-action :wk "wizard"))
 :hook   ((lsp-mode . lsp-enable-which-key-integration))
@@ -1986,7 +1991,8 @@ shell exits, the buffer is killed."
 :config (lsp-ui-mode)
         (lsp-lens-mode)
 )
-(use-package lsp-ui :straight t 
+
+(use-package lsp-ui :ensure t 
 :commands lsp-ui-mode
 :after  (lsp-mode flycheck)
 :custom (scroll-margin 0)
@@ -2001,20 +2007,20 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Flycheck mode
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck :straight t 
+(use-package flycheck :ensure t 
 :after  company
 :custom (flycheck-clang-language-standard "c++17")
 :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode t)
         (setq flycheck-clang-language-standard "c++17")
 )
-(use-package flycheck-pos-tip :straight t  :disabled
+(use-package flycheck-pos-tip :ensure t  :disabled
 :if (not (featurep 'lsp))
 :after  flycheck
 :config (flycheck-pos-tip-mode))
 
-(use-package quick-peek :straight t  :after flycheck :disabled)
-(use-package flycheck-inline :straight t  :disabled
+(use-package quick-peek :ensure t  :after flycheck :disabled)
+(use-package flycheck-inline :ensure t  :disabled
 :if (not (featurep 'lsp))
 :after (flycheck quick-peek)
 :config
@@ -2031,7 +2037,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Yasnippet mode
 #+BEGIN_SRC emacs-lisp
-(use-package yasnippet :straight t 
+(use-package yasnippet :ensure t 
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
@@ -2041,8 +2047,8 @@ shell exits, the buffer is killed."
         (yas-reload-all t)
 )
 
-(use-package yasnippet-snippets :straight t  :after yasnippet)
-(use-package auto-yasnippet :straight t 
+(use-package yasnippet-snippets :ensure t  :after yasnippet)
+(use-package auto-yasnippet :ensure t 
 ;https://github.com/abo-abo/auto-yasnippet
 :after yasnippet
 :general (leader "hyc" 'aya-create
@@ -2053,7 +2059,7 @@ shell exits, the buffer is killed."
 #+BEGIN_SRC emacs-lisp
 (use-package cpp-mode ;:load-path "lisp/cpp-mode"
 :no-require t
-:straight nil
+:ensure nil
 :mode (("\\.h\\'" . c++-mode))
 ;:commands cpp-mode
 :general (leader "hc" '(:wk "C/C++"))
@@ -2064,37 +2070,48 @@ shell exits, the buffer is killed."
 ;      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
-(use-package ccls :straight t  ;:disabled; with lsp or eglot mode
-:hook   ((c-mode-common) . (lambda () (lsp)))
+(use-package ccls :ensure t ;:disabled; with lsp or eglot mode 
+:hook   ((c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :custom (ccls-sem-highlight-method 'font-lock)
         (ccls-use-default-rainbow-sem-highlight)
         (ccls-extra-init-params '(:client (:snippetSupport :json-false)))
-:config ;(setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-    (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/"
-                                        :clang (:extraArgs ["-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-                                                            "-isystem /usr/local/opt/llvm/include/c++/v1"
-                                                            "-isystem /usr/local/opt/llvm/lib/clang/11.1.0/include"
-                                                            "-isystem /usr/local/Cellar/llvm/11.1.0/lib/clang/11.1.0/include"
-                                                            "-std=c++17"
-                                                           ; "-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
-                                                           ;"-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1/"   
-                                                           ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
-                                                           ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-                                                             ]
-                                                   :resourceDir "/usr/local/Cellar/llvm/11.1.0/lib/clang/11.1.0")))
+:config
+    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+    (setq ccls-executable "ccls")
+    (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/" ))
+    ;(setq ccls-initialization-options '(:compilationDatabaseDirectory "build/"
+    ;                                       :clang (:extraArgs [
+    ;            "-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"
+    ;            "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+    ;            "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+    ;            "-isystem /usr/local/opt/llvm/bin/../include/c++/v1"
+    ;            "-isystem /usr/local/Cellar/llvm/11.1.0_1/lib/clang/11.1.0/include"
+    ;                                    ;"-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"
+    ;                                                        ;"-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+    ;                                                        ;"-isystem /usr/local/opt/llvm/include/c++/v1"
+    ;                                                        ;"-isystem /usr/local/opt/llvm/lib/clang/11.1.0/include"
+    ;                                                        ;"-isystem /usr/local/Cellar/llvm/11.1.0/lib/clang/11.1.0/include"
+    ;                                                        ;"-std=c++17"
+    ;                                                        ;"-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1/"   
+    ;                                                       ;"-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+    ;                                                       ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
+    ;                                                       ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+    ;                                                         ]
+    ;                                               :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include")))
+    ;                                               ;:resourceDir "/usr/local/Cellar/llvm/11.1.0_1/bin/clang-11")))
 )
 
-(use-package cppm :no-require t :straight nil
+(use-package cppm :no-require t :ensure nil
 :after c++-mode
 :general (leader "hcb" (lambda () (eshell-command "cppm build"))
                  "hcr" (lambda () (eshell-command "cppm run  ")))
 )
 
-(use-package company-c-headers :straight t 
+(use-package company-c-headers :ensure t 
 :after  (company c++-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
 )
-(use-package clang-format :straight t 
+(use-package clang-format :ensure t 
 :after  (c++-mode)
 :init   (add-hook 'c++-mode-hook 'clang-format)
 :general (leader "hccf" 'clang-format-regieon)
@@ -2103,14 +2120,14 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Debuger mode
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-treemacs :straight t 
+  (use-package lsp-treemacs :ensure t 
   :after (lsp-mode doom-modeline)
   :config ;(setq lsp-metals-treeview-enable t)
           ;(setq lsp-metals-treeview-show-when-views-received t)
           (lsp-treemacs-sync-mode 1)
   ) 
 
-  (use-package dap-mode :straight t 
+  (use-package dap-mode :ensure t 
   :after lsp-mode
   :commands (dap-debug)
   :general (leader "dd" 'dap-debug)
@@ -2122,7 +2139,7 @@ shell exits, the buffer is killed."
           (dap-auto-configure-mode)
   )
 
-  (use-package dap-ui-setting :no-require t :straight nil
+  (use-package dap-ui-setting :no-require t :ensure nil
   :after dap-mode
   :preface
     (defun my/window-visible (b-name)
@@ -2155,7 +2172,7 @@ shell exits, the buffer is killed."
   )
 
 ;(use-package gdb-mi
-;:straight (:host github :repo "weirdNox/emacs-gdb" :files ("*.el" "*.c" "*.h" "Makefile"))
+;:ensure (:host github :repo "weirdNox/emacs-gdb" :files ("*.el" "*.c" "*.h" "Makefile"))
 ;:general (leader "de" 'gdb-executable
 ;                "dn" 'gdb-next
 ;                "di" 'gdb-step
@@ -2170,12 +2187,12 @@ shell exits, the buffer is killed."
 ** Disassemble
 #+BEGIN_SRC emacs-lisp
 ; only c/c++
-(use-package disaster :straight t  :commands disaster)
+(use-package disaster :ensure t  :commands disaster)
 #+END_SRC
 ** Eldoc mode
 #+BEGIN_SRC emacs-lisp
-(use-package eldoc :straight t  :diminish eldoc-mode :commands eldoc-mode)
-(use-package eldoc-rtags :no-require t :straight nil
+(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode)
+(use-package eldoc-rtags :no-require t :ensure nil
 :after (eldoc rtags)
 :preface
     (defun fontify-string (str mode)
@@ -2215,15 +2232,15 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Lisp Mode
 #+BEGIN_SRC emacs-lisp
-(use-package emacs-lisp :no-require t :straight nil
+(use-package emacs-lisp :no-require t :ensure nil
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
 )
 
-(use-package scratch-comment :straight t 
+(use-package scratch-comment :ensure t 
 :general (:keymaps 'lisp-interaction-mode-map "C-j" 'scratch-comment-eval-sexp)
 )
   
-(use-package slime :straight t  :disabled
+(use-package slime :ensure t  :disabled
 :commands slime
 :config
     (setq inferior-lisp-program (or (executable-find "sbcl")
@@ -2232,14 +2249,14 @@ shell exits, the buffer is killed."
     (require 'slime-autoloads)
     (slime-setup '(slime-fancy))
 )
-(use-package elisp-slime-nav :straight t  :diminish elisp-slime-nav-mode
+(use-package elisp-slime-nav :ensure t  :diminish elisp-slime-nav-mode
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
 
-(use-package prettify-symbols :no-require t :straight nil
+(use-package prettify-symbols :no-require t :ensure nil
     :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode))
 
-(use-package paredit :straight t  :disabled
+(use-package paredit :ensure t  :disabled
 :init
 (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
 ;; enable in the *scratch* buffer
@@ -2250,7 +2267,7 @@ shell exits, the buffer is killed."
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
 )
 
-(use-package parinfer :straight t  :disabled
+(use-package parinfer :ensure t  :disabled
 :after (evil)
 :general ("C-,"  'parinfer-toggle-mode)
 :init 
@@ -2265,7 +2282,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Rust Mode
 #+BEGIN_SRC emacs-lisp
-(use-package rust-mode :straight t 
+(use-package rust-mode :ensure t 
 :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 :mode (("\\.rs\\'" . rust-mode))
 :hook (rust-mode . lsp)
@@ -2278,12 +2295,12 @@ shell exits, the buffer is killed."
          ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 )
 
-(use-package flycheck-rust :straight t 
+(use-package flycheck-rust :ensure t 
 :after  (flycheck rust-mode)
 :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 )
 
-(use-package racer :straight t  :disabled
+(use-package racer :ensure t  :disabled
 :ensure-system-package ((racer . "rustup toolchain add nightly")
                         (racer . "rustup component add rust-src")
                         (racer . "cargo +nightly install racer"))
@@ -2293,12 +2310,12 @@ shell exits, the buffer is killed."
 ;:init  (add-hook 'racer-mode-hook  #'eldoc-mode)
 )
 
-(use-package company-racer :straight t 
+(use-package company-racer :ensure t 
 :after  (company racer)
 :config (add-to-list 'company-backends 'company-racer)
 )
 
-(use-package cargo :straight t 
+(use-package cargo :ensure t 
 :after  rust-mode
 :hook (rust-mode . cargo-minor-mode)
 :commands cargo-minor-mode
@@ -2307,7 +2324,7 @@ shell exits, the buffer is killed."
                  "hrt" 'cargo-process-test)
 )
 
-;(use-package rustic :straight t 
+;(use-package rustic :ensure t 
 ;:commands (rustic-mode)
 ;:mode   ("\\.rs" . rustic-mode)
 ;:config ;(add-hook 'rustic-mode-hook 'racer-mode)
@@ -2318,25 +2335,25 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Haskell Mode
 #+BEGIN_SRC emacs-lisp
-(use-package haskell-mode :straight t  :defer t)
+(use-package haskell-mode :ensure t  :defer t)
 #+END_SRC
 ** Yaml Mode
 #+BEGIN_SRC emacs-lisp
-(use-package yaml-mode :straight t 
+(use-package yaml-mode :ensure t 
 :mode (("\\.yaml\\'" . yaml-mode)
        ("\\.yml\\'"  . yaml-mode))
 )
 #+END_SRC
 ** Toml Mode
 #+BEGIN_SRC emacs-lisp
-(use-package toml-mode :straight t 
+(use-package toml-mode :ensure t 
 :mode (("\\.toml\\'" . toml-mode)
        ("Pipfile\\'" . toml-mode))
 )
 #+END_SRC
 ** Cmake Mode
 #+BEGIN_SRC emacs-lisp
-(use-package cmake-mode :straight t 
+(use-package cmake-mode :ensure t 
 ;:ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
@@ -2346,7 +2363,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Markdown mode
 #+BEGIN_SRC emacs-lisp
-(use-package markdown-mode :straight t 
+(use-package markdown-mode :ensure t 
 :commands (markdown-mode gfm-mode)
 :mode   (("\\README.md\\'" . gfm-mode)
          ("\\.md\\'"       . markdown-mode)
@@ -2355,15 +2372,15 @@ shell exits, the buffer is killed."
 :config (setq markdown-command "multimarkdown")
 )
 
-(use-package markdown-preview-mode :straight t  :defer t)
-(use-package gh-md :straight t  :defer t
+(use-package markdown-preview-mode :ensure t  :defer t)
+(use-package gh-md :ensure t  :defer t
 :general (leader "hmr" 'gh-md-render-buffer)
 )
 
 #+END_SRC
 ** Jekyll mode
 #+BEGIN_SRC emacs-lisp
-(use-package easy-jekyll :straight t 
+(use-package easy-jekyll :ensure t 
 :commands easy-jekyll
 :config (setq easy-jekyll-basedir "~/dev/blog/")
         (setq easy-jekyll-url "https://injae.github.io")
@@ -2383,14 +2400,14 @@ shell exits, the buffer is killed."
    :config (setq python-indent-offset 4)
    )
 
-   (use-package pyvenv :straight t  :disabled
+   (use-package pyvenv :ensure t  :disabled
    ;:after  python-mode
    :hook   (python-mode . pyvenv-mode)
    :init   (setenv "WORKON_HOME" "~/.pyenv/versions")
    :config (pyvenv-tracking-mode)
    )
 
-   (use-package pyenv-mode :straight t 
+   (use-package pyenv-mode :ensure t 
    :after  python-mode
    :hook  (python-mode . pyenv-mode)
    :preface
@@ -2405,35 +2422,35 @@ shell exits, the buffer is killed."
        )
    :config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
    )
-   (use-package pyenv-mode-auto :straight t  :after pyenv-mode)
+   (use-package pyenv-mode-auto :ensure t  :after pyenv-mode)
 
 
-   (use-package pip-requirements :straight t  :disabled;:after python-mode
+   (use-package pip-requirements :ensure t  :disabled;:after python-mode
    :hook (python-mode . pip-requirements-mode)
    )
 
-   (use-package lsp-pyright :straight t  
+   (use-package lsp-pyright :ensure t  
    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
    )
 
-   (use-package pipenv :straight t  ;:after python-mode
+   (use-package pipenv :ensure t  ;:after python-mode
    :hook (python-mode . pipenv-mode)
    ;:init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
    )
 
-   (use-package elpy :straight t  :disabled
+   (use-package elpy :ensure t  :disabled
    :ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
    :after python-mode
    :hook (python-mode . elpy-enable)
    :config (eldoc-mode 0)
    )
 
-   (use-package anaconda-mode :straight t  :disabled
+   (use-package anaconda-mode :ensure t  :disabled
    :after  python-mode
    :config (add-hook 'python-mode-hook 'anaconda-mode)
            (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
-   (use-package company-anaconda :straight t  :disabled
+   (use-package company-anaconda :ensure t  :disabled
    :after  (company-mode anaconda-mode))
 
    ;(use-package virtualenvwrapper
@@ -2451,7 +2468,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Flutter mode
 #+BEGIN_SRC emacs-lisp
-(use-package dart-mode :straight t 
+(use-package dart-mode :ensure t 
 :after lsp
 :mode ("\\.dart\\'" . dart-mode)
 :custom (dart-format-on-save t)
@@ -2460,7 +2477,7 @@ shell exits, the buffer is killed."
 :init (add-hook 'dart-mode-hook 'lsp)
 )
 
-(use-package flutter :straight t 
+(use-package flutter :ensure t 
 :after dart-mode
 :general (:keymaps 'dart-mode-map "C-M-x" 'flutter-run-or-hot-reload)
 :custom (flutter-sdk-path (expand-file-name "~/dev/flutter/"))
@@ -2468,24 +2485,24 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** I3WM
  #+BEGIN_SRC emacs-lisp
-(use-package i3wm :straight t  :defer t :disabled)
+(use-package i3wm :ensure t  :defer t :disabled)
  #+END_SRC
 ** Shell mode
 #+BEGIN_SRC emacs-lisp
-(use-package company-shell :straight t  :defer t
+(use-package company-shell :ensure t  :defer t
 :after (company eshell)
 :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
 )
 #+END_SRC
 ** Golang mode
 #+BEGIN_SRC emacs-lisp
-(use-package go-mode :straight t 
+(use-package go-mode :ensure t 
 :mode ("\\.go\\''" . go-mode)
 )
 #+END_SRC
 ** Jump to Definition
 #+BEGIN_SRC emacs-lisp
-(use-package dumb-jump :straight t 
+(use-package dumb-jump :ensure t 
 :after  company
 :custom (dumb-jump-selector 'ivy)
         (dumb-jump-force-searcher 'rg)
@@ -2500,7 +2517,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Web Mode
 #+BEGIN_SRC emacs-lisp
-(use-package web-mode :straight t 
+(use-package web-mode :ensure t 
 :commands (web-mode)
 :mode     (("\\.html?\\'"  . web-mode)
            ("\\.xhtml$\\'" . web-mode)
@@ -2510,16 +2527,16 @@ shell exits, the buffer is killed."
         (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
 )
 
-(use-package js2-mode :straight t 
+(use-package js2-mode :ensure t 
 :mode (("\\.js\\'" . js2-mode))
 )
 
-(use-package js2-refactor :straight t  :disabled
+(use-package js2-refactor :ensure t  :disabled
 :after js2-mode
 :hook (js2-mode . js2-refactor)
 )
 
-(use-package rjsx-mode :straight t  :disabled
+(use-package rjsx-mode :ensure t  :disabled
 :after js2-mode
 :mode (("\\.jsx$" . rjsx-mode)
        ("components/.+\\.js$" . rjsx-mode))
@@ -2536,43 +2553,43 @@ shell exits, the buffer is killed."
 :init (add-to-list 'magic-mode-alist '(+javascript-jsx-file-p . rjsx-mode))
 )
 
-(use-package xref-js2 :straight t 
+(use-package xref-js2 :ensure t 
 :after (js2-mode xref)
 :config (add-hook 'js2-mode-hook (lambda () (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 )
 
-(use-package skewer-mode :straight t 
+(use-package skewer-mode :ensure t 
 :after js2-mode
 :hook (js2-mode  . skewer-mode)
       (css-mode  . skewer-css-mode)
       (html-mode . skewer-html-mode)
 )
 
-(use-package typescript-mode :straight t 
+(use-package typescript-mode :ensure t 
 :mode (("\\.ts\\'"  . typescript-mode)
        ("\\.tsx\\'" . typescript-mode))
 :hook (typescript-mode . (lambda () (lsp)))
 )
 
-(use-package tide :straight t 
+(use-package tide :ensure t 
 :after (typescript-mode company flycheck)
 :hook ((typescript-mode . tide-setup)
        (typescript-mode . tide-hl-identifier-mode)
        (before-save . tide-format-before-save))
 )
 
-(use-package json-mode :straight t 
+(use-package json-mode :ensure t 
 :commands json-mode
 :mode (("\\.json\\'"       . json-mode)
        ("/Pipfile.lock\\'" . json-mode))
 )
 
-(use-package json-reformat :straight t 
+(use-package json-reformat :ensure t 
 :commands json-reformat-region
 )
 
-(use-package restclient :straight t 
-:preface 
+(use-package restclient :ensure t 
+:preface
 (defun new-restclient-buffer ()
     "restclient buffer open"
     (interactive)
@@ -2581,14 +2598,14 @@ shell exits, the buffer is killed."
 :commands new-restclient-buffer
 )
 
-(use-package company-restclient :straight t 
+(use-package company-restclient :ensure t 
 :after  (company restclient)
 :config (add-to-list 'company-backends 'company-restclient)
 )
 #+END_SRC
 ** Ruby Mode
 #+BEGIN_SRC emacs-lisp
-(use-package ruby-mode :straight t 
+(use-package ruby-mode :ensure t 
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
 :mode "Gemfile\\'"
@@ -2599,28 +2616,28 @@ shell exits, the buffer is killed."
         (ruby-indent-tabs-mode nil)
 )
 
-(use-package rvm :straight t 
+(use-package rvm :ensure t 
 :after ruby-mode
 :ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
 )
 
-(use-package yari :straight t  :after ruby-mode)
+(use-package yari :ensure t  :after ruby-mode)
 
-(use-package rubocop :straight t  :disabled
+(use-package rubocop :ensure t  :disabled
 :ensure-system-package (rubocop . "sudo gem install rubocop")
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe :straight t 
+(use-package robe :ensure t 
 :after (ruby-mode company)
 :ensure-system-package (pry . "sudo gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)
 :config (push 'company-robe company-backends)
 )
 
-(use-package ruby-tools :straight t 
+(use-package ruby-tools :ensure t 
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 )
@@ -2628,7 +2645,7 @@ shell exits, the buffer is killed."
 
 ** Godot Mode
 #+BEGIN_SRC emacs-lisp
-  (use-package gdscript-mode :straight t :disabled
+  (use-package gdscript-mode :ensure t :disabled
   :hook (gdscript-mode . lsp)
   :custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
   )
@@ -2640,22 +2657,22 @@ shell exits, the buffer is killed."
 
 ** Java Mode
 #+BEGIN_SRC emacs-lisp
-  ;(use-package lsp-java :straight t  :config (add-hook 'java-mode-hook 'lsp))
-  ;(use-package dap-java :straight nil)
-  (use-package gradle-mode :straight t  :config (add-hook 'java-mode-hook 'gradle-mode))
-  (use-package groovy-mode :straight t  
+  ;(use-package lsp-java :ensure t  :config (add-hook 'java-mode-hook 'lsp))
+  ;(use-package dap-java :ensure nil)
+  (use-package gradle-mode :ensure t  :config (add-hook 'java-mode-hook 'gradle-mode))
+  (use-package groovy-mode :ensure t  
   :mode (".gradle\\'" . groovy-mode)
   )
 #+END_SRC
 ** Kotlin
 #+BEGIN_SRC emacs-lisp
-  (use-package kotlin-mode :straight t 
+  (use-package kotlin-mode :ensure t 
   :config (add-hook 'kotlin-mode-hook 'lsp)
   )
 #+END_SRC
 ** Grammarly
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-grammarly :straight t :disabled
+  (use-package lsp-grammarly :ensure t :disabled
   :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
   )
 #+END_SRC
@@ -2663,7 +2680,7 @@ shell exits, the buffer is killed."
 ** ~/.zshrc
 #+BEGIN_SRC emacs-lisp
 ; brew install rust base system command
-(use-package rust-system-command :no-require t :straight nil
+(use-package rust-system-command :no-require t :ensure nil
 :if *is-mac*
 :ensure-system-package (rg exa bat fd procs ytop)    
 )
@@ -2808,7 +2825,7 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 ** Emacs Shift Space Setting
 #+BEGIN_SRC emacs-lisp
 ; brew cask install karabiner-elements
-(use-package karabiner :no-require t :straight nil
+(use-package karabiner :no-require t :ensure nil
 :if *is-mac*
 )
 #+END_SRC
