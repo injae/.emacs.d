@@ -8,6 +8,7 @@
 (setq user-mail-address "8687lee@gmail.com")
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/private/")
 
 (use-package emacs-gc-setting :no-require t :ensure nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
@@ -107,6 +108,7 @@
 ;; | abcdefghij | abcdefghij |
 ;; +------------+------------+
 ;; text utf-8 setting
+(setq utf-translate-cjk-mode nil)
 (set-language-environment "Korean")
 (prefer-coding-system 'utf-8)
 (setq locale-coding-system   'utf-8)
@@ -114,6 +116,7 @@
 (set-keyboard-coding-system  'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(setq system-time-locale "C")
 
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
@@ -144,6 +147,42 @@
 (global-set-key (kbd "S-SPC") 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
+
+(defun my/select-kr-font (opt)
+    "화면의 해상도와 dpi에 맞게 폰트 크기를 조절합니다."
+    (when window-system
+        (let* ((attrs (car (display-monitor-attributes-list)))
+	       (size (assoc 'mm-size attrs))
+	       (sizex (cadr size))
+	       (res (cdr (assoc 'geometry attrs)))
+	       (resx (- (cadr (cdr res)) (car res)))
+	       (dpi (* (/ (float resx) sizex) 25.4)))
+	      (cond ((< dpi 110)
+	                (setq x-font-height 16))
+		    ((< dpi 130)
+		        (setq x-font-height 18))
+		    ((< dpi 160)
+		        (setq x-font-height 20))
+		    (t (setq x-font-height 22))))
+	  (cond
+	      ((string= opt "c") ;; "c" means "codding"
+	          (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "IBM Plex Mono" (- x-font-height 1)))
+		  (set-fontset-font "fontset-default" '(#x1100 . #x11ff) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '#x20a9 (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#x302e . #x302f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#x3130 . #x318f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#x3200 . #x321e) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#x3260 . #x327f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#xa960 . #xa97f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#xac00 . #xd7a3) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#xd7b0 . #xd7ff) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '(#xffa1 . #xffdc) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
+		  (set-fontset-font "fontset-default" '#xffe6 (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height)))
+	      ((string= opt "s") ;; "s" means serif
+		  (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Noto Serif KR" (- x-font-height 2))))
+	      ((string= opt "ss") ;; "ss" means san-serif
+	          (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Noto Sans CJK KR" (- x-font-height 2)))))
+		  (set-face-attribute 'mode-line nil :font (format "%s:pixelsize=%d" "D2Coding" (- x-font-height 1)))))
 
 (use-package restart-emacs :ensure t)
 
@@ -436,7 +475,7 @@ list)
 :config (evil-lion-mode)
 )
 
-(use-package evil-escape :ensure t  :disabled
+(use-package evil-escape :ensure t :disabled
 :config (setq-default evil-escape-key-sequence "jk")
 )
 
@@ -458,7 +497,7 @@ list)
                  "C-c -" '(evil-numbers/dec-at-pt :wk "--"))
 )
 
-(use-package evil-extra-operator :ensure t  :after (evil fold-this)
+(use-package evil-extra-operator :ensure t :after (evil fold-this)
     :config (global-evil-extra-operator-mode 1)
 )
 
@@ -1244,6 +1283,7 @@ list)
 :general (leader "tn" 'vterm)
 :custom (vterm-always-compile-module t)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
+        (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
 )
 
 (use-package vterm-toggle :ensure t :disabled
@@ -1264,9 +1304,8 @@ list)
 )
 
 (use-package multi-vterm :ensure t 
-:general (leader "tn" #'multi-vterm)
+:general (leader "tn" 'multi-vterm :wk "new terminal")
 )
-
 
 (use-package vterm-with-centaur-tab :no-require t :ensure nil
 :after (vterm-toggle centaur-tabs)
@@ -1684,6 +1723,14 @@ shell exits, the buffer is killed."
 :config
     (ssh-deploy-line-mode)
     (ssh-deploy-add-menu)
+)
+
+(use-package smudge :ensure t
+; in private/token.el
+:config
+    ;(setq smudge-oauth2-client-secret spotify-oauth2-id) 
+    ;(setq smudge-oauth2-client-id     spotify-oauth2-secret)
+    (setq smudge-transport 'connect)
 )
 
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
@@ -2222,7 +2269,7 @@ shell exits, the buffer is killed."
 
 (use-package pipenv :ensure t  ;:after python-mode
 :hook (python-mode . pipenv-mode)
-;:init (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
+:config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
 (use-package elpy :ensure t  :disabled

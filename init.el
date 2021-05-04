@@ -57,6 +57,13 @@
 :config (auto-package-update-maybe)
 )
 
+(use-package async :ensure t
+:config (setq async-bytecomp-package-mode t)
+)
+
+
+(async-bytecomp-package-mode 1)
+
 (use-package org :ensure t
 :mode (("\\.org\\'" . org-mode))
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
@@ -84,7 +91,8 @@
 
 
 
-(setq-default private-config-file "~/GoogleDrive/config/emacs-private-config.el")
+;(setq-default private-config-file "~/GoogleDrive/config/emacs-private-config.el")
+(setq-default private-config-file "~/.emacs.d/private/token.el")
 (when (file-exists-p private-config-file) (load-file private-config-file))
 
 ;(garbage-collect)
@@ -92,6 +100,10 @@
 
 ; for native comp
 (setq package-native-compile t)
+(setq comp-deferred-compilation t)
+(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
+(native-compile-async "~/.emacs.d/config.el")
+
 
 (defconst dd/using-native-comp-p (fboundp 'native-comp-available-p))
 (when dd/using-native-comp-p
@@ -100,5 +112,4 @@
   (setq comp-async-report-warnings-errors nil)
   (setq comp-deferred-compilation t))
 
-(async-bytecomp-package-mode 1)
 
