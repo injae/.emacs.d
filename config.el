@@ -791,8 +791,8 @@ list)
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
          (:keymaps 'ivy-minibuffer-map
-             "S-SPC" 'toggle-input-method
-             "<f17>" 'toggle-input-method)
+                        "S-SPC" 'toggle-input-method
+                        "<f17>" 'toggle-input-method)
 :custom (ivy-use-virtual-buffers      t)
         (ivy-use-selectable-prompt    t)
         (enable-recursive-minibuffers t)
@@ -803,6 +803,7 @@ list)
         (ivy-format-function 'ivy-format-function-line)
 :config (ivy-mode 1)
         (setq ivy-initial-inputs-alist nil)
+        (setq search-default-mode #'char-fold-to-regexp)
 )
 
 (use-package counsel

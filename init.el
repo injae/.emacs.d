@@ -99,8 +99,9 @@
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
 (setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
-;(native-compile-async "~/.emacs.d/config.el")
 (native-compile-async "~/.emacs.d/")
+;(native-compile-async "~/.emacs.d/")
+;(native-compile-async "~/.emacs.d/config.el")
 
 
 (defconst dd/using-native-comp-p (fboundp 'native-comp-available-p))
