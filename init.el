@@ -1,5 +1,5 @@
-;; -*- lexical-binding: t -*-
 ;;; init.el --- Emacs Configuration
+;; -*- lexical-binding: t -*-
 ;;; Commentary:
 ;; This config start here
 ;;; Code:
@@ -57,9 +57,8 @@
 :config (auto-package-update-maybe)
 )
 
-(use-package async :ensure t
-:config (setq async-bytecomp-package-mode t)
-)
+(toggle-debug-on-error)
+;(setq byte-compile-error-on-warn t)
 
 (use-package org :ensure t
 :mode (("\\.org\\'" . org-mode))
@@ -95,13 +94,16 @@
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
 
+(use-package async :ensure t
+:config (setq async-bytecomp-package-mode t)
+)
+
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
-(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
-(native-compile-async "~/.emacs.d/")
+;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
-;(native-compile-async "~/.emacs.d/config.el")
+(native-compile-async "~/.emacs.d/config.el")
 
 
 (defconst dd/using-native-comp-p (fboundp 'native-comp-available-p))

@@ -12,7 +12,6 @@
 
 (use-package emacs-gc-setting :no-require t :ensure nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
-
       (setq read-process-output-max (* 1024 1024))
       ;(run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
@@ -102,13 +101,13 @@
 )
 
 ;; +------------+------------+
-;; | 일이삼사오육 | 일이삼사오육 |
+;; | 일이삼사오 | 일이삼사오 |
 ;; +------------+------------+
 ;; | ABCDEFGHIJ | ABCDEFGHIJ |
 ;; +------------+------------+
 ;; | 1234567890 | 1234567890 |
 ;; +------------+------------+
-;; | 일이삼사오육 | 일이삼사오육 |
+;; | 일이삼사오 | 일이삼사오 |
 ;; | abcdefghij | abcdefghij |
 ;; +------------+------------+
 ;; text utf-8 setting
@@ -124,12 +123,13 @@
 
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
-; 한글과 영어의 글자 간격문제 해결을 위한 방법 and Fira Code 지정 방법 아직 맥에서만 적용
 ;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 120)
 (set-face-attribute   'default            nil       :family "Fira Code" :height 120)
 (set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
 (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
 (setq face-font-rescale-alist '(("D2coding" . 1.17)))
+
+;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 120)
 ;(setq face-font-rescale-alist '(("D2coding" . 1.03877)))
 ;(setq face-font-rescale-alist '(("D2coding" . 0.85)))
 (when *is-mac*
@@ -222,7 +222,7 @@
 
 (use-package server :config (unless (server-running-p) (server-start)))
 
-(setq warning-minimum-level :error)
+;(setq warning-minimum-level :error)
 
 ; large date blob read
 (setq read-process-output-max (* 1024 1024)) ; 1mb
