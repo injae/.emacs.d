@@ -61,9 +61,6 @@
 :config (setq async-bytecomp-package-mode t)
 )
 
-
-(async-bytecomp-package-mode 1)
-
 (use-package org :ensure t
 :mode (("\\.org\\'" . org-mode))
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
