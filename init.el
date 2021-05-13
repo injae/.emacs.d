@@ -57,8 +57,12 @@
 :config (auto-package-update-maybe)
 )
 
-(toggle-debug-on-error)
+;(toggle-debug-on-error)
 ;(setq byte-compile-error-on-warn t)
+
+(use-package async :ensure t
+:config (setq async-bytecomp-package-mode t)
+)
 
 (use-package org :ensure t
 :mode (("\\.org\\'" . org-mode))
@@ -84,7 +88,6 @@
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
-
 
 
 ;(setq-default private-config-file "~/GoogleDrive/config/emacs-private-config.el")

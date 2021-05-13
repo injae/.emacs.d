@@ -1,4 +1,3 @@
-
 #+TITLE: InJae's Emacs Configure File
 #+OPTIONS: toc:4 h:4
 #+PROPERTY: header-args :cache yes :mkdir yes
@@ -394,13 +393,13 @@ list)
 ** Vim KeyMap (Evil-mode)
 #+BEGIN_SRC emacs-lisp
 (use-package evil :ensure t 
-:custom (evil-want-integration t)
-        (evil-want-keybinding nil)
-        (evil-want-C-u-scroll t)
-        (evil-symbol-word-search t)
-:init   (evil-mode 1)
+:init   (setq evil-want-integration t)
+        (setq evil-want-keybinding nil)
+        (setq evil-want-C-u-scroll t)
+        (setq evil-symbol-word-search t)
 :config (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
+        (evil-mode 1)
 )
 
 (use-package general :ensure t 
@@ -445,6 +444,7 @@ list)
 :after evil
 :config (global-evil-visualstar-mode t)
 )
+
 
 (use-package evil-surround :ensure t 
 ; @call-function
@@ -498,6 +498,7 @@ list)
           (evil-mc-make-cursor-here))
 :general (leader "emh" #'evil-mc-make-cursors-here
                  "ema" #'evil-mc-make-all-cursors
+
                  "emp" #'evil-mc-pause-cursors
                  "emr" #'evil-mc-resume-cursors
                  "emu" #'evil-mc-undo-all-cursors)
@@ -569,22 +570,22 @@ list)
 (use-package evil-collection :ensure t 
 :after (evil)
 :custom (evil-collection-setup-minibuffer t)
-:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
-       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
-       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
-       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
-       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
+;:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
+;       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
+;       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
+;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
+;       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
 :config
-       (evil-collection-pdf-setup)
-       (evil-collection-occur-setup)
-       (evil-collection-wgrep-setup)
-       (evil-collection-buff-menu-setup)
-       (evil-collection-package-menu-setup)
-       ;(evil-collection-eshell-setup)
-       (evil-collection-ivy-setup)
-       (evil-collection-vterm-setup) 
-       (evil-collection-which-key-setup)
-       (evil-collection-calc-setup)
+       ;(evil-collection-pdf-setup)
+       ;(evil-collection-occur-setup)
+       ;(evil-collection-wgrep-setup)
+       ;(evil-collection-buff-menu-setup)
+       ;(evil-collection-package-menu-setup)
+       ;;(evil-collection-eshell-setup)
+       ;(evil-collection-ivy-setup)
+       ;(evil-collection-vterm-setup) 
+       ;(evil-collection-which-key-setup)
+       ;(evil-collection-calc-setup)
        (evil-collection-init)
 )
 #+END_SRC
@@ -894,9 +895,10 @@ list)
         (ivy-display-style 'fancy)
         (ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
         (ivy-format-function 'ivy-format-function-line)
-:config (ivy-mode 1)
+:config 
         (setq ivy-initial-inputs-alist nil)
         (setq search-default-mode #'char-fold-to-regexp)
+        (ivy-mode 1)
 )
 
 (use-package counsel
@@ -1919,6 +1921,16 @@ shell exits, the buffer is killed."
   
 #+END_SRC
 
+** Slack
+#+BEGIN_SRC emacs-lisp
+; slack config in private token setting
+(use-package alert
+:commands (alert)
+:init (setq alert-default-style 'notifier)
+)
+
+
+#+END_SRC
 * Emacs IDE Settings
 ** Company mode
 #+BEGIN_SRC emacs-lisp
@@ -2758,11 +2770,11 @@ shell exits, the buffer is killed."
 #+BEGIN_SRC emacs-lisp
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :ensure nil
-:ensure-system-package ((rg . cargo install ripgrep)
-                        (exa . cargo install exa)
-                        (bat . cargo install bat)
-                        (procs . cargo install procs)
-                        (ytop . cargo install ytop)
+:ensure-system-package ((rg    . "cargo install ripgrep")
+                        (exa   . "cargo install exa")
+                        (bat   . "cargo install bat")
+                        (procs . "cargo install procs")
+                        (ytop  . "cargo install ytop")
                        )
 )
 #+END_SRC
@@ -2870,7 +2882,7 @@ shell exits, the buffer is killed."
   alias top='ytop'
 
   # kubernetes
-  source <(kubectl completion zsh)
+  #source "$(kubectl completion zsh)"
 
   antigen apply
 
@@ -2898,7 +2910,7 @@ export LDFLAGS="-L/usr/local/opt/llvm/lib"
 
 
 # rust sdl2 link setting
-export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib"
+
 
 export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
 
@@ -2909,9 +2921,9 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 ** Emacs Shift Space Setting
 #+BEGIN_SRC emacs-lisp
 ; brew cask install karabiner-elements
-(use-package karabiner :no-require t :ensure nil
-:if *is-mac*
-)
+;(use-package karabiner :no-require t :ensure nil
+;:if *is-mac*
+;)
 #+END_SRC
 //#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
 #+BEGIN_SRC json :tangle no

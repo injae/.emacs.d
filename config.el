@@ -387,6 +387,7 @@ list)
 :config (global-evil-visualstar-mode t)
 )
 
+
 (use-package evil-surround :ensure t 
 ; @call-function
 ; visual mode S- or gS-
@@ -439,6 +440,7 @@ list)
           (evil-mc-make-cursor-here))
 :general (leader "emh" #'evil-mc-make-cursors-here
                  "ema" #'evil-mc-make-all-cursors
+
                  "emp" #'evil-mc-pause-cursors
                  "emr" #'evil-mc-resume-cursors
                  "emu" #'evil-mc-undo-all-cursors)
@@ -510,22 +512,22 @@ list)
 (use-package evil-collection :ensure t 
 :after (evil)
 :custom (evil-collection-setup-minibuffer t)
-:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
-       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
-       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
-       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
-       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
+;:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
+;       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
+;       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
+;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
+;       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
 :config
-       (evil-collection-pdf-setup)
-       (evil-collection-occur-setup)
-       (evil-collection-wgrep-setup)
-       (evil-collection-buff-menu-setup)
-       (evil-collection-package-menu-setup)
-       ;(evil-collection-eshell-setup)
-       (evil-collection-ivy-setup)
-       (evil-collection-vterm-setup) 
-       (evil-collection-which-key-setup)
-       (evil-collection-calc-setup)
+       ;(evil-collection-pdf-setup)
+       ;(evil-collection-occur-setup)
+       ;(evil-collection-wgrep-setup)
+       ;(evil-collection-buff-menu-setup)
+       ;(evil-collection-package-menu-setup)
+       ;;(evil-collection-eshell-setup)
+       ;(evil-collection-ivy-setup)
+       ;(evil-collection-vterm-setup) 
+       ;(evil-collection-which-key-setup)
+       ;(evil-collection-calc-setup)
        (evil-collection-init)
 )
 
@@ -1741,6 +1743,12 @@ shell exits, the buffer is killed."
 :config  (setq smudge-transport 'connect)
 )
 
+; slack config in private token setting
+(use-package alert
+:commands (alert)
+:init (setq alert-default-style 'notifier)
+)
+
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t 
 :custom
@@ -2513,15 +2521,15 @@ shell exits, the buffer is killed."
 
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :ensure nil
-:ensure-system-package ((rg . cargo install ripgrep)
-                        (exa . cargo install exa)
-                        (bat . cargo install bat)
-                        (procs . cargo install procs)
-                        (ytop . cargo install ytop)
+:ensure-system-package ((rg    . "cargo install ripgrep")
+                        (exa   . "cargo install exa")
+                        (bat   . "cargo install bat")
+                        (procs . "cargo install procs")
+                        (ytop  . "cargo install ytop")
                        )
 )
 
 ; brew cask install karabiner-elements
-(use-package karabiner :no-require t :ensure nil
-:if *is-mac*
-)
+;(use-package karabiner :no-require t :ensure nil
+;:if *is-mac*
+;)
