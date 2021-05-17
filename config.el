@@ -335,13 +335,14 @@ list)
 )
 
 (use-package evil :ensure t 
-:custom (evil-want-integration t)
-        (evil-want-keybinding nil)
-        (evil-want-C-u-scroll t)
-        (evil-symbol-word-search t)
-:init   (evil-mode 1)
+:init   (setq evil-want-integration t)
+        (setq evil-want-keybinding nil)
+        (setq evil-want-C-u-scroll t)
+        (setq evil-symbol-word-search t)
 :config (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
+        (fset 'evil-visual-update-x-selection 'ignore)
+        (evil-mode 1)
 )
 
 (use-package general :ensure t 
@@ -803,9 +804,10 @@ list)
         (ivy-display-style 'fancy)
         (ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy) (t . ivy--regex-plus)))
         (ivy-format-function 'ivy-format-function-line)
-:config (ivy-mode 1)
+:config 
         (setq ivy-initial-inputs-alist nil)
         (setq search-default-mode #'char-fold-to-regexp)
+        (ivy-mode 1)
 )
 
 (use-package counsel
