@@ -13,7 +13,7 @@
 (use-package emacs-gc-setting :no-require t :ensure nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
       (setq read-process-output-max (* 1024 1024))
-      ;(run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
+      (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
 (use-package esup :ensure t)
 
@@ -154,42 +154,6 @@
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 ;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
 
-(defun my/select-kr-font (opt)
-    "화면의 해상도와 dpi에 맞게 폰트 크기를 조절합니다."
-    (when window-system
-        (let* ((attrs (car (display-monitor-attributes-list)))
-	       (size (assoc 'mm-size attrs))
-	       (sizex (cadr size))
-	       (res (cdr (assoc 'geometry attrs)))
-	       (resx (- (cadr (cdr res)) (car res)))
-	       (dpi (* (/ (float resx) sizex) 25.4)))
-	      (cond ((< dpi 110)
-	                (setq x-font-height 16))
-		    ((< dpi 130)
-		        (setq x-font-height 18))
-		    ((< dpi 160)
-		        (setq x-font-height 20))
-		    (t (setq x-font-height 22))))
-	  (cond
-	      ((string= opt "c") ;; "c" means "codding"
-	          (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "IBM Plex Mono" (- x-font-height 1)))
-		  (set-fontset-font "fontset-default" '(#x1100 . #x11ff) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '#x20a9 (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#x302e . #x302f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#x3130 . #x318f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#x3200 . #x321e) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#x3260 . #x327f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#xa960 . #xa97f) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#xac00 . #xd7a3) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#xd7b0 . #xd7ff) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '(#xffa1 . #xffdc) (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height))
-		  (set-fontset-font "fontset-default" '#xffe6 (font-spec :family "D2Coding" :registry "iso10646-1" :size x-font-height)))
-	      ((string= opt "s") ;; "s" means serif
-		  (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Noto Serif KR" (- x-font-height 2))))
-	      ((string= opt "ss") ;; "ss" means san-serif
-	          (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Noto Sans CJK KR" (- x-font-height 2)))))
-		  (set-face-attribute 'mode-line nil :font (format "%s:pixelsize=%d" "D2Coding" (- x-font-height 1)))))
-
 (use-package restart-emacs :ensure t)
 
 (defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
@@ -254,7 +218,7 @@
 :init (global-hungry-delete-mode)
 )
 
-(use-package face-picker :no-require t :ensure nil
+(use-package face-picker :no-require t :ensure nil :disabled
 :preface
 (defun what-face (pos)
      (interactive "d")
@@ -388,6 +352,9 @@ list)
 :config (global-evil-visualstar-mode t)
 )
 
+(use-package evil-string-inflection :ensure t
+:config (define-key evil-normal-state-map "gR" 'evil-operator-string-inflection)
+)
 
 (use-package evil-surround :ensure t 
 ; @call-function
@@ -517,7 +484,7 @@ list)
 ;       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
 ;       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
 ;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
-;       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
+       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
 :config
        ;(evil-collection-pdf-setup)
        ;(evil-collection-occur-setup)
@@ -565,20 +532,23 @@ list)
 ; C-x e 메크로 실행
 ; C-u 10 C-x e
 
-(use-package beacon :ensure t  :init (beacon-mode t))
-(use-package git-gutter :ensure t  :defer t
-:init
-    (setq-default display-line-numbers-width 3)
-    (global-display-line-numbers-mode t)
-    (global-hl-line-mode t)
+(use-package highlight-numbers :ensure t
+:init (highlight-numbers-mode t)
+)
+(use-package beacon :ensure t :config (beacon-mode t))
+(use-package git-gutter :ensure t 
 :custom
     (git-gutter:lighter       " gg")
     (git-gutter:window-width  1)
     (git-gutter:modified-sign ".")
     (git-gutter:added-sign    "+")
     (git-gutter:deleted-sign  "-")
-:config
+:init
+    (setq-default display-line-numbers-width 3)
+    (global-display-line-numbers-mode t)
+    (global-hl-line-mode t)
     (global-git-gutter-mode t)
+:config
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
@@ -608,7 +578,7 @@ list)
 :config  
 )
 (use-package doom-modeline :ensure t 
-:hook   (after-init . doom-modeline-init)
+:hook   (after-init . doom-modeline-mode)
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
         (setq doom-modeline-height 30)
@@ -847,7 +817,7 @@ list)
 (use-package ivy-yasnippet :ensure t 
 :after (ivy yasnippet)
 :general  ("C-c C-y" 'ivy-yasnippet)
-:config (advice-add #'ivy-yasnippet--preview :override #'ignore)
+;:config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
 (use-package historian :ensure t :disabled
@@ -923,10 +893,10 @@ list)
             (append '(".ccls-cache" ".git" "__pycache__") projectile-globally-ignored-directories))
         (setq projectile-completion-system 'ivy)
         (setq projectile-current-project-on-switch t)
-        (setq projectile-project-root-files-functions #'(projectile-root-top-down
-                                                         projectile-root-top-down-recurring
-                                                         projectile-root-bottom-up
-                                                         projectile-root-local))
+        ;(setq projectile-project-root-files-functions #'(projectile-root-top-down
+        ;                                                 projectile-root-top-down-recurring
+        ;                                                 projectile-root-bottom-up
+        ;                                                 projectile-root-local))
         ;(setq projectile-globally-ignored-files
         ;    (append '() projectile-globaly-ignore-files))
 )
@@ -1022,21 +992,23 @@ list)
 
 (use-package forge :ensure t  :after magit)
 
-
 (use-package evil-magit :ensure t :disabled
 :after (evil magit)
 :config  (evil-magit-init)
 )
 
-;(use-package magithub :ensure t  
-;:after magit
-;:general (leader "gd" 'magithub-dashboard)
-;:init (magithub-feature-autoinject t)
-;      (setq magithub-clone-default-directory "~/github")
-;)
+(use-package git-messenger :ensure t
+:commands git-messenger:popup-message
+:general (leader "gm" 'git-messenger:popup-message)
+:config (setq git-messenger:use-magit-popup t)
+)
+
+; 현재 git repo의 homepage link를 clipboard에 넣어준다
+(use-package git-link :ensure t
+:general (leader "gh" 'git-link-homepage)
+)
 
 (use-package magit-todos :ensure t  :after magit :disabled)
-
 
 ;; git history view mode
 (use-package smeargle :ensure t 
@@ -1213,7 +1185,7 @@ list)
 )
 
 
-(use-package calfw :ensure t 
+(use-package calfw :ensure t :disabled
 :commands cfw:open-calendar-buffer
 :config (use-package calfw-org :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp)))
 )
@@ -1392,7 +1364,7 @@ shell exits, the buffer is killed."
     (vterm-send-return)))
 )
 
-(use-package eshell
+(use-package eshell :disabled
 :commands eshell
 :config (setq eshell-buffer-maximum-lines 1000)
         ;(require 'xterm-color)
@@ -1403,7 +1375,7 @@ shell exits, the buffer is killed."
         (setq eshell-cmpl-cycle-completions nil)
 )
 
-(use-package exec-path-from-shell :ensure t 
+(use-package exec-path-from-shell :ensure t :after vterm
 :if     (memq window-system '(mac ns x))
 :config (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "PATH")
@@ -1439,7 +1411,7 @@ shell exits, the buffer is killed."
 :hook (eshell-mode . esh-autosuggest-mode)
 )
 
-(use-package eshell-up :ensure t 
+(use-package eshell-up :ensure t :disabled
 :after eshell
 :config (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
                                           (eshell/alias "pk" "eshell-up-peek $1")))
@@ -1478,27 +1450,27 @@ shell exits, the buffer is killed."
                  "b p" 'previous-buffer)
 :init
     (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-    (setq ibuffer-saved-filter-groups
-        '(("home"
-                ("emacs-config" (or (filename . ".emacs.d")
-                                    (filename . "emacs-config")))
-                ("org-mode"     (or (mode . org-mode)
-                                    (filename ."OrgMode")))
-                ("code"         (or (filename . "~/dev")
-                                    (mode . prog-mode)
-                                    (mode . c++-mode)
-                                    (mode . c-mode)
-                                    (mode . yaml-mode)
-                                    (mode . toml-mode)
-                                    (mode . lisp-mode)
-                                    (mode . emacs-lisp-mode)))
-                ("magit"        (or (name . "\*magit")))
-                ("Help"         (or (name . "\*Help\*")
-                                    (name . "\*Apropos\*")
-                                    (name . "\*info\*")))
-        ))
-    )
-    (add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
+    ;(setq ibuffer-saved-filter-groups
+    ;    '(("home"
+    ;            ("emacs-config" (or (filename . ".emacs.d")
+    ;                                (filename . "emacs-config")))
+    ;            ("org-mode"     (or (mode . org-mode)
+    ;                                (filename ."OrgMode")))
+    ;            ("code"         (or (filename . "~/dev")
+    ;                                (mode . prog-mode)
+    ;                                (mode . c++-mode)
+    ;                                (mode . c-mode)
+    ;                                (mode . yaml-mode)
+    ;                                (mode . toml-mode)
+    ;                                (mode . lisp-mode)
+    ;                                (mode . emacs-lisp-mode)))
+    ;            ("magit"        (or (name . "\*magit")))
+    ;            ("Help"         (or (name . "\*Help\*")
+    ;                                (name . "\*Apropos\*")
+    ;                                (name . "\*info\*")))
+    ;    ))
+    ;)
+    ;(add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
 )
 
 (use-package all-the-icons-ibuffer :ensure t 
@@ -1535,7 +1507,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package dash :ensure t  :defer t
-:init (dash-enable-font-lock)
+:init (global-dash-fontify-mode t)
 )
 (use-package dash-functional :ensure t 
 :after dash
@@ -1680,8 +1652,9 @@ shell exits, the buffer is killed."
                  "or" 'save-buffer)
 )
 
-(setq helm-mode nil)
-(use-package helm :if helm-mode :config (load-file "~/.emacs.d/lisp/helm-mode.el"))
+(use-package helm :disabled
+    :config (load-file "~/.emacs.d/lisp/helm-mode.el")
+)
 
 (use-package pdf-tools :ensure t  :defer t)
 
@@ -1762,8 +1735,7 @@ shell exits, the buffer is killed."
 :init   (global-company-mode 1)
 :config (add-to-list 'company-backends '(company-capf :with company-yasnippet))
         (setq company-dabbrev-downcase nil)
-        (company-tng-configure-default)
-
+        (company-tng-mode t)
 )
 
 (use-package company-quickhelp :ensure t 
@@ -1795,7 +1767,7 @@ shell exits, the buffer is killed."
 :config (company-posframe-mode)
 )
 
-(use-package company-flx :ensure t 
+(use-package company-flx :ensure t :disabled
 :after company
 :config (company-flx-mode 1)
 )
@@ -1915,12 +1887,14 @@ shell exits, the buffer is killed."
         (global-flycheck-mode t)
         (setq flycheck-clang-language-standard "c++17")
 )
-(use-package flycheck-pos-tip :ensure t  :disabled
-:if (not (featurep 'lsp))
-:after  flycheck
-:config (flycheck-pos-tip-mode))
+
+(use-package flycheck-posframe :ensure t :after flycheck
+:config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode)
+        (flycheck-posframe-configure-pretty-defaults)
+)
 
 (use-package quick-peek :ensure t  :after flycheck :disabled)
+
 (use-package flycheck-inline :ensure t  :disabled
 :if (not (featurep 'lsp))
 :after (flycheck quick-peek)
@@ -1970,7 +1944,7 @@ shell exits, the buffer is killed."
 (use-package ccls :ensure t ;:disabled; with lsp or eglot mode 
 :hook   ((c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :custom (ccls-sem-highlight-method 'font-lock)
-        (ccls-use-default-rainbow-sem-highlight)
+        ;(ccls-use-default-rainbow-sem-highlight)
         (ccls-extra-init-params '(:client (:snippetSupport :json-false)))
 :config
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
@@ -2025,7 +1999,7 @@ shell exits, the buffer is killed."
   :after lsp-mode
   :commands (dap-debug)
   :general (leader "dd" 'dap-debug)
-  :custom (dap-lldb-debug-program `("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
+  :custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
   :config (require 'dap-gdb-lldb) ; gdb mode
           (dap-mode 1)
           (dap-tooltip-mode 1)
@@ -2081,7 +2055,7 @@ shell exits, the buffer is killed."
 (use-package disaster :ensure t  :commands disaster)
 
 (use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode)
-(use-package eldoc-rtags :no-require t :ensure nil
+(use-package eldoc-rtags :no-require t :ensure nil :disabled
 :after (eldoc rtags)
 :preface
     (defun fontify-string (str mode)
@@ -2260,7 +2234,7 @@ shell exits, the buffer is killed."
         (setq easy-jekyll-previewtime "300")
 )
 
-(use-package python-mode
+(use-package python-mode :ensure nil
 :mode   ("\\.py\\'" . python-mode)
 ;        ("\\.wsgi$" . python-mode)
 ;:interpreter ("python" . python-mode)
@@ -2277,7 +2251,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package pyenv-mode :ensure t 
-:after  python-mode
+:after  (python-mode projectile)
 :hook  (python-mode . pyenv-mode)
 :preface
     (defun projectile-pyenv-mode-set ()
@@ -2302,9 +2276,8 @@ shell exits, the buffer is killed."
 :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
-(use-package pipenv :ensure t  ;:after python-mode
+(use-package pipenv :ensure t :after python-mode
 :hook (python-mode . pipenv-mode)
-:config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
 (use-package elpy :ensure t  :disabled
@@ -2357,6 +2330,10 @@ shell exits, the buffer is killed."
 :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
 )
 
+(use-package dotenv-mode :ensure t 
+:mode ("\\.env\\..*\\'" . dotenv-mode)
+)
+
 (use-package go-mode :ensure t 
 :mode ("\\.go\\''" . go-mode)
 )
@@ -2367,11 +2344,9 @@ shell exits, the buffer is killed."
         (dumb-jump-force-searcher 'rg)
         (dumb-jump-default-project "~/build")
 :general (leader "hd"  '(:wk "Definition Jump")
-                 "hdo" 'dumb-jump-go-other-window
-                 "hdj" 'dumb-jump-go
-                 "hdi" 'dumb-jump-go-prompt
-                 "hdx" 'dumb-jump-go-prefer-external
-                 "hdz" 'dumb-jump-go-prefer-external-other-window)
+                 "hdo" 'find-file-other-window
+                 "hdj" 'xref-pop-marker-stack)
+:init (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 )
 
 (use-package web-mode :ensure t 
@@ -2443,16 +2418,6 @@ shell exits, the buffer is killed."
 
 (use-package json-reformat :ensure t 
 :commands json-reformat-region
-)
-
-(use-package restclient :ensure t 
-:preface
-(defun new-restclient-buffer ()
-    "restclient buffer open"
-    (interactive)
-    (new-buffer "*RC Client*" #'restclient-mode)
-    (restclient-response-mode))
-:commands new-restclient-buffer
 )
 
 (use-package company-restclient :ensure t 

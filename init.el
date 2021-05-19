@@ -66,6 +66,11 @@
 
 (use-package org :ensure t
 :mode (("\\.org\\'" . org-mode))
+;:preface
+;    (defun update-config ()
+;        (interactive)
+;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
+;    )
 :init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 
@@ -104,6 +109,7 @@
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
+(setq comp-deferred-compilation-deny-list '("powerline" "polymode-core"))
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
 (native-compile-async "~/.emacs.d/config.el")
