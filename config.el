@@ -341,7 +341,7 @@ list)
         (setq evil-symbol-word-search t)
 :config (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
-        (fset 'evil-visual-update-x-selection 'ignore)
+        (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
         (evil-mode 1)
 )
 
