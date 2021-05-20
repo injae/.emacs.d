@@ -1,7 +1,7 @@
 #+TITLE: InJae's Emacs Configure File
 #+OPTIONS: toc:4 h:4
 #+PROPERTY: header-args :cache yes :mkdir yes
-#-*-eval : (add-hook 'after-save-hook (lambda nil (expand-file-name "config.org" user-emacs-directory)) nil t); -*-
+#-*-eval: (add-hook 'after-save-hook (lambda nil (expand-file-name "config.org" user-emacs-directory)) nil t); -*-
 ;#-*-eval : (add-hook 'after-save-hook (lambda nil (org-babel-tangle)) nil t); -*-
 [[image/emacs_icon.png]]
 * Emacs Default Settings
@@ -695,10 +695,9 @@ list)
 #+BEGIN_SRC emacs-lisp
 (use-package nyan-mode :ensure t 
 ;:after  (doom-modeline)
-:config ;(setq-default nyan-wavy-trail t)
+:config (setq nyan-wavy-trail t)
         (nyan-mode)
         (nyan-start-animation)
-        ;(nyan-refresh)
 )
 (use-package fancy-battery :ensure t 
 :hook   (after-init . fancy-battery-mode)
@@ -1844,7 +1843,7 @@ shell exits, the buffer is killed."
 ** Symbol Mode Fira Code
 #+BEGIN_SRC emacs-lisp
 ; FiraCode같은 텍스트모드 활성 모드
-(use-package ligature :load-path "lisp/ligature.el"
+(use-package ligature :load-path "lisp/ligature"
 ;:ensure (:host github :repo "mickeynp/ligature.el")
 :config
 ; Enable the www ligature in every possible major mode

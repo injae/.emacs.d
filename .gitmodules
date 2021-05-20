@@ -25,3 +25,6 @@
 [submodule "private"]
 	path = private
 	url = https://github.com/injae/private_config.git
+[submodule "lisp/ligature"]
+	path = lisp/ligature
+	url = https://github.com/mickeynp/ligature.el.git

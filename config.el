@@ -616,10 +616,9 @@ list)
 
 (use-package nyan-mode :ensure t 
 ;:after  (doom-modeline)
-:config ;(setq-default nyan-wavy-trail t)
+:config (setq nyan-wavy-trail t)
         (nyan-mode)
         (nyan-start-animation)
-        ;(nyan-refresh)
 )
 (use-package fancy-battery :ensure t 
 :hook   (after-init . fancy-battery-mode)
