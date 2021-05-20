@@ -1848,6 +1848,7 @@ shell exits, the buffer is killed."
 :config
 ; Enable the www ligature in every possible major mode
 (ligature-set-ligatures 't '("www"))
+(ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
 ; Enable ligatures in programming mo;des                                                           
 (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
                                      ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
@@ -1860,7 +1861,7 @@ shell exits, the buffer is killed."
                                      "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
                                      "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 
-(global-ligature-mode 't)
+(global-ligature-mode t)
 )
 ;(use-package fira-code-mode :ensure t
 ;:custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
