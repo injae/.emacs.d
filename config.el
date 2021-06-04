@@ -1677,6 +1677,7 @@ shell exits, the buffer is killed."
 :config
 ; Enable the www ligature in every possible major mode
 (ligature-set-ligatures 't '("www"))
+(ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
 ; Enable ligatures in programming mo;des                                                           
 (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
                                      ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
@@ -1887,7 +1888,7 @@ shell exits, the buffer is killed."
         (setq flycheck-clang-language-standard "c++17")
 )
 
-(use-package flycheck-posframe :ensure t :after flycheck
+(use-package flycheck-posframe :ensure t :after flycheck :disabled
 :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode)
         (flycheck-posframe-configure-pretty-defaults)
 )
@@ -2233,7 +2234,7 @@ shell exits, the buffer is killed."
         (setq easy-jekyll-previewtime "300")
 )
 
-(use-package python-mode :ensure nil
+(use-package python-mode :ensure nil :no-require t
 :mode   ("\\.py\\'" . python-mode)
 ;        ("\\.wsgi$" . python-mode)
 ;:interpreter ("python" . python-mode)
@@ -2449,7 +2450,7 @@ shell exits, the buffer is killed."
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe :ensure t 
+(use-package robe :ensure t :disabled
 :after (ruby-mode company)
 :ensure-system-package (pry . "sudo gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)

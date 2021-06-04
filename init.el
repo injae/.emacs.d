@@ -71,7 +71,7 @@
 ;        (interactive)
 ;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
 ;    )
-:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 
 ;(defun tangle-byte-compile-config-org-file ()
@@ -114,6 +114,8 @@
 ;(native-compile-async "~/.emacs.d/")
 (native-compile-async "~/.emacs.d/config.el")
 
+(setq-default private-config-file "~/.emacs.d/config.el")
+(when (file-exists-p private-config-file) (load-file private-config-file))
 
 (defconst dd/using-native-comp-p (fboundp 'native-comp-available-p))
 (when dd/using-native-comp-p
