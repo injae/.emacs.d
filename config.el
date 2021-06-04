@@ -1049,7 +1049,7 @@ list)
 :general (leader "uu" 'undo-fu-only-undo
                  "ur" 'undo-fu-only-redo)
 :config
-    (global-undo-tree-mode -1) ; evil-mode auto call undo-tree-mode
+    ;(global-undo-tree-mode -1) ; evil-mode auto call undo-tree-mode
     (evil-define-key 'normal 'global "u"         #'undo-fu-only-undo)
     (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
 )
@@ -1672,7 +1672,7 @@ shell exits, the buffer is killed."
 )
 
 ; FiraCode같은 텍스트모드 활성 모드
-(use-package ligature :load-path "lisp/ligature.el"
+(use-package ligature :load-path "lisp/ligature"
 ;:ensure (:host github :repo "mickeynp/ligature.el")
 :config
 ; Enable the www ligature in every possible major mode
@@ -1689,7 +1689,7 @@ shell exits, the buffer is killed."
                                      "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
                                      "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 
-(global-ligature-mode 't)
+(global-ligature-mode t)
 )
 ;(use-package fira-code-mode :ensure t
 ;:custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
