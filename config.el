@@ -457,8 +457,8 @@ list)
 
 (use-package evil-smartparens :ensure t 
 :after (evil smartparens)
-:hook (smartparens-mode . evil-smartparens-mode)
-;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+;:hook (smartparens-mode . evil-smartparens-mode)
+:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 )
 
 (use-package evil-numbers :ensure t 
@@ -578,7 +578,7 @@ list)
 :config  
 )
 (use-package doom-modeline :ensure t 
-:hook   (after-init . doom-modeline-mode)
+;:hook   (after-init . doom-modeline-mode)
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
         (setq doom-modeline-height 30)
@@ -607,6 +607,7 @@ list)
         (setq doom-modeline--flycheck-icon t)
         (setq doom-modeline-current-window t)
         (setq doom-modeline-major-mode-color-icon t)
+:config (add-hook 'after-init-hook 'doom-modeline-mode)
 )
 
 (use-package hide-mode-line :ensure t 
@@ -2436,7 +2437,7 @@ shell exits, the buffer is killed."
         (ruby-indent-tabs-mode nil)
 )
 
-(use-package rvm :ensure t 
+(use-package rvm :ensure t :disabled
 :after ruby-mode
 :ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
