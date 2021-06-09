@@ -74,23 +74,6 @@
 ;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 
-;(defun tangle-byte-compile-config-org-file ()
-; "Org Tangle Speed up to use emacs-lisp byte compile config.org -> config.elc"
-;    (interactive)
-;    (when (equal (buffer-file-name) (expand-file-name "config.org" user-emacs-directory))
-
-;        (byte-compile-file    (expand-file-name "tconfig.el" user-emacs-directory))))
-;
-;(add-hook 'after-save-hook #'tangle-byte-compile-config-org-file)
-;(add-hook 'kill-emacs-hook #'tangle-byte-compile-config-org-file)
-;
-;(load-file (expand-file-name "tconfig.elc" user-emacs-directory))
-
-; same work this code -> (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
-;(use-package literate-elisp :ensure t :pin melpa
-;:config (literate-elisp-load (expand-file-name "config.org" user-emacs-directory))
-;)
-
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
@@ -102,10 +85,6 @@
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
 
-(use-package async :ensure t
-:config (setq async-bytecomp-package-mode t)
-)
-
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
@@ -113,15 +92,6 @@
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
 (native-compile-async "~/.emacs.d/config.el")
+(load-file "~/.emacs.d/config.el")
 
-(setq-default private-config-file "~/.emacs.d/config.el")
-(when (file-exists-p private-config-file) (load-file private-config-file))
-
-(defconst dd/using-native-comp-p (fboundp 'native-comp-available-p))
-(when dd/using-native-comp-p
-  (setq comp-async-query-on-exit t)
-  (setq comp-async-jobs-number 4)
-  (setq comp-async-report-warnings-errors nil)
-  (setq comp-deferred-compilation t))
-
-
+;;;

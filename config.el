@@ -457,8 +457,7 @@ list)
 
 (use-package evil-smartparens :ensure t 
 :after (evil smartparens)
-;:hook (smartparens-mode . evil-smartparens-mode)
-:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+:init  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 )
 
 (use-package evil-numbers :ensure t 
@@ -578,7 +577,7 @@ list)
 :config  
 )
 (use-package doom-modeline :ensure t 
-;:hook   (after-init . doom-modeline-mode)
+:hook   ((after-init . doom-modeline-mode))
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
         (setq doom-modeline-height 30)
@@ -612,7 +611,7 @@ list)
 
 (use-package hide-mode-line :ensure t 
 :after (neotree)
-:hook  (neotree-mode . hide-mode-line-mode)
+:hook  ((neotree-mode . hide-mode-line-mode))
 )
 
 (use-package nyan-mode :ensure t 
@@ -622,7 +621,7 @@ list)
         (nyan-start-animation)
 )
 (use-package fancy-battery :ensure t 
-:hook   (after-init . fancy-battery-mode)
+:hook   ((after-init . fancy-battery-mode))
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t)
 )
@@ -654,18 +653,7 @@ list)
 :config (smart-tabs-insinuate 'c 'c++)
 )
 
-(use-package indent-guide :ensure t :disabled
-; 문자로 표시하기 때문에 예쁘지 않음
-:hook (prog-mode text-mode)
-:config
-    (setq indent-guide-char      " ")
-    ;(setq indent-guide-recursive t)
-    (setq indent-guide-delay     0.1)
-    (set-face-background 'indent-guide-face "dimgray")
-    (indent-guide-mode)
-)
-
-(use-package highlight-indentation :ensure t  :disabled
+(use-package highlight-indentation :ensure t :disabled
 :hook   (prog-mode text-mode)
 :config ;(highlight-indentation-mode)
 )
@@ -724,7 +712,9 @@ list)
 
 
 (use-package rainbow-delimiters :ensure t 
-:hook ((prog-mode text-mode) . rainbow-delimiters-mode)
+:hook (((prog-mode . rainbow-delimiters-mode)
+        (text-mode . rainbow-delimiters-mode)))
+    
 )
 
 (use-package smartparens :ensure t 
@@ -1083,7 +1073,7 @@ list)
 
 (use-package org-superstar :ensure t 
 :after org
-:hook (org-mode . org-superstar-mode)
+:hook ((org-mode . org-superstar-mode))
 :custom (org-superstar-special-todo-items t)
 ;:custom-face 
 ;    (org-level-1 ((t (:inherit outline-1 :height 1.3))))
@@ -1165,7 +1155,7 @@ list)
 
 (use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode" :ensure nil
 :after org
-:hook (org-mode . org-table-auto-align-mode)
+:hook ((org-mode . org-table-auto-align-mode))
 )
 
 (use-package org-gcal :ensure t  :disabled
@@ -1180,7 +1170,7 @@ list)
 (use-package orgtbl-aggregate :ensure t  :defer t)
 
 (use-package toc-org :ensure t  :after org
-:hook (org-mode . toc-org-mode)
+:hook ((org-mode . toc-org-mode))
 ;:config (add-hook 'org-mode-hook 'toc-org-mode)
 )
 
@@ -1215,13 +1205,16 @@ list)
 (use-package olivetti :ensure t 
 :commands (olivetti-mode)
 :config (setq olivetti-body-width 120))
-(use-package typo :ensure t 
-:commands (type-mode))
+
+(use-package typo :ensure t :commands (type-mode))
+
 (use-package poet-theme :ensure t  :defer t)
+
 (use-package writeroom-mode :ensure t 
 :commands (writeroom-mode)
 :config (setq writeroom-width 100)
 )
+
 (define-minor-mode writer-mode
     "poet use writer mode"
     :lighter " writer"
@@ -1254,10 +1247,10 @@ list)
 )
 
 (use-package dockerfile-mode :ensure t 
-:mode ("Dockerfile\\'" . dockerfile-mode))
+:mode (("Dockerfile\\'" . dockerfile-mode))
+)
 
-(use-package kubernetes :ensure t
-  :commands (kubernetes-overview))
+(use-package kubernetes :ensure t :commands (kubernetes-overview))
 
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil :ensure t :after kubernetes)
@@ -1324,7 +1317,7 @@ list)
 )
 
 (use-package with-editor :ensure t 
-:hook ((shell-mode term-exec eshll-mode) . with-editor-export-editor)
+:hook (((shell-mode term-exec eshll-mode) . with-editor-export-editor))
 )
 
 (use-package vterm-command :no-require t :ensure nil
@@ -1408,7 +1401,7 @@ shell exits, the buffer is killed."
 
 (use-package esh-autosuggest :ensure t 
 :after eshell
-:hook (eshell-mode . esh-autosuggest-mode)
+:hook ((eshell-mode . esh-autosuggest-mode))
 )
 
 (use-package eshell-up :ensure t :disabled
@@ -1430,7 +1423,7 @@ shell exits, the buffer is killed."
 
 (use-package command-log-mode :ensure t  :defer t)
 
-(use-package emojify :ensure t  :defer t
+(use-package emojify :ensure t 
 :if window-system
 :config (global-emojify-mode 1)
         (setq emojify-display-style 'image)
@@ -1448,34 +1441,12 @@ shell exits, the buffer is killed."
                  "b m" 'switch-to-buffer
                  "b n" 'next-buffer
                  "b p" 'previous-buffer)
-:init
-    (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-    ;(setq ibuffer-saved-filter-groups
-    ;    '(("home"
-    ;            ("emacs-config" (or (filename . ".emacs.d")
-    ;                                (filename . "emacs-config")))
-    ;            ("org-mode"     (or (mode . org-mode)
-    ;                                (filename ."OrgMode")))
-    ;            ("code"         (or (filename . "~/dev")
-    ;                                (mode . prog-mode)
-    ;                                (mode . c++-mode)
-    ;                                (mode . c-mode)
-    ;                                (mode . yaml-mode)
-    ;                                (mode . toml-mode)
-    ;                                (mode . lisp-mode)
-    ;                                (mode . emacs-lisp-mode)))
-    ;            ("magit"        (or (name . "\*magit")))
-    ;            ("Help"         (or (name . "\*Help\*")
-    ;                                (name . "\*Apropos\*")
-    ;                                (name . "\*info\*")))
-    ;    ))
-    ;)
-    ;(add-hook 'ibuffer-mode-hook '(lambda () (ibuffer-switch-to-saved-filter-groups "home")))
+:init  (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
 )
 
 (use-package all-the-icons-ibuffer :ensure t 
 :after all-the-icons
-:hook (ibuffer-mode . all-the-icons-ibuffer-mode)
+:hook ((ibuffer-mode . all-the-icons-ibuffer-mode))
 )
 
 
@@ -1486,8 +1457,8 @@ shell exits, the buffer is killed."
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :ensure t :disabled 
-:hook (after-init . org-roam-mode)
+(use-package org-roam :ensure t :disabled
+:hook ((after-init . org-roam-mode))
 :custom (org-roeam-directory "~/GoogleDrive/Org/")
 ;:general (leader "on" '(org-roam-mode-map :wk "Note"))
 )
@@ -1509,9 +1480,7 @@ shell exits, the buffer is killed."
 (use-package dash :ensure t  :defer t
 :init (global-dash-fontify-mode t)
 )
-(use-package dash-functional :ensure t 
-:after dash
-)
+(use-package dash-functional :ensure t :after dash)
 
 (use-package ialign :ensure t  :defer t
 :general (leader "ta" 'ialign))
@@ -1663,7 +1632,8 @@ shell exits, the buffer is killed."
 (use-package polymode :ensure t :no-require t
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
 )
-(use-package poly-org :ensure t :hook (org-mode . poly-org-mode)
+(use-package poly-org :ensure t
+:hook ((org-mode . poly-org-mode))
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
 
@@ -1693,23 +1663,16 @@ shell exits, the buffer is killed."
 
 (global-ligature-mode t)
 )
-;(use-package fira-code-mode :ensure t
-;:custom (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
-;:hook prog-mode) ;; Enables fira-code-mode automatically for programming major modes
-
-; emacs mac-port option
-;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 (use-package ssh-config-mode :ensure t
 :config (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'" . ssh-config-mode))
 )
 
 (use-package ssh-deploy :ensure t
-:hook ((after-save . ssh-deploy-after-save)
-        (find-file . ssh-deploy-find-file))
-:config
-    (ssh-deploy-line-mode)
-    (ssh-deploy-add-menu)
+:hook (((after-save . ssh-deploy-after-save)
+        (find-file . ssh-deploy-find-file)))
+:config (ssh-deploy-line-mode)
+        (ssh-deploy-add-menu)
 )
 
 (use-package smudge :ensure t
@@ -1811,8 +1774,9 @@ shell exits, the buffer is killed."
     (setq company-tabnine-always-trigger nil)
 )
 
-(use-package company-box :ensure t  :diminish ""
-:hook   (company-mode . company-box-mode)
+(use-package company-box :ensure t :diminish ""
+:after company-mode
+;:hook   ((company-mode . company-box-mode))
 :custom (company-box-max-candidates 30)
 :config (setq company-box-icons-unknown 'fa_question_circle)
         (setq company-box-color-icon t)
@@ -2112,11 +2076,11 @@ shell exits, the buffer is killed."
     (slime-setup '(slime-fancy))
 )
 (use-package elisp-slime-nav :ensure t  :diminish elisp-slime-nav-mode
-:hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
+:hook (((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode))
 )
 
 (use-package prettify-symbols :no-require t :ensure nil
-    :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode))
+:hook (((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode)))
 
 (use-package paredit :ensure t  :disabled
 :init
@@ -2143,9 +2107,9 @@ shell exits, the buffer is killed."
 )
 
 (use-package rust-mode :ensure t 
-:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
+;:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 :mode (("\\.rs\\'" . rust-mode))
-:hook (rust-mode . lsp)
+:hook ((rust-mode . lsp))
 :general (leader "hrf" 'rust-format-buffer)
 :config  (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
          (setq lsp-rust-server 'rust-analyzer)
@@ -2161,12 +2125,12 @@ shell exits, the buffer is killed."
 )
 
 (use-package racer :ensure t  :disabled
-:ensure-system-package ((racer . "rustup toolchain add nightly")
-                        (racer . "rustup component add rust-src")
-                        (racer . "cargo +nightly install racer"))
+;:ensure-system-package ((racer . "rustup toolchain add nightly")
+;                        (racer . "rustup component add rust-src")
+;                        (racer . "cargo +nightly install racer"))
 :after (rust-mode eldoc)
-:hook  ((rust-mode  . racer-mode)
-        (racer-mode . eldoc-mode))
+:hook  (((rust-mode  . racer-mode)
+         (racer-mode . eldoc-mode)))
 ;:init  (add-hook 'racer-mode-hook  #'eldoc-mode)
 )
 
@@ -2177,7 +2141,7 @@ shell exits, the buffer is killed."
 
 (use-package cargo :ensure t 
 :after  rust-mode
-:hook (rust-mode . cargo-minor-mode)
+:hook ((rust-mode . cargo-minor-mode))
 :commands cargo-minor-mode
 :general (leader "hrb" 'cargo-process-build
                  "hrr" 'cargo-process-run
@@ -2195,28 +2159,28 @@ shell exits, the buffer is killed."
 (use-package haskell-mode :ensure t  :defer t)
 
 (use-package yaml-mode :ensure t 
-:mode (("\\.yaml\\'" . yaml-mode)
-       ("\\.yml\\'"  . yaml-mode))
+:mode ((("\\.yaml\\'" . yaml-mode)
+        ("\\.yml\\'"  . yaml-mode)))
 )
 
 (use-package toml-mode :ensure t 
-:mode (("\\.toml\\'" . toml-mode)
-       ("Pipfile\\'" . toml-mode))
+:mode ((("\\.toml\\'" . toml-mode)
+        ("Pipfile\\'" . toml-mode)))
 )
 
 (use-package cmake-mode :ensure t 
 ;:ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
 :commands cmake-mode
-:mode (("\\.cmake\\'"    . cmake-mode)
-       ("CMakeLists.txt" . cmake-mode))
+:mode ((("\\.cmake\\'"    . cmake-mode)
+        ("CMakeLists.txt" . cmake-mode)))
 :init (setq cmake-tab-width 4)
 )
 
 (use-package markdown-mode :ensure t 
 :commands (markdown-mode gfm-mode)
-:mode   (("\\README.md\\'" . gfm-mode)
+:mode  ((("\\README.md\\'" . gfm-mode)
          ("\\.md\\'"       . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
+         ("\\.markdown\\'" . markdown-mode)))
 :general (leader "hm" '(:wk "Markdown"))
 :config (setq markdown-command "multimarkdown")
 )
@@ -2236,9 +2200,9 @@ shell exits, the buffer is killed."
 )
 
 (use-package python-mode :ensure nil :no-require t
-:mode   ("\\.py\\'" . python-mode)
-;        ("\\.wsgi$" . python-mode)
-;:interpreter ("python" . python-mode)
+:mode ((("\\.py\\'" . python-mode)
+        ("\\.wsgi$" . python-mode)))
+:interpreter (("python" . python-mode))
 :ensure-system-package (;(pyenv . "")
                         (pipenv . "pip install pipenv"))
 :config (setq python-indent-offset 4)
@@ -2246,14 +2210,14 @@ shell exits, the buffer is killed."
 
 (use-package pyvenv :ensure t  :disabled
 ;:after  python-mode
-:hook   (python-mode . pyvenv-mode)
+:hook   ((python-mode . pyvenv-mode))
 :init   (setenv "WORKON_HOME" "~/.pyenv/versions")
 :config (pyvenv-tracking-mode)
 )
 
 (use-package pyenv-mode :ensure t 
-:after  (python-mode projectile)
-:hook  (python-mode . pyenv-mode)
+:after (python-mode projectile)
+:hook ((python-mode . pyenv-mode))
 :preface
     (defun projectile-pyenv-mode-set ()
         "Set pyenv version matching project name."
@@ -2270,7 +2234,7 @@ shell exits, the buffer is killed."
 
 
 (use-package pip-requirements :ensure t  :disabled;:after python-mode
-:hook (python-mode . pip-requirements-mode)
+:hook ((python-mode . pip-requirements-mode))
 )
 
 (use-package lsp-pyright :ensure t  
@@ -2278,13 +2242,13 @@ shell exits, the buffer is killed."
 )
 
 (use-package pipenv :ensure t :after python-mode
-:hook (python-mode . pipenv-mode)
+:hook ((python-mode . pipenv-mode))
 )
 
 (use-package elpy :ensure t  :disabled
-:ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
+;:ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
 :after python-mode
-:hook (python-mode . elpy-enable)
+:hook ((python-mode . elpy-enable))
 :config (eldoc-mode 0)
 )
 
@@ -2311,7 +2275,7 @@ shell exits, the buffer is killed."
 
 (use-package dart-mode :ensure t 
 :after lsp
-:mode ("\\.dart\\'" . dart-mode)
+:mode   (("\\.dart\\'" . dart-mode))
 :custom (dart-format-on-save t)
         (dart-enable-analysis-server t)
         (dart-sdk-path (expand-file-name "~/dev/flutter/bin/cache/dart-sdk/"))
@@ -2332,11 +2296,11 @@ shell exits, the buffer is killed."
 )
 
 (use-package dotenv-mode :ensure t 
-:mode ("\\.env\\..*\\'" . dotenv-mode)
+:mode (("\\.env\\..*\\'" . dotenv-mode))
 )
 
 (use-package go-mode :ensure t 
-:mode ("\\.go\\''" . go-mode)
+:mode (("\\.go\\''" . go-mode))
 )
 
 (use-package dumb-jump :ensure t 
@@ -2352,10 +2316,10 @@ shell exits, the buffer is killed."
 
 (use-package web-mode :ensure t 
 :commands (web-mode)
-:mode     (("\\.html?\\'"  . web-mode)
+:mode    ((("\\.html?\\'"  . web-mode)
            ("\\.xhtml$\\'" . web-mode)
            ("\\.tsx$"      . web-mode)
-           ("\\.vue\\'"    . web-mode))
+           ("\\.vue\\'"    . web-mode)))
 :custom (web-mode-enable-engine-detection t)
         (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
 )
@@ -2366,14 +2330,14 @@ shell exits, the buffer is killed."
 
 (use-package js2-refactor :ensure t  :disabled
 :after js2-mode
-:hook (js2-mode . js2-refactor)
+:hook ((js2-mode . js2-refactor))
 )
 
 (use-package rjsx-mode :ensure t  :disabled
 :after js2-mode
-:mode (("\\.jsx$" . rjsx-mode)
-       ("components/.+\\.js$" . rjsx-mode))
-:hook (js2-mode . rjsx-mode)
+:mode ((("\\.jsx$" . rjsx-mode)
+        ("components/.+\\.js$" . rjsx-mode)))
+:hook ((js2-mode . rjsx-mode))
 :preface
 (defun +javascript-jsx-file-p ()
     "Detect React or preact imports early in the file."
@@ -2393,28 +2357,28 @@ shell exits, the buffer is killed."
 
 (use-package skewer-mode :ensure t 
 :after js2-mode
-:hook (js2-mode  . skewer-mode)
-      (css-mode  . skewer-css-mode)
-      (html-mode . skewer-html-mode)
+:hook (((js2-mode  . skewer-mode)
+        (css-mode  . skewer-css-mode)
+        (html-mode . skewer-html-mode)))
 )
 
 (use-package typescript-mode :ensure t 
-:mode (("\\.ts\\'"  . typescript-mode)
-       ("\\.tsx\\'" . typescript-mode))
+:mode ((("\\.ts\\'"  . typescript-mode)
+        ("\\.tsx\\'" . typescript-mode)))
 :hook (typescript-mode . (lambda () (lsp)))
 )
 
 (use-package tide :ensure t 
 :after (typescript-mode company flycheck)
-:hook ((typescript-mode . tide-setup)
-       (typescript-mode . tide-hl-identifier-mode)
-       (before-save . tide-format-before-save))
+:hook (((typescript-mode . tide-setup)
+        (typescript-mode . tide-hl-identifier-mode)
+        (before-save . tide-format-before-save)))
 )
 
 (use-package json-mode :ensure t 
 :commands json-mode
-:mode (("\\.json\\'"       . json-mode)
-       ("/Pipfile.lock\\'" . json-mode))
+:mode ((("\\.json\\'"       . json-mode)
+        ("/Pipfile.lock\\'" . json-mode)))
 )
 
 (use-package json-reformat :ensure t 
@@ -2439,21 +2403,21 @@ shell exits, the buffer is killed."
 
 (use-package rvm :ensure t :disabled
 :after ruby-mode
-:ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
+;:ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
 )
 
 (use-package yari :ensure t  :after ruby-mode)
 
 (use-package rubocop :ensure t  :disabled
-:ensure-system-package (rubocop . "sudo gem install rubocop")
+;:ensure-system-package (rubocop . "sudo gem install rubocop")
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
 (use-package robe :ensure t :disabled
 :after (ruby-mode company)
-:ensure-system-package (pry . "sudo gem install pry pry-doc")
+;:ensure-system-package ((pry . "sudo gem install pry pry-doc"))
 :init (add-hook 'ruby-mode-hook 'robe-mode)
 :config (push 'company-robe company-backends)
 )
@@ -2464,7 +2428,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package gdscript-mode :ensure t :disabled
-:hook (gdscript-mode . lsp)
+:hook  ((gdscript-mode . lsp))
 :custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
 )
 ;(use-package company-godot-gdscript :quelpa (company-godot-gdscript :fetcher github :repo "francogarcia/company-godot-gdscript.el") :disabled
@@ -2476,7 +2440,7 @@ shell exits, the buffer is killed."
 ;(use-package dap-java :ensure nil)
 (use-package gradle-mode :ensure t  :config (add-hook 'java-mode-hook 'gradle-mode))
 (use-package groovy-mode :ensure t  
-:mode (".gradle\\'" . groovy-mode)
+:mode ((".gradle\\'" . groovy-mode))
 )
 
 (use-package kotlin-mode :ensure t 
@@ -2489,12 +2453,11 @@ shell exits, the buffer is killed."
 
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :ensure nil
-:ensure-system-package ((rg    . "cargo install ripgrep")
-                        (exa   . "cargo install exa")
-                        (bat   . "cargo install bat")
-                        (procs . "cargo install procs")
-                        (ytop  . "cargo install ytop")
-                       )
+;:ensure-system-package ((rg    . "cargo install ripgrep")
+;                        (exa   . "cargo install exa")
+;                        (bat   . "cargo install bat")
+;                        (procs . "cargo install procs")
+;                        (ytop  . "cargo install ytop"))
 )
 
 ; brew cask install karabiner-elements
