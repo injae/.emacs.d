@@ -517,13 +517,8 @@ list)
 
 (use-package evil-smartparens :ensure t 
 :after (evil smartparens)
-<<<<<<< HEAD
 ;:hook (smartparens-mode . evil-smartparens-mode)
 :init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-=======
-:hook ((smartparens-mode . evil-smartparens-mode))
-;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
->>>>>>> cbd40ab (update)
 )
 
 (use-package evil-numbers :ensure t 
@@ -660,11 +655,7 @@ list)
 :config  
 )
 (use-package doom-modeline :ensure t 
-<<<<<<< HEAD
-;:hook   (after-init . doom-modeline-mode)
-=======
 :hook   ((after-init . doom-modeline-mode))
->>>>>>> cbd40ab (update)
 :init   (setq find-file-visit-truename t)
         (setq inhibit-compacting-font-caches t)
         (setq doom-modeline-height 30)
@@ -1973,7 +1964,7 @@ shell exits, the buffer is killed."
 
 (use-package company-box :ensure t :diminish ""
 :after company-mode
-;:hook   ((company-mode . company-box-mode))
+:hook   ((company-mode . company-box-mode))
 :custom (company-box-max-candidates 30)
 :config (setq company-box-icons-unknown 'fa_question_circle)
         (setq company-box-color-icon t)

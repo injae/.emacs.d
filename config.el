@@ -457,7 +457,8 @@ list)
 
 (use-package evil-smartparens :ensure t 
 :after (evil smartparens)
-:init  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+;:hook (smartparens-mode . evil-smartparens-mode)
+:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 )
 
 (use-package evil-numbers :ensure t 
@@ -1776,7 +1777,7 @@ shell exits, the buffer is killed."
 
 (use-package company-box :ensure t :diminish ""
 :after company-mode
-;:hook   ((company-mode . company-box-mode))
+:hook   ((company-mode . company-box-mode))
 :custom (company-box-max-candidates 30)
 :config (setq company-box-icons-unknown 'fa_question_circle)
         (setq company-box-color-icon t)
