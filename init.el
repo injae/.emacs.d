@@ -15,11 +15,12 @@
     (package-refresh-contents)
     (package-install 'use-package t))
 
-(eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  ;(add-to-list 'load-path "<path where use-package is installed>")
-  (require 'use-package))
+;(eval-when-compile
+;  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+;  ;(add-to-list 'load-path "<path where use-package is installed>")
+;  (require 'use-package))
 
+(require 'use-package)
 (require 'cl-lib)
 
 ;(setq straight-use-package-by-default t)
@@ -65,7 +66,7 @@
 )
 
 (use-package org :ensure t
-:mode (("\\.org\\'" . org-mode))
+:mode ("\\.org\\'" . org-mode)
 ;:preface
 ;    (defun update-config ()
 ;        (interactive)
