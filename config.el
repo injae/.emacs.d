@@ -3,8 +3,54 @@
 ;;; Commentary:
 ;; This config start here
 ;;; Code:
+
 (require 'use-package)
 ;(use-package use-package :ensure t)
+(use-package use-package-ensure-system-package :after use-package :ensure t)
+
+(use-package el-patch :ensure t)
+
+(use-package auto-package-update :ensure t
+:custom (auto-package-update-delete-old-versions t)
+        (auto-package-update-prompt-before-update t)
+        ;(auto-package-update-hide-results t)
+:config (auto-package-update-maybe)
+)
+
+;(toggle-debug-on-error)
+;(setq byte-compile-error-on-warn t)
+
+(use-package async :ensure t
+:config (setq async-bytecomp-package-mode t)
+)
+
+(use-package org :ensure t
+:mode ("\\.org\\'" . org-mode)
+;:preface
+;    (defun update-config ()
+;        (interactive)
+;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
+;    )
+;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+)
+
+(setq-default custom-file "~/.emacs.d/custom-variable.el")
+(when (file-exists-p custom-file) (load-file custom-file))
+
+
+;(setq-default private-config-file "~/GoogleDrive/config/emacs-private-config.el")
+(setq-default private-config-file "~/.emacs.d/private/token.el")
+(when (file-exists-p private-config-file) (load-file private-config-file))
+
+;(garbage-collect)
+;(put 'narrow-to-region 'disabled nil)
+
+; for native comp
+(setq package-native-compile t)
+(setq comp-deferred-compilation t)
+(setq comp-deferred-compilation-deny-list '("powerline" "polymode-core"))
+;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
+;(native-compile-async "~/.emacs.d/")
 
 (setq user-full-name "Injae Lee")
 (setq user-mail-address "8687lee@gmail.com")
@@ -1478,10 +1524,9 @@ shell exits, the buffer is killed."
           org-roam-server-network-label-wrap-length 20)
 )
 
-(use-package dash :ensure t 
+(use-package dash :ensure t  :defer t
 :init (global-dash-fontify-mode t)
 )
-
 (use-package dash-functional :ensure t :after dash)
 
 (use-package ialign :ensure t  :defer t
@@ -1500,7 +1545,7 @@ shell exits, the buffer is killed."
     (setq dashboard-set-navigator t)
     ;(setq dashboard-center-content t)
     (setq dashboard-set-init-info t)
-    ;(setq show-week-agenda-p t)
+    (setq show-week-agenda-p t)
     (setq dashboard-items '((recents   . 5)
                             (bookmarks . 5)
                             (projects  . 5)
@@ -1692,16 +1737,17 @@ shell exits, the buffer is killed."
 
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t 
-:custom
-    (company-show-numbers t)
-    (company-idle-delay 0)
-    (company--transform-candidates nil)
-    (company-minimum-prefix-length 1)
-    (company-tooltip-align-annotations nil)
-:init   (global-company-mode 1)
-:config (add-to-list 'company-backends '(company-capf :with company-yasnippet))
-        (setq company-dabbrev-downcase nil)
-        (company-tng-mode t)
+:init (global-company-mode 1)
+:config
+    (company-tng-mode t)
+    (setq company-show-numbers t)
+    (setq company-idle-delay 0)
+    (setq company--transform-candidates nil)
+    (setq company-minimum-prefix-length 1)
+    (setq company-tooltip-align-annotations nil)
+    (setq company-dabbrev-downcase nil)
+    ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
+    ;(add-to-list 'company-backends #'company-capf)
 )
 
 (use-package company-quickhelp :ensure t 
@@ -1728,7 +1774,7 @@ shell exits, the buffer is killed."
 )
 
 ;company-quickhelp speed up setting
-(use-package company-posframe :ensure t 
+(use-package company-posframe :ensure t :disabled
 :after company
 :config (company-posframe-mode)
 )
@@ -1743,7 +1789,7 @@ shell exits, the buffer is killed."
         (add-to-list 'company-backend 'company-suggest-google)
 )
 
-(use-package company-fuzzy :ensure t  :disabled
+(use-package company-fuzzy :ensure t :disabled
 :after company
 :config (company-fuzzy-mode)
         (setq company-fuzzy-sorting-backend 'flx)
@@ -1751,7 +1797,7 @@ shell exits, the buffer is killed."
 )
 
 ; deep learning completion
-(use-package company-tabnine :ensure t 
+(use-package company-tabnine :ensure t
 :after company
 :preface
     (setq company-tabnine--disable-next-transform nil)
@@ -1909,12 +1955,12 @@ shell exits, the buffer is killed."
 )
 
 (use-package ccls :ensure t ;:disabled; with lsp or eglot mode 
-:hook   ((c-mode-common) . (lambda () (require 'ccls) (lsp)))
-:custom (ccls-sem-highlight-method 'font-lock)
-        ;(ccls-use-default-rainbow-sem-highlight)
-        (ccls-extra-init-params '(:client (:snippetSupport :json-false)))
+:hook  ((c-mode c++-mode objc-mode cuda-mode c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :config
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+    (setq ccls-sem-highlight-method 'font-lock)
+    ;(ccls-use-default-rainbow-sem-highlight)
+    (setq ccls-extra-init-params '(:client (:snippetSupport :json-false)))
     (setq ccls-executable "ccls")
     (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/" ))
     ;(setq ccls-initialization-options '(:compilationDatabaseDirectory "build/"
@@ -2202,7 +2248,7 @@ shell exits, the buffer is killed."
         (setq easy-jekyll-previewtime "300")
 )
 
-(use-package python-mode
+(use-package python-mode :ensure nil :no-require t
 :mode (("\\.py\\'" . python-mode)
        ("\\.wsgi$" . python-mode))
 :interpreter (("python" . python-mode))
@@ -2215,7 +2261,7 @@ shell exits, the buffer is killed."
 :after  python-mode
 :hook   (python-mode . pyvenv-mode)
 ;:init   (setenv "WORKON_HOME" "~/.pyenv/versions")
-:config (pyvenv-tracking-mode t)
+:config (pyvenv-tracking-mode)
 )
 
 (use-package pyenv-mode :ensure t :disabled
