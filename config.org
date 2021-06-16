@@ -412,9 +412,9 @@ list)
 (use-package evil :ensure t 
 :init   (setq evil-want-integration t)
         (setq evil-want-keybinding nil)
-        (setq evil-want-C-u-scroll t)
+:config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
-:config (define-key evil-normal-state-map (kbd "q") 'nil)
+        (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
         (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
         (evil-mode 1)
@@ -447,8 +447,8 @@ list)
               "er"    '(restart-emacs :wk "Restart")
               "el"    '(-reload-emacs :wk "Reload")
               "ff"    '(find-file :wk "Find File")
-              "fu"    '(browse-url :wl "Browse url")
-              "ep"    '(list-processes :wl "Process")
+              "fu"    '(browse-url :wk "Browse url")
+              "ep"    '(list-processes :wk "Process")
               "ef"    '((lambda ()(interactive)(find-file "~/.emacs.d/config.org")) :wk "configure file")
               "wf"    '(toggle-frame-fullscreen :wk "FullScreen")
               "wh"    '(shrink-window-horizontally :wk "Right size up")
@@ -500,9 +500,9 @@ list)
 )
 
 (use-package evil-goggles :ensure t :after evil
-:config (evil-goggles-mode)
-        (setq evil-goggles-pulse t)
+:config (setq evil-goggles-pulse t)
         (setq evil-goggles-duration 0.500)
+        (evil-goggles-mode)
 )
 
 (use-package evil-traces :ensure t  :after evil
@@ -549,7 +549,7 @@ list)
 )
 
 
-(use-package evil-multiedit :ensure t  :disabled)
+(use-package evil-multiedit :ensure t :after evil)
 (use-package evil-iedit-state :ensure t  :after (evil iedit))
 
 (use-package evil-matchit :ensure t 
@@ -566,10 +566,9 @@ list)
 :config (setq-default evil-escape-key-sequence "jk")
 )
 
-(use-package evil-smartparens :ensure t 
+(use-package evil-smartparens :ensure t :disabled
 :after (evil smartparens)
-:hook (smartparens-mode . evil-smartparens-mode)
-;:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 )
 
 (use-package evil-numbers :ensure t 
@@ -584,8 +583,9 @@ list)
                  "C-c -" '(evil-numbers/dec-at-pt :wk "--"))
 )
 
-(use-package evil-extra-operator :ensure t :after (evil fold-this)
-    :config (global-evil-extra-operator-mode 1)
+(use-package evil-extra-operator :ensure t
+:after (evil fold-this)
+:config (global-evil-extra-operator-mode 1)
 )
 
 (use-package evil-collection :ensure t 
@@ -593,19 +593,19 @@ list)
 :custom (evil-collection-setup-minibuffer t)
 ;:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
 ;       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
-;       (add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
 ;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
-       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
+       ;(add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
 :config
-       ;(evil-collection-pdf-setup)
-       ;(evil-collection-occur-setup)
-       ;(evil-collection-wgrep-setup)
-       ;(evil-collection-buff-menu-setup)
-       ;(evil-collection-package-menu-setup)
-       ;;(evil-collection-eshell-setup)
-       ;(evil-collection-ivy-setup)
-       ;(evil-collection-vterm-setup) 
-       ;(evil-collection-which-key-setup)
+       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
+       (evil-collection-pdf-setup)
+       (evil-collection-occur-setup)
+       (evil-collection-wgrep-setup)
+       (evil-collection-buff-menu-setup)
+       (evil-collection-package-menu-setup)
+       ;(evil-collection-eshell-setup)
+       (evil-collection-ivy-setup)
+       (evil-collection-vterm-setup) 
+       (evil-collection-which-key-setup)
        ;(evil-collection-calc-setup)
        (evil-collection-init)
 )
@@ -849,7 +849,7 @@ list)
 
 
 (use-package rainbow-delimiters :ensure t 
-:hook ((prog-mode text-mode) . rainbow-delimiters-mode)
+:hook ((prog-mode text-mode) . rainbow-delimiters-mode) 
 )
 
 (use-package smartparens :ensure t 
@@ -860,8 +860,8 @@ list)
                  "phl" 'sp-backward-barf-sexp)
 :init (smartparens-global-mode)
 )
-; elisp double quote problem fix setting
-;(use-package smartparens-config :ensure smartparens :ensure nil)
+;elisp double quote problem fix setting
+;(use-package smartparens-config :ensure smartparens)
 
 #+END_SRC
 ** Hydra KeyMap
@@ -1317,7 +1317,7 @@ list)
 :general (:keymaps 'org-agenda-mode-map "p"  'org-pomodoro)
 )
 
-(use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode" :ensure nil
+(use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode.el" :ensure nil :disabled
 :after org
 :hook (org-mode . org-table-auto-align-mode)
 )
@@ -1870,18 +1870,18 @@ shell exits, the buffer is killed."
 ; Enable the www ligature in every possible major mode
 (ligature-set-ligatures 't '("www"))
 (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-; Enable ligatures in programming mo;des                                                           
-(ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
-                                     ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
-                                     "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
-                                     "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
-                                     "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
-                                     "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
-                                     "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
-                                     "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
-                                     "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
-                                     "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
-
+; Enable ligatures in programming modes                                                           
+(ligature-set-ligatures '(prog-mode org-mode)
+        '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+          ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+          "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+          "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+          "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+          "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+          "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+          "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+          "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+          "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 (global-ligature-mode t)
 )
 
@@ -2354,10 +2354,11 @@ shell exits, the buffer is killed."
 (use-package parinfer :ensure t  :disabled
 :after (evil)
 :general ("C-,"  'parinfer-toggle-mode)
+:hook (emacs-lisp-mode common-lisp-mode lisp-mode)
 :init 
-(add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
-(add-hook 'common-lisp-mode-hook #'parinfer-mode)
-(add-hook 'lisp-mode-hook        #'parinfer-mode)
+;(add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
+;(add-hook 'common-lisp-mode-hook #'parinfer-mode)
+;(add-hook 'lisp-mode-hook        #'parinfer-mode)
 ;(add-hook 'clojure-mode-hook     #'parinfer-mode)
 ;(add-hook 'scheme-mode-hook      #'parinfer-mode)
 :config
@@ -2382,21 +2383,6 @@ shell exits, the buffer is killed."
 (use-package flycheck-rust :ensure t 
 :after  (flycheck rust-mode)
 :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-)
-
-(use-package racer :ensure t  :disabled
-:ensure-system-package ((racer . "rustup toolchain add nightly")
-                        (racer . "rustup component add rust-src")
-                        (racer . "cargo +nightly install racer"))
-:after (rust-mode eldoc)
-:hook  ((rust-mode  . racer-mode)
-        (racer-mode . eldoc-mode))
-;:init  (add-hook 'racer-mode-hook  #'eldoc-mode)
-)
-
-(use-package company-racer :ensure t 
-:after  (company racer)
-:config (add-to-list 'company-backends 'company-racer)
 )
 
 (use-package cargo :ensure t 
