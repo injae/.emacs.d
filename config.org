@@ -194,7 +194,7 @@
 ;; | abcdefghij | abcdefghij |
 ;; +------------+------------+
 ;; text utf-8 setting
-(setq utf-translate-cjk-mode nil)
+;(setq utf-translate-cjk-mode nil)
 (set-language-environment "Korean")
 (prefer-coding-system 'utf-8)
 (setq locale-coding-system   'utf-8)
@@ -718,7 +718,7 @@ list)
         (setq doom-modeline-current-window t)
         (setq doom-modeline-env-version t)
         (setq doom-modeline-env-enable-python t)
-        (setq doom-modeline-python-executable "pipenv")
+        ;(setq doom-modeline-python-executable "pipenv")
         (setq doom-modeline-env-enable-ruby t)
         (setq doom-modeline-env-ruby-executable "ruby")
         (setq doom-modeline-env-enable-elixir t)
@@ -811,7 +811,7 @@ list)
     (defun my-set-indent (n)
         (setq-default tab-width n)
         ;(electric-indent-mode n)
-        (setq c-basic-offset n)
+        ;(setq c-basic-offset n)
         (setq lisp-indent-offset n)
         (setq indent-line-function 'insert-tab)
     )
@@ -1589,16 +1589,16 @@ shell exits, the buffer is killed."
                                           (eshell/alias "pk" "eshell-up-peek $1")))
 )
 
-(use-package execute-shell :no-require t :ensure nil
-:after eshell
-:preface
-(defun background-shell-command (command)
-    "run shell commmand background"
-    (interactive "sShell Command : ")
-    (call-process-shell-command "command" nil 0))
-:config (add-to-list 'display-buffer-alist
-        (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
-)
+;(use-package execute-shell :no-require t :ensure nil
+;:after eshell
+;:preface
+;(defun background-shell-command (command)
+;    "run shell commmand background"
+;    (interactive "sShell Command : ")
+;    (call-process-shell-command "command" nil 0))
+;:config (add-to-list 'display-buffer-alist
+;        (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+;)
 #+END_SRC
 ** Command log mode
 #+BEGIN_SRC emacs-lisp
@@ -1681,6 +1681,7 @@ shell exits, the buffer is killed."
 (use-package dashboard :ensure t 
 :init (dashboard-setup-startup-hook)
 :config
+    (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
     (setq dashboard-banner-logo-title "We are Emacsian!")
     (setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
@@ -1690,12 +1691,10 @@ shell exits, the buffer is killed."
     (setq dashboard-set-navigator t)
     ;(setq dashboard-center-content t)
     (setq dashboard-set-init-info t)
-    (setq show-week-agenda-p t)
     (setq dashboard-items '((recents   . 5)
                             (bookmarks . 5)
                             (projects  . 5)
                             (agenda    . 5)))
-    (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
 )
  #+END_SRC
 ** Tabbar
