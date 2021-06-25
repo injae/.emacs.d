@@ -30,7 +30,7 @@
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
-(setq comp-deferred-compilation-deny-list '("powerline" "polymode-core"))
+(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
 (native-compile-async "~/.emacs.d/config.el")

@@ -33,7 +33,6 @@
 ;    )
 ;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
-
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
@@ -48,7 +47,7 @@
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
-(setq comp-deferred-compilation-deny-list '("powerline" "polymode-core"))
+(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
 
@@ -353,8 +352,8 @@ list)
         (setq evil-symbol-word-search t)
         (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
-        (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
         (evil-mode 1)
+        (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
 )
 
 (use-package general :ensure t 
@@ -379,10 +378,11 @@ list)
               "u"     '(:wk "Utils")
               "w"     '(:wk "Windows")
               "h"     '(:wk "Hacking")
-              "l"     '(:wk "Lisp")
+              "l"     '(:wk "Lisp or LSP")
               "hr"    '(:wk "Rust")
               "er"    '(restart-emacs :wk "Restart")
               "el"    '(-reload-emacs :wk "Reload")
+              "et"    '((lambda ()(interactive)(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))) :wk "tangle config.org" )
               "ff"    '(find-file :wk "Find File")
               "fu"    '(browse-url :wk "Browse url")
               "ep"    '(list-processes :wk "Process")
@@ -581,7 +581,7 @@ list)
 ; C-u 10 C-x e
 
 (use-package highlight-numbers :ensure t
-:init (highlight-numbers-mode t)
+:config (highlight-numbers-mode)
 )
 (use-package beacon :ensure t :config (beacon-mode t))
 (use-package git-gutter :ensure t 
@@ -628,6 +628,7 @@ list)
 (use-package doom-modeline :ensure t 
 :hook   (after-init . doom-modeline-mode)
 :init   (setq find-file-visit-truename t)
+        (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
         (setq inhibit-compacting-font-caches t)
         (setq doom-modeline-height 30)
         (setq doom-modeline-icon t) ; current version has error
@@ -656,6 +657,7 @@ list)
         (setq doom-modeline-current-window t)
         (setq doom-modeline-major-mode-color-icon t)
 :config (add-hook 'after-init-hook 'doom-modeline-mode)
+        (with-eval-after-load 'lsp-treemacs (doom-themes-treemacs-config))
 )
 
 (use-package hide-mode-line :ensure t 
@@ -725,7 +727,7 @@ list)
     (defun my-set-indent (n)
         (setq-default tab-width n)
         ;(electric-indent-mode n)
-        ;(setq c-basic-offset n)
+        (setq-default c-basic-offset n)
         (setq lisp-indent-offset n)
         (setq indent-line-function 'insert-tab)
     )
@@ -834,10 +836,12 @@ list)
 (use-package ivy-posframe :ensure t 
 :after ivy
 :custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
-        (ivy-posframe-height-alist            '((t . 20)))
-        (ivy-posframe-parameters              '((internal-border-width . 10)))
-        (ivy-posframe-width 120)
-:config (ivy-posframe-mode t)
+        (ivy-posframe-parameters '((left-fringe . 8) (right-fringe . 8) (internal-border-width . 10)))
+        ;(ivy-posframe-width 120)
+:config ;(setq ivy-posframe-height-alist '((t . 20)))
+        (setq ivy-posframe-height-fixed t)
+        (setq ivy-posframe-width-fixed t)
+        (ivy-posframe-mode t)
 )
 
 (use-package counsel-osx-app :ensure t 
@@ -913,6 +917,9 @@ list)
 )
 
 (use-package ivy-rich :ensure t 
+:init (setq ivy-rich-path-style    'abbrev
+          ivy-virtual-abbreviate 'full
+          ivy-rich-switch-buffer-path nil)
 :config (ivy-rich-mode 1)
 )
 
@@ -1305,10 +1312,23 @@ list)
 (use-package docker-compose-mode :ensure t)
 
 (use-package vterm :ensure t  ;:disabled ;macport version not working
+:preface
+  (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
+  (if (equal major-mode 'vterm-mode)
+      (let ((inhibit-read-only t)
+            (yank-undo-function (lambda (_start _end) (vterm-undo))))
+        (cl-letf (((symbol-function 'insert-for-yank)
+               (lambda (str) (vterm-send-string str t))))
+            (apply orig-fun args)))
+    (apply orig-fun args)))
+
+(advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
+
 :general (leader "tn" 'vterm)
 :custom (vterm-always-compile-module t)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
+
 )
 
 (use-package vterm-toggle :ensure t :disabled
@@ -1773,9 +1793,9 @@ shell exits, the buffer is killed."
 )
 
 ;company-quickhelp speed up setting
-(use-package company-posframe :ensure t :disabled
+(use-package company-posframe :ensure t 
 :after company
-:config (company-posframe-mode)
+:config (company-posframe-mode 1)
 )
 
 (use-package company-flx :ensure t :disabled
@@ -1876,21 +1896,30 @@ shell exits, the buffer is killed."
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
         (lsp-completion-provider :capf)
-:config (lsp-ui-mode)
-        (lsp-lens-mode)
+:config (lsp-mode)
+;:config (lsp-ui-mode)
+;        (lsp-lens-mode)
 )
 
 (use-package lsp-ui :ensure t 
 :commands lsp-ui-mode
-:after  (lsp-mode flycheck)
+:after  lsp-mode
+:general (leader "ld" #'lsp-ui-doc-focus-frame)
 :custom (scroll-margin 0)
 :config (setq lsp-ui-sideline-show-code-actions t)
         (setq lsp-ui-peek-enable t)
         (setq lsp-ui-flycheck-enable t)
+        (setq lsp-ui-doc-frame-mode t)
+        (setq lsp-ui-sideline-actions-icon t)
+        (setq lsp-headerline-breadcrumb-icons-enable nil)
         ;(setq lsp-ui-doc-enable t)
         ;(lsp-ui-sideline-show-diagnostics t)
         ;(lsp-ui-sideline-show-hover t)
 )
+
+(use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
+(use-package treemacs-evil :ensure t :after (treemacs evil))
+(use-package treemacs-projectile :ensure t :after (treemacs projectile))
 
 (use-package flycheck :ensure t 
 :after  company
@@ -1943,7 +1972,8 @@ shell exits, the buffer is killed."
 (use-package cpp-mode ;:load-path "lisp/cpp-mode"
 :no-require t
 :ensure nil
-:mode ("\\.h\\'" . c++-mode)
+:mode (("\\.h\\'"   . c++-mode)
+       ("\\.hpp\\'" . c++-mode))
 ;:commands cpp-mode
 :general (leader "hc" '(:wk "C/C++"))
 ;:hook (c-mode-common . 'cpp-mode)
@@ -2466,7 +2496,10 @@ shell exits, the buffer is killed."
 )
 
 (use-package kotlin-mode :ensure t 
-:config (add-hook 'kotlin-mode-hook 'lsp)
+:init
+    (setq lsp-clients-kotlin-server-executable "~/dev/kotlin-language-server/server/build/install/server/bin/kotlin-language-server")
+:config
+    (add-hook 'kotlin-mode-hook 'lsp)
 )
 
 (use-package lsp-grammarly :ensure t :disabled
@@ -2479,6 +2512,8 @@ shell exits, the buffer is killed."
                         (exa   . "cargo install exa")
                         (bat   . "cargo install bat")
                         (procs . "cargo install procs")
+                        (dust  . "cargo install du-dust")
+                        ;(duf   . "cargo install du-dust")
                         (ytop  . "cargo install ytop"))
 )
 
