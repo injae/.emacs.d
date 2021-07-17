@@ -352,8 +352,9 @@ list)
         (setq evil-symbol-word-search t)
         (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
+        (setq-default evil-kill-on-visual-paste nil)
+        ;(fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
         (evil-mode 1)
-        (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
 )
 
 (use-package general :ensure t 
@@ -581,8 +582,9 @@ list)
 ; C-u 10 C-x e
 
 (use-package highlight-numbers :ensure t
-:config (highlight-numbers-mode)
+:init (highlight-numbers-mode t)
 )
+
 (use-package beacon :ensure t :config (beacon-mode t))
 (use-package git-gutter :ensure t 
 :custom
@@ -798,6 +800,8 @@ list)
                  "jw" '(avy-goto-char :wk "Jump to word"))
 )
 
+(use-package prescient :ensure t :disabled)
+
 (use-package ivy :ensure t 
 :after evil-collection
  ;ivy S-SPC remapping toogle-input-method
@@ -917,10 +921,13 @@ list)
 )
 
 (use-package ivy-rich :ensure t 
-:init (setq ivy-rich-path-style    'abbrev
-          ivy-virtual-abbreviate 'full
-          ivy-rich-switch-buffer-path nil)
+:init (setq ivy-rich-path-style    'abbrev)
+      (setq ivy-virtual-abbreviate 'full)
 :config (ivy-rich-mode 1)
+)
+
+(use-package ivy-prescient :ensure t :disabled
+:after (ivy prescient)
 )
 
 (use-package smex :ensure t 
@@ -1751,8 +1758,7 @@ shell exits, the buffer is killed."
 ; slack config in private token setting
 (use-package alert
 :commands (alert)
-:init (setq alert-default-style 'notifier)
-)
+:init (setq alert-default-style 'notifier))
 
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t 
@@ -1774,6 +1780,10 @@ shell exits, the buffer is killed."
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :custom (company-quickhelp-delay nil)
 :config (company-quickhelp-mode)
+)
+
+(use-package company-prescient :ensure t :disabled
+:after (prescient company)
 )
 
 (use-package company-dict :ensure t  :disabled
@@ -1883,7 +1893,8 @@ shell exits, the buffer is killed."
 
 (use-package lsp-mode :ensure t 
 :commands lsp
-:general (leader "hh" '(lsp-execute-code-action :wk "wizard"))
+:general (leader "hh" '(lsp-execute-code-action :wk "wizard")
+                 "fd" '(lsp-find-definition :wk "lsp define"))
 :hook   (lsp-mode . lsp-enable-which-key-integration)
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
@@ -2240,13 +2251,20 @@ shell exits, the buffer is killed."
 :init (setq cmake-tab-width 4)
 )
 
+(use-package poly-markdown :ensure t
+;:after (markdown-mode polymode)
+:hook (markdown-mode . poly-markdown-mode)
+;:init (evil-set-initial-state 'poly-org-mode 'normal)
+)
+
 (use-package markdown-mode :ensure t 
-:commands (markdown-mode gfm-mode)
+:after poly-markdown
 :mode  (("\\README.md\\'" . gfm-mode)
-        ("\\.md\\'"       . markdown-mode)
-        ("\\.markdown\\'" . markdown-mode))
+        ("\\.md\\'"       . gfm-mode)
+        ("\\.markdown\\'" . gfm-mode))
 :general (leader "hm" '(:wk "Markdown"))
 :config (setq markdown-command "multimarkdown")
+        (poly-markdown-mode)
 )
 
 (use-package markdown-preview-mode :ensure t  :defer t)

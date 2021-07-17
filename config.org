@@ -413,8 +413,9 @@ list)
         (setq evil-symbol-word-search t)
         (define-key evil-normal-state-map (kbd "q") 'nil)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
+        (setq-default evil-kill-on-visual-paste nil)
+        ;(fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
         (evil-mode 1)
-        (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
 )
 
 (use-package general :ensure t 
@@ -655,8 +656,9 @@ list)
 ** Line Number and Highlighting
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-numbers :ensure t
-:config (highlight-numbers-mode)
+:init (highlight-numbers-mode t)
 )
+
 (use-package beacon :ensure t :config (beacon-mode t))
 (use-package git-gutter :ensure t 
 :custom
@@ -891,6 +893,10 @@ list)
                  "jw" '(avy-goto-char :wk "Jump to word"))
 )
 #+END_SRC
+** Prescient 
+#+BEGIN_SRC emacs-lisp
+(use-package prescient :ensure t :disabled)
+#+END_SRC
 ** Ivy Mode
 #+BEGIN_SRC emacs-lisp
 (use-package ivy :ensure t 
@@ -1015,6 +1021,10 @@ list)
 :init (setq ivy-rich-path-style    'abbrev)
       (setq ivy-virtual-abbreviate 'full)
 :config (ivy-rich-mode 1)
+)
+
+(use-package ivy-prescient :ensure t :disabled
+:after (ivy prescient)
 )
 
 #+END_SRC
@@ -1918,25 +1928,19 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Spotify
 #+BEGIN_SRC emacs-lisp
-  (use-package smudge :ensure t
-  ; in private/token.el
-  :general (leader "sn" 'smudge-controller-next-track
-                   "hp" 'smudge-controller-previous-track)
-  :config  (setq smudge-transport 'connect)
-  )
-
-  
+(use-package smudge :ensure t
+; in private/token.el
+:general (leader "sn" 'smudge-controller-next-track
+                 "hp" 'smudge-controller-previous-track)
+:config  (setq smudge-transport 'connect)
+)
 #+END_SRC
-
 ** Slack
 #+BEGIN_SRC emacs-lisp
 ; slack config in private token setting
 (use-package alert
 :commands (alert)
-:init (setq alert-default-style 'notifier)
-)
-
-
+:init (setq alert-default-style 'notifier))
 #+END_SRC
 * Emacs IDE Settings
 ** Company mode
@@ -1961,6 +1965,10 @@ shell exits, the buffer is killed."
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :custom (company-quickhelp-delay nil)
 :config (company-quickhelp-mode)
+)
+
+(use-package company-prescient :ensure t :disabled
+:after (prescient company)
 )
 
 (use-package company-dict :ensure t  :disabled
@@ -2072,7 +2080,8 @@ shell exits, the buffer is killed."
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-mode :ensure t 
 :commands lsp
-:general (leader "hh" '(lsp-execute-code-action :wk "wizard"))
+:general (leader "hh" '(lsp-execute-code-action :wk "wizard")
+                 "fd" '(lsp-find-definition :wk "lsp define"))
 :hook   (lsp-mode . lsp-enable-which-key-integration)
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
@@ -2461,13 +2470,21 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Markdown mode
 #+BEGIN_SRC emacs-lisp
+
+(use-package poly-markdown :ensure t
+;:after (markdown-mode polymode)
+:hook (markdown-mode . poly-markdown-mode)
+;:init (evil-set-initial-state 'poly-org-mode 'normal)
+)
+
 (use-package markdown-mode :ensure t 
-:commands (markdown-mode gfm-mode)
+:after poly-markdown
 :mode  (("\\README.md\\'" . gfm-mode)
-        ("\\.md\\'"       . markdown-mode)
-        ("\\.markdown\\'" . markdown-mode))
+        ("\\.md\\'"       . gfm-mode)
+        ("\\.markdown\\'" . gfm-mode))
 :general (leader "hm" '(:wk "Markdown"))
 :config (setq markdown-command "multimarkdown")
+        (poly-markdown-mode)
 )
 
 (use-package markdown-preview-mode :ensure t  :defer t)
@@ -2737,27 +2754,27 @@ shell exits, the buffer is killed."
 
 ** Java Mode
 #+BEGIN_SRC emacs-lisp
-  ;(use-package lsp-java :ensure t  :config (add-hook 'java-mode-hook 'lsp))
-  ;(use-package dap-java :ensure nil)
-  (use-package gradle-mode :ensure t  :config (add-hook 'java-mode-hook 'gradle-mode))
-  (use-package groovy-mode :ensure t  
-  :mode (".gradle\\'" . groovy-mode)
-  )
+;(use-package lsp-java :ensure t  :config (add-hook 'java-mode-hook 'lsp))
+;(use-package dap-java :ensure nil)
+(use-package gradle-mode :ensure t  :config (add-hook 'java-mode-hook 'gradle-mode))
+(use-package groovy-mode :ensure t  
+:mode (".gradle\\'" . groovy-mode)
+)
 #+END_SRC
 ** Kotlin
 #+BEGIN_SRC emacs-lisp
-  (use-package kotlin-mode :ensure t 
-  :init
-      (setq lsp-clients-kotlin-server-executable "~/dev/kotlin-language-server/server/build/install/server/bin/kotlin-language-server")
-  :config
-      (add-hook 'kotlin-mode-hook 'lsp)
-  )
+(use-package kotlin-mode :ensure t 
+:init
+    (setq lsp-clients-kotlin-server-executable "~/dev/kotlin-language-server/server/build/install/server/bin/kotlin-language-server")
+:config
+    (add-hook 'kotlin-mode-hook 'lsp)
+)
 #+END_SRC
 ** Grammarly
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-grammarly :ensure t :disabled
-  :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
-  )
+(use-package lsp-grammarly :ensure t :disabled
+:hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
+)
 #+END_SRC
 * System Setting
 ** ~/.zshrc
@@ -2775,115 +2792,140 @@ shell exits, the buffer is killed."
 #+END_SRC
 
 #+BEGIN_SRC shell :tangle "~/.zshrc"
-  source $HOME/.antigen/antigen.zsh
-  export LANG=ko_KR.UTF-8 # emacs libvterm korea encoding fix
-  
-  antigen use oh-my-zsh
+export LANG=ko_KR.UTF-8 # emacs libvterm korea encoding fix
 
-  antigen bundle git
-  antigen bundle docker
-  antigen bundle pip
-  antigen bundle command-not-found
-  antigen bundle djui/alias-tips
-  antigen bundle zsh-users/zsh-completions
-  antigen bundle zsh-users/zsh-autosuggestions
-  antigen bundle zsh-users/zsh-syntax-highlighting
-  antigen bundle zsh-users/zsh-history-substring-search
-  antigen bundle MichaelAquilina/zsh-you-should-use
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
 
-  antigen theme https://github.com/iam4x/zsh-iterm-touchbar
-  antigen theme lambda
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-  autoload -Uz compinit
-  compinit
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+ZSH_THEME="lambda"
 
-  eval "$(starship init zsh)"
-  
-  function chpwd() {
-      print -Pn "\e]51;A$(pwd)\e\\";
-  }
+setopt promptsubst
 
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-  eval "$(pipenv --completion)"
-  alias python='python3'
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
 
-  # neovim setting
-  #export EDITOR=/usr/local/bin/nvim
-  alias vim='nvim'
-  alias vi='nvim'
-  alias vimdiff="nvim -d"
+zinit snippet OMZP::git
+zinit snippet OMZP::pip
+zinit snippet OMZP::command-not-found
+zinit snippet OMZP::colored-man-pages
 
-  # emacs setting
-  export EDITOR=emacsclient
-  export VISUAL=$EDITOR
+zinit ice as"completion"
+zinit snippet OMZP::docker/_docker
+
+zinit load djui/alias-tips
+zinit load zsh-users/zsh-completions
+zinit load zsh-users/zsh-autosuggestions
+zinit load zsh-users/zsh-syntax-highlighting
+zinit load zsh-users/zsh-history-substring-search
+zinit load MichaelAquilina/zsh-you-should-use
+zinit load iam4x/zsh-iterm-touchbar
 
 
-  # emacs term setting
+### End of Zinit's installer chunk
 
-  export TERM=xterm-256color    
-  unsetopt prompt_cr prompt_sp
-  #========
+eval "$(starship init zsh)"
 
-  # emacs vterm setting with linux
-  if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-      alias clear='printf "\e]51;E(vterm-clear-scrollback)\e\\";tput clear'
-  fi
+autoload -Uz compinit
+compinit
 
-  # zsh-iterm-touchbar setting
-  TOUCHBAR_GIT_ENABLED=true
-  YARN_ENABLED=true
+function chpwd() {
+    print -Pn "\e]51;A$(pwd)\e\\";
+}
 
-  # nvm setting
-  #export NVM_DIR="$HOME/.nvm"
-  #  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  #  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+eval "$(pipenv --completion)"
+alias python='python3'
 
-  export NVM_DIR="/home/injae/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# neovim setting
+#export EDITOR=/usr/local/bin/nvim
+alias vim='nvim'
+alias vi='nvim'
+alias vimdiff="nvim -d"
 
-  # Ruby setting
-  # macos home-brew rbenv setting
-  # rvm setting
-  # macos don't use apple clang
-  case "$OSTYPE" in
-  darwin*)
-      # ...
-      export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-  ;;
-  linux*)
-      alias clang=clang-12
-      alias clang++=clang++-12
-  ;;
-  dragonfly*|freebsd*|netbsd*|openbsd*)
-      # ...
-  ;;
-  esac
+# emacs setting
+export EDITOR=emacsclient
+#export EDITOR=nvim
+export VISUAL=$EDITOR
 
-  export CC=clang
-  export CXX=clang++
-  export LD=ld.lld
-  export AR=llvm-ar
-  export RANLIB=llvm-ranlib
-  alias CC=$CC
-  alias CXX=$CXX
-  alias cc=$CC
+# emacs term setting
 
-  alias ld=$LD
-  alias ar=$AR
-  alias ranlib=$RANLIB
-  # more fast system command , use rust base command
-  alias ls='exa -g --time-style=long-iso'
-  alias cat='bat'
-  alias find='fd'
-  alias grep='rg'
-  alias ps='procs'
-  alias top='ytop'
+export TERM=xterm-256color    
+unsetopt prompt_cr prompt_sp
+#========
 
-  # kubernetes
-  #source "$(kubectl completion zsh)"
+# emacs vterm setting with linux
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    alias clear='printf "\e]51;E(vterm-clear-scrollback)\e\\";tput clear'
+fi
 
-  antigen apply
+# zsh-iterm-touchbar setting
+TOUCHBAR_GIT_ENABLED=true
+YARN_ENABLED=true
+
+# nvm setting
+#export NVM_DIR="$HOME/.nvm"
+#  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+#  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+export NVM_DIR="/home/injae/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Ruby setting
+# macos home-brew rbenv setting
+# rvm setting
+# macos don't use apple clang
+case "$OSTYPE" in
+darwin*)
+    # ...
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+;;
+linux*)
+    alias clang=clang-12
+    alias clang++=clang++-12
+;;
+dragonfly*|freebsd*|netbsd*|openbsd*)
+    # ...
+;;
+esac
+
+export CC=clang
+export CXX=clang++
+export LD=ld.lld
+export AR=llvm-ar
+export RANLIB=llvm-ranlib
+alias CC=$CC
+alias CXX=$CXX
+alias cc=$CC
+
+alias ld=$LD
+alias ar=$AR
+alias ranlib=$RANLIB
+# more fast system command , use rust base command
+alias ls='exa -g --time-style=long-iso'
+alias cat='bat'
+alias find='fd'
+alias grep='rg'
+alias ps='procs'
+alias top='ytop'
+
+# kubernetes
+#source "$(kubectl completion zsh)"
 
 #+END_SRC
 ** ~/.zshenv
@@ -2920,12 +2962,12 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 ** Emacs Shift Space Setting
 #+BEGIN_SRC emacs-lisp
 ; brew cask install karabiner-elements
-;(use-package karabiner :no-require t :ensure nil
-;:if *is-mac*
-;)
+(use-package karabiner :no-require t :ensure nil
+:if *is-mac*
+)
 #+END_SRC
-//#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
-#+BEGIN_SRC json :tangle no
+//#+BEGIN_SRC json :tangle no
+#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
 {
     "title": "Emacs MacOS Keyboard Setting",
     "rules": [{
