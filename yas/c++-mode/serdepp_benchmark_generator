@@ -1,0 +1,56 @@
+# -*- mode: snippet -*-
+# name: serde_benchmark_generator
+# key: serde_benchmark
+# --
+
+auto json_$2 = serde::deserialize<nlohmann::json>($1); 
+static void nljson_set_$2_se_bench(benchmark::State& state) { 
+    for(auto _ : state) { serde::serialize<$2>(json_$2); } 
+} 
+static void nljson_set_$2_nl_bench(benchmark::State& state) { 
+    for(auto _ : state) { json_$2.get<$2>(); } 
+} 
+static void nljson_get_$2_se_bench(benchmark::State& state) { 
+    for(auto _ : state) { serde::deserialize<nlohmann::json>($1); } 
+} 
+static void nljson_get_$2_nl_bench(benchmark::State& state) { 
+    for(auto _ : state) { nlohmann::json{$1}; } 
+} 
+BENCHMARK(nljson_set_$2_se_bench);    
+BENCHMARK(nljson_set_$2_nl_bench); 
+BENCHMARK(nljson_get_$2_se_bench); 
+BENCHMARK(nljson_get_$2_nl_bench); 
+auto toml11_$2 = serde::deserialize<toml::value>($1); 
+static void toml11_set_$2_se_bench(benchmark::State& state) { 
+    for(auto _ : state) { serde::serialize<$2>(toml11_$2); } 
+} 
+static void toml11_set_$2_tm_bench(benchmark::State& state) { 
+    for(auto _ : state) { toml::get<$2>(toml11_$2); } 
+} 
+static void toml11_get_$2_se_bench(benchmark::State& state) { 
+    for(auto _ : state) { serde::deserialize<toml::value>($1); }  
+} 
+static void toml11_get_$2_tm_bench(benchmark::State& state) { 
+    for(auto _ : state) { toml::value v($1); } 
+} 
+BENCHMARK(toml11_set_$2_se_bench); 
+BENCHMARK(toml11_set_$2_tm_bench); 
+BENCHMARK(toml11_get_$2_se_bench); 
+BENCHMARK(toml11_get_$2_tm_bench);
+auto yaml_cpp_$2 = serde::deserialize<YAML::Node>($1); 
+static void yaml_cpp_set_$2_se_bench(benchmark::State& state) { 
+    for(auto _ : state) { serde::serialize<$2>(yaml_cpp_$2); } 
+} 
+static void yaml_cpp_set_$2_ym_bench(benchmark::State& state) { 
+    for(auto _ : state) { yaml_cpp_$2.as<$2>(); } 
+} 
+static void yaml_cpp_get_$2_se_bench(benchmark::State& state) { 
+    for(auto _ : state) { serde::deserialize<YAML::Node>($1); } 
+} 
+static void yaml_cpp_get_$2_ym_bench(benchmark::State& state) { 
+    for(auto _ : state) { YAML::Node{$1}; } 
+}
+BENCHMARK(yaml_cpp_set_$2_se_bench); 
+BENCHMARK(yaml_cpp_set_$2_ym_bench); 
+BENCHMARK(yaml_cpp_get_$2_se_bench); 
+BENCHMARK(yaml_cpp_get_$2_ym_bench); 

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: serde define helper
+# key:  sdh
+# --
+(&Self::$1, "$1")

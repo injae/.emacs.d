@@ -315,7 +315,7 @@ temp
     (setq i (1+ i))))
 list)
 
-(use-package modern-fringes :ensure t 
+(use-package modern-fringes :ensure t :defer t
 :config (modern-fringes-invert-arrows)
         (modern-fringes-mode)
 )
@@ -351,6 +351,7 @@ list)
 :config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
         (define-key evil-normal-state-map (kbd "q") 'nil)
+        (define-key evil-visual-state-map (kbd "R") 'evil-visual-exchange-corners)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
         (setq-default evil-kill-on-visual-paste nil)
         ;(fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
@@ -363,7 +364,7 @@ list)
                                       visual motion override operator replace))
 :config
       (general-evil-setup :with-shortname-maps)
-      (general-create-definer leader :keymaps '(global override) :states '(n v ) :prefix "SPC")
+      (general-create-definer leader :keymaps '(global override) :states '(n v) :prefix "SPC")
       (leader "<SPC>" 'counsel-M-x
               "e"     '(:wk "Emacs")
               "b"     '(:wk "Buffer")
@@ -534,7 +535,6 @@ list)
 ;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
        ;(add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
 :config
-       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
        (evil-collection-pdf-setup)
        (evil-collection-occur-setup)
        (evil-collection-wgrep-setup)
@@ -543,6 +543,7 @@ list)
        ;(evil-collection-eshell-setup)
        (evil-collection-ivy-setup)
        (evil-collection-vterm-setup) 
+       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
        (evil-collection-which-key-setup)
        ;(evil-collection-calc-setup)
        (evil-collection-init)
@@ -944,6 +945,7 @@ list)
             (append '(".ccls-cache" ".git" "__pycache__") projectile-globally-ignored-directories))
         (setq projectile-completion-system 'ivy)
         (setq projectile-current-project-on-switch t)
+        (evil-ex-define-cmd "kp" 'projectile-kill-buffers)
         ;(setq projectile-project-root-files-functions #'(projectile-root-top-down
         ;                                                 projectile-root-top-down-recurring
         ;                                                 projectile-root-bottom-up
@@ -1442,7 +1444,7 @@ shell exits, the buffer is killed."
         (setq eshell-cmpl-cycle-completions nil)
 )
 
-(use-package exec-path-from-shell :ensure t :after vterm
+(use-package exec-path-from-shell :ensure t 
 :if     (memq window-system '(mac ns x))
 :config (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "PATH")
@@ -1531,30 +1533,41 @@ shell exits, the buffer is killed."
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :ensure t :disabled
+(use-package org-roam :ensure t 
 :hook (after-init . org-roam-mode)
-:custom (org-roeam-directory "~/GoogleDrive/Org/")
-;:general (leader "on" '(org-roam-mode-map :wk "Note"))
-)
+:custom (org-roam-directory (file-truename "~/GoogleDrive/Roam/"))
+        (org-roam-dailies-directory "journals/")
+:general (leader "of" '(org-roam-node-find :wk "Note"))
 
-(use-package org-roam-server :ensure t  :after (org-roam)
-:commands org-roam-server-mode
+
+:init (setq org-roam-v2-ack t)
 :config
-    (setq org-roam-server-host "127.0.0.1"
-          org-roam-server-port 8080
-          org-roam-server-export-inline-images t
-          org-roam-server-authenticate nil
-          org-roam-server-network-poll t
-          org-roam-server-network-arrows nil
-          org-roam-server-network-label-truncate t
-          org-roam-server-network-label-truncate-length 60
-          org-roam-server-network-label-wrap-length 20)
+    (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry "* %?"
+            :if-new (file+head "%<%Y-%m-%d>.org"
+                               "#+title: %<%Y-%m-%d>\n"))))
+    (org-roam-setup)
+    (require 'org-roam-protocol) ;; If using org-roam-protocol
 )
+;
+;(use-package org-roam-server :ensure t  :after (org-roam)
+;:commands org-roam-server-mode
+;:config
+;    (setq org-roam-server-host "127.0.0.1"
+;          org-roam-server-port 8080
+;          org-roam-server-export-inline-images t
+;          org-roam-server-authenticate nil
+;          org-roam-server-network-poll t
+;          org-roam-server-network-arrows nil
+;          org-roam-server-network-label-truncate t
+;          org-roam-server-network-label-truncate-length 60
+;          org-roam-server-network-label-wrap-length 20)
+;)
 
-(use-package dash :ensure t  :defer t
-:init (global-dash-fontify-mode t)
-)
-(use-package dash-functional :ensure t :after dash)
+;(use-package dash :ensure t  :defer t
+;:init (global-dash-fontify-mode t)
+;)
+;(use-package dash-functional :ensure t :after dash)
 
 (use-package ialign :ensure t  :defer t
 :general (leader "ta" 'ialign))
@@ -1587,7 +1600,6 @@ shell exits, the buffer is killed."
         (or
         ;; Current window is not dedicated window.
         (window-dedicated-p (selected-window))
-
         ;; Buffer name not match below blacklist.
         (string-prefix-p "*epc" name)
         (string-prefix-p "*helm" name)
@@ -1600,14 +1612,14 @@ shell exits, the buffer is killed."
         (string-prefix-p " *Mini" name)
         (string-prefix-p "*help" name)
         (string-prefix-p "*straight" name)
-        (string-prefix-p " *temp" name)
+        (string-prefix-p "*temp" name)
         (string-prefix-p "*Help" name)
         (string-prefix-p "*pyright*" name)
         (string-prefix-p "*pyright::stderr*" name)
         (string-prefix-p "*Async-native-compile-log*" name)
         ;; Is not magit buffer.
         (and (string-prefix-p "magit" name)
-        (not (file-name-extension name)))
+            (not (file-name-extension name)))
         )))
 :custom (centaur-tabs-background-color (face-background 'default))
         (centaur-tabs-set-icons t)
@@ -1704,6 +1716,7 @@ shell exits, the buffer is killed."
 
 (use-package polymode :ensure t :no-require t
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
+:hook (polymode . centaur-tabs-mode-hook) 
 )
 (use-package poly-org :ensure t
 :hook (org-mode . poly-org-mode)
@@ -1748,7 +1761,7 @@ shell exits, the buffer is killed."
         (ssh-deploy-add-menu)
 )
 
-(use-package smudge :ensure t
+(use-package smudge :ensure t :defer t
 ; in private/token.el
 :general (leader "sn" 'smudge-controller-next-track
                  "hp" 'smudge-controller-previous-track)
@@ -1765,7 +1778,7 @@ shell exits, the buffer is killed."
 :init (global-company-mode 1)
 :config
     (company-tng-mode t)
-    (setq company-show-numbers t)
+    (setq company-show-quick-access t)
     (setq company-idle-delay 0)
     (setq company--transform-candidates nil)
     (setq company-minimum-prefix-length 1)
@@ -1917,12 +1930,13 @@ shell exits, the buffer is killed."
 :after  lsp-mode
 :general (leader "ld" #'lsp-ui-doc-focus-frame)
 :custom (scroll-margin 0)
-:config (setq lsp-ui-sideline-show-code-actions t)
+        (lsp-ui-sideline-mode nil)
+        (lsp-headerline-breadcrumb-icons-enable nil)
+:config ;(setq lsp-ui-sideline-show-code-actions t)
         (setq lsp-ui-peek-enable t)
         (setq lsp-ui-flycheck-enable t)
         (setq lsp-ui-doc-frame-mode t)
-        (setq lsp-ui-sideline-actions-icon t)
-        (setq lsp-headerline-breadcrumb-icons-enable nil)
+        ;(setq lsp-ui-sideline-actions-icon t)
         ;(setq lsp-ui-doc-enable t)
         ;(lsp-ui-sideline-show-diagnostics t)
         ;(lsp-ui-sideline-show-hover t)
@@ -1962,7 +1976,7 @@ shell exits, the buffer is killed."
     (global-flycheck-inline-mode)
 )
 
-(use-package yasnippet :ensure t 
+(use-package yasnippet :ensure t  
 ;https://github.com/joaotavora/yasnippet
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
@@ -1972,7 +1986,7 @@ shell exits, the buffer is killed."
         (yas-reload-all t)
 )
 
-(use-package yasnippet-snippets :ensure t  :after yasnippet)
+(use-package yasnippet-snippets :ensure t  :after yasnippet :defer t)
 (use-package auto-yasnippet :ensure t 
 ;https://github.com/abo-abo/auto-yasnippet
 :after yasnippet
@@ -2248,6 +2262,7 @@ shell exits, the buffer is killed."
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
        ("CMakeLists.txt" . cmake-mode))
+:hook (cmake-mode . (lambda () (require 'lsp-cmake) (lsp)))
 :init (setq cmake-tab-width 4)
 )
 
@@ -2446,7 +2461,6 @@ shell exits, the buffer is killed."
 )
 
 (use-package json-mode :ensure t 
-:commands json-mode
 :mode  (("\\.json\\'"       . json-mode)
         ("/Pipfile.lock\\'" . json-mode))
 )
@@ -2536,6 +2550,6 @@ shell exits, the buffer is killed."
 )
 
 ; brew cask install karabiner-elements
-;(use-package karabiner :no-require t :ensure nil
-;:if *is-mac*
-;)
+(use-package karabiner :no-require t :ensure nil
+:if *is-mac*
+)
