@@ -33,7 +33,7 @@
 (setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
+;(async-byte-compile-file "~/.emacs.d/config.el")
 (native-compile-async "~/.emacs.d/config.el")
 (load-file "~/.emacs.d/config.el")
-
 ;;;

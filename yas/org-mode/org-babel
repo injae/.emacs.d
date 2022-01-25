@@ -2,6 +2,6 @@
 # name: emacs-lisp babel
 # key: elisp
 # --
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC elisp
     $1
 #+END_SRC

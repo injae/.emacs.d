@@ -2,13 +2,17 @@
 ;;; config.el --- Emacs Configuration
 ;;; Commentary:
 ;; This config start here
-;;; Code:
+;; Code:
+;;;org-babel-load-file has bug
+;;; #BEGIN_SRC emacs-lisp -> elisp
+;;;
 
 (require 'use-package)
 ;(use-package use-package :ensure t)
 (use-package use-package-ensure-system-package :after use-package :ensure t)
 
 (use-package el-patch :ensure t)
+
 
 (use-package auto-package-update :ensure t
 :custom (auto-package-update-delete-old-versions t)
@@ -31,13 +35,13 @@
 ;        (interactive)
 ;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
 ;    )
+
 ;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
 
-;(setq-default private-config-file "~/GoogleDrive/config/emacs-private-config.el")
 (setq-default private-config-file "~/.emacs.d/private/token.el")
 (when (file-exists-p private-config-file) (load-file private-config-file))
 
@@ -194,7 +198,8 @@
 ; Linux 내장 한글입력기 사용법
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
-(setq default-korean-keyboard 'korean-hangul2)
+(setq default-input-method "korean-hangul")
+(setq default-korean-keyboard 'korean-hangul)
 ;(global-set-key [S-SPC] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 ;(global-set-key [?\S- ] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 (global-set-key (kbd "S-SPC") 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
@@ -350,7 +355,7 @@ list)
         (setq evil-want-keybinding nil)
 :config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
-        (define-key evil-normal-state-map (kbd "q") 'nil)
+        ;(define-key evil-normal-state-map (kbd "q") 'nil)
         (define-key evil-visual-state-map (kbd "R") 'evil-visual-exchange-corners)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
         (setq-default evil-kill-on-visual-paste nil)
@@ -384,7 +389,8 @@ list)
               "hr"    '(:wk "Rust")
               "er"    '(restart-emacs :wk "Restart")
               "el"    '(-reload-emacs :wk "Reload")
-              "et"    '((lambda ()(interactive)(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))) :wk "tangle config.org" )
+              "et"    '((lambda ()(interactive) (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))) :wk "tangle config.org" )
+              "ot"    '(org-babel-tangle :wk "tangle config.org" )
               "ff"    '(find-file :wk "Find File")
               "fu"    '(browse-url :wk "Browse url")
               "ep"    '(list-processes :wk "Process")
@@ -489,7 +495,7 @@ list)
 
 
 (use-package evil-multiedit :ensure t :after evil)
-(use-package evil-iedit-state :ensure t  :after (evil iedit))
+(use-package evil-iedit-state :ensure t  :after (evil iedit) :disabled)
 
 (use-package evil-matchit :ensure t 
 :after evil
@@ -527,7 +533,7 @@ list)
 :config (global-evil-extra-operator-mode 1)
 )
 
-(use-package evil-collection :ensure t 
+(use-package evil-collection :ensure t
 :after (evil)
 :custom (evil-collection-setup-minibuffer t)
 ;:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
@@ -535,17 +541,16 @@ list)
 ;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
        ;(add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
 :config
-       (evil-collection-pdf-setup)
-       (evil-collection-occur-setup)
-       (evil-collection-wgrep-setup)
-       (evil-collection-buff-menu-setup)
-       (evil-collection-package-menu-setup)
+       ;(evil-collection-pdf-setup)
+       ;(evil-collection-occur-setup)
+       ;(evil-collection-buff-menu-setup)
+       ;(evil-collection-package-menu-setup)
        ;(evil-collection-eshell-setup)
-       (evil-collection-ivy-setup)
-       (evil-collection-vterm-setup) 
-       (add-hook 'vterm-mode-hook     #'evil-collection-vterm-escape-stay)
-       (evil-collection-which-key-setup)
        ;(evil-collection-calc-setup)
+       ;(evil-collection-which-key-setup)
+       ;(evil-collection-ivy-setup)
+       ;(evil-collection-vterm-setup) 
+       ;(evil-collection-wgrep-setup)
        (evil-collection-init)
 )
 
@@ -707,11 +712,10 @@ list)
 :config (smart-tabs-insinuate 'c 'c++)
 )
 
-(use-package highlight-indentation :ensure t :disabled
-:hook   (prog-mode text-mode)
-:config ;(highlight-indentation-mode)
+(use-package highlight-indentation :ensure t
+;:hook   prog-mode
+;:config (highlight-indentation-mode)
 )
-
 
 (use-package highlight-indent-guides :ensure t :disabled
 :hook (prog-mode text-mode)
@@ -804,7 +808,7 @@ list)
 (use-package prescient :ensure t :disabled)
 
 (use-package ivy :ensure t 
-:after evil-collection
+;:after evil-collection
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
          (:keymaps 'ivy-minibuffer-map
@@ -842,6 +846,8 @@ list)
 :after ivy
 :custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
         (ivy-posframe-parameters '((left-fringe . 8) (right-fringe . 8) (internal-border-width . 10)))
+         ;ivy-posframe mutli frame focus bug fix
+        (add-function :after after-focus-change-function (lambda () (posframe-delete-all)))
         ;(ivy-posframe-width 120)
 :config ;(setq ivy-posframe-height-alist '((t . 20)))
         (setq ivy-posframe-height-fixed t)
@@ -1074,18 +1080,16 @@ list)
 ;    :config
 ;    )
 
-
-
-(use-package gitignore-mode :ensure t  :commands gitignore-mode)
-(use-package gitconfig-mode :ensure t  :commands gitconfig-mode)
-(use-package gitattributes-mode :ensure t  :commands gitattributes-mode)
+;(use-package gitignore-mode :ensure t  :commands gitignore-mode)
+;(use-package gitconfig-mode :ensure t  :commands gitconfig-mode)
+;(use-package gitattributes-mode :ensure t  :commands gitattributes-mode)
 
 (use-package evil-ediff :ensure t 
 :after evil
 :config (evil-ediff-init)
 )
 
-(use-package undo-tree :ensure t  :diminish undo-tree-mode :disabled
+(use-package undo-tree :ensure t  :diminish undo-tree-mode
 :commands (undo-tree-undo undo-tree-redo)
 :general (leader "uu" 'undo-tree-undo
                  "ur" 'undo-tree-redo)
@@ -1098,7 +1102,7 @@ list)
     (global-undo-tree-mode)
 )
 
-(use-package undo-fu :ensure t 
+(use-package undo-fu :ensure t :disabled
 :after evil
 :general (leader "uu" 'undo-fu-only-undo
                  "ur" 'undo-fu-only-redo)
@@ -1318,6 +1322,10 @@ list)
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil :ensure t :after kubernetes)
 
+(use-package k8s-mode :ensure t
+:hook (k8s-mode . yas-minor-mode)
+)
+
 (use-package docker-compose-mode :ensure t)
 
 (use-package vterm :ensure t  ;:disabled ;macport version not working
@@ -1335,9 +1343,11 @@ list)
 
 :general (leader "tn" 'vterm)
 :custom (vterm-always-compile-module t)
+:init   (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
-
+        (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
+        (evil-collection-vterm-setup)
 )
 
 (use-package vterm-toggle :ensure t :disabled
@@ -1535,19 +1545,28 @@ shell exits, the buffer is killed."
 
 (use-package org-roam :ensure t 
 :hook (after-init . org-roam-mode)
-:custom (org-roam-directory (file-truename "~/GoogleDrive/Roam/"))
-        (org-roam-dailies-directory "journals/")
+:custom  (org-roam-dailies-directory "journals/")
 :general (leader "of" '(org-roam-node-find :wk "Note"))
-
-
 :init (setq org-roam-v2-ack t)
 :config
+    (setq org-roam-directory (expand-file-name "~/GDrive/Roam/"))
     (setq org-roam-dailies-capture-templates
         '(("d" "default" entry "* %?"
             :if-new (file+head "%<%Y-%m-%d>.org"
                                "#+title: %<%Y-%m-%d>\n"))))
+    (setq org-roam-db-autosync-enable t)
     (org-roam-setup)
     (require 'org-roam-protocol) ;; If using org-roam-protocol
+)
+
+(use-package websocket :ensure t :after org-roam)
+
+(use-package org-roam-ui :ensure t
+:after org-roam
+:config (setq org-roam-ui-sync-theme t)
+        (setq org-roam-ui-follow t)
+        (setq org-roam-ui-update-on-save t)
+        (setq org-roam-ui-open-on-start t)
 )
 ;
 ;(use-package org-roam-server :ensure t  :after (org-roam)
@@ -1701,7 +1720,7 @@ shell exits, the buffer is killed."
     (org-babel-execute-maybe)
     (undo-tree-undo))
 :general (leader "oi" 'org-use-package-install
-                 "ot" 'polymode-next-chunk
+                 ;"ot" 'polymode-next-chunk
                  "oh" 'polymode-previous-chunk
                  "or" 'save-buffer)
 )
@@ -1784,7 +1803,7 @@ shell exits, the buffer is killed."
     (setq company-minimum-prefix-length 1)
     (setq company-tooltip-align-annotations nil)
     (setq company-dabbrev-downcase nil)
-    ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
+    (add-to-list 'company-backends '(company-capf :with company-yasnippet))
     ;(add-to-list 'company-backends #'company-capf)
 )
 
@@ -1919,27 +1938,38 @@ shell exits, the buffer is killed."
         (make-backup-files nil)
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
-        (lsp-completion-provider :capf)
-:config (lsp-mode)
-;:config (lsp-ui-mode)
-;        (lsp-lens-mode)
+        (lsp-rust-analyzer-server-display-inlay-hints t)
+        (lsp-rust-analyzer-cargo-watch-command "clipy")
+        (lsp-eldoc-render-all t)
+        ;(lsp-completion-provider :capf)
+        (lsp-lens-enable nil)
+:config
+    ;(setq lsp-enable-which-key-integration t)
+    ;(setq lsp-enabled-clients '(lsp-graphql))
+    (lsp-mode)
 )
 
 (use-package lsp-ui :ensure t 
 :commands lsp-ui-mode
 :after  lsp-mode
-:general (leader "ld" #'lsp-ui-doc-focus-frame)
+:general (leader "ld"  #'lsp-ui-doc-focus-frame
+                 "lpr" #'lsp-ui-peek-find-references
+                 "lpd" #'lsp-ui-peek-find-definitions
+                 "lpi" #'lsp-ui-peek-find-implementation)
 :custom (scroll-margin 0)
-        (lsp-ui-sideline-mode nil)
-        (lsp-headerline-breadcrumb-icons-enable nil)
-:config ;(setq lsp-ui-sideline-show-code-actions t)
-        (setq lsp-ui-peek-enable t)
-        (setq lsp-ui-flycheck-enable t)
-        (setq lsp-ui-doc-frame-mode t)
-        ;(setq lsp-ui-sideline-actions-icon t)
-        ;(setq lsp-ui-doc-enable t)
-        ;(lsp-ui-sideline-show-diagnostics t)
-        ;(lsp-ui-sideline-show-hover t)
+        (lsp-headerline-breadcrumb-icons-enable t)
+        (lsp-lens-enable nil)
+        (lsp-ui-peek-enable t)
+        (lsp-ui-flycheck-enable t)
+        (lsp-ui-doc-enable t)
+        (lsp-ui-doc-frame-mode t)
+        (lsp-ui-doc-show-with-cursor t)
+        (lsp-ui-sideline-enable t)
+        (lsp-ui-sideline-show-hover nil)
+        (lsp-ui-sideline-show-code-actions t)
+        (lsp-ui-sideline-actions-icon t)
+        
+:config ;(lsp-ui-sideline-show-diagnostics t)
 )
 
 (use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
@@ -2210,6 +2240,34 @@ shell exits, the buffer is killed."
 (setq parinfer-extensions '(defaults evil paredit pretty-parens)) ;lispy smart-tab smart-yank
 )
 
+(use-package tree-sitter :ensure t
+:config ;(tree-sitter-hl-mode)
+        (global-tree-sitter-mode)
+)
+(use-package tree-sitter-langs :ensure t)
+;(use-package tree-sitter-indent :ensure t)
+
+(use-package csharp-mode :ensure t
+:mode (("\\.cs\\'" . csharp-mode))
+       ;("\\.cs\\'" . csharp-tree-sitter-mode))
+:hook (csharp-mode . lsp)
+)
+
+(use-package rustic :ensure t
+:config
+    (setq lsp-eldoc-hook nil)
+    (setq lsp-enable-symbol-highlighting nil)
+    (setq lsp-signature-auto-activate nil)
+    (setq rustic-format-on-save t)
+    (add-hook 'rustic-mode-hook 'ij/rustic-mode-hook)
+)
+
+(defun ij/rustic-mode-hook ()
+    (when buffer-file-name (setq-local buffer-save-without-query t)))
+
+
+
+
 (use-package rust-mode :ensure t 
 :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 :mode ("\\.rs\\'" . rust-mode)
@@ -2287,7 +2345,7 @@ shell exits, the buffer is killed."
 :general (leader "hmr" 'gh-md-render-buffer)
 )
 
-(use-package easy-jekyll :ensure t 
+(use-package easy-jekyll :ensure t :disabled
 :commands easy-jekyll
 :config (setq easy-jekyll-basedir "~/dev/blog/")
         (setq easy-jekyll-url "https://injae.github.io")
@@ -2296,13 +2354,13 @@ shell exits, the buffer is killed."
         (setq easy-jekyll-previewtime "300")
 )
 
-(use-package python-mode :ensure nil :no-require t
+(use-package python-mode :ensure t
 :mode (("\\.py\\'" . python-mode)
        ("\\.wsgi$" . python-mode))
 :interpreter (("python" . python-mode))
 :ensure-system-package (;(pyenv . "")
                         (pipenv . "pip install pipenv"))
-:config (setq python-indent-offset 4)
+:custom (python-indent-offset 4)
 )
 
 (use-package pyvenv :ensure t 
@@ -2339,24 +2397,15 @@ shell exits, the buffer is killed."
 :config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
-(use-package lsp-pyright :ensure t  
+(use-package lsp-pyright :ensure t 
 :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
-(use-package elpy :ensure t  :disabled
-:ensure-system-package (jedi . "pip install --user jedi flake8 autopep8 black yapf importmagic")
-:after python-mode
-:hook (python-mode . elpy-enable)
-:config (eldoc-mode 0)
-)
-
-(use-package anaconda-mode :ensure t  :disabled
-:after  python-mode
-:config (add-hook 'python-mode-hook 'anaconda-mode)
-        (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-
-(use-package company-anaconda :ensure t  :disabled
-:after  (company-mode anaconda-mode))
+;(use-package lsp-python-ms :ensure t
+;:hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
+;:init (setq lsp-python-ms-auto-install-server t)
+;      (setq lsp-python-ms-executable "~/.emacs.d/var/lsp-python-ms/Microsoft.Python.LanguageServer")
+;)
 
 (use-package dart-mode :ensure t 
 :after lsp
@@ -2386,6 +2435,7 @@ shell exits, the buffer is killed."
 
 (use-package go-mode :ensure t 
 :mode ("\\.go\\''" . go-mode)
+:hook (go-mode . (lambda () (lsp)))
 )
 
 (use-package dumb-jump :ensure t 
@@ -2410,7 +2460,9 @@ shell exits, the buffer is killed."
 )
 
 (use-package js2-mode :ensure t 
-:mode ("\\.js\\'" . js2-mode)
+:mode (("\\.js\\'"  . js2-mode)
+       ("\\.mjs\\'" . js2-mode))
+:hook (js2-mode . (lambda () (lsp)))
 )
 
 (use-package js2-refactor :ensure t  :disabled
@@ -2528,14 +2580,26 @@ shell exits, the buffer is killed."
 )
 
 (use-package kotlin-mode :ensure t 
-:init
-    (setq lsp-clients-kotlin-server-executable "~/dev/kotlin-language-server/server/build/install/server/bin/kotlin-language-server")
 :config
+    (setq lsp-clients-kotlin-server-executable "~/dev/tools/kotlin-language-server/server/build/install/server/bin/kotlin-language-server")
     (add-hook 'kotlin-mode-hook 'lsp)
+)
+
+(use-package lsp-intellij :disabled
+:hook ((kotlin-mode . (lambda () (require 'lsp-intellij) (lsp-intellij-enable) (lsp)))
+       (java-mode   . (lambda () (require 'lsp-intellij) (lsp-intellij-enable) (lsp))))
 )
 
 (use-package lsp-grammarly :ensure t :disabled
 :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
+)
+
+(use-package protobuf-mode :ensure t)
+
+(use-package graphql-mode :ensure t
+:mode ((".graphql\\'" . graphql-mode)
+       (".prisma\\'"  . graphql-mode))
+:hook (graphql-mode . (lambda () (require 'lsp-graphql) (lsp)))
 )
 
 ; brew install rust base system command

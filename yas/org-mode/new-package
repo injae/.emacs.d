@@ -3,6 +3,6 @@
 # key: npkg
 # --
 ** $1 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC elisp
   
 #+END_SRC
