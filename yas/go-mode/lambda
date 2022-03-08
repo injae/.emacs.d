@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: lambda
+# key: lambda
+# --
+func() { $1 }()
+

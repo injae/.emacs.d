@@ -27,13 +27,28 @@
 :custom (use-package-compute-statistics t)
 )
 
+(use-package auto-compile :ensure t
+:init
+    (setq load-prefer-newer t)
+    (setq auto-compile-mode-line-counter t)
+:config
+    (auto-compile-on-load-mode)
+    (auto-compile-on-save-mode)
+)
+
+(use-package auto-package-update :ensure t
+:custom (auto-package-update-delete-old-versions t)
+        (auto-package-update-prompt-before-update t)
+        ;(auto-package-update-hide-results t)
+:config (auto-package-update-maybe)
+)
+
 ; for native comp
 (setq package-native-compile t)
-(setq comp-deferred-compilation t)
+;(setq comp-deferred-compilation t)
 (setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
-;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
-;(native-compile-async "~/.emacs.d/")
-;(async-byte-compile-file "~/.emacs.d/config.el")
+(native-compile-async "~/.emacs.d/init.el")
 (native-compile-async "~/.emacs.d/config.el")
+;(load-file "~/.emacs.d/init.el")
 (load-file "~/.emacs.d/config.el")
 ;;;

@@ -5,21 +5,11 @@
 ;; Code:
 ;;;org-babel-load-file has bug
 ;;; #BEGIN_SRC emacs-lisp -> elisp
-;;;
 
 (require 'use-package)
 ;(use-package use-package :ensure t)
 (use-package use-package-ensure-system-package :after use-package :ensure t)
-
 (use-package el-patch :ensure t)
-
-
-(use-package auto-package-update :ensure t
-:custom (auto-package-update-delete-old-versions t)
-        (auto-package-update-prompt-before-update t)
-        ;(auto-package-update-hide-results t)
-:config (auto-package-update-maybe)
-)
 
 ;(toggle-debug-on-error)
 ;(setq byte-compile-error-on-warn t)
@@ -265,7 +255,7 @@
     (new-buffer "untitled" 'text-mode)
 )
 
-(use-package hungry-delete :ensure t  :defer t :disabled
+(use-package hungry-delete :ensure t :disabled
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
@@ -351,8 +341,8 @@ list)
 )
 
 (use-package evil :ensure t 
+:custom (evil-want-keybinding nil)
 :init   (setq evil-want-integration t)
-        (setq evil-want-keybinding nil)
 :config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
         ;(define-key evil-normal-state-map (kbd "q") 'nil)
@@ -361,6 +351,13 @@ list)
         (setq-default evil-kill-on-visual-paste nil)
         ;(fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
         (evil-mode 1)
+)
+
+(use-package move-text :ensure t :after evil
+:bind (:map evil-visual-state-map
+            ("C-j" . drag-stuff-down)
+            ("C-k" . drag-stuff-up  ))
+:config (move-text-default-bindings)
 )
 
 (use-package general :ensure t 
@@ -464,7 +461,6 @@ list)
           (evil-mc-make-cursor-here))
 :general (leader "emh" #'evil-mc-make-cursors-here
                  "ema" #'evil-mc-make-all-cursors
-
                  "emp" #'evil-mc-pause-cursors
                  "emr" #'evil-mc-resume-cursors
                  "emu" #'evil-mc-undo-all-cursors)
@@ -587,27 +583,25 @@ list)
 ; C-x e 메크로 실행
 ; C-u 10 C-x e
 
-(use-package highlight-numbers :ensure t
-:init (highlight-numbers-mode t)
-)
-
 (use-package beacon :ensure t :config (beacon-mode t))
 (use-package git-gutter :ensure t 
 :custom
-    (git-gutter:lighter       " gg")
+    (git-gutter:lighter       " GG")
     (git-gutter:window-width  1)
     (git-gutter:modified-sign ".")
     (git-gutter:added-sign    "+")
     (git-gutter:deleted-sign  "-")
-:init
+:config
+    (global-git-gutter-mode t)
     (setq-default display-line-numbers-width 3)
     (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
-    (global-git-gutter-mode t)
-:config
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
+)
+(use-package highlight-numbers :ensure t
+:config (highlight-numbers-mode t)
 )
 
 (setq custom-safe-themes t)
@@ -616,7 +610,6 @@ list)
          ;(enable-theme 'doom-nord)
 :config (doom-themes-org-config)
 )
-
 ; 자동으로 Dark mode Light mode 변환
 (use-package mac-dark-mode :no-require t :disabled
 :if *is-mac*
@@ -774,15 +767,15 @@ list)
 )
 
 (use-package smartparens :ensure t 
-:general (leader "pr " 'sp-rewrap-sexp
-                 "pll" 'sp-forward-slurp-sexp
-                 "phh" 'sp-backward-slurp-sexp
-                 "plh" 'sp-forward-barf-sexp
-                 "phl" 'sp-backward-barf-sexp)
+;:general (leader "pr " 'sp-rewrap-sexp
+;                 "pll" 'sp-forward-slurp-sexp
+;                 "phh" 'sp-backward-slurp-sexp
+;                 "plh" 'sp-forward-barf-sexp
+;                 "phl" 'sp-backward-barf-sexp)
 :init (smartparens-global-mode)
 )
 ;elisp double quote problem fix setting
-;(use-package smartparens-config :ensure smartparens)
+(use-package smartparens-config :ensure smartparens)
 
 (use-package hydra :ensure t  :defer t)
 
@@ -824,7 +817,7 @@ list)
         (ivy-format-function 'ivy-format-function-line)
 :config 
         (setq ivy-initial-inputs-alist nil)
-        (setq search-default-mode #'char-fold-to-regexp)
+        ;(setq search-default-mode #'char-fold-to-regexp)
         (ivy-mode 1)
 )
 
@@ -1402,8 +1395,8 @@ list)
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package with-editor :ensure t 
-:hook ((shell-mode term-exec eshll-mode) . with-editor-export-editor)
+(use-package with-editor :ensure t :disabled
+:hook ((shell-mode term-exec eshll-mode vterm-mode) . with-editor-export-editor)
 )
 
 (use-package vterm-command :no-require t :ensure nil
@@ -1456,8 +1449,8 @@ shell exits, the buffer is killed."
 
 (use-package exec-path-from-shell :ensure t 
 :if     (memq window-system '(mac ns x))
-:config (exec-path-from-shell-initialize)
-        (exec-path-from-shell-copy-env "PATH")
+:config ;(exec-path-from-shell-copy-env "PATH")
+        (exec-path-from-shell-initialize)
 )
 
 (use-package eshell-did-you-mean :ensure t 
@@ -1544,19 +1537,18 @@ shell exits, the buffer is killed."
 )
 
 (use-package org-roam :ensure t 
-:hook (after-init . org-roam-mode)
 :custom  (org-roam-dailies-directory "journals/")
 :general (leader "of" '(org-roam-node-find :wk "Note"))
-:init (setq org-roam-v2-ack t)
+:custom  (org-roam-directory (expand-file-name "~/GDrive/Roam/"))
 :config
-    (setq org-roam-directory (expand-file-name "~/GDrive/Roam/"))
     (setq org-roam-dailies-capture-templates
         '(("d" "default" entry "* %?"
             :if-new (file+head "%<%Y-%m-%d>.org"
                                "#+title: %<%Y-%m-%d>\n"))))
-    (setq org-roam-db-autosync-enable t)
-    (org-roam-setup)
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-enable)
     (require 'org-roam-protocol) ;; If using org-roam-protocol
+    ;(org-roam-setup)
 )
 
 (use-package websocket :ensure t :after org-roam)
@@ -1612,48 +1604,48 @@ shell exits, the buffer is killed."
 )
 
 (use-package centaur-tabs :ensure t 
-:preface 
-    (defun centaur-tabs-hide-tab (x)
-    "Do no to show buffer X in tabs."
-    (let ((name (format "%s" x)))
-        (or
-        ;; Current window is not dedicated window.
-        (window-dedicated-p (selected-window))
-        ;; Buffer name not match below blacklist.
-        (string-prefix-p "*epc" name)
-        (string-prefix-p "*helm" name)
-        (string-prefix-p "*Helm" name)
-        (string-prefix-p "*Compile-Log*" name)
-        (string-prefix-p "*lsp" name)
-        (string-prefix-p "*company" name)
-        (string-prefix-p "*Flycheck" name)
-        (string-prefix-p "*tramp" name)
-        (string-prefix-p " *Mini" name)
-        (string-prefix-p "*help" name)
-        (string-prefix-p "*straight" name)
-        (string-prefix-p "*temp" name)
-        (string-prefix-p "*Help" name)
-        (string-prefix-p "*pyright*" name)
-        (string-prefix-p "*pyright::stderr*" name)
-        (string-prefix-p "*Async-native-compile-log*" name)
-        ;; Is not magit buffer.
-        (and (string-prefix-p "magit" name)
-            (not (file-name-extension name)))
-        )))
+:general (leader "th" 'centaur-tabs-backward
+                 "tl" 'centaur-tabs-forward)
+:hook   (dashboard-mode . centaur-tabs-local-mode)
+        (vterm-mode     . centaur-tabs-local-mode)
 :custom (centaur-tabs-background-color (face-background 'default))
         (centaur-tabs-set-icons t)
         (centaur-tabs-set-bar 'over)
         (centaur-tabs-set-close-button t)
         (centaure-tabs-set-bar t)
         (centaur-tabs-style "chamfer")
-:init   (centaur-tabs-mode t)
 :config (setq centaur-tabs-height 26)
         (setq centaur-tabs-cycle-scope 'tabs)
+        (centaur-tabs-mode t)
         (centaur-tabs-headline-match)
         (centaur-tabs-group-by-projectile-project)
-        (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
-:general (leader "th" 'centaur-tabs-backward
-                 "tl" 'centaur-tabs-forward)
+        (defun centaur-tabs-hide-tab (x)
+            "Do no to show buffer X in tabs."
+            (let ((name (format "%s" x)))
+                (or ;; Current window is not dedicated window.
+                    (window-dedicated-p (selected-window))
+                    ;; Buffer name not match below blacklist.
+                    (string-prefix-p "*epc" name)
+                    (string-prefix-p "*helm" name)
+                    (string-prefix-p "*Helm" name)
+                    (string-prefix-p "*Compile-Log*" name)
+                    (string-prefix-p "*lsp" name)
+                    (string-prefix-p "*company" name)
+                    (string-prefix-p "*Flycheck" name)
+                    (string-prefix-p "*tramp" name)
+                    (string-prefix-p " *Mini" name)
+                    (string-prefix-p "*help" name)
+                    (string-prefix-p "*straight" name)
+                    (string-prefix-p "*temp" name)
+                    (string-prefix-p "*Help" name)
+                    (string-prefix-p "*pyright*" name)
+                    (string-prefix-p "*pyright::stderr*" name)
+                    (string-prefix-p "*Async-native-compile-log*" name)
+                    (string-prefix-p "config.org[emacs-lisp" name)
+                    ;; Is not magit buffer.
+                    (and (string-prefix-p "magit" name)
+                        (not (file-name-extension name)))
+                    )))
 )
 
 (use-package symon :ensure t  :defer t)
@@ -1664,36 +1656,34 @@ shell exits, the buffer is killed."
 :config  (google-this-mode 1)
 )
 
-(use-package google-translate :ensure t 
-:commands (google-translate-smooth-translate)
-:general (leader "ft" 'google-translate-smooth-translate)
-:custom (google-translate-default-source-language "auto")
-        (google-translate-default-target-language "ko")
-        (google-translate-translation-directions-alist
-            '(("en" . "ko")
-              ("ko" . "en")
-              ("jp" . "ko")
-              ("ko" . "jp")))
-:config (require 'google-translate-smooth-ui)
+;; google translation
+(use-package go-translate :ensure t
+:general (leader "ft" 'gts-do-translate)
+:config
+    (setq gts-translate-list '(("en" "ko") ("ko" "en") ("jp" "ko") ("ko" "jp")))
+    (setq gts-default-translator
+        (gts-translator
+            :picker (gts-prompt-picker)
+            :engines (list (gts-bing-engine) (gts-google-engine))
+            :render (gts-buffer-render)))
 )
 
-(use-package flyspell :ensure t  :defer t :disabled
+(use-package flyspell :ensure t
+:general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
+                 "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
 :config
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
-    (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US")
-;:init
-;    (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
-:general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
-                 "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
+    (setq ispell-program-name "aspell")
+    ;(setq ispell-program-name "hunspell")
 )
 
 (use-package flyspell-correct-ivy :ensure t  
-:after (flyspell ivy)
+:after (ivy flyspell)
 :general  (:keymaps 'flyspell-mode-map "C-c $" 'flyspell-correct-word-generic)
           (:keymaps 'flyspell-mode-map [remap flyspell-correct-word-before-point]  'flyspell-correct-previous-word-generic)
-          (leader "ss" '(flyspell-correct-word-generic :wk "Suggestion"))
+          (leader "ss" '(flyspell-correct-wrapper :wk "Suggestion"))
 )
 
 (use-package wgrep :ensure t 
@@ -1739,6 +1729,7 @@ shell exits, the buffer is killed."
 )
 (use-package poly-org :ensure t
 :hook (org-mode . poly-org-mode)
+      (poly-org-mode . git-gutter-mode)
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
 
@@ -1792,6 +1783,35 @@ shell exits, the buffer is killed."
 :commands (alert)
 :init (setq alert-default-style 'notifier))
 
+(use-package eaf :load-path "~/.emacs.d/site-lisp/emacs-application-framework" :disabled
+    :custom
+    ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
+    (eaf-browser-continue-where-left-off t)
+    (eaf-browser-enable-adblocker t)
+    (browse-url-browser-function 'eaf-open-browser)
+    :config
+    (require 'eaf-browser)
+    (require 'eaf-pdf-viewer)
+    (defalias 'browse-web #'eaf-open-browser)
+    ;(eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
+    (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding)
+    ;(eaf-bind-key take_photo "p" eaf-camera-keybinding)
+    (eaf-bind-key nil "M-q" eaf-browser-keybinding)
+
+    (require 'eaf-evil)
+    (define-key key-translation-map (kbd "SPC")
+        (lambda (prompt)
+        (if (derived-mode-p 'eaf-mode)
+            (pcase eaf--buffer-app-name
+                ("browser" (if  (string= (eaf-call-sync "call_function" eaf--buffer-id "is_focus") "True")
+                            (kbd "SPC")
+                            (kbd eaf-evil-leader-key)))
+                ("pdf-viewer" (kbd eaf-evil-leader-key))
+                ("image-viewer" (kbd eaf-evil-leader-key))
+                (_  (kbd "SPC")))
+            (kbd "SPC"))))
+) ;; unbind, see more in the Wiki
+
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t 
 :init (global-company-mode 1)
@@ -1807,7 +1827,7 @@ shell exits, the buffer is killed."
     ;(add-to-list 'company-backends #'company-capf)
 )
 
-(use-package company-quickhelp :ensure t 
+(use-package company-quickhelp :ensure t :disabled
 :unless (featurep 'lsp)
 :general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
 :custom (company-quickhelp-delay nil)
@@ -1938,7 +1958,7 @@ shell exits, the buffer is killed."
         (make-backup-files nil)
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
-        (lsp-rust-analyzer-server-display-inlay-hints t)
+        (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-rust-analyzer-cargo-watch-command "clipy")
         (lsp-eldoc-render-all t)
         ;(lsp-completion-provider :capf)
@@ -1962,14 +1982,13 @@ shell exits, the buffer is killed."
         (lsp-ui-peek-enable t)
         (lsp-ui-flycheck-enable t)
         (lsp-ui-doc-enable t)
-        (lsp-ui-doc-frame-mode t)
+        ;(lsp-ui-doc-frame-mode t)
         (lsp-ui-doc-show-with-cursor t)
         (lsp-ui-sideline-enable t)
         (lsp-ui-sideline-show-hover nil)
+        (lsp-ui-sideline-actions-icon nil)
         (lsp-ui-sideline-show-code-actions t)
-        (lsp-ui-sideline-actions-icon t)
-        
-:config ;(lsp-ui-sideline-show-diagnostics t)
+        ;(lsp-ui-sideline-show-diagnostics t)
 )
 
 (use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
@@ -1981,7 +2000,6 @@ shell exits, the buffer is killed."
 :custom (flycheck-clang-language-standard "c++17")
 :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode t)
-        (setq flycheck-clang-language-standard "c++17")
 )
 
 (use-package flycheck-posframe :ensure t :after flycheck :disabled
@@ -2096,8 +2114,11 @@ shell exits, the buffer is killed."
   :after lsp-mode
   :commands (dap-debug)
   :general (leader "dd" 'dap-debug)
-  :custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
-  :config (require 'dap-gdb-lldb) ; gdb mode
+  ;:custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
+  :config
+      (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
+      (require 'dap-gdb-lldb) ; gdb mode
+          (require 'dap-go)
           (dap-mode 1)
           (dap-tooltip-mode 1)
           (dap-ui-mode 1)
@@ -2240,11 +2261,11 @@ shell exits, the buffer is killed."
 (setq parinfer-extensions '(defaults evil paredit pretty-parens)) ;lispy smart-tab smart-yank
 )
 
-(use-package tree-sitter :ensure t
+(use-package tree-sitter :ensure t :disabled
 :config ;(tree-sitter-hl-mode)
         (global-tree-sitter-mode)
 )
-(use-package tree-sitter-langs :ensure t)
+(use-package tree-sitter-langs :ensure t :after tree-sitter)
 ;(use-package tree-sitter-indent :ensure t)
 
 (use-package csharp-mode :ensure t
@@ -2254,6 +2275,10 @@ shell exits, the buffer is killed."
 )
 
 (use-package rustic :ensure t
+:init
+(defun ij/rustic-mode-hook ()
+    (when buffer-file-name (setq-local buffer-save-without-query t)))
+
 :config
     (setq lsp-eldoc-hook nil)
     (setq lsp-enable-symbol-highlighting nil)
@@ -2261,9 +2286,6 @@ shell exits, the buffer is killed."
     (setq rustic-format-on-save t)
     (add-hook 'rustic-mode-hook 'ij/rustic-mode-hook)
 )
-
-(defun ij/rustic-mode-hook ()
-    (when buffer-file-name (setq-local buffer-save-without-query t)))
 
 
 
@@ -2295,14 +2317,6 @@ shell exits, the buffer is killed."
                  "hrt" 'cargo-process-test)
 )
 
-;(use-package rustic :ensure t 
-;:commands (rustic-mode)
-;:mode   ("\\.rs" . rustic-mode)
-;:config ;(add-hook 'rustic-mode-hook 'racer-mode)
-;        (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
-;        (add-hook 'rustic-mode-hook 'lsp)
-;)
-
 (use-package haskell-mode :ensure t  :defer t)
 
 (use-package yaml-mode :ensure t 
@@ -2324,7 +2338,7 @@ shell exits, the buffer is killed."
 :init (setq cmake-tab-width 4)
 )
 
-(use-package poly-markdown :ensure t
+(use-package poly-markdown :ensure t :disabled
 ;:after (markdown-mode polymode)
 :hook (markdown-mode . poly-markdown-mode)
 ;:init (evil-set-initial-state 'poly-org-mode 'normal)
@@ -2433,9 +2447,40 @@ shell exits, the buffer is killed."
 :mode ("\\.env\\..*\\'" . dotenv-mode)
 )
 
+(use-package powershell :ensure t)
+
 (use-package go-mode :ensure t 
+:ensure-system-package ((go)
+                        (godef . "go get -u github.com/rogpeppe/godef")
+                        (dlv   . "go install github.com/go-delve/delve/cmd/dlv@latest"))
 :mode ("\\.go\\''" . go-mode)
-:hook (go-mode . (lambda () (lsp)))
+:hook (go-mode .   (lambda () (lsp)))
+:config 
+    (defun lsp-go-install-save-hooks ()
+        (add-hook 'before-save-hook #'lsp-format-buffer)
+        (add-hook 'before-save-hook #'lsp-organize-imports))
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+)
+
+(use-package dap-go :ensure dap-mode :after go)
+
+;:go-tag-add xml db
+;go-tag-add json,omitempty
+(use-package go-tag :ensure t :after go-mode
+:ensure-system-package (gomodifytags . "go get -u github.com/fatih/gomodifytags")
+)
+
+(use-package go-impl :load-path "lisp/go-impl.el" :after go-mode
+:ensure-system-package ((impl . "go get -u github.com/josharian/impl")
+                        (godoc . "go get -u golang.org/x/tools/cmd/godoc"))
+)
+
+(use-package go-fill-struct :ensure t :after go-mode
+:ensure-system-package (fillstruct . "go get -u github.com/davidrjenni/reftools/cmd/fillstruct")
+)
+
+(use-package go-gen-test :ensure t :after go-mode
+:ensure-system-package (gotests . "go get -u github.com/cweill/gotests/...")
 )
 
 (use-package dumb-jump :ensure t 
@@ -2596,10 +2641,21 @@ shell exits, the buffer is killed."
 
 (use-package protobuf-mode :ensure t)
 
+(use-package direnv :ensure t :config (direnv-mode))
+
 (use-package graphql-mode :ensure t
 :mode ((".graphql\\'" . graphql-mode)
        (".prisma\\'"  . graphql-mode))
 :hook (graphql-mode . (lambda () (require 'lsp-graphql) (lsp)))
+)
+
+(use-package quickrun :ensure t
+:general (leader "qr" #'quickrun)
+:config
+    (quickrun-add-command "c++/c1z"
+        '((:command . "cppm")
+          (:exec "%c build")
+           :defualt "c++"))
 )
 
 ; brew install rust base system command

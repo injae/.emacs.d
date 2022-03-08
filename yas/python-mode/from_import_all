@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: from target import *
+# key: fimpo
+# --
+from $1 import *
