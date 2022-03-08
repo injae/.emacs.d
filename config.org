@@ -2695,7 +2695,8 @@ shell exits, the buffer is killed."
 #+BEGIN_SRC elisp
 (use-package go-mode :ensure t 
 :ensure-system-package ((go)
-                        (godef . "go get -u github.com/rogpeppe/godef")
+                        (gopls . "go install golang.org/x/tools/gopls@latest")
+                        (godef . "go install github.com/rogpeppe/godef@latest")
                         (dlv   . "go install github.com/go-delve/delve/cmd/dlv@latest"))
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode .   (lambda () (lsp)))
@@ -2711,16 +2712,16 @@ shell exits, the buffer is killed."
 ;:go-tag-add xml db
 ;go-tag-add json,omitempty
 (use-package go-tag :ensure t :after go-mode
-:ensure-system-package (gomodifytags . "go get -u github.com/fatih/gomodifytags")
+:ensure-system-package (gomodifytags . "go install github.com/fatih/gomodifytags@latest")
 )
 
 (use-package go-impl :load-path "lisp/go-impl.el" :after go-mode
-:ensure-system-package ((impl . "go get -u github.com/josharian/impl")
-                        (godoc . "go get -u golang.org/x/tools/cmd/godoc"))
+:ensure-system-package ((impl . "go install github.com/josharian/impl@latest")
+                        (godoc . "go install golang.org/x/tools/cmd/godoc@latest"))
 )
 
 (use-package go-fill-struct :ensure t :after go-mode
-:ensure-system-package (fillstruct . "go get -u github.com/davidrjenni/reftools/cmd/fillstruct")
+:ensure-system-package (fillstruct . "go install github.com/davidrjenni/reftools/cmd/fillstruct@latest")
 )
 
 (use-package go-gen-test :ensure t :after go-mode
@@ -3070,12 +3071,9 @@ TOUCHBAR_GIT_ENABLED=true
 YARN_ENABLED=true
 
 # nvm setting
-#export NVM_DIR="$HOME/.nvm"
-#  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-#  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-export NVM_DIR="/home/injae/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Ruby setting
 # macos home-brew rbenv setting
@@ -3098,6 +3096,13 @@ dragonfly*|freebsd*|netbsd*|openbsd*)
     # ...
 ;;
 esac
+
+# windows wsl setting
+if [[ $(uname -r) =~ WSL ]]; then
+    export GOROOT=$HOME/dev/too/go
+    export GOPATH=$HOME/dev/tool/go-module
+    export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+fi
 
 export CC=clang
 export CXX=clang++
@@ -3145,8 +3150,6 @@ export PATH="/usr/local/opt/openjdk/bin:$PATH"
 # telepresence kubectl 정보수집 비활성화
 export SCOUT_DISABLE=1
     
-
-
 ## llvm@9 setting
 #export PATH="/usr/local/opt/llvm@9/bin:$PATH"
 #export LDFLAGS="-L/usr/local/opt/llvm@9/lib"
@@ -3176,8 +3179,8 @@ export HELM_EXPERIMENTAL_OCI=1
 :if *is-mac*
 )
 #+END_SRC
-;#+BEGIN_SRC json :tangle no
-#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
+;#+BEGIN_SRC json :tangle "~/.config/karabiner/assets/complex_modifications/emacs-shift-space.json"
+#+BEGIN_SRC json :tangle no
 {
     "title": "Emacs MacOS Keyboard Setting",
     "rules": [{
@@ -3221,3 +3224,22 @@ truncate_to_repo = false
 #charging_symbol = "⚡️"
 #discharging_symbol = "💀"   
 #+END_SRC
+
+** ~/.gitconfig 
+#+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
+[user]
+	name = injae
+	email = 8687lee@gmail.com
+[core]
+	precomposeunicode = true
+	qutepath = false
+[github]
+	user = injae
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+#+END_SRC
+
+

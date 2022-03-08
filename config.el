@@ -2116,13 +2116,11 @@ shell exits, the buffer is killed."
   :general (leader "dd" 'dap-debug)
   ;:custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
   :config
+      (setq dap-auto-configure-features '(sessions locals controls tooltip))
       (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
       (require 'dap-gdb-lldb) ; gdb mode
-          (require 'dap-go)
-          (dap-mode 1)
-          (dap-tooltip-mode 1)
-          (dap-ui-mode 1)
-          (dap-auto-configure-mode)
+      (require 'dap-go)
+      (dap-mode 1)
   )
 
   (use-package dap-ui-setting :no-require t :ensure nil
@@ -2451,7 +2449,8 @@ shell exits, the buffer is killed."
 
 (use-package go-mode :ensure t 
 :ensure-system-package ((go)
-                        (godef . "go get -u github.com/rogpeppe/godef")
+                        (gopls . "go install golang.org/x/tools/gopls@latest")
+                        (godef . "go install github.com/rogpeppe/godef@latest")
                         (dlv   . "go install github.com/go-delve/delve/cmd/dlv@latest"))
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode .   (lambda () (lsp)))
@@ -2467,16 +2466,16 @@ shell exits, the buffer is killed."
 ;:go-tag-add xml db
 ;go-tag-add json,omitempty
 (use-package go-tag :ensure t :after go-mode
-:ensure-system-package (gomodifytags . "go get -u github.com/fatih/gomodifytags")
+:ensure-system-package (gomodifytags . "go install github.com/fatih/gomodifytags@latest")
 )
 
 (use-package go-impl :load-path "lisp/go-impl.el" :after go-mode
-:ensure-system-package ((impl . "go get -u github.com/josharian/impl")
-                        (godoc . "go get -u golang.org/x/tools/cmd/godoc"))
+:ensure-system-package ((impl . "go install github.com/josharian/impl@latest")
+                        (godoc . "go install golang.org/x/tools/cmd/godoc@latest"))
 )
 
 (use-package go-fill-struct :ensure t :after go-mode
-:ensure-system-package (fillstruct . "go get -u github.com/davidrjenni/reftools/cmd/fillstruct")
+:ensure-system-package (fillstruct . "go install github.com/davidrjenni/reftools/cmd/fillstruct@latest")
 )
 
 (use-package go-gen-test :ensure t :after go-mode
