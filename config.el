@@ -1823,7 +1823,7 @@ shell exits, the buffer is killed."
     (setq company-minimum-prefix-length 1)
     (setq company-tooltip-align-annotations nil)
     (setq company-dabbrev-downcase nil)
-    (add-to-list 'company-backends '(company-capf :with company-yasnippet))
+    ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
     ;(add-to-list 'company-backends #'company-capf)
 )
 
@@ -2453,7 +2453,7 @@ shell exits, the buffer is killed."
                         (godef . "go install github.com/rogpeppe/godef@latest")
                         (dlv   . "go install github.com/go-delve/delve/cmd/dlv@latest"))
 :mode ("\\.go\\''" . go-mode)
-:hook (go-mode .   (lambda () (lsp)))
+:hook (go-mode . (lambda () (lsp)))
 :config 
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
@@ -2656,6 +2656,18 @@ shell exits, the buffer is killed."
           (:exec "%c build")
            :defualt "c++"))
 )
+
+(use-package terraform-mode :ensure t
+    :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")
+    :mode   ("\\.tf\\'" . terraform-mode)
+    :config (setq terraform-indent-level 4)
+            (setq lsp-terraform-enable-logging t)
+            (lsp-register-client
+                (make-lsp-client
+                    :new-connection (lsp-stdio-connection '("~/go/bin/terraform-ls" "serve"))
+                    :major-modes    '(terraform-mode)
+                    :server-id      'terraform-ls)))
+           (add-hook 'terraform-mode-hook 'lsp)
 
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :ensure nil
