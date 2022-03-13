@@ -46,6 +46,7 @@
   "Move point into the first inserted function."
   :type 'boolean)
 
+(defvar go-impl--native-interface nil)
 (defvar go-impl--interface-cache (make-hash-table :test #'equal))
 (defvar go-impl--receiver-cache nil)
 (defvar go-impl--receiver-history nil)
@@ -128,7 +129,7 @@
     map))
 
 (defun go-impl--completing-function (input)
-    (setq-local packages (go-packages-go-list))
+    (setq-local packages go-impl--native-interface)
     (if (not (string-match "\\." input))
         (setq-local candidates
             (delete-dups
@@ -147,6 +148,9 @@
     (interactive
         (list (read-from-minibuffer "Receiver: " nil go-impl--local-command-map
                                                  nil 'go-impl--receiver-history nil t)))
+    (unless go-impl--native-interface
+        (setq go-impl--native-interface (go-packages-native)))
+
     (ivy-read "Interface: "
         #'go-impl--completing-function
         :dynamic-collection t

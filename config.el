@@ -1321,27 +1321,33 @@ list)
 
 (use-package docker-compose-mode :ensure t)
 
-(use-package vterm :ensure t  ;:disabled ;macport version not working
-:preface
-  (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
-  (if (equal major-mode 'vterm-mode)
-      (let ((inhibit-read-only t)
-            (yank-undo-function (lambda (_start _end) (vterm-undo))))
-        (cl-letf (((symbol-function 'insert-for-yank)
-               (lambda (str) (vterm-send-string str t))))
-            (apply orig-fun args)))
-    (apply orig-fun args)))
-
-(advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
-
-:general (leader "tn" 'vterm)
-:custom (vterm-always-compile-module t)
-:init   (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+(use-package exec-path-from-shell :ensure t 
+:if     (memq window-system '(mac ns x))
+:config ;(exec-path-from-shell-copy-env "PATH")
+        (exec-path-from-shell-initialize)
+)
+  
+(use-package vterm :ensure t :after (:all evil-collection exec-path-from-shell)
+;(zsh . "chsh -s $(which zsh)")
+:ensure-system-package ((zsh))
+                        ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
+:init   (setq vterm-always-compile-module t)
 :config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
+        (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
         (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
-        (evil-collection-vterm-setup)
 )
+
+;:preface
+;  (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
+;    (if (equal major-mode 'vterm-mode)
+;        (let ((inhibit-read-only t)
+;                (yank-undo-function (lambda (_start _end) (vterm-undo))))
+;            (cl-letf (((symbol-function 'insert-for-yank)
+;                (lambda (str) (vterm-send-string str t))))
+;                (apply orig-fun args)))
+;        (apply orig-fun args)))
+;    (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
 
 (use-package vterm-toggle :ensure t :disabled
 :general (leader "ut" '(vterm-toggle    :wk "toggle vterm buffer")
@@ -1412,12 +1418,9 @@ list)
   "Execute string COMMAND in a new vterm.
 Interactively, prompt for COMMAND with the current buffer's file
 name supplied. When called from Dired, supply the name of the file at point.
-
 Like `async-shell-command`, but run in a vterm for full terminal features.
-
 The new vterm buffer is named in the form `*foo bar.baz*`, the
 command and its arguments in earmuffs.
-
 When the command terminates, the shell remains open, but when the
 shell exits, the buffer is killed."
   (interactive
@@ -1445,12 +1448,6 @@ shell exits, the buffer is killed."
         (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
         (setq eshell-output-filter-functions (remove 'eshell-handle-asni-color eshell-output-filter-functions))
         (setq eshell-cmpl-cycle-completions nil)
-)
-
-(use-package exec-path-from-shell :ensure t 
-:if     (memq window-system '(mac ns x))
-:config ;(exec-path-from-shell-copy-env "PATH")
-        (exec-path-from-shell-initialize)
 )
 
 (use-package eshell-did-you-mean :ensure t 
@@ -1528,7 +1525,6 @@ shell exits, the buffer is killed."
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
 )
 
-
 (use-package ibuffer-projectile :ensure t  :disabled
 :after (projectile)
 :init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
@@ -1588,7 +1584,7 @@ shell exits, the buffer is killed."
 :init (dashboard-setup-startup-hook)
 :config
     (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
-    (setq dashboard-banner-logo-title "We are Emacsian!")
+    (setq dashboard-banner-logo-title "Happy Hacking")
     (setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
     (setq dashboard-set-heading-icons t)
@@ -2469,7 +2465,7 @@ shell exits, the buffer is killed."
 :ensure-system-package (gomodifytags . "go install github.com/fatih/gomodifytags@latest")
 )
 
-(use-package go-impl :load-path "lisp/go-impl.el" :after go-mode
+(use-package go-impl :load-path "lisp/go-impl" :after go-mode
 :ensure-system-package ((impl . "go install github.com/josharian/impl@latest")
                         (godoc . "go install golang.org/x/tools/cmd/godoc@latest"))
 )
