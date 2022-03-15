@@ -74,6 +74,7 @@
 (setq *is-windows* (eq system-type 'windows-nt))
 (setq *is-cygwin*  (eq system-type 'cygwin))
 (setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
+(setq *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
 (setq *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
 (use-package scroll-bar :no-require t :ensure nil
@@ -113,7 +114,20 @@
         (setq frame-title-format nil)
 )
 
-(set-frame-parameter nil 'alpha 0.95)
+(use-package wsl-setting :no-require t :ensure nil
+:if *is-wsl*
+:config
+    (setq browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+          browse-url-generic-args     '("/c" "start")
+          browse-url-browser-function #'browse-url-generic)
+)
+
+(use-package not-wsl-setting :no-require t :ensure nil
+:unless *is-wsl*
+:config (set-frame-parameter nil 'alpha 0.95)
+)
+
+;(set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
 (set-variable 'cursor-type '(hbar . 10))
 
@@ -1323,16 +1337,16 @@ list)
 
 (use-package exec-path-from-shell :ensure t 
 :if     (memq window-system '(mac ns x))
-:config ;(exec-path-from-shell-copy-env "PATH")
-        (exec-path-from-shell-initialize)
+:config (exec-path-from-shell-initialize)
+        (exec-path-from-shell-copy-env "PATH")
 )
   
-(use-package vterm :ensure t :after (:all evil-collection exec-path-from-shell)
+(use-package vterm :ensure t :after (evil-collection exec-path-from-shell)
 ;(zsh . "chsh -s $(which zsh)")
-:ensure-system-package ((zsh))
+;:ensure-system-package ((zsh))
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
 :init   (setq vterm-always-compile-module t)
-:config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
+:config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
         (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
         (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
@@ -2443,11 +2457,11 @@ shell exits, the buffer is killed."
 
 (use-package powershell :ensure t)
 
-(use-package go-mode :ensure t 
-:ensure-system-package ((go)
+(use-package go-mode :ensure t :after exec-path-from-shell
+:ensure-system-package (;(go)
                         (gopls . "go install golang.org/x/tools/gopls@latest")
-                        (godef . "go install github.com/rogpeppe/godef@latest")
-                        (dlv   . "go install github.com/go-delve/delve/cmd/dlv@latest"))
+                        (godef . "go install github.com/rogpeppe/godef@latest"))
+             
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
 :config 
@@ -2672,7 +2686,6 @@ shell exits, the buffer is killed."
                         (bat   . "cargo install bat")
                         (procs . "cargo install procs")
                         (dust  . "cargo install du-dust")
-                        ;(duf   . "cargo install du-dust")
                         (ytop  . "cargo install ytop"))
 )
 
