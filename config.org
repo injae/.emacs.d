@@ -4,7 +4,6 @@
 [[image/emacs_icon.png]]
 * Emacs Default Settings
 ** Title description
-
 #+BEGIN_SRC elisp
 ;; -*- lexical-binding: t -*-
 ;;; config.el --- Emacs Configuration
