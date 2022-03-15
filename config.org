@@ -23,6 +23,7 @@
 ;(toggle-debug-on-error)
 ;(setq byte-compile-error-on-warn t)
 
+
 (use-package async :ensure t
 :config (setq async-bytecomp-package-mode t)
 )
