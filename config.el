@@ -117,9 +117,16 @@
 (use-package wsl-setting :no-require t :ensure nil
 :if *is-wsl*
 :config
-    (setq browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
-          browse-url-generic-args     '("/c" "start")
-          browse-url-browser-function #'browse-url-generic)
+    (defconst powershell-exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+    (when (file-executable-p powershell-exe)
+        (defun my\wsl-browse-url (url &optional _new-window)
+            "Opens link via powershell.exe"
+            (interactive (browse-url-interactive-arg "URL: "))
+            (let ((quotedUrl (format "start '%s'" url)))
+            (apply 'call-process powershell-exe
+                    nil 0 nil (list "-Command" quotedUrl))))
+
+        (setq-default browse-url-browser-function 'my\wsl-browse-url))
 )
 
 (use-package not-wsl-setting :no-require t :ensure nil
@@ -196,6 +203,7 @@
         ))
 
 (setq-default line-spacing 3)
+
 (global-font-lock-mode t)
 
 ;; 한글입력할때 완성전까지 안보이는 문제 해결을 위해 내장 한글입력기 사용
@@ -205,12 +213,13 @@
 (setq default-input-method "korean-hangul")
 (setq default-korean-keyboard 'korean-hangul)
 ;(global-set-key [S-SPC] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
-;(global-set-key [?\S- ] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
+(global-set-key [?\S- ] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 (global-set-key (kbd "S-SPC") 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
-;(global-set-key [kbd "<Hangul>"] 'toggle-input-method)
+(global-set-key (kbd "<Hangul>") 'toggle-input-method)
 
 (use-package restart-emacs :ensure t)
+
 
 (defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
 (defun launch-separate-emacs-under-x () (call-process "sh" nil nil nil "-c" "emacs &"))
@@ -854,9 +863,9 @@ list)
 :custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
         (ivy-posframe-parameters '((left-fringe . 8) (right-fringe . 8) (internal-border-width . 10)))
          ;ivy-posframe mutli frame focus bug fix
-        (add-function :after after-focus-change-function (lambda () (posframe-delete-all)))
         ;(ivy-posframe-width 120)
 :config ;(setq ivy-posframe-height-alist '((t . 20)))
+        (add-function :after after-focus-change-function (lambda () (posframe-delete-all)))
         (setq ivy-posframe-height-fixed t)
         (setq ivy-posframe-width-fixed t)
         (ivy-posframe-mode t)
@@ -1342,14 +1351,15 @@ list)
 )
   
 (use-package vterm :ensure t :after (evil-collection exec-path-from-shell)
+:commands (vterm)
 ;(zsh . "chsh -s $(which zsh)")
 ;:ensure-system-package ((zsh))
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
-:init   (setq vterm-always-compile-module t)
-:config (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
-        (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+;:init   (setq vterm-always-compile-module t)
+:config (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
         (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
+        (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
 )
 
 ;:preface
@@ -1408,7 +1418,7 @@ list)
 )
 
 (use-package shell-pop :ensure t
-:custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm))))
+:custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) (display-line-numbers-mode -1))))
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)
 :general (leader "ut"'shell-pop)
@@ -1546,7 +1556,7 @@ shell exits, the buffer is killed."
                                              (ibuffer-do-sort-by-alphabetic))))
 )
 
-(use-package org-roam :ensure t 
+(use-package org-roam :ensure t :disabled
 :custom  (org-roam-dailies-directory "journals/")
 :general (leader "of" '(org-roam-node-find :wk "Note"))
 :custom  (org-roam-directory (expand-file-name "~/GDrive/Roam/"))
@@ -1954,9 +1964,9 @@ shell exits, the buffer is killed."
 )
 
 (use-package lsp-mode :ensure t 
-:commands lsp
+;:commands lsp
 :general (leader "hh" '(lsp-execute-code-action :wk "wizard")
-                 "fd" '(lsp-find-definition :wk "lsp define"))
+                 "fd" '(lsp-find-definition     :wk "lsp define"))
 :hook   (lsp-mode . lsp-enable-which-key-integration)
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
@@ -1973,10 +1983,11 @@ shell exits, the buffer is killed."
         (lsp-eldoc-render-all t)
         ;(lsp-completion-provider :capf)
         (lsp-lens-enable nil)
+;:init (lsp-mode t)
 :config
+    (lsp-mode)
     ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-enabled-clients '(lsp-graphql))
-    (lsp-mode)
 )
 
 (use-package lsp-ui :ensure t 
@@ -2463,7 +2474,7 @@ shell exits, the buffer is killed."
                         (godef . "go install github.com/rogpeppe/godef@latest"))
              
 :mode ("\\.go\\''" . go-mode)
-:hook (go-mode . (lambda () (lsp)))
+:hook (go-mode . lsp)
 :config 
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
