@@ -2161,7 +2161,6 @@ shell exits, the buffer is killed."
 :hook   (lsp-mode . lsp-enable-which-key-integration)
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
-        (lsp-enable-snippet t)
         (lsp-enable-file-watchers nil)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
@@ -2178,7 +2177,7 @@ shell exits, the buffer is killed."
 :config
     (lsp-mode)
     ;(setq lsp-enable-which-key-integration t)
-    ;(setq lsp-enabled-clients '(lsp-graphql))
+    (setq lsp-enable-snippet t)
 )
 
 (use-package lsp-ui :ensure t 
