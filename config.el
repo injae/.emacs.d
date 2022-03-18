@@ -617,7 +617,8 @@ list)
 :config
     (global-git-gutter-mode t)
     (setq-default display-line-numbers-width 3)
-    (global-display-line-numbers-mode t)
+    (add-hook 'prog-mode 'display-line-numbers-mode)
+    ;(global-display-line-numbers-mode t)
     (global-hl-line-mode t)
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
@@ -1986,7 +1987,9 @@ shell exits, the buffer is killed."
 :config
     (lsp-mode)
     ;(setq lsp-enable-which-key-integration t)
-    ;(setq lsp-enabled-clients '(lsp-graphql))
+    (setq lsp-go-gopls-placeholders nil)
+    (lsp-register-custom-settings '(("gopls.codelenses" t)
+                                    ("gopls.symbolStyle" t)))
     (setq lsp-enable-snippet t)
 )
 

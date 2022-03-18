@@ -2177,6 +2177,9 @@ shell exits, the buffer is killed."
 :config
     (lsp-mode)
     ;(setq lsp-enable-which-key-integration t)
+    (setq lsp-go-gopls-placeholders nil)
+    (lsp-register-custom-settings '(("gopls.codelenses" t)
+                                    ("gopls.symbolStyle" t)))
     (setq lsp-enable-snippet t)
 )
 
@@ -3149,6 +3152,8 @@ alias top='ytop'
 
 # kuberneties setting
 #source "$(kubectl completion zsh)"
+
+[[ -s "/home/nieel/.gvm/scripts/gvm" ]] && source "/home/nieel/.gvm/scripts/gvm"
 #+END_SRC
 ** ~/.zshenv
 #+BEGIN_SRC shell :tangle "~/.zshenv"
@@ -3248,6 +3253,7 @@ truncate_to_repo = false
 
 ** ~/.gitconfig 
 #+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
+#+BEGIN_SRC json :tangle no
 [user]
 	name = injae
 	email = 8687lee@gmail.com
