@@ -44,11 +44,20 @@
 )
 
 ; for native comp
-(setq package-native-compile t)
+;(setq package-native-compile t)
 ;(setq comp-deferred-compilation t)
 ;(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
-(native-compile-async "~/.emacs.d/init.el")
-(native-compile-async "~/.emacs.d/config.el")
+;(native-compile-async "~/.emacs.d/init.el")
+;(native-compile-async "~/.emacs.d/config.el")
 ;(load-file "~/.emacs.d/init.el")
+
+(when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
+  (progn
+    (setq native-comp-async-report-warnings-errors nil)
+    (setq comp-deferred-compilation t)
+    (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
+    (setq package-native-compile t)
+    ))
+
 (load-file "~/.emacs.d/config.el")
 ;;;
