@@ -47,8 +47,8 @@
 (setq package-native-compile t)
 ;(setq comp-deferred-compilation t)
 ;(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
-(native-compile-async "~/.emacs.d/init.el")
-(native-compile-async "~/.emacs.d/config.el")
+;(native-compile-async "~/.emacs.d/init.el")
+;(native-compile-async "~/.emacs.d/config.el")
 ;(load-file "~/.emacs.d/init.el")
 (load-file "~/.emacs.d/config.el")
 ;;;

@@ -1064,6 +1064,7 @@ list)
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
+        (setq auth-source '("~/.authinfo"))
 )
 
 (use-package forge :ensure t  :after magit)
@@ -1964,11 +1965,13 @@ shell exits, the buffer is killed."
         ;(company-box-doc-delay 0.5)
 )
 
-(use-package lsp-mode :ensure t 
+(use-package lsp-mode :ensure t :after exec-path-from-shell
 ;:commands lsp
 :general (leader "hh" '(lsp-execute-code-action :wk "wizard")
-                 "fd" '(lsp-find-definition     :wk "lsp define"))
-:hook   (lsp-mode . lsp-enable-which-key-integration)
+                 "fd" '(lsp-find-definition     :wk "lsp define")
+                 "pp" '(xref-go-back            :wk "lsp pop"))
+
+:hook   (lsp-mode  . lsp-enable-which-key-integration)
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
         (lsp-enable-file-watchers nil)
@@ -1985,11 +1988,11 @@ shell exits, the buffer is killed."
         (lsp-lens-enable nil)
 ;:init (lsp-mode t)
 :config
-    (lsp-mode)
+    ;(lsp-mode)
     ;(setq lsp-enable-which-key-integration t)
-    (setq lsp-go-gopls-placeholders nil)
-    (lsp-register-custom-settings '(("gopls.codelenses" t)
-                                    ("gopls.symbolStyle" t)))
+    ;(setq lsp-go-gopls-placeholders nil)
+    ;(lsp-register-custom-settings '(("gopls.codelenses" t)
+    ;                                ("gopls.symbolStyle" t)))
     (setq lsp-enable-snippet t)
 )
 
@@ -2471,13 +2474,12 @@ shell exits, the buffer is killed."
 
 (use-package powershell :ensure t)
 
-(use-package go-mode :ensure t :after exec-path-from-shell
-:ensure-system-package (;(go)
-                        (gopls . "go install golang.org/x/tools/gopls@latest")
+(use-package go-mode :ensure t 
+:ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest"))
              
 :mode ("\\.go\\''" . go-mode)
-:hook (go-mode . lsp)
+:hook (go-mode . (lambda () (lsp)))
 :config 
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
@@ -2485,7 +2487,9 @@ shell exits, the buffer is killed."
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 )
 
-(use-package dap-go :ensure dap-mode :after go)
+(use-package dap-go :ensure dap-mode :after go-mode :disabled
+:config (dap-go-setup)
+)
 
 ;:go-tag-add xml db
 ;go-tag-add json,omitempty
@@ -2505,6 +2509,8 @@ shell exits, the buffer is killed."
 (use-package go-gen-test :ensure t :after go-mode
 :ensure-system-package (gotests . "go get -u github.com/cweill/gotests/...")
 )
+
+(use-package gotest :ensure t :after go-mode)
 
 (use-package dumb-jump :ensure t 
 :after  company
@@ -2692,6 +2698,22 @@ shell exits, the buffer is killed."
                     :major-modes    '(terraform-mode)
                     :server-id      'terraform-ls)))
            (add-hook 'terraform-mode-hook 'lsp)
+
+(use-package lua-mode :ensure t
+:mode ("\\.lua\\'" . lua-mode)
+)
+
+;(use-package poly-mode :ensure t
+;    :config
+;    (define-auto-innermode poly-golang-lua-inner-mode
+;        :mode 'lua-mode
+;        :head-matcher "// language=lua\n"
+;        :tail-matcher "\`\n"
+;        ;:mode-matcher (cons "")
+;        :head-mode 'host
+;        :tail-mode 'host
+;        )
+;    )
 
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :ensure nil
