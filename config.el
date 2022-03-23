@@ -1986,14 +1986,13 @@ shell exits, the buffer is killed."
         (lsp-eldoc-render-all t)
         ;(lsp-completion-provider :capf)
         (lsp-lens-enable nil)
-;:init (lsp-mode t)
+        (lsp-enable-snippet t)
 :config
     ;(lsp-mode)
     ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-go-gopls-placeholders nil)
     ;(lsp-register-custom-settings '(("gopls.codelenses" t)
     ;                                ("gopls.symbolStyle" t)))
-    (setq lsp-enable-snippet t)
 )
 
 (use-package lsp-ui :ensure t 
