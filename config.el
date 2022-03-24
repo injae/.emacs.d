@@ -617,7 +617,7 @@ list)
 :config
     (global-git-gutter-mode t)
     (setq-default display-line-numbers-width 3)
-    (add-hook 'prog-mode 'display-line-numbers-mode)
+    (add-hook 'prog-mode-hook 'display-line-numbers-mode)
     ;(global-display-line-numbers-mode t)
     (global-hl-line-mode t)
     (set-face-foreground 'git-gutter:added    "#daefa3")
@@ -1965,8 +1965,8 @@ shell exits, the buffer is killed."
         ;(company-box-doc-delay 0.5)
 )
 
-(use-package lsp-mode :ensure t :after exec-path-from-shell
-;:commands lsp
+(use-package lsp-mode :ensure t ;:after exec-path-from-shell
+:commands lsp
 :general (leader "hh" '(lsp-execute-code-action :wk "wizard")
                  "fd" '(lsp-find-definition     :wk "lsp define")
                  "pp" '(xref-go-back            :wk "lsp pop"))
@@ -2144,8 +2144,8 @@ shell exits, the buffer is killed."
   :config
       (setq dap-auto-configure-features '(sessions locals controls tooltip))
       (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
-      (require 'dap-gdb-lldb) ; gdb mode
-      (require 'dap-go)
+      ;(require 'dap-gdb-lldb) ; gdb mode
+      ;(require 'dap-go)
       (dap-mode 1)
   )
 
