@@ -2381,7 +2381,14 @@ shell exits, the buffer is killed."
                  "hrt" 'cargo-process-test)
 )
 
-(use-package haskell-mode :ensure t  :defer t)
+(use-package haskell-mode :ensure t
+:mode ("\\.hs\\'"    . haskell-mode)
+)
+
+(use-package lsp-haskell :ensure t :after haskell-mode
+:hook ((haskell-mode . (lambda () (require 'lsp-haskell) (lsp)))
+       (haskell-literate-mode . (lambda () (require 'lsp-haskell) (lsp))))
+)
 
 (use-package yaml-mode :ensure t 
 :mode (("\\.yaml\\'" . yaml-mode)
