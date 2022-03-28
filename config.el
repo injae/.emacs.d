@@ -2341,7 +2341,14 @@ shell exits, the buffer is killed."
                  "hrt" 'cargo-process-test)
 )
 
-(use-package haskell-mode :ensure t  :defer t)
+(use-package haskell-mode :ensure t
+:mode ("\\.hs\\'"    . haskell-mode)
+)
+
+(use-package lsp-haskell :ensure t :after haskell-mode
+:hook ((haskell-mode . (lambda () (require 'lsp-haskell) (lsp)))
+       (haskell-literate-mode . (lambda () (require 'lsp-haskell) (lsp))))
+)
 
 (use-package yaml-mode :ensure t 
 :mode (("\\.yaml\\'" . yaml-mode)
@@ -2506,7 +2513,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package go-gen-test :ensure t :after go-mode
-:ensure-system-package (gotests . "go get -u github.com/cweill/gotests/...")
+:ensure-system-package (gotests . "go install github.com/cweill/gotests/...@latest")
 )
 
 (use-package gotest :ensure t :after go-mode)

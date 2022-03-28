@@ -2559,7 +2559,16 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Haskell Mode
 #+BEGIN_SRC elisp
-(use-package haskell-mode :ensure t  :defer t)
+(use-package haskell-mode :ensure t
+:mode ("\\.hs\\'"    . haskell-mode)
+)
+
+(use-package lsp-haskell :ensure t :after haskell-mode
+:hook ((haskell-mode . (lambda () (lsp)))
+       (haskell-literate-mode . (lambda () (lsp))))
+)
+
+
 #+END_SRC
 ** Yaml Mode
 #+BEGIN_SRC elisp
@@ -3177,6 +3186,11 @@ alias top='ytop'
 # kuberneties setting
 #source "$(kubectl completion zsh)"
 
+alias vmrun='/Applications/VMWare\ Fusion.app/Contents/Library/vmrun'
+alias vmsee='vmrun list'
+alias vmstart='vmrun start ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm nogui'
+alias vmstop='vmrun suspend ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm'
+
 [[ -s "/home/nieel/.gvm/scripts/gvm" ]] && source "/home/nieel/.gvm/scripts/gvm"
 #+END_SRC
 ** ~/.zshenv
@@ -3184,6 +3198,7 @@ alias top='ytop'
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$HOME/.cppm/bin:$PATH"
+export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$HOME/.cargo/bin:$PATH"
