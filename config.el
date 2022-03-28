@@ -127,6 +127,8 @@
                     nil 0 nil (list "-Command" quotedUrl))))
 
         (setq-default browse-url-browser-function 'my\wsl-browse-url))
+        (setq frame-resize-pixelwise t)
+        (pixel-scroll-precision-mode)
 )
 
 (use-package not-wsl-setting :no-require t :ensure nil
@@ -570,12 +572,18 @@ list)
        ;(evil-collection-ivy-setup)
        ;(evil-collection-vterm-setup) 
        ;(evil-collection-wgrep-setup)
+       (evil-collection-forge-setup)
        (evil-collection-init)
 )
 
 (use-package buffer-zoom :no-require t :ensure nil
 :general (leader "tu" 'text-scale-increase
                  "td" 'text-scale-decrease)
+)
+
+(use-package default-text-scale :ensure t
+:config (default-text-scale-mode)
+        (if *is-wsl* (default-text-scale-increment 20))
 )
 
 (use-package sudo-mode :no-require t :ensure nil
@@ -1067,7 +1075,23 @@ list)
         (setq auth-source '("~/.authinfo"))
 )
 
-(use-package forge :ensure t  :after magit)
+(use-package forge :ensure t  :after magit
+    :config
+    (defclass forge-gitlab-http-repository (forge-gitlab-repository)
+        ((issues-url-format         :initform "http://%h/%o/%n/issues")
+         (issue-url-format          :initform "http://%h/%o/%n/issues/%i")
+         (issue-post-url-format     :initform "http://%h/%o/%n/issues/%i#note_%I")
+         (pullreqs-url-format       :initform "http://%h/%o/%n/merge_requests")
+         (pullreq-url-format        :initform "http://%h/%o/%n/merge_requests/%i")
+         (pullreq-post-url-format   :initform "http://%h/%o/%n/merge_requests/%i#note_%I")
+         (commit-url-format         :initform "http://%h/%o/%n/commit/%r")
+         (branch-url-format         :initform "http://%h/%o/%n/commits/%r")
+         (remote-url-format         :initform "http://%h/%o/%n")
+         (create-issue-url-format   :initform "http://%h/%o/%n/issues/new")
+         (create-pullreq-url-format :initform "http://%h/%o/%n/merge_requests/new")
+         (pullreq-refspec :initform "+refs/merge-requests/*/head:refs/pullreqs/*")))
+    (add-to-list 'ghub-insecure-hosts "git.private.network.repo/api/v4")
+)
 
 (use-package evil-magit :ensure t :disabled
 :after (evil magit)
@@ -1091,6 +1115,21 @@ list)
 (use-package smeargle :ensure t 
 :commands smeagle
 )
+
+(use-package blamer :ensure t :defer t
+:custom
+    (blamer-view 'overlay)
+    (blamer-idle-time 0.3)
+    (blamer-min-offset 70)
+:custom-face
+    (blamer-face ((t :foreground "#7a88cf"
+                     :background nil
+                     :height 1.0
+                     :italic t)))
+:config 
+    (global-blamer-mode 1)
+)
+
 
 ;(use-package magit-delta :ensure t 
 ;:after magit
@@ -1527,10 +1566,11 @@ shell exits, the buffer is killed."
 
 (use-package emojify :ensure t 
 :if window-system
-:config (global-emojify-mode 1)
+:config 
         (setq emojify-display-style 'image)
-        (setq emojify-emoji-styles  '(unicode))
-        (setq emojify-emoji-set "emojione-v2.2.6")
+        ;(setq emojify-emoji-styles  '(unicode))
+        ;(setq emojify-emoji-set "emojione-v2.2.6")
+        (global-emojify-mode 1)
 )
 
 (use-package buffer-move :ensure t  :defer t
@@ -2506,7 +2546,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package go-gen-test :ensure t :after go-mode
-:ensure-system-package (gotests . "go get -u github.com/cweill/gotests/...")
+:ensure-system-package (gotests . "go install github.com/cweill/gotests/...@latest")
 )
 
 (use-package gotest :ensure t :after go-mode)
