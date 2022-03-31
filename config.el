@@ -137,10 +137,6 @@
 :config (set-frame-parameter nil 'alpha 0.95)
 )
 
-(use-package buffer-cleaner  :no-require t :ensure nil
-:general (leader "bc" #'clean-buffer-list)
-)
-
 ;(set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
 (set-variable 'cursor-type '(hbar . 10))
@@ -1578,7 +1574,8 @@ shell exits, the buffer is killed."
 )
 
 (use-package buffer-move :ensure t  :defer t
-:general (leader "b s" 'switch-to-buffer
+:general (leader "b c" #'clean-buffer-list
+                 "b s" 'switch-to-buffer
                  "b r" 'eval-buffer
                  "b h" 'buf-move-left
                  "b j" 'buf-move-down
@@ -2061,7 +2058,7 @@ shell exits, the buffer is killed."
         (lsp-ui-peek-enable t)
         (lsp-ui-flycheck-enable t)
         (lsp-ui-doc-enable t)
-        (lsp-ui-doc-frame-mode t)
+        ;(lsp-ui-doc-frame-mode t)
         (lsp-ui-doc-show-with-cursor t)
         (lsp-ui-sideline-enable t)
         (lsp-ui-sideline-show-hover nil)
