@@ -9,6 +9,7 @@
 (require 'use-package)
 ;(use-package use-package :ensure t)
 (use-package use-package-ensure-system-package :after use-package :ensure t)
+
 (use-package el-patch :ensure t)
 
 ;(toggle-debug-on-error)
@@ -244,6 +245,12 @@
 ;:commands (package-list-packages)
 ;:config (paradox-enable)
 ;)
+
+(use-package default-text-scale :ensure t :defer 1
+:config (default-text-scale-mode)
+        ;(if *is-wsl* (default-text-scale-increment 20))
+        (if *is-wsl* (default-text-scale-increment 45))
+)
 
 (use-package drag-stuff :ensure t  :defer t
 :after evil
@@ -572,19 +579,11 @@ list)
        ;(evil-collection-ivy-setup)
        ;(evil-collection-vterm-setup) 
        ;(evil-collection-wgrep-setup)
-       (evil-collection-forge-setup)
+       ;(evil-collection-forge-setup)
        (evil-collection-init)
 )
 
-(use-package buffer-zoom :no-require t :ensure nil
-:general (leader "tu" 'text-scale-increase
-                 "td" 'text-scale-decrease)
-)
 
-(use-package default-text-scale :ensure t
-:config (default-text-scale-mode)
-        (if *is-wsl* (default-text-scale-increment 20))
-)
 
 (use-package sudo-mode :no-require t :ensure nil
 :preface
@@ -1068,29 +1067,29 @@ list)
                             (start-process-shell-command command nil command)))
 )
 
-(use-package magit :ensure t 
+(use-package magit :ensure t :pin melpa
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
-        (setq auth-source '("~/.authinfo"))
+        ;(setq auth-source '("~/.authinfo"))
 )
 
 (use-package forge :ensure t  :after magit
     :config
-    (defclass forge-gitlab-http-repository (forge-gitlab-repository)
-        ((issues-url-format         :initform "http://%h/%o/%n/issues")
-         (issue-url-format          :initform "http://%h/%o/%n/issues/%i")
-         (issue-post-url-format     :initform "http://%h/%o/%n/issues/%i#note_%I")
-         (pullreqs-url-format       :initform "http://%h/%o/%n/merge_requests")
-         (pullreq-url-format        :initform "http://%h/%o/%n/merge_requests/%i")
-         (pullreq-post-url-format   :initform "http://%h/%o/%n/merge_requests/%i#note_%I")
-         (commit-url-format         :initform "http://%h/%o/%n/commit/%r")
-         (branch-url-format         :initform "http://%h/%o/%n/commits/%r")
-         (remote-url-format         :initform "http://%h/%o/%n")
-         (create-issue-url-format   :initform "http://%h/%o/%n/issues/new")
-         (create-pullreq-url-format :initform "http://%h/%o/%n/merge_requests/new")
-         (pullreq-refspec :initform "+refs/merge-requests/*/head:refs/pullreqs/*")))
-    (add-to-list 'ghub-insecure-hosts "git.private.network.repo/api/v4")
+    ;(defclass forge-gitlab-http-repository (forge-gitlab-repository)
+    ;    ((issues-url-format         :initform "http://%h/%o/%n/issues")
+    ;     (issue-url-format          :initform "http://%h/%o/%n/issues/%i")
+    ;     (issue-post-url-format     :initform "http://%h/%o/%n/issues/%i#note_%I")
+    ;     (pullreqs-url-format       :initform "http://%h/%o/%n/merge_requests")
+    ;     (pullreq-url-format        :initform "http://%h/%o/%n/merge_requests/%i")
+    ;     (pullreq-post-url-format   :initform "http://%h/%o/%n/merge_requests/%i#note_%I")
+    ;     (commit-url-format         :initform "http://%h/%o/%n/commit/%r")
+    ;     (branch-url-format         :initform "http://%h/%o/%n/commits/%r")
+    ;     (remote-url-format         :initform "http://%h/%o/%n")
+    ;     (create-issue-url-format   :initform "http://%h/%o/%n/issues/new")
+    ;     (create-pullreq-url-format :initform "http://%h/%o/%n/merge_requests/new")
+    ;     (pullreq-refspec :initform "+refs/merge-requests/*/head:refs/pullreqs/*")))
+    ;(add-to-list 'ghub-insecure-hosts "git.private.network.repo/api/v4")
 )
 
 (use-package evil-magit :ensure t :disabled
@@ -1121,12 +1120,13 @@ list)
     (blamer-view 'overlay)
     (blamer-idle-time 0.3)
     (blamer-min-offset 70)
+    (blamer-force-truncate-long-line t)
 :custom-face
     (blamer-face ((t :foreground "#7a88cf"
                      :background nil
                      :height 1.0
                      :italic t)))
-:config 
+    :config 
     (global-blamer-mode 1)
 )
 
@@ -1622,6 +1622,11 @@ shell exits, the buffer is killed."
         (setq org-roam-ui-update-on-save t)
         (setq org-roam-ui-open-on-start t)
 )
+
+(use-package buffer-zoom :no-require t :ensure nil
+:general (leader "tu" 'text-scale-increase
+                 "td" 'text-scale-decrease)
+)
 ;
 ;(use-package org-roam-server :ensure t  :after (org-roam)
 ;:commands org-roam-server-mode
@@ -1756,7 +1761,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package iedit :ensure t 
-:general (leader "fi" 'iedit-mode)
+:general (leader "ie" 'iedit-mode)
 )
 
 ; package testing 
@@ -2007,10 +2012,11 @@ shell exits, the buffer is killed."
 
 (use-package lsp-mode :ensure t ;:after exec-path-from-shell
 :commands lsp
-:general (leader "hh" '(lsp-execute-code-action :wk "wizard")
-                 "fd" '(lsp-find-definition     :wk "lsp define")
-                 "pp" '(xref-go-back            :wk "lsp pop"))
-
+:general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
+                 "pp" '(xref-go-back                    :wk "lsp pop")
+                 "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
+                 "fi" '(lsp-ui-peek-find-implementation :wk "lsp impl")
+                 "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :hook   (lsp-mode  . lsp-enable-which-key-integration)
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
@@ -2041,14 +2047,18 @@ shell exits, the buffer is killed."
 :general (leader "ld"  #'lsp-ui-doc-focus-frame
                  "lpr" #'lsp-ui-peek-find-references
                  "lpd" #'lsp-ui-peek-find-definitions
-                 "lpi" #'lsp-ui-peek-find-implementation)
+                 "lpi" #'lsp-ui-peek-find-implementation
+             )
+         (:keymaps 'lsp-ui-peek-mode-map
+                 "k"   #'lsp-ui-peek--select-prev
+                 "j"   #'lsp-ui-peek--select-next)
 :custom (scroll-margin 0)
         (lsp-headerline-breadcrumb-icons-enable t)
         (lsp-lens-enable nil)
         (lsp-ui-peek-enable t)
         (lsp-ui-flycheck-enable t)
         (lsp-ui-doc-enable t)
-        ;(lsp-ui-doc-frame-mode t)
+        (lsp-ui-doc-frame-mode t)
         (lsp-ui-doc-show-with-cursor t)
         (lsp-ui-sideline-enable t)
         (lsp-ui-sideline-show-hover nil)
@@ -2386,8 +2396,8 @@ shell exits, the buffer is killed."
 )
 
 (use-package lsp-haskell :ensure t :after haskell-mode
-:hook ((haskell-mode . (lambda () (require 'lsp-haskell) (lsp)))
-       (haskell-literate-mode . (lambda () (require 'lsp-haskell) (lsp))))
+:hook ((haskell-mode . (lambda () (lsp)))
+       (haskell-literate-mode . (lambda () (lsp))))
 )
 
 (use-package yaml-mode :ensure t 
