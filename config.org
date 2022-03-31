@@ -163,6 +163,10 @@
 :config (set-frame-parameter nil 'alpha 0.95)
 )
 
+(use-package buffer-cleaner  :no-require t :ensure nil
+:general (leader "bc" #'clean-buffer-list)
+)
+
 #+END_SRC
 ** Emacs 투명하게
 #+BEGIN_SRC elisp

@@ -137,6 +137,10 @@
 :config (set-frame-parameter nil 'alpha 0.95)
 )
 
+(use-package buffer-cleaner  :no-require t :ensure nil
+:general (leader "bc" #'clean-buffer-list)
+)
+
 ;(set-frame-parameter nil 'alpha 0.95)
 (setq compilation-window-height 15)
 (set-variable 'cursor-type '(hbar . 10))
@@ -579,7 +583,7 @@ list)
        ;(evil-collection-ivy-setup)
        ;(evil-collection-vterm-setup) 
        ;(evil-collection-wgrep-setup)
-       ;(evil-collection-forge-setup)
+       (evil-collection-forge-setup)
        (evil-collection-init)
 )
 
