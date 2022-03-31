@@ -2048,11 +2048,10 @@ shell exits, the buffer is killed."
 (use-package lsp-ui :ensure t 
 :commands lsp-ui-mode
 :after  lsp-mode
-:general (leader "ld"  #'lsp-ui-doc-focus-frame
+:general (leader ;"ld"  #'lsp-ui-doc-focus-frame
                  "lpr" #'lsp-ui-peek-find-references
                  "lpd" #'lsp-ui-peek-find-definitions
-                 "lpi" #'lsp-ui-peek-find-implementation
-             )
+                 "lpi" #'lsp-ui-peek-find-implementation)
          (:keymaps 'lsp-ui-peek-mode-map
                  "k"   #'lsp-ui-peek--select-prev
                  "j"   #'lsp-ui-peek--select-next)
