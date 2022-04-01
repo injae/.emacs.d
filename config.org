@@ -1217,6 +1217,8 @@ list)
 ; 현재 git repo의 homepage link를 clipboard에 넣어준다
 (use-package git-link :ensure t
 :general (leader "gh" 'git-link-homepage)
+:config  ;(setq git-link-use-single-line-number t)
+         (setf git-link-use-commit t)
 )
 
 (use-package magit-todos :ensure t  :after magit :disabled)
@@ -1237,8 +1239,6 @@ list)
                      :background nil
                      :height 1.0
                      :italic t)))
-    :config 
-    (global-blamer-mode 1)
 )
 
 
