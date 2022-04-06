@@ -1791,10 +1791,26 @@ shell exits, the buffer is killed."
 
 (use-package smeargle :ensure t )
 
-(use-package polymode :ensure t :no-require t
-:init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
+(use-package polymode :ensure t 
 :hook (polymode . centaur-tabs-mode-hook) 
+:init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
+:config
+    ; jetbrain golang lua mode
+    (define-hostmode poly-golang-lua-hostmode :mode 'go-mode)
+    (define-innermode poly-golang-lua-innermode
+        :mode 'lua-mode
+        :head-matcher "// language=lua\n.*`$"
+        :tail-matcher "^`$"
+        ;:mode-matcher (cons "")
+        :head-mode 'host
+        :tail-mode 'host
+        )
+    (define-polymode poly-golang-lua-mode
+        :hostmode   'poly-golang-lua-hostmode
+        :innermodes '(poly-golang-lua-innermode))
+    ; --
 )
+
 (use-package poly-org :ensure t
 :hook (org-mode . poly-org-mode)
       (poly-org-mode . git-gutter-mode)
@@ -2195,7 +2211,7 @@ shell exits, the buffer is killed."
       (setq dap-auto-configure-features '(sessions locals controls tooltip))
       (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
       ;(require 'dap-gdb-lldb) ; gdb mode
-      ;(require 'dap-go)
+      (require 'dap-go)
       (dap-mode 1)
   )
 
@@ -2758,18 +2774,6 @@ shell exits, the buffer is killed."
 (use-package lua-mode :ensure t
 :mode ("\\.lua\\'" . lua-mode)
 )
-
-;(use-package poly-mode :ensure t
-;    :config
-;    (define-auto-innermode poly-golang-lua-inner-mode
-;        :mode 'lua-mode
-;        :head-matcher "// language=lua\n"
-;        :tail-matcher "\`\n"
-;        ;:mode-matcher (cons "")
-;        :head-mode 'host
-;        :tail-mode 'host
-;        )
-;    )
 
 ; brew install rust base system command
 (use-package rust-system-command :no-require t :ensure nil
