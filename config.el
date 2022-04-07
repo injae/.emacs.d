@@ -249,7 +249,7 @@
 (use-package default-text-scale :ensure t :defer 1
 :config (default-text-scale-mode)
         ;(if *is-wsl* (default-text-scale-increment 20))
-        (if *is-wsl* (default-text-scale-increment 45))
+        ;(if *is-wsl* (default-text-scale-increment 45))
 )
 
 (use-package drag-stuff :ensure t  :defer t
@@ -2580,6 +2580,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package web-mode :ensure t 
+:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
 :commands (web-mode)
 :mode    (("\\.html?\\'"  . web-mode)
           ("\\.xhtml$\\'" . web-mode)

@@ -290,7 +290,7 @@
 (use-package default-text-scale :ensure t :defer 1
 :config (default-text-scale-mode)
         ;(if *is-wsl* (default-text-scale-increment 20))
-        (if *is-wsl* (default-text-scale-increment 45))
+        ;(if *is-wsl* (default-text-scale-increment 45))
 )
 #+END_SRC
 ** Move Text
@@ -2836,6 +2836,7 @@ shell exits, the buffer is killed."
 ** Web Mode
 #+BEGIN_SRC elisp
 (use-package web-mode :ensure t 
+:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
 :commands (web-mode)
 :mode    (("\\.html?\\'"  . web-mode)
           ("\\.xhtml$\\'" . web-mode)
