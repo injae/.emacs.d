@@ -246,7 +246,7 @@
 ;:config (paradox-enable)
 ;)
 
-(use-package default-text-scale :ensure t :defer 1
+(use-package default-text-scale :ensure t 
 :config (default-text-scale-mode)
         ;(if *is-wsl* (default-text-scale-increment 20))
         ;(if *is-wsl* (default-text-scale-increment 45))
@@ -1386,7 +1386,7 @@ list)
 (use-package docker-compose-mode :ensure t)
 
 (use-package exec-path-from-shell :ensure t 
-:if     (memq window-system '(mac ns x))
+;:if     (memq window-system '(mac ns x))
 :config (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "PATH")
 )
