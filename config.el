@@ -2052,6 +2052,7 @@ shell exits, the buffer is killed."
         (lsp-enable-snippet t)
 :config
     ;(lsp-mode)
+    (setq lsp-go-use-gofumpt t)
     ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-go-gopls-placeholders nil)
     ;(lsp-register-custom-settings '(("gopls.codelenses" t)
@@ -2548,11 +2549,14 @@ shell exits, the buffer is killed."
 
 (use-package go-mode :ensure t 
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
-                        (godef . "go install github.com/rogpeppe/godef@latest"))
+                        (godef . "go install github.com/rogpeppe/godef@latest")
+                        (gofumpt . "go install mvdan.cc/gofumpt@latest"))
              
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
 :config 
+    ;(setq gofmt-command "goimports-reviser")
+    ;(add-hook 'before-save-hook 'gofmt-before-save)
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
         (add-hook 'before-save-hook #'lsp-organize-imports))
