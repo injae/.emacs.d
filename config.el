@@ -1169,7 +1169,7 @@ list)
     (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
 )
 
-(use-package undo-fu-session :ensure t 
+(use-package undo-fu-session :ensure t :disabled
 :after undo-fu
 :custom (undo-fu-session-incompletiable-files '("/COMMENT_EDITMSG\\'" "/git-rebase-todo\\'"))
 :config (global-undo-fu-session-mode)
@@ -2366,6 +2366,9 @@ shell exits, the buffer is killed."
 )
 
 (use-package rustic :ensure t
+:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
+:mode ("\\.rs\\'" . rustic-mode)
+:general (leader "hrf" 'rust-format-buffer)
 :init
 (defun ij/rustic-mode-hook ()
     (when buffer-file-name (setq-local buffer-save-without-query t)))
@@ -2374,25 +2377,27 @@ shell exits, the buffer is killed."
     (setq lsp-eldoc-hook nil)
     (setq lsp-enable-symbol-highlighting nil)
     (setq lsp-signature-auto-activate nil)
-    (setq rustic-format-on-save t)
+    (setq lsp-rust-server 'rust-analyzer)
+    (setq lsp-rust-analyzer-cargo-watch-enable nil) ;; large project에서 cargo crate를 check하는것을 방지
+    ;(setq rustic-format-on-save t)
     (add-hook 'rustic-mode-hook 'ij/rustic-mode-hook)
 )
 
 
 
 
-(use-package rust-mode :ensure t 
-:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
-:mode ("\\.rs\\'" . rust-mode)
-:hook (rust-mode . lsp)
-:general (leader "hrf" 'rust-format-buffer)
-:config  (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
-         (setq lsp-rust-server 'rust-analyzer)
-         (setq lsp-rust-analyzer-cargo-watch-enable nil) ;; large project에서 cargo crate를 check하는것을 방지
-         ;(lsp-rust-analyzer-inlay-hints-mode t) ; display type hint 
-         ;(setq rust-format-on-save t)
-         ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
-)
+;(use-package rust-mode :ensure t 
+;:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
+;:mode ("\\.rs\\'" . rust-mode)
+;:hook (rust-mode . lsp)
+;:general (leader "hrf" 'rust-format-buffer)
+;:config  (setq lsp-rust-rls-command '("rustup", "run", "nightly", "rls"))
+;         (setq lsp-rust-server 'rust-analyzer)
+;         (setq lsp-rust-analyzer-cargo-watch-enable nil) ;; large project에서 cargo crate를 check하는것을 방지
+;         ;(lsp-rust-analyzer-inlay-hints-mode t) ; display type hint 
+;         ;(setq rust-format-on-save t)
+;         ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+;)
 
 (use-package flycheck-rust :ensure t 
 :after  (flycheck rust-mode)
