@@ -2127,14 +2127,30 @@ shell exits, the buffer is killed."
         ;(lsp-ui-sideline-show-diagnostics t)
 )
 
-(use-package cov :ensure t)
+(use-package cov :ensure t
+:config
+)
 
 (use-package editorconfig :ensure t)
-
 (use-package copilot :load-path "lisp/copilot" :after editorconfig
-:config (add-hook 'prog-mode-hook 'copilot-mode)
-       (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
-)
+ :config
+      (add-hook 'prog-mode-hook 'copilot-mode)
+      (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
+    (defun my-tab ()
+        (interactive)
+        (or (copilot-accept-completion)
+            (company-indent-or-complete-common nil)))
+
+        ; modify company-mode behaviors
+        (with-eval-after-load 'company
+        ; disable inline previews
+        (delq 'company-preview-if-just-one-frontend company-frontends)
+            ; enable tab completion
+            (define-key company-mode-map (kbd "<tab>") 'my-tab)
+            (define-key company-mode-map (kbd "TAB") 'my-tab)
+            (define-key company-active-map (kbd "<tab>") 'my-tab)
+            (define-key company-active-map (kbd "TAB") 'my-tab))
+    )
 
 (use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
 (use-package treemacs-evil :ensure t :after (treemacs evil))
@@ -2174,9 +2190,9 @@ shell exits, the buffer is killed."
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
 :general (leader  "hy"  '(:wk "Yasnippet")
-                 "hyl" 'company-yasnippet)
+                  "hyl" 'company-yasnippet)
 :config (yas-global-mode t)
-       (yas-reload-all t)
+        (yas-reload-all t)
 )
 
 (use-package yasnippet-snippets :ensure t  :after yasnippet :defer t)
