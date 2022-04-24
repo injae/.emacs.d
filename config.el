@@ -7,44 +7,83 @@
 ;;; #BEGIN_SRC emacs-lisp -> elisp
 
 (require 'use-package)
-;(use-package use-package :ensure t)
-(use-package use-package-ensure-system-package :after use-package :ensure t)
+  ;(use-package use-package :ensure t)
+  (use-package use-package-ensure-system-package :after use-package :ensure t)
 
-(use-package el-patch :ensure t)
+  (use-package el-patch :ensure t)
 
-;(toggle-debug-on-error)
-;(setq byte-compile-error-on-warn t)
+  ;(toggle-debug-on-error)
+  ;(setq byte-compile-error-on-warn t)
 
-(use-package async :ensure t
-:config (setq async-bytecomp-package-mode t)
-)
+  (use-package async :ensure t
+  :config (setq async-bytecomp-package-mode t)
+  )
 
-(use-package org :ensure t
-:mode ("\\.org\\'" . org-mode)
-;:preface
-;    (defun update-config ()
-;        (interactive)
-;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
-;    )
+  (use-package org :ensure t
+  :mode ("\\.org\\'" . org-mode)
+  ;:preface
+  ;    (defun update-config ()
+  ;        (interactive)
+  ;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
+  ;    )
 
-;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
-)
-(setq-default custom-file "~/.emacs.d/custom-variable.el")
-(when (file-exists-p custom-file) (load-file custom-file))
+  ;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+  )
+
+  (use-package org-modern :ensure t :disabled
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda))
+  :config
+  ;; Add frame borders and window dividers
+;modify-all-frames-parameters
+; '((right-divider-width . 40)
+;   (internal-border-width . 40)))
+;(dolist (face '(window-divider
+;                window-divider-first-pixel
+;                window-divider-last-pixel))
+;  (face-spec-reset-face face)
+;  (set-face-foreground face (face-attribute 'default :background)))
+;(set-face-background 'fringe (face-attribute 'default :background))
+
+  (setq
+   ;; Edit settings
+   org-auto-align-tags nil
+   org-tags-column 0
+   org-catch-invisible-edits 'show-and-error
+   org-special-ctrl-a/e t
+   org-insert-heading-respect-content t
+
+   ;; Org styling, hide markup etc.
+   org-hide-emphasis-markers t
+   org-pretty-entities t
+   org-ellipsis "…"
+
+   ;; Agenda styling
+   org-agenda-block-separator ?─
+   org-agenda-time-grid
+   '((daily today require-timed)
+     (800 1000 1200 1400 1600 1800 2000)
+     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+   org-agenda-current-time-string
+   "⭠ now ─────────────────────────────────────────────────")
+  )
+
+  (setq-default custom-file "~/.emacs.d/custom-variable.el")
+  (when (file-exists-p custom-file) (load-file custom-file))
 
 
-(setq-default private-config-file "~/.emacs.d/private/token.el")
-(when (file-exists-p private-config-file) (load-file private-config-file))
+  (setq-default private-config-file "~/.emacs.d/private/token.el")
+  (when (file-exists-p private-config-file) (load-file private-config-file))
 
-;(garbage-collect)
-;(put 'narrow-to-region 'disabled nil)
+  ;(garbage-collect)
+  ;(put 'narrow-to-region 'disabled nil)
 
-; for native comp
-(setq package-native-compile t)
-(setq comp-deferred-compilation t)
-(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
-;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
-;(native-compile-async "~/.emacs.d/")
+  ; for native comp
+  (setq package-native-compile t)
+  (setq comp-deferred-compilation t)
+  (setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
+  ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
+  ;(native-compile-async "~/.emacs.d/")
 
 (setq user-full-name "Injae Lee")
 (setq user-mail-address "8687lee@gmail.com")
@@ -54,9 +93,11 @@
 
 (use-package emacs-gc-setting :no-require t :ensure nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
-      (setq read-process-output-max (* 1024 1024))
+      (setq read-process-output-max (* 10
+24 1024))
       (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
+
 (use-package esup :ensure t)
 
 
@@ -251,6 +292,8 @@
         ;(if *is-wsl* (default-text-scale-increment 20))
         ;(if *is-wsl* (default-text-scale-increment 45))
 )
+
+(use-package textsize :load-path "lisp/textsize")
 
 (use-package drag-stuff :ensure t  :defer t
 :after evil
@@ -2084,6 +2127,15 @@ shell exits, the buffer is killed."
         ;(lsp-ui-sideline-show-diagnostics t)
 )
 
+(use-package cov :ensure t)
+
+(use-package editorconfig :ensure t)
+
+(use-package copilot :load-path "lisp/copilot" :after editorconfig
+:config (add-hook 'prog-mode-hook 'copilot-mode)
+       (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
+)
+
 (use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
 (use-package treemacs-evil :ensure t :after (treemacs evil))
 (use-package treemacs-projectile :ensure t :after (treemacs projectile))
@@ -2122,9 +2174,9 @@ shell exits, the buffer is killed."
 :after (company)
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
 :general (leader  "hy"  '(:wk "Yasnippet")
-                  "hyl" 'company-yasnippet)
+                 "hyl" 'company-yasnippet)
 :config (yas-global-mode t)
-        (yas-reload-all t)
+       (yas-reload-all t)
 )
 
 (use-package yasnippet-snippets :ensure t  :after yasnippet :defer t)

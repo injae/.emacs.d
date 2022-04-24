@@ -28,3 +28,9 @@
 [submodule "lisp/ligature"]
 	path = lisp/ligature
 	url = https://github.com/mickeynp/ligature.el.git
+[submodule "lisp/copilot"]
+	path = lisp/copilot
+	url = https://github.com/zerolfx/copilot.el.git
+[submodule "lisp/textsize"]
+	path = lisp/textsize
+	url = https://github.com/WJCFerguson/textsize.git
