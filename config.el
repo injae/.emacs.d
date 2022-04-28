@@ -206,6 +206,12 @@
     (global-so-long-mode 1)
 )
 
+;(use-package pixel-scoll-smooth :no-require t :ensure nil
+;;; default text parsing direction left -> right 
+;:if (version<= "29" emacs-version)
+;:config (pixel-scroll-precision-mode)
+;)
+
 ;; +------------+------------+
 ;; | 일이삼사오 | 일이삼사오 |
 ;; +------------+------------+
@@ -289,7 +295,7 @@
 
 (use-package default-text-scale :ensure t 
 :config (default-text-scale-mode)
-        ;(if *is-wsl* (default-text-scale-increment 20))
+        (if *is-wsl* (default-text-scale-increment 20))
         ;(if *is-wsl* (default-text-scale-increment 45))
 )
 
@@ -2132,35 +2138,32 @@ shell exits, the buffer is killed."
 )
 
 (use-package editorconfig :ensure t)
-(use-package copilot :load-path "lisp/copilot" :after editorconfig
+(use-package copilot :load-path "lisp/copilot" :after editorconfig :disabled
  :config
       (add-hook 'prog-mode-hook 'copilot-mode)
       (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
-    (defun my-tab ()
+    (defun copilot-complete ()
         (interactive)
         (or (copilot-accept-completion)
             (company-indent-or-complete-common nil)))
-
         ; modify company-mode behaviors
         (with-eval-after-load 'company
         ; disable inline previews
         (delq 'company-preview-if-just-one-frontend company-frontends)
             ; enable tab completion
-            (define-key company-mode-map (kbd "<tab>") 'my-tab)
-            (define-key company-mode-map (kbd "TAB") 'my-tab)
-            (define-key company-active-map (kbd "<tab>") 'my-tab)
-            (define-key company-active-map (kbd "TAB") 'my-tab))
+            (define-key company-mode-map   (kbd "<C-return>") 'copilot-complete)
+            (define-key company-active-map (kbd "<C-return>") 'copilot-complete)
     )
+)
 
 (use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
 (use-package treemacs-evil :ensure t :after (treemacs evil))
 (use-package treemacs-projectile :ensure t :after (treemacs projectile))
 
 (use-package flycheck :ensure t 
-:after  company
 :custom (flycheck-clang-language-standard "c++17")
 :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-        (global-flycheck-mode t)
+        (global-flycheck-mode)
 )
 
 (use-package flycheck-posframe :ensure t :after flycheck :disabled
