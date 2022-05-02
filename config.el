@@ -7,83 +7,72 @@
 ;;; #BEGIN_SRC emacs-lisp -> elisp
 
 (require 'use-package)
-  ;(use-package use-package :ensure t)
-  (use-package use-package-ensure-system-package :after use-package :ensure t)
+;(use-package use-package :ensure t)
+(use-package use-package-ensure-system-package :after use-package :ensure t)
 
-  (use-package el-patch :ensure t)
+(use-package el-patch :ensure t)
 
-  ;(toggle-debug-on-error)
-  ;(setq byte-compile-error-on-warn t)
+;(toggle-debug-on-error)
+;(setq byte-compile-error-on-warn t)
 
-  (use-package async :ensure t
-  :config (setq async-bytecomp-package-mode t)
-  )
+(use-package async :ensure t
+:config (setq async-bytecomp-package-mode t)
+)
 
-  (use-package org :ensure t
-  :mode ("\\.org\\'" . org-mode)
-  ;:preface
-  ;    (defun update-config ()
-  ;        (interactive)
-  ;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
-  ;    )
+(use-package org :ensure t
+:mode ("\\.org\\'" . org-mode)
+;:preface
+;    (defun update-config ()
+;        (interactive)
+;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
+;    )
 
-  ;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
-  )
+;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+)
 
-  (use-package org-modern :ensure t :disabled
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda))
-  :config
-  ;; Add frame borders and window dividers
-;modify-all-frames-parameters
-; '((right-divider-width . 40)
-;   (internal-border-width . 40)))
-;(dolist (face '(window-divider
-;                window-divider-first-pixel
-;                window-divider-last-pixel))
-;  (face-spec-reset-face face)
-;  (set-face-foreground face (face-attribute 'default :background)))
-;(set-face-background 'fringe (face-attribute 'default :background))
+(use-package org-modern :ensure t :disabled
+:hook ((org-mode . org-modern-mode)
+       (org-agenda-finalize . org-modern-agenda))
+:config
+    (setq
+        ;; Edit settings
+        org-auto-align-tags nil
+        org-tags-column 0
+        org-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
 
-  (setq
-   ;; Edit settings
-   org-auto-align-tags nil
-   org-tags-column 0
-   org-catch-invisible-edits 'show-and-error
-   org-special-ctrl-a/e t
-   org-insert-heading-respect-content t
+        ;; Org styling, hide markup etc.
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-ellipsis "…"
 
-   ;; Org styling, hide markup etc.
-   org-hide-emphasis-markers t
-   org-pretty-entities t
-   org-ellipsis "…"
+        ;; Agenda styling
+        org-agenda-block-separator ?─
+        org-agenda-time-grid
+        '((daily today require-timed)
+             (800 1000 1200 1400 1600 1800 2000)
+             " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        org-agenda-current-time-string
+        "⭠ now ─────────────────────────────────────────────────")
+)
 
-   ;; Agenda styling
-   org-agenda-block-separator ?─
-   org-agenda-time-grid
-   '((daily today require-timed)
-     (800 1000 1200 1400 1600 1800 2000)
-     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
-   org-agenda-current-time-string
-   "⭠ now ─────────────────────────────────────────────────")
-  )
-
-  (setq-default custom-file "~/.emacs.d/custom-variable.el")
-  (when (file-exists-p custom-file) (load-file custom-file))
+(setq-default custom-file "~/.emacs.d/custom-variable.el")
+(when (file-exists-p custom-file) (load-file custom-file))
 
 
-  (setq-default private-config-file "~/.emacs.d/private/token.el")
-  (when (file-exists-p private-config-file) (load-file private-config-file))
+(setq-default private-config-file "~/.emacs.d/private/token.el")
+(when (file-exists-p private-config-file) (load-file private-config-file))
 
-  ;(garbage-collect)
-  ;(put 'narrow-to-region 'disabled nil)
+;(garbage-collect)
+;(put 'narrow-to-region 'disabled nil)
 
-  ; for native comp
-  (setq package-native-compile t)
-  (setq comp-deferred-compilation t)
-  (setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
-  ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
-  ;(native-compile-async "~/.emacs.d/")
+; for native comp
+(setq package-native-compile t)
+(setq comp-deferred-compilation t)
+(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
+;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
+;(native-compile-async "~/.emacs.d/")
 
 (setq user-full-name "Injae Lee")
 (setq user-mail-address "8687lee@gmail.com")
@@ -93,8 +82,7 @@
 
 (use-package emacs-gc-setting :no-require t :ensure nil
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
-      (setq read-process-output-max (* 10
-24 1024))
+      (setq read-process-output-max (* 1024 1024))
       (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
 )
 
@@ -112,12 +100,12 @@
 (setq max-specpdl-size 32000)
 ;(setq debug-on-error t) ; debug option
 
-(setq *is-mac*     (eq system-type 'darwin))
-(setq *is-windows* (eq system-type 'windows-nt))
-(setq *is-cygwin*  (eq system-type 'cygwin))
-(setq *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
-(setq *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
-(setq *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
+(defvar *is-mac*     (eq system-type 'darwin))
+(defvar *is-windows* (eq system-type 'windows-nt))
+(defvar *is-cygwin*  (eq system-type 'cygwin))
+(defvar *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
+(defvar *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
+(defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
 (use-package scroll-bar :no-require t :ensure nil
 :if window-system
@@ -254,6 +242,7 @@
 ; Linux 내장 한글입력기 사용법
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
+
 (setq default-input-method "korean-hangul")
 (setq default-korean-keyboard 'korean-hangul)
 ;(global-set-key [S-SPC] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
@@ -263,14 +252,12 @@
 (global-set-key (kbd "<Hangul>") 'toggle-input-method)
 
 (use-package restart-emacs :ensure t)
-
-
 (defun launch-separate-emacs-in-terminal () (suspend-emacs "fg ; emacs -nw"))
 (defun launch-separate-emacs-under-x () (call-process "sh" nil nil nil "-c" "emacs &"))
 (defun -restart-emacs ()
-    (interactive)
     ;; We need the new emacs to be spawned after all kill-emacs-hooks
     ;; have been processed and there is nothing interesting left
+    (interactive)
     (let ((kill-emacs-hook (append kill-emacs-hook (list (if (display-graphic-p) #'launch-separate-emacs-under-x
                                                                                  #'launch-separate-emacs-in-terminal)))))
             (save-buffers-kill-emacs))
@@ -306,6 +293,7 @@
 ;(setq warning-minimum-level :error)
 
 ; large date blob read
+
 (setq read-process-output-max (* 1024 1024)) ; 1mb
   
 (defun new-buffer-save (name buffer-major-mode)
@@ -373,17 +361,15 @@
 (defun shuffle-list (list)
 "Randomly permute the elements of LIST.
 All permutations equally likely."
-(let ((i 0)
-j
-temp
-(len (length list)))
-    (while (< i len)
-    (setq j (+ i (random (- len i))))
-    (setq temp (nth i list))
-    (setcar (nthcdr i list) (nth j list))
-    (setcar (nthcdr j list) temp)
-    (setq i (1+ i))))
-list)
+(let ((i 0) j temp
+    (len (length list)))
+        (while (< i len)
+        (setq j (+ i (random (- len i))))
+        (setq temp (nth i list))
+        (setcar (nthcdr i list) (nth j list))
+        (setcar (nthcdr j list) temp)
+        (setq i (1+ i))))
+    list)
 
 (use-package modern-fringes :ensure t :defer t
 :config (modern-fringes-invert-arrows)
@@ -675,7 +661,7 @@ list)
     (set-face-foreground 'git-gutter:modified "#b18cce")
 )
 (use-package highlight-numbers :ensure t
-:config (highlight-numbers-mode t)
+:hook (prog-mode . highlight-numbers-mode)
 )
 
 (setq custom-safe-themes t)
@@ -711,6 +697,7 @@ list)
         (setq doom-modeline-major-mode-icon t)
         (setq doom-modeline-enable-word-count t)
         (setq doom-modeline-lsp t)
+
         (setq doom-modeline-current-window t)
         (setq doom-modeline-env-version t)
         (setq doom-modeline-env-enable-python t)
@@ -773,6 +760,7 @@ list)
 :config (electric-indent-mode nil)
 ;exclud mode
 ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
+
 )
 
 (use-package smart-tabs-mode :ensure t  :defer t :disabled
@@ -780,8 +768,7 @@ list)
 )
 
 (use-package highlight-indentation :ensure t
-;:hook   prog-mode
-;:config (highlight-indentation-mode)
+:hook   (prog-mode . highlight-indentation-mode)
 )
 
 (use-package highlight-indent-guides :ensure t :disabled
@@ -847,6 +834,7 @@ list)
 ;                 "plh" 'sp-forward-barf-sexp
 ;                 "phl" 'sp-backward-barf-sexp)
 :init (smartparens-global-mode)
+      (show-smartparens-global-mode)
 )
 ;elisp double quote problem fix setting
 (use-package smartparens-config :ensure smartparens)
@@ -939,7 +927,7 @@ list)
 ;:config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
-(use-package historian :ensure t :disabled
+(use-package historian :ensure t
 :after  (ivy)
 :config (historian-mode)
 )
@@ -2132,25 +2120,23 @@ shell exits, the buffer is killed."
 )
 
 (use-package editorconfig :ensure t)
-(use-package copilot :load-path "lisp/copilot" :after editorconfig
+(use-package copilot :load-path "lisp/copilot" :after editorconfig :disabled
  :config
       (add-hook 'prog-mode-hook 'copilot-mode)
       (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
-    (defun my-tab ()
+    (defun my-copilot-complete ()
         (interactive)
         (or (copilot-accept-completion)
             (company-indent-or-complete-common nil)))
-
         ; modify company-mode behaviors
         (with-eval-after-load 'company
         ; disable inline previews
         (delq 'company-preview-if-just-one-frontend company-frontends)
             ; enable tab completion
-            (define-key company-mode-map (kbd "<tab>") 'my-tab)
-            (define-key company-mode-map (kbd "TAB") 'my-tab)
-            (define-key company-active-map (kbd "<tab>") 'my-tab)
-            (define-key company-active-map (kbd "TAB") 'my-tab))
+            (define-key company-mode-map   (kbd "<C-tab>") 'my-copilot-complete)
+            (define-key company-active-map (kbd "<C-return>") 'my-copilot-complete)
     )
+)
 
 (use-package treemacs :ensure t :config (setq treemacs-resize-icons 22))
 (use-package treemacs-evil :ensure t :after (treemacs evil))
@@ -2221,31 +2207,11 @@ shell exits, the buffer is killed."
 :hook  ((c-mode c++-mode objc-mode cuda-mode c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :config
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-    (setq ccls-sem-highlight-method 'font-lock)
+    ;(setq ccls-sem-highlight-method 'font-lock)
     ;(ccls-use-default-rainbow-sem-highlight)
     (setq ccls-extra-init-params '(:client (:snippetSupport :json-false)))
     (setq ccls-executable "ccls")
     (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/" ))
-    ;(setq ccls-initialization-options '(:compilationDatabaseDirectory "build/"
-    ;                                       :clang (:extraArgs [
-    ;            "-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"
-    ;            "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-    ;            "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
-    ;            "-isystem /usr/local/opt/llvm/bin/../include/c++/v1"
-    ;            "-isystem /usr/local/Cellar/llvm/11.1.0_1/lib/clang/11.1.0/include"
-    ;                                    ;"-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"
-    ;                                                        ;"-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-    ;                                                        ;"-isystem /usr/local/opt/llvm/include/c++/v1"
-    ;                                                        ;"-isystem /usr/local/opt/llvm/lib/clang/11.1.0/include"
-    ;                                                        ;"-isystem /usr/local/Cellar/llvm/11.1.0/lib/clang/11.1.0/include"
-    ;                                                        ;"-std=c++17"
-    ;                                                        ;"-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1/"   
-    ;                                                       ;"-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
-    ;                                                       ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/"
-    ;                                                       ;"-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-    ;                                                         ]
-    ;                                               :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include")))
-    ;                                               ;:resourceDir "/usr/local/Cellar/llvm/11.1.0_1/bin/clang-11")))
 )
 
 (use-package cppm :no-require t :ensure nil
