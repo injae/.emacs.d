@@ -18,9 +18,7 @@
 (require 'use-package)
 ;(use-package use-package :ensure t)
 (use-package use-package-ensure-system-package :after use-package :ensure t)
-
 (use-package el-patch :ensure t)
-
 ;(toggle-debug-on-error)
 ;(setq byte-compile-error-on-warn t)
 
@@ -30,13 +28,6 @@
 
 (use-package org :ensure t
 :mode ("\\.org\\'" . org-mode)
-;:preface
-;    (defun update-config ()
-;        (interactive)
-;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
-;    )
-
-;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 
 (use-package org-modern :ensure t :disabled
@@ -75,11 +66,10 @@
 
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
-
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
-(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
+;(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
 #+END_SRC
@@ -96,7 +86,7 @@
 #+END_SRC
 ** Emacs Profiler
 #+BEGIN_SRC elisp
-(use-package emacs-gc-setting :no-require t :ensure nil
+(use-package emacs-gc-setting :no-require t
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
       (setq read-process-output-max (* 1024 1024))
       (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
@@ -132,7 +122,7 @@
 #+END_SRC
 ** Window Setting
 #+BEGIN_SRC elisp
-(use-package scroll-bar :no-require t :ensure nil
+(use-package scroll-bar :no-require t
 :if window-system
 :init (scroll-bar-mode -1)
 :config
@@ -140,22 +130,22 @@
     (setq scroll-conservatively 10000)
 )
 
-(use-package tool-bar :no-require t :ensure nil
+(use-package tool-bar :no-require t
 :if window-system
 :init (tool-bar-mode -1)
 )
 
-(use-package menu-bar :no-require t :ensure nil
+(use-package menu-bar :no-require t
 :if window-system
 :init (menu-bar-mode -1)
 )
 
-(use-package tooltip-mode :no-require t :ensure nil
+(use-package tooltip-mode :no-require t
 :if window-system
 :init (tooltip-mode -1)
 )
 
-(use-package mouse :no-require t :ensure nil
+(use-package mouse :no-require t
 :if window-system
 :init (xterm-mouse-mode)
 )
@@ -255,11 +245,18 @@
 
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
-;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 120)
-(set-face-attribute   'default            nil       :family "Fira Code" :height 120)
-(set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
-(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
-(setq face-font-rescale-alist '(("D2coding" . 1.17)))
+; NanumGothicCoding Setting
+(set-face-attribute   'default            nil       :family "Fira Code" :height 130)
+;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 130)
+(set-fontset-font nil 'hangul            (font-spec :family "NanumGothicCoding"  :pixelsize 17))
+(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "NanumGothicCoding"  :pixelsize 17))
+(setq face-font-rescale-alist '(("NanumGothicCoding" . 1.2)))
+
+; D2Coding Setting
+;(set-face-attribute   'default            nil       :family "Fira Code" :height 120)
+;(set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
+;(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
+;(setq face-font-rescale-alist '(("D2coding" . 1.17)))
 
 ;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 120)
 ;(setq face-font-rescale-alist '(("D2coding" . 1.03877)))
@@ -280,7 +277,6 @@
 ; Linux 내장 한글입력기 사용법
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
-
 (setq default-input-method "korean-hangul")
 (setq default-korean-keyboard 'korean-hangul)
 ;(global-set-key [S-SPC] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
@@ -327,7 +323,6 @@
 )
 
 (use-package textsize :load-path "lisp/textsize")
-
 #+END_SRC
 ** Move Text
 #+BEGIN_SRC elisp
@@ -378,6 +373,7 @@ https://www.gnu.org/software/emacs/manual/html_node/elisp/Warning-Basics.html
 ** Text Editing
 #+BEGIN_SRC elisp
 (use-package hungry-delete :ensure t :disabled
+
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
@@ -734,8 +730,9 @@ All permutations equally likely."
 :config
     (global-git-gutter-mode t)
     (setq-default display-line-numbers-width 3)
-    (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-    ;(global-display-line-numbers-mode t)
+    ;(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+    ;(add-hook 'org-mode-hook 'display-line-numbers-mode)
+    (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
@@ -822,7 +819,8 @@ All permutations equally likely."
 )
 (use-package fancy-battery :ensure t 
 :hook   (after-init . fancy-battery-mode)
-:config (fancy-battery-default-mode-line)
+:config (fancy-batt
+ery-default-mode-line)
         (setq fancy-battery-show-percentage t)
 )
 
@@ -875,7 +873,7 @@ All permutations equally likely."
     (setq highlight-indent-guides-method 'column)
 )
 
-(use-package indent4-mode :no-require t :ensure nil
+(use-package indent4-mode :no-require t 
 :preface
     (defun my-set-indent (n)
         (setq-default tab-width n)
@@ -915,7 +913,6 @@ All permutations equally likely."
 (use-package expand-region :ensure t 
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
-
 
 (use-package rainbow-delimiters :ensure t 
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode) 
@@ -1011,7 +1008,7 @@ All permutations equally likely."
 :config ;(setq ivy-posframe-height-alist '((t . 20)))
         (add-function :after after-focus-change-function (lambda () (posframe-delete-all)))
         (setq ivy-posframe-height-fixed t)
-        (setq ivy-posframe-width-fixed t)
+        (setq ivy-posframe-widtivy-posframe-height-fixedh-fixed t)
         (ivy-posframe-mode t)
 )
 
@@ -1062,7 +1059,8 @@ All permutations equally likely."
         (counsel-find-file-ignore-regexp ".ccls-cache/")
 :general (leader "fp" '(counsel-projectile-find-file-dwim   :wk "Search in Project")
                  "fG" '(counsel-projectile-rg               :wk "Grep in Project")
-                 "bS" '(counsel-projectile-switch-to-buffer :wk "Search Buffer in Project"))
+                 "bS" '(counsel-project
+ile-switch-to-buffer :wk "Search Buffer in Project"))
           
 :config (counsel-projectile-mode 1)
 
@@ -1166,7 +1164,7 @@ All permutations equally likely."
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
-(use-package eyebrowse :ensure t  :defer t
+(use-package eyebrowse :ensure t :defer t
 :init (eyebrowse-mode t)
 :general (leader "w;" 'eyebrowse-last-window-config
                  "w0" 'eyebrowse-close-window-config
@@ -1477,10 +1475,6 @@ All permutations equally likely."
         (shell      . t)
         (C          . t)))
 )
-;; 스펠체크 넘어가는 부분 설정
-(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 #+END_SRC
 ** Note
 #+BEGIN_SRC elisp
@@ -1505,7 +1499,7 @@ All permutations equally likely."
             ;(olivetti-mode 1)
             ;(typo-mode 1)
             (beacon-mode 0)
-            (display-line-numbers-mode 0)
+            (display-line-numbers-mode -1)
             (git-gutter-mode 0)
             (writeroom-mode 1))
         ;(olivetti-mode 0)
@@ -1551,7 +1545,7 @@ All permutations equally likely."
 #+END_SRC
 ** Shell
 #+BEGIN_SRC elisp
-(use-package exec-path-from-shell :ensure t 
+(use-package exec-path-from-shell :ensure t :defer 1
 ;:if     (memq window-system '(mac ns x))
 :config (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "PATH")
@@ -1625,7 +1619,7 @@ All permutations equally likely."
 )
 
 (use-package shell-pop :ensure t
-:custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) (display-line-numbers-mode -1))))
+:custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) )))
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)
 :general (leader "ut"'shell-pop)
@@ -1895,7 +1889,7 @@ shell exits, the buffer is killed."
                     (string-prefix-p "*pyright*" name)
                     (string-prefix-p "*pyright::stderr*" name)
                     (string-prefix-p "*Async-native-compile-log*" name)
-                    (string-prefix-p "config.org[emacs-lisp" name)
+                    (string-prefix-p "config.org[" name)
                     ;; Is not magit buffer.
                     (and (string-prefix-p "magit" name)
                         (not (file-name-extension name)))
@@ -1931,15 +1925,23 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Fly-spell
 #+BEGIN_SRC elisp
-(use-package flyspell :ensure t
+(use-package flyspell :ensure t :defer 1
 :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
                  "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
+:custom (ispell-dictionary   "en_US")
+        (ispell-program-name "aspell")
 :config
-    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-    (add-hook 'text-mode-hook 'flyspell-mode)
+    (global-flycheck-mode t)
+    ;(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+    ;(add-hook 'text-mode-hook 'flyspell-mode)
     (setq ispell-dictionary "en_US")
     (setq ispell-program-name "aspell")
     ;(setq ispell-program-name "hunspell")
+
+    ;; 스펠체크 넘어가는 부분 설정
+    (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 )
 
 (use-package flyspell-correct-ivy :ensure t  
@@ -2003,6 +2005,10 @@ shell exits, the buffer is killed."
 (use-package polymode :ensure t 
 :hook (polymode . centaur-tabs-mode-hook) 
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
+:custom (polymode-display-process-buffers nil)
+)
+
+(use-package poly-jetbrain-lua :no-require t :after polymode
 :config
     ; jetbrain golang lua mode
     (define-hostmode poly-golang-lua-hostmode :mode 'go-mode)
@@ -2019,6 +2025,8 @@ shell exits, the buffer is killed."
         :innermodes '(poly-golang-lua-innermode))
     ; --
 )
+
+
 
 (use-package poly-org :ensure t
 :hook (org-mode . poly-org-mode)
@@ -2189,7 +2197,7 @@ shell exits, the buffer is killed."
 )
 
 ; deep learning completion
-(use-package company-tabnine :ensure t
+(use-package company-tabnine :ensure t :disabled
 :after company
 :preface
     (setq company-tabnine--disable-next-transform nil)
@@ -2273,15 +2281,20 @@ shell exits, the buffer is killed."
         (make-backup-files nil)
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
+        (lsp-eldoc-render-all nil)
+        ;(lsp-completion-provider :capf)
+        (lsp-lens-enable t)
+        (lsp-enable-snippet t)
+
         (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-rust-analyzer-cargo-watch-command "clipy")
-        (lsp-eldoc-render-all t)
-        ;(lsp-completion-provider :capf)
-        (lsp-lens-enable nil)
-        (lsp-enable-snippet t)
 :config
     ;(lsp-mode)
+    (add-hook lsp-mode-hook #'lsp-enable-which-key-integration t)
     (setq lsp-go-use-gofumpt t)
+    (setq lsp-gopls-hover-kind "NoDocumentation")
+    (lsp-register-custom-settings
+        '(("gopls.staticcheck" t t)))
     ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-go-gopls-placeholders nil)
     ;(lsp-register-custom-settings '(("gopls.codelenses" t)
@@ -2304,7 +2317,6 @@ shell exits, the buffer is killed."
         (lsp-ui-peek-enable t)
         (lsp-ui-flycheck-enable t)
         (lsp-ui-doc-enable t)
-        ;(lsp-ui-doc-frame-mode t)
         (lsp-ui-doc-show-with-cursor t)
         (lsp-ui-sideline-enable t)
         (lsp-ui-sideline-show-hover nil)
@@ -2316,9 +2328,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Coverage 
 #+BEGIN_SRC elisp
-  (use-package cov :ensure t
-  :config
-  )
+  (use-package cov :ensure t)
 #+END_SRC
 ** Copilot
 #+BEGIN_SRC elisp
@@ -2494,19 +2504,6 @@ shell exits, the buffer is killed."
       (add-hook 'dap-terminated-hook 'my/hide-debug-windows)
       (add-hook 'dap-stopped-hook 'my/show-debug-windows)
   )
-
-;(use-package gdb-mi
-;:ensure (:host github :repo "weirdNox/emacs-gdb" :files ("*.el" "*.c" "*.h" "Makefile"))
-;:general (leader "de" 'gdb-executable
-;                "dn" 'gdb-next
-;                "di" 'gdb-step
-;                "df" 'gdb-finish)
-;:config (setq-default gdb-show-main t)
-;        (setq-default gdb-many-windows t)
-;        (fmakunbound 'gdb)
-;        (fmakunbound 'gdb-enable-debug)
-;)
-
 #+END_SRC
 ** Disassemble
 #+BEGIN_SRC elisp
@@ -2515,44 +2512,7 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Eldoc mode
 #+BEGIN_SRC elisp
-(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode)
-(use-package eldoc-rtags :no-require t :ensure nil :disabled
-:after (eldoc rtags)
-:preface
-    (defun fontify-string (str mode)
-        "Return STR fontified according to MODE."
-        (with-temp-buffer
-            (insert str)
-            (delay-mode-hooks (funcall mode))
-            (font-lock-default-function mode)
-            (font-lock-default-fontify-region
-            (point-min) (point-max) nil)
-            (buffer-string)
-        )
-    )
-
-    (defun rtags-eldoc-function ()
-        (let ((summary (rtags-get-summary-text)))
-            (and summary
-                (fontify-string
-                (replace-regexp-in-string
-                "{[^}]*$" ""
-                (mapconcat
-                    (lambda (str) (if (= 0 (length str)) "//" (string-trim str)))
-                    (split-string summary "\r?\n")
-                    " "))
-                major-mode))))
-
-    (defun rtags-eldoc-mode ()
-        "rtags eldoc extensions"
-        (interactive)
-        (setq-local eldoc-documentation-function #'rtags-eldoc-function)
-        (eldoc-mode 1)
-    )
-:config
-    (add-hook 'c-mode-hook   'rtags-eldoc-mode)
-    (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
-)
+(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode :disabled)
 #+END_SRC
 ** Lisp Mode
 #+BEGIN_SRC elisp
@@ -3350,6 +3310,9 @@ export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 # git clone https://github.com/tfutils/tfenv.git ~/.tfenv
 export PATH="$HOME/.tfenv/bin:$PATH"
 
+# emacs lsp-mode 
+export LISP_USE_PLISTS=true
+
 #+END_SRC
 ** Emacs Shift Space Setting
 #+BEGIN_SRC elisp
@@ -3405,7 +3368,7 @@ truncate_to_repo = false
 [github]
 	user = injae
 [filter "lfs"]
-	clean = git-lfs clean -- %f
+
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true

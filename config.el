@@ -9,9 +9,7 @@
 (require 'use-package)
 ;(use-package use-package :ensure t)
 (use-package use-package-ensure-system-package :after use-package :ensure t)
-
 (use-package el-patch :ensure t)
-
 ;(toggle-debug-on-error)
 ;(setq byte-compile-error-on-warn t)
 
@@ -21,13 +19,6 @@
 
 (use-package org :ensure t
 :mode ("\\.org\\'" . org-mode)
-;:preface
-;    (defun update-config ()
-;        (interactive)
-;        (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)
-;    )
-
-;:init (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 )
 
 (use-package org-modern :ensure t :disabled
@@ -66,11 +57,10 @@
 
 ;(garbage-collect)
 ;(put 'narrow-to-region 'disabled nil)
-
 ; for native comp
 (setq package-native-compile t)
 (setq comp-deferred-compilation t)
-(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
+;(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
 ;(setq comp-deferred-compilation-deny-list '("powerline" "poly-mode"))
 ;(native-compile-async "~/.emacs.d/")
 
@@ -223,11 +213,18 @@
 
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
-;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 120)
-(set-face-attribute   'default            nil       :family "Fira Code" :height 120)
-(set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
-(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
-(setq face-font-rescale-alist '(("D2coding" . 1.17)))
+; NanumGothicCoding Setting
+(set-face-attribute   'default            nil       :family "Fira Code" :height 130)
+;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 130)
+(set-fontset-font nil 'hangul            (font-spec :family "NanumGothicCoding"  :pixelsize 17))
+(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "NanumGothicCoding"  :pixelsize 17))
+(setq face-font-rescale-alist '(("NanumGothicCoding" . 1.2)))
+
+; D2Coding Setting
+;(set-face-attribute   'default            nil       :family "Fira Code" :height 120)
+;(set-fontset-font nil 'hangul            (font-spec :family "D2Coding"  :pixelsize 18))
+;(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "D2Coding"  :pixelsize 18))
+;(setq face-font-rescale-alist '(("D2coding" . 1.17)))
 
 ;(set-face-attribute   'default            nil       :family "FiraCode Nerd Font Mono" :height 120)
 ;(setq face-font-rescale-alist '(("D2coding" . 1.03877)))
@@ -659,8 +656,9 @@ All permutations equally likely."
 :config
     (global-git-gutter-mode t)
     (setq-default display-line-numbers-width 3)
-    (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-    ;(global-display-line-numbers-mode t)
+    ;(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+    ;(add-hook 'org-mode-hook 'display-line-numbers-mode)
+    (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
@@ -912,7 +910,7 @@ All permutations equally likely."
 :config ;(setq ivy-posframe-height-alist '((t . 20)))
         (add-function :after after-focus-change-function (lambda () (posframe-delete-all)))
         (setq ivy-posframe-height-fixed t)
-        (setq ivy-posframe-width-fixed t)
+        (setq ivy-posframe-widtivy-posframe-height-fixedh-fixed t)
         (ivy-posframe-mode t)
 )
 
@@ -1358,10 +1356,6 @@ All permutations equally likely."
         (shell      . t)
         (C          . t)))
 )
-;; 스펠체크 넘어가는 부분 설정
-(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 
 (use-package olivetti :ensure t 
 :commands (olivetti-mode)
@@ -1384,7 +1378,7 @@ All permutations equally likely."
             ;(olivetti-mode 1)
             ;(typo-mode 1)
             (beacon-mode 0)
-            (display-line-numbers-mode 0)
+            (display-line-numbers-mode -1)
             (git-gutter-mode 0)
             (writeroom-mode 1))
         ;(olivetti-mode 0)
@@ -1422,7 +1416,7 @@ All permutations equally likely."
 
 (use-package docker-compose-mode :ensure t)
 
-(use-package exec-path-from-shell :ensure t 
+(use-package exec-path-from-shell :ensure t :defer 1
 ;:if     (memq window-system '(mac ns x))
 :config (exec-path-from-shell-initialize)
         (exec-path-from-shell-copy-env "PATH")
@@ -1496,7 +1490,7 @@ All permutations equally likely."
 )
 
 (use-package shell-pop :ensure t
-:custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) (display-line-numbers-mode -1))))
+:custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) )))
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)
 :general (leader "ut"'shell-pop)
@@ -1746,7 +1740,7 @@ shell exits, the buffer is killed."
                     (string-prefix-p "*pyright*" name)
                     (string-prefix-p "*pyright::stderr*" name)
                     (string-prefix-p "*Async-native-compile-log*" name)
-                    (string-prefix-p "config.org[emacs-lisp" name)
+                    (string-prefix-p "config.org[" name)
                     ;; Is not magit buffer.
                     (and (string-prefix-p "magit" name)
                         (not (file-name-extension name)))
@@ -1773,15 +1767,23 @@ shell exits, the buffer is killed."
             :render (gts-buffer-render)))
 )
 
-(use-package flyspell :ensure t
+(use-package flyspell :ensure t :defer 1
 :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
                  "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
+:custom (ispell-dictionary   "en_US")
+        (ispell-program-name "aspell")
 :config
-    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-    (add-hook 'text-mode-hook 'flyspell-mode)
+    (global-flycheck-mode t)
+    ;(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+    ;(add-hook 'text-mode-hook 'flyspell-mode)
     (setq ispell-dictionary "en_US")
     (setq ispell-program-name "aspell")
     ;(setq ispell-program-name "hunspell")
+
+    ;; 스펠체크 넘어가는 부분 설정
+    (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 )
 
 (use-package flyspell-correct-ivy :ensure t  
@@ -1831,6 +1833,10 @@ shell exits, the buffer is killed."
 (use-package polymode :ensure t 
 :hook (polymode . centaur-tabs-mode-hook) 
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
+:custom (polymode-display-process-buffers nil)
+)
+
+(use-package poly-jetbrain-lua :no-require t :after polymode
 :config
     ; jetbrain golang lua mode
     (define-hostmode poly-golang-lua-hostmode :mode 'go-mode)
@@ -1847,6 +1853,8 @@ shell exits, the buffer is killed."
         :innermodes '(poly-golang-lua-innermode))
     ; --
 )
+
+
 
 (use-package poly-org :ensure t
 :hook (org-mode . poly-org-mode)
@@ -1999,7 +2007,7 @@ shell exits, the buffer is killed."
 )
 
 ; deep learning completion
-(use-package company-tabnine :ensure t
+(use-package company-tabnine :ensure t :disabled
 :after company
 :preface
     (setq company-tabnine--disable-next-transform nil)
@@ -2081,15 +2089,19 @@ shell exits, the buffer is killed."
         (make-backup-files nil)
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
+        (lsp-eldoc-render-all nil)
+        ;(lsp-completion-provider :capf)
+        (lsp-lens-enable t)
+        (lsp-enable-snippet t)
+
         (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-rust-analyzer-cargo-watch-command "clipy")
-        (lsp-eldoc-render-all t)
-        ;(lsp-completion-provider :capf)
-        (lsp-lens-enable nil)
-        (lsp-enable-snippet t)
 :config
     ;(lsp-mode)
     (setq lsp-go-use-gofumpt t)
+    (setq lsp-gopls-hover-kind "NoDocumentation")
+    (lsp-register-custom-settings
+        '(("gopls.staticcheck" t t)))
     ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-go-gopls-placeholders nil)
     ;(lsp-register-custom-settings '(("gopls.codelenses" t)
@@ -2236,110 +2248,61 @@ shell exits, the buffer is killed."
 )
 
 (use-package lsp-treemacs :ensure t 
-  :after (lsp-mode doom-modeline)
-  :config ;(setq lsp-metals-treeview-enable t)
-          ;(setq lsp-metals-treeview-show-when-views-received t)
-          (lsp-treemacs-sync-mode 1)
-  ) 
+:after (lsp-mode doom-modeline)
+:config ;(setq lsp-metals-treeview-enable t)
+        ;(setq lsp-metals-treeview-show-when-views-received t)
+        (lsp-treemacs-sync-mode 1)
+) 
 
-  (use-package dap-mode :ensure t 
-  :after lsp-mode
-  :commands (dap-debug)
-  :general (leader "dd" 'dap-debug)
-  ;:custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
-  :config
-      (setq dap-auto-configure-features '(sessions locals controls tooltip))
-      (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
-      ;(require 'dap-gdb-lldb) ; gdb mode
-      (require 'dap-go)
-      (dap-mode 1)
-  )
+(use-package dap-mode :ensure t 
+:after lsp-mode
+:commands (dap-debug)
+:general (leader "dd" 'dap-debug)
+;:custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
+:config
+    (setq dap-auto-configure-features '(sessions locals controls tooltip))
+    (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
+    ;(require 'dap-gdb-lldb) ; gdb mode
+    (require 'dap-go)
+    (dap-mode 1)
+)
 
-  (use-package dap-ui-setting :no-require t :ensure nil
-  :after dap-mode
-  :preface
-    (defun my/window-visible (b-name)
-        "Return whether B-NAME is visible."
-        (-> (-compose 'buffer-name 'window-buffer)
-            (-map (window-list))
-            (-contains? b-name)))
+(use-package dap-ui-setting :no-require t :ensure nil
+:after dap-mode
+:preface
+  (defun my/window-visible (b-name)
+      "Return whether B-NAME is visible."
+      (-> (-compose 'buffer-name 'window-buffer)
+          (-map (window-list))
+          (-contains? b-name)))
 
-    (defun my/show-debug-windows (session)
-        "Show debug windows."
-        (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
-            (save-excursion
-            ;; display locals
-            (unless (my/window-visible dap-ui--locals-buffer)
-                (dap-ui-locals))
-            ;; display sessions
-            (unless (my/window-visible dap-ui--sessions-buffer)
-                (dap-ui-sessions)))))
+  (defun my/show-debug-windows (session)
+      "Show debug windows."
+      (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
+          (save-excursion
+          ;; display locals
+          (unless (my/window-visible dap-ui--locals-buffer)
+              (dap-ui-locals))
+          ;; display sessions
+          (unless (my/window-visible dap-ui--sessions-buffer)
+              (dap-ui-sessions)))))
 
-    (defun my/hide-debug-windows (session)
-        "Hide debug windows when all debug sessions are dead."
-        (unless (-filter 'dap--session-running (dap--get-sessions))
-            (and (get-buffer dap-ui--sessions-buffer)
-                (kill-buffer dap-ui--sessions-buffer))
-            (and (get-buffer dap-ui--locals-buffer)
-                (kill-buffer dap-ui--locals-buffer))))
-  :config
-      (add-hook 'dap-terminated-hook 'my/hide-debug-windows)
-      (add-hook 'dap-stopped-hook 'my/show-debug-windows)
-  )
-
-;(use-package gdb-mi
-;:ensure (:host github :repo "weirdNox/emacs-gdb" :files ("*.el" "*.c" "*.h" "Makefile"))
-;:general (leader "de" 'gdb-executable
-;                "dn" 'gdb-next
-;                "di" 'gdb-step
-;                "df" 'gdb-finish)
-;:config (setq-default gdb-show-main t)
-;        (setq-default gdb-many-windows t)
-;        (fmakunbound 'gdb)
-;        (fmakunbound 'gdb-enable-debug)
-;)
+  (defun my/hide-debug-windows (session)
+      "Hide debug windows when all debug sessions are dead."
+      (unless (-filter 'dap--session-running (dap--get-sessions))
+          (and (get-buffer dap-ui--sessions-buffer)
+              (kill-buffer dap-ui--sessions-buffer))
+          (and (get-buffer dap-ui--locals-buffer)
+              (kill-buffer dap-ui--locals-buffer))))
+:config
+    (add-hook 'dap-terminated-hook 'my/hide-debug-windows)
+    (add-hook 'dap-stopped-hook 'my/show-debug-windows)
+)
 
 ; only c/c++
 (use-package disaster :ensure t  :commands disaster)
 
-(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode)
-(use-package eldoc-rtags :no-require t :ensure nil :disabled
-:after (eldoc rtags)
-:preface
-    (defun fontify-string (str mode)
-        "Return STR fontified according to MODE."
-        (with-temp-buffer
-            (insert str)
-            (delay-mode-hooks (funcall mode))
-            (font-lock-default-function mode)
-            (font-lock-default-fontify-region
-            (point-min) (point-max) nil)
-            (buffer-string)
-        )
-    )
-
-    (defun rtags-eldoc-function ()
-        (let ((summary (rtags-get-summary-text)))
-            (and summary
-                (fontify-string
-                (replace-regexp-in-string
-                "{[^}]*$" ""
-                (mapconcat
-                    (lambda (str) (if (= 0 (length str)) "//" (string-trim str)))
-                    (split-string summary "\r?\n")
-                    " "))
-                major-mode))))
-
-    (defun rtags-eldoc-mode ()
-        "rtags eldoc extensions"
-        (interactive)
-        (setq-local eldoc-documentation-function #'rtags-eldoc-function)
-        (eldoc-mode 1)
-    )
-:config
-    (add-hook 'c-mode-hook   'rtags-eldoc-mode)
-    (add-hook 'c++-mode-hook 'rtags-eldoc-mode)
-)
+(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode :disabled)
 
 (use-package emacs-lisp :no-require t :ensure nil
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
