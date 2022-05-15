@@ -70,7 +70,7 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/.emacs.d/private/")
 
-(use-package emacs-gc-setting :no-require t :ensure nil
+(use-package emacs-gc-setting :no-require t
 :init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
       (setq read-process-output-max (* 1024 1024))
       (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
@@ -97,7 +97,7 @@
 (defvar *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
 (defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
-(use-package scroll-bar :no-require t :ensure nil
+(use-package scroll-bar :no-require t
 :if window-system
 :init (scroll-bar-mode -1)
 :config
@@ -105,22 +105,22 @@
     (setq scroll-conservatively 10000)
 )
 
-(use-package tool-bar :no-require t :ensure nil
+(use-package tool-bar :no-require t
 :if window-system
 :init (tool-bar-mode -1)
 )
 
-(use-package menu-bar :no-require t :ensure nil
+(use-package menu-bar :no-require t
 :if window-system
 :init (menu-bar-mode -1)
 )
 
-(use-package tooltip-mode :no-require t :ensure nil
+(use-package tooltip-mode :no-require t
 :if window-system
 :init (tooltip-mode -1)
 )
 
-(use-package mouse :no-require t :ensure nil
+(use-package mouse :no-require t
 :if window-system
 :init (xterm-mouse-mode)
 )
@@ -245,7 +245,6 @@
 ; Linux 내장 한글입력기 사용법
 ; ~/.Xresources 만들고 그안에 Emacs*useXIM: false 입력
 ; 터미널에 xrdb ~/.Xresources 하고 xrdb -merge ~/.Xresources 하고 이맥스 다시키면 됨
-
 (setq default-input-method "korean-hangul")
 (setq default-korean-keyboard 'korean-hangul)
 ;(global-set-key [S-SPC] 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
@@ -322,6 +321,7 @@
 )
 
 (use-package hungry-delete :ensure t :disabled
+
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
@@ -494,7 +494,7 @@ All permutations equally likely."
 :config (global-evil-surround-mode 1)
 )
 
-(use-package evil-exchange :ensure t  :disabled
+(use-package evil-exchange :ensure t :disabled
 ; gx gx (gx로 선택한 영역 교환)
 :after evil
 :config (evil-exchange-install)
@@ -515,20 +515,6 @@ All permutations equally likely."
 ; move: m +{n}, delete: +{n},+{n}d, join: .,+{n}j glboal: g/{target}/{change}
 :config (evil-traces-use-diff-faces)
         (evil-traces-mode)
-)
-
-(use-package evil-mc :ensure t  :disabled
-:after evil
-:preface
-      (defun user-evil-mc-make-cursor-here ()
-          (evil-mc-pause-cursors)
-          (evil-mc-make-cursor-here))
-:general (leader "emh" #'evil-mc-make-cursors-here
-                 "ema" #'evil-mc-make-all-cursors
-                 "emp" #'evil-mc-pause-cursors
-                 "emr" #'evil-mc-resume-cursors
-                 "emu" #'evil-mc-undo-all-cursors)
-:config (global-evil-mc-mode 1)
 )
 
 (use-package evil-nerd-commenter :ensure t  :after evil
@@ -555,7 +541,6 @@ All permutations equally likely."
 
 
 (use-package evil-multiedit :ensure t :after evil)
-(use-package evil-iedit-state :ensure t  :after (evil iedit) :disabled)
 
 (use-package evil-matchit :ensure t 
 :after evil
@@ -569,11 +554,6 @@ All permutations equally likely."
 
 (use-package evil-escape :ensure t :disabled
 :config (setq-default evil-escape-key-sequence "jk")
-)
-
-(use-package evil-smartparens :ensure t :disabled
-:after (evil smartparens)
-:init (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 )
 
 (use-package evil-numbers :ensure t 
@@ -737,6 +717,7 @@ All permutations equally likely."
         (nyan-mode)
         (nyan-start-animation)
 )
+
 (use-package fancy-battery :ensure t 
 :hook   (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
@@ -764,30 +745,13 @@ All permutations equally likely."
 :config (electric-indent-mode nil)
 ;exclud mode
 ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
-
-)
-
-(use-package smart-tabs-mode :ensure t  :defer t :disabled
-:config (smart-tabs-insinuate 'c 'c++)
 )
 
 (use-package highlight-indentation :ensure t
-:hook   (prog-mode . highlight-indentation-mode)
+:hook (prog-mode . highlight-indentation-mode)
 )
 
-(use-package highlight-indent-guides :ensure t :disabled
-:hook (prog-mode text-mode)
-:config
-    (highlight-indent-guides-mode)
-    (setq highlight-indent-guides-delay 0)
-    (setq highlight-indent-guides-auto-enabled nil)
-    (set-face-background 'highlight-indent-guides-odd-face       "darkgray")
-    (set-face-background 'highlight-indent-guides-even-face      "dimgray")
-    (set-face-background 'highlight-indent-guides-character-face "dimgray")
-    (setq highlight-indent-guides-method 'column)
-)
-
-(use-package indent4-mode :no-require t :ensure nil
+(use-package indent4-mode :no-require t 
 :preface
     (defun my-set-indent (n)
         (setq-default tab-width n)
@@ -825,7 +789,6 @@ All permutations equally likely."
 (use-package expand-region :ensure t 
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
-
 
 (use-package rainbow-delimiters :ensure t 
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode) 
@@ -961,7 +924,8 @@ All permutations equally likely."
         (counsel-find-file-ignore-regexp ".ccls-cache/")
 :general (leader "fp" '(counsel-projectile-find-file-dwim   :wk "Search in Project")
                  "fG" '(counsel-projectile-rg               :wk "Grep in Project")
-                 "bS" '(counsel-projectile-switch-to-buffer :wk "Search Buffer in Project"))
+                 "bS" '(counsel-project
+ile-switch-to-buffer :wk "Search Buffer in Project"))
           
 :config (counsel-projectile-mode 1)
 
@@ -990,10 +954,6 @@ All permutations equally likely."
 :init (setq ivy-rich-path-style    'abbrev)
       (setq ivy-virtual-abbreviate 'full)
 :config (ivy-rich-mode 1)
-)
-
-(use-package ivy-prescient :ensure t :disabled
-:after (ivy prescient)
 )
 
 (use-package smex :ensure t 
@@ -1055,7 +1015,7 @@ All permutations equally likely."
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
-(use-package eyebrowse :ensure t  :defer t
+(use-package eyebrowse :ensure t :defer t
 :init (eyebrowse-mode t)
 :general (leader "w;" 'eyebrowse-last-window-config
                  "w0" 'eyebrowse-close-window-config
@@ -1069,38 +1029,6 @@ All permutations equally likely."
 )
 
 (use-package window-purpose :ensure t  :disabled)
-
-(use-package exwm :ensure t  :disabled
-:if window-system
-:commands (exwm-init)
-:config
-    (use-package exwm-config
-    :init (exwm-config-default))
-    (setq exwm-workspace-number 0)
-    (exwm-input-set-key (kbd "s-h") 'windmove-left)
-    (exwm-input-set-key (kbd "s-j") 'windmove-down)
-    (exwm-input-set-key (kbd "s-k") 'windmove-up)
-    (exwm-input-set-key (kbd "s-l") 'windmove-right)
-    (exwm-input-set-key (kbd "s-s") 'split-window-right)
-    (exwm-input-set-key (kbd "s-v") 'split-window-vertically)
-    (exwm-input-set-key (kbd "s-d") 'delete-window)
-    (exwm-input-set-key (kbd "s-q") '(lambda () (interactive) (kill-buffer (current-buffer))))
-    (exwm-input-set-key (kbd "s-e") 'exwm-exit)
-    (advice-add 'split-window-right :after 'windmove-right)
-    (advice-add 'split-window-vertically :after 'windmove-down)
-
-    ;; 's-N': Switch to certain workspace
-    (dotimes (i 10)
-        (exwm-input-set-key (kbd (format "s-%d" i))
-                            `(lambda ()
-                            (interactive)
-                            (exwm-workspace-switch-create ,i))))
-    ;; 's-r': Launch application
-    (exwm-input-set-key (kbd "s-r")
-                        (lambda (command)
-                            (interactive (list (read-shell-command "$ ")))
-                            (start-process-shell-command command nil command)))
-)
 
 (use-package magit :ensure t :pin melpa
 :commands magit-status
@@ -1127,16 +1055,12 @@ All permutations equally likely."
     ;(add-to-list 'ghub-insecure-hosts "git.private.network.repo/api/v4")
 )
 
-(use-package evil-magit :ensure t :disabled
-:after (evil magit)
-:config  (evil-magit-init)
-)
-
 (use-package git-messenger :ensure t
 :commands git-messenger:popup-message
 :general (leader "gm" 'git-messenger:popup-message)
 :config (setq git-messenger:use-magit-popup t)
 )
+
 
 ; 현재 git repo의 homepage link를 clipboard에 넣어준다
 (use-package git-link :ensure t
@@ -1144,8 +1068,6 @@ All permutations equally likely."
 :config  ;(setq git-link-use-single-line-number t)
          (setf git-link-use-commit t)
 )
-
-(use-package magit-todos :ensure t  :after magit :disabled)
 
 ;; git history view mode
 (use-package smeargle :ensure t 
@@ -1165,17 +1087,6 @@ All permutations equally likely."
                      :italic t)))
 )
 
-
-;(use-package magit-delta :ensure t 
-;:after magit
-;:ensure-system-package 
-;    :config
-;    )
-
-;(use-package gitignore-mode :ensure t  :commands gitignore-mode)
-;(use-package gitconfig-mode :ensure t  :commands gitconfig-mode)
-;(use-package gitattributes-mode :ensure t  :commands gitattributes-mode)
-
 (use-package evil-ediff :ensure t 
 :after evil
 :config (evil-ediff-init)
@@ -1193,30 +1104,6 @@ All permutations equally likely."
 :config
     (global-undo-tree-mode)
 )
-
-(use-package undo-fu :ensure t :disabled
-:after evil
-:general (leader "uu" 'undo-fu-only-undo
-                 "ur" 'undo-fu-only-redo)
-:config
-    ;(global-undo-tree-mode -1) ; evil-mode auto call undo-tree-mode
-    (evil-define-key 'normal 'global "u"         #'undo-fu-only-undo)
-    (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
-)
-
-(use-package undo-fu-session :ensure t :disabled
-:after undo-fu
-:custom (undo-fu-session-incompletiable-files '("/COMMENT_EDITMSG\\'" "/git-rebase-todo\\'"))
-:config (global-undo-fu-session-mode)
-)
-
-;(use-package undo-propose :ensure t 
-;:after evil
-;:commands undo-propose
-;:init   (evil-define-key 'normal 'global (kbd "C-r") #'undo-propose)
-;        (evil-define-key 'normal 'global "u" #'undo-only)
-;:config (global-undo-tree-mode -1)
-;)
 
 (use-package org
 :general (leader "oa" 'org-agenda
@@ -1338,6 +1225,7 @@ All permutations equally likely."
 :commands cfw:open-calendar-buffer
 :config (use-package calfw-org :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp)))
 )
+
 (use-package calfw-gcal :ensure t  :disabled
 :init (require 'calfw-gcal))
 
@@ -1346,15 +1234,15 @@ All permutations equally likely."
 :config (org-babel-do-load-languages 'org-babel-load-languages '((restclient . t)))
 )
 
-(use-package org-babel :no-require t :ensure nil
+(use-package org-babel :no-require t
 :after org
 :config (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((emacs-lisp . t)
-        (python     . t)
-        (org        . t)
-        (shell      . t)
-        (C          . t)))
+            'org-babel-load-languages
+            '((emacs-lisp . t)
+              (python     . t)
+              (org        . t)
+              (shell      . t)
+              (C          . t)))
 )
 
 (use-package olivetti :ensure t 
@@ -1434,39 +1322,12 @@ All permutations equally likely."
         (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
 )
 
-;:preface
-;  (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
-;    (if (equal major-mode 'vterm-mode)
-;        (let ((inhibit-read-only t)
-;                (yank-undo-function (lambda (_start _end) (vterm-undo))))
-;            (cl-letf (((symbol-function 'insert-for-yank)
-;                (lambda (str) (vterm-send-string str t))))
-;                (apply orig-fun args)))
-;        (apply orig-fun args)))
-;    (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
-
-(use-package vterm-toggle :ensure t :disabled
-:general (leader "ut" '(vterm-toggle    :wk "toggle vterm buffer")
-                 "tc" '(vterm-toggle-cd :wk "cd current dicectory")
-                 "tn" '(vterm           :ew "open new vterm"))
-:config (setq vterm-toggle-fullscreen-p nil)
-        (setq vterm-toggle-project-root t)
-        ;(setq vterm-toggle-cd-auto-create-buffer nil)
-        (define-key vterm-toggle-map [(control return) #'vterm-toggle-insert-cd])
-        (add-to-list 'display-buffer-alist
-                     '((lambda(bufname _) (with-current-buffer bufname (equal major-mode 'vterm-mode)))
-                                     (display-buffer-reuse-window display-buffer-in-direction)
-                                     (direction . bottom)
-                                     (reusable-frames . visible)
-                                     (window-height . 0.3)))
-       ;(add-hook 'counsel-tramp-post-command-hook (lambda () (vterm-toggle-cd)))
-)
 
 (use-package multi-vterm :ensure t 
 :general (leader "tn" 'multi-vterm :wk "new terminal")
 )
 
-(use-package vterm-with-centaur-tab :no-require t :ensure nil
+(use-package vterm-with-centaur-tab :no-require t
 :after (vterm-toggle centaur-tabs)
 :preface (defun vmacs-awesome-tab-buffer-groups ()
           "`vmacs-awesome-tab-buffer-groups' control buffers' group rules. "
@@ -1497,11 +1358,11 @@ All permutations equally likely."
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package with-editor :ensure t :disabled
+(use-package with-editor :ensure t
 :hook ((shell-mode term-exec eshll-mode vterm-mode) . with-editor-export-editor)
 )
 
-(use-package vterm-command :no-require t :ensure nil
+(use-package vterm-command :no-require t
 :after (vterm)
 :preface
 (defun run-in-vterm-kill (process event)
@@ -1582,17 +1443,6 @@ shell exits, the buffer is killed."
                                           (eshell/alias "pk" "eshell-up-peek $1")))
 )
 
-;(use-package execute-shell :no-require t :ensure nil
-;:after eshell
-;:preface
-;(defun background-shell-command (command)
-;    "run shell commmand background"
-;    (interactive "sShell Command : ")
-;    (call-process-shell-command "command" nil 0))
-;:config (add-to-list 'display-buffer-alist
-;        (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
-;)
-
 (use-package command-log-mode :ensure t  :defer t)
 
 (use-package emojify :ensure t 
@@ -1623,13 +1473,6 @@ shell exits, the buffer is killed."
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
 )
 
-(use-package ibuffer-projectile :ensure t  :disabled
-:after (projectile)
-:init  (add-hook 'ibuffer-hook (lambda () (ibuffer-projectile-set-filter-groups)
-                                     (unless (eq ibuffer-sorting-mode 'alphabetic)
-                                             (ibuffer-do-sort-by-alphabetic))))
-)
-
 (use-package org-roam :ensure t :disabled
 :custom  (org-roam-dailies-directory "journals/")
 :general (leader "of" '(org-roam-node-find :wk "Note"))
@@ -1655,7 +1498,7 @@ shell exits, the buffer is killed."
         (setq org-roam-ui-open-on-start t)
 )
 
-(use-package buffer-zoom :no-require t :ensure nil
+(use-package buffer-zoom :no-require t 
 :general (leader "tu" 'text-scale-increase
                  "td" 'text-scale-decrease)
 )
@@ -1674,10 +1517,10 @@ shell exits, the buffer is killed."
 ;          org-roam-server-network-label-wrap-length 20)
 ;)
 
-;(use-package dash :ensure t  :defer t
-;:init (global-dash-fontify-mode t)
-;)
-;(use-package dash-functional :ensure t :after dash)
+(use-package dash :ensure t  :defer t
+:init (global-dash-fontify-mode t)
+)
+(use-package dash-functional :ensure t :after dash)
 
 (use-package ialign :ensure t  :defer t
 :general (leader "ta" 'ialign))
@@ -1912,35 +1755,6 @@ shell exits, the buffer is killed."
 :commands (alert)
 :init (setq alert-default-style 'notifier))
 
-(use-package eaf :load-path "~/.emacs.d/site-lisp/emacs-application-framework" :disabled
-    :custom
-    ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
-    (eaf-browser-continue-where-left-off t)
-    (eaf-browser-enable-adblocker t)
-    (browse-url-browser-function 'eaf-open-browser)
-    :config
-    (require 'eaf-browser)
-    (require 'eaf-pdf-viewer)
-    (defalias 'browse-web #'eaf-open-browser)
-    ;(eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
-    (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding)
-    ;(eaf-bind-key take_photo "p" eaf-camera-keybinding)
-    (eaf-bind-key nil "M-q" eaf-browser-keybinding)
-
-    (require 'eaf-evil)
-    (define-key key-translation-map (kbd "SPC")
-        (lambda (prompt)
-        (if (derived-mode-p 'eaf-mode)
-            (pcase eaf--buffer-app-name
-                ("browser" (if  (string= (eaf-call-sync "call_function" eaf--buffer-id "is_focus") "True")
-                            (kbd "SPC")
-                            (kbd eaf-evil-leader-key)))
-                ("pdf-viewer" (kbd eaf-evil-leader-key))
-                ("image-viewer" (kbd eaf-evil-leader-key))
-                (_  (kbd "SPC")))
-            (kbd "SPC"))))
-) ;; unbind, see more in the Wiki
-
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :ensure t 
 :init (global-company-mode 1)
@@ -1956,27 +1770,6 @@ shell exits, the buffer is killed."
     ;(add-to-list 'company-backends #'company-capf)
 )
 
-(use-package company-quickhelp :ensure t :disabled
-:unless (featurep 'lsp)
-:general (:keymaps 'company-active-map "C-c h"  'company-quickhelp-manual-begin)
-:custom (company-quickhelp-delay nil)
-:config (company-quickhelp-mode)
-)
-
-(use-package company-prescient :ensure t :disabled
-:after (prescient company)
-)
-
-(use-package company-dict :ensure t  :disabled
-:after company
-:custom (company-dict-dir (concat user-emacs-directory "dict/"))
-        (company-dict-enable-yasnippet t)
-        (company-dict-enable-fuzzy t)
-:config (add-to-list 'company-backends 'company-dict)
-        (define-key evil-insert-state-map (kbd "C-x C-k") 'company-dict)
-        (setq company-dict-minor-mode-list t)
-)
-
 
 (use-package company-statistics :ensure t 
 :after company
@@ -1989,48 +1782,11 @@ shell exits, the buffer is killed."
 :config (company-posframe-mode 1)
 )
 
-(use-package company-flx :ensure t :disabled
-:after company
-:config (company-flx-mode 1)
-)
-
 (use-package company-suggest :ensure t
 :config (setq company-suggest-complete-sentence t)
         (add-to-list 'company-backend 'company-suggest-google)
 )
 
-(use-package company-fuzzy :ensure t :disabled
-:after company
-:config (company-fuzzy-mode)
-        (setq company-fuzzy-sorting-backend 'flx)
-        ;(setq company-fuzzy-prefix-ontop t)
-)
-
-; deep learning completion
-(use-package company-tabnine :ensure t :disabled
-:after company
-:preface
-    (setq company-tabnine--disable-next-transform nil)
-    (defun my-company--transform-candidates (func &rest args)
-    (if (not company-tabnine--disable-next-transform)
-        (apply func args)
-        (setq company-tabnine--disable-next-transform nil)
-        (car args)))
-
-    (defun my-company-tabnine (func &rest args)
-    (when (eq (car args) 'candidates)
-        (setq company-tabnine--disable-next-transform t))
-    (apply func args))
-
-    (advice-add #'company--transform-candidates :around #'my-company--transform-candidates)
-    (advice-add #'company-tabnine :around #'my-company-tabnine)
-:init
-    (setq +lsp-company-backend '(company-lsp :with company-tabnine :separate))
-:config
-    ;(add-to-list 'company-backends #'company-tabnine)
-    (setq company-tabnine-annotations t)
-    (setq company-tabnine-always-trigger nil)
-)
 
 (use-package company-box :ensure t :diminish ""
 :after company-mode
@@ -2077,6 +1833,7 @@ shell exits, the buffer is killed."
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
                  "pp" '(xref-go-back                    :wk "lsp pop")
                  "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
+
                  "fi" '(lsp-ui-peek-find-implementation :wk "lsp impl")
                  "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :hook   (lsp-mode  . lsp-enable-which-key-integration)
@@ -2124,7 +1881,6 @@ shell exits, the buffer is killed."
         (lsp-ui-peek-enable t)
         (lsp-ui-flycheck-enable t)
         (lsp-ui-doc-enable t)
-        ;(lsp-ui-doc-frame-mode t)
         (lsp-ui-doc-show-with-cursor t)
         (lsp-ui-sideline-enable t)
         (lsp-ui-sideline-show-hover nil)
@@ -2133,9 +1889,7 @@ shell exits, the buffer is killed."
         ;(lsp-ui-sideline-show-diagnostics t)
 )
 
-(use-package cov :ensure t
-:config
-)
+(use-package cov :ensure t)
 
 (use-package editorconfig :ensure t)
 (use-package copilot :load-path "lisp/copilot" :after editorconfig :disabled
@@ -2164,28 +1918,6 @@ shell exits, the buffer is killed."
 :custom (flycheck-clang-language-standard "c++17")
 :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode)
-)
-
-(use-package flycheck-posframe :ensure t :after flycheck :disabled
-:config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode)
-        (flycheck-posframe-configure-pretty-defaults)
-)
-
-(use-package quick-peek :ensure t  :after flycheck :disabled)
-
-(use-package flycheck-inline :ensure t  :disabled
-:if (not (featurep 'lsp))
-:after (flycheck quick-peek)
-:config
-    (setq flycheck-inline-display-function
-        (lambda (msg pos)
-            (let* ((ov (quick-peek-overlay-ensure-at pos))
-                (contents (quick-peek-overlay-contents ov)))
-            (setf (quick-peek-overlay-contents ov)
-                    (concat contents (when contents "\n") msg))
-            (quick-peek-update ov)))
-        flycheck-inline-clear-function #'quick-peek-hide)
-    (global-flycheck-inline-mode)
 )
 
 (use-package yasnippet :ensure t  
@@ -2231,7 +1963,7 @@ shell exits, the buffer is killed."
     (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/" ))
 )
 
-(use-package cppm :no-require t :ensure nil
+(use-package cppm :no-require t
 :after c++-mode
 :general (leader "hcb" (lambda () (eshell-command "cppm build"))
                  "hcr" (lambda () (eshell-command "cppm run  ")))
@@ -2267,7 +1999,7 @@ shell exits, the buffer is killed."
     (dap-mode 1)
 )
 
-(use-package dap-ui-setting :no-require t :ensure nil
+(use-package dap-ui-setting :no-require t
 :after dap-mode
 :preface
   (defun my/window-visible (b-name)
@@ -2302,9 +2034,9 @@ shell exits, the buffer is killed."
 ; only c/c++
 (use-package disaster :ensure t  :commands disaster)
 
-(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode :disabled)
+(use-package eldoc :ensure t  :diminish eldoc-mode :commands eldoc-mode)
 
-(use-package emacs-lisp :no-require t :ensure nil
+(use-package emacs-lisp :no-require t
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
 )
 
@@ -2325,37 +2057,12 @@ shell exits, the buffer is killed."
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
 
-(use-package prettify-symbols :no-require t :ensure nil
+(use-package prettify-symbols :no-require t
 :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode)
 )
 
-(use-package paredit :ensure t  :disabled
-:init
-(add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-;; enable in the *scratch* buffer
-(add-hook 'lisp-interaction-mode-hook #'paredit-mode)
-(add-hook 'ielm-mode-hook #'paredit-mode)
-(add-hook 'lisp-mode-hook #'paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
-(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
-)
-
-(use-package parinfer :ensure t  :disabled
-:after (evil)
-:general ("C-,"  'parinfer-toggle-mode)
-:hook (emacs-lisp-mode common-lisp-mode lisp-mode)
-:init 
-;(add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
-;(add-hook 'common-lisp-mode-hook #'parinfer-mode)
-;(add-hook 'lisp-mode-hook        #'parinfer-mode)
-;(add-hook 'clojure-mode-hook     #'parinfer-mode)
-;(add-hook 'scheme-mode-hook      #'parinfer-mode)
-:config
-(setq parinfer-extensions '(defaults evil paredit pretty-parens)) ;lispy smart-tab smart-yank
-)
-
 (use-package tree-sitter :ensure t :disabled
-:config ;(tree-sitter-hl-mode)
+:config (tree-sitter-hl-mode)
         (global-tree-sitter-mode)
 )
 (use-package tree-sitter-langs :ensure t :after tree-sitter)
@@ -2464,15 +2171,6 @@ shell exits, the buffer is killed."
 :general (leader "hmr" 'gh-md-render-buffer)
 )
 
-(use-package easy-jekyll :ensure t :disabled
-:commands easy-jekyll
-:config (setq easy-jekyll-basedir "~/dev/blog/")
-        (setq easy-jekyll-url "https://injae.github.io")
-        (setq easy-jekyll-sshdomain "blogdomain")
-        (setq easy-jekyll-root "/")
-        (setq easy-jekyll-previewtime "300")
-)
-
 (use-package python-mode :ensure t
 :mode (("\\.py\\'" . python-mode)
        ("\\.wsgi$" . python-mode))
@@ -2480,34 +2178,6 @@ shell exits, the buffer is killed."
 :ensure-system-package (;(pyenv . "")
                         (pipenv . "pip install pipenv"))
 :custom (python-indent-offset 4)
-)
-
-(use-package pyvenv :ensure t 
-:after  python-mode
-:hook   (python-mode . pyvenv-mode)
-;:init   (setenv "WORKON_HOME" "~/.pyenv/versions")
-:config (pyvenv-tracking-mode)
-)
-
-(use-package pyenv-mode :ensure t :disabled
-:after (python-mode projectile)
-:hook (python-mode . pyenv-mode)
-:preface
-    (defun projectile-pyenv-mode-set ()
-        "Set pyenv version matching project name."
-        (let ((project (projectile-project-name)))
-            (if (member project (pyenv-mode-versions))
-                (pyenv-mode-set project)
-                (pyenv-mode-unset)
-            )
-        )
-    )
-:config (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
-)
-(use-package pyenv-mode-auto :ensure t  :after pyenv-mode)
-
-(use-package pip-requirements :ensure t  :disabled;:after python-mode
-:hook (python-mode . pip-requirements-mode)
 )
 
 (use-package pipenv :ensure t
@@ -2541,9 +2211,7 @@ shell exits, the buffer is killed."
 :custom (flutter-sdk-path (expand-file-name "~/dev/flutter/"))
 )
 
-(use-package i3wm :ensure t  :defer t :disabled)
-
-(use-package company-shell :ensure t  :defer t
+(use-package company-shell :ensure t
 :after (company eshell)
 :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
 )
@@ -2623,28 +2291,6 @@ shell exits, the buffer is killed."
 :hook (js2-mode . (lambda () (lsp)))
 )
 
-(use-package js2-refactor :ensure t  :disabled
-:after js2-mode
-:hook (js2-mode . js2-refactor)
-)
-
-(use-package rjsx-mode :ensure t  :disabled
-:after js2-mode
-:mode (("\\.jsx$" . rjsx-mode)
-       ("components/.+\\.js$" . rjsx-mode))
-:hook (js2-mode . rjsx-mode)
-:preface
-(defun +javascript-jsx-file-p ()
-    "Detect React or preact imports early in the file."
-    (and buffer-file-name
-         (string= (file-name-extension buffer-file-name) "js")
-         (re-search-forward "\\(^\\s-*import +React\\|\\( from \\|require(\\)[\"']p?react\\)"
-                            magic-mode-regexp-match-limit t)
-         (progn (goto-char (match-beginning 1))
-                (not (sp-point-in-string-or-comment)))))
-:init (add-to-list 'magic-mode-alist '(+javascript-jsx-file-p . rjsx-mode))
-)
-
 (use-package xref-js2 :ensure t 
 :after (js2-mode xref)
 :config (add-hook 'js2-mode-hook (lambda () (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
@@ -2695,7 +2341,7 @@ shell exits, the buffer is killed."
         (ruby-indent-tabs-mode nil)
 )
 
-(use-package rvm :ensure t :disabled
+(use-package rvm :ensure t 
 :after ruby-mode
 :ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
@@ -2703,13 +2349,13 @@ shell exits, the buffer is killed."
 
 (use-package yari :ensure t  :after ruby-mode)
 
-(use-package rubocop :ensure t  :disabled
+(use-package rubocop :ensure t
 :ensure-system-package (rubocop . "sudo gem install rubocop")
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe :ensure t :disabled
+(use-package robe :ensure t
 :after (ruby-mode company)
 :ensure-system-package (pry . "sudo gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)
@@ -2741,11 +2387,6 @@ shell exits, the buffer is killed."
 :config
     (setq lsp-clients-kotlin-server-executable "~/dev/tools/kotlin-language-server/server/build/install/server/bin/kotlin-language-server")
     (add-hook 'kotlin-mode-hook 'lsp)
-)
-
-(use-package lsp-intellij :disabled
-:hook ((kotlin-mode . (lambda () (require 'lsp-intellij) (lsp-intellij-enable) (lsp)))
-       (java-mode   . (lambda () (require 'lsp-intellij) (lsp-intellij-enable) (lsp))))
 )
 
 (use-package lsp-grammarly :ensure t :disabled
