@@ -7,4 +7,5 @@ eln-cache/
 forge-database.sqlite
 org-roam.db
 .last-package-update-day
-.org-gcal/
+org-gcal/
+.org-generic-id-locations
