@@ -1528,6 +1528,8 @@ shell exits, the buffer is killed."
     (setq dashboard-set-file-icons t)
     (setq dashboard-show-shortcuts nil)
     (setq dashboard-set-navigator t)
+    (setq dashboard-week-agenda t)
+    (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
     ;(setq dashboard-center-content t)
     (setq dashboard-set-init-info t)
     (setq dashboard-items '((recents   . 5)
