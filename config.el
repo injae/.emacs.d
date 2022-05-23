@@ -1165,13 +1165,13 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
     )
 )
 
-(use-package org-agenda :ensure nil :disabled
+(use-package org-agenda :ensure nil 
 :after org
 :config (use-package evil-org :ensure t 
         :after (org evil)
         :init (add-hook 'org-mode-hook 'evil-org-mode)
             (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
-            (setq org-agenda-files '("~/Dropbox/org/agenda"))
+            (setq org-agenda-files '("~/.emacs.d/private/schedule.org"))
             (require 'evil-org-agenda)
             (evil-org-agenda-set-keys)
         )
@@ -1202,15 +1202,6 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
 (use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode.el" :ensure nil :disabled
 :after org
 :hook (org-mode . org-table-auto-align-mode)
-)
-
-(use-package org-gcal :ensure t  :disabled
-:after org-agenda
-:custom (org-gcal-client-id     "")
-        (org-gcal-client-secret "")
-        (org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
-:config (add-hook 'org-agenda-mode-hook            (lambda () (org-gcal-sync)))
-        (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
 (use-package orgtbl-aggregate :ensure t  :defer t)

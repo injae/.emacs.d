@@ -1283,13 +1283,13 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
     )
 )
 
-(use-package org-agenda :ensure nil :disabled
+(use-package org-agenda :ensure nil 
 :after org
 :config (use-package evil-org :ensure t 
         :after (org evil)
         :init (add-hook 'org-mode-hook 'evil-org-mode)
             (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
-            (setq org-agenda-files '("~/Dropbox/org/agenda"))
+            (setq org-agenda-files '("~/.emacs.d/private/schedule.org"))
             (require 'evil-org-agenda)
             (evil-org-agenda-set-keys)
         )
@@ -1320,15 +1320,6 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
 (use-package org-table-auto-align-mode :load-path "lisp/org-table-auto-align-mode.el" :ensure nil :disabled
 :after org
 :hook (org-mode . org-table-auto-align-mode)
-)
-
-(use-package org-gcal :ensure t  :disabled
-:after org-agenda
-:custom (org-gcal-client-id     "")
-        (org-gcal-client-secret "")
-        (org-gcal-file-alist    '(("8687lee@gmail.com" . "~/Dropbox/org/agenda/gcal.org")))
-:config (add-hook 'org-agenda-mode-hook            (lambda () (org-gcal-sync)))
-        (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 )
 
 (use-package orgtbl-aggregate :ensure t  :defer t)
@@ -1684,6 +1675,8 @@ shell exits, the buffer is killed."
     (setq dashboard-set-file-icons t)
     (setq dashboard-show-shortcuts nil)
     (setq dashboard-set-navigator t)
+    (setq dashboard-week-agenda t)
+    (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
     ;(setq dashboard-center-content t)
     (setq dashboard-set-init-info t)
     (setq dashboard-items '((recents   . 5)
@@ -2727,7 +2720,8 @@ shell exits, the buffer is killed."
 #+BEGIN_SRC shell :tangle "~/.zshrc"
 export LANG=ko_KR.UTF-8 # emacs libvterm korea encoding fix
 
-source "$HOME/.zinit/zinit.zsh"
+#source "$HOME/.zinit/zinit.zsh"
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -2996,8 +2990,8 @@ truncate_to_repo = false
 #+END_SRC
 
 ** ~/.gitconfig 
-;#+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
-#+BEGIN_SRC json :tangle no
+#+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
+  ;#+BEGIN_SRC json :tangle no
 [user]
 	name = injae
 	email = 8687lee@gmail.com
