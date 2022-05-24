@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: ok or fatal error
+# key:  mustf
+# --
+
+if err != nil {
+    log.Fatal(err)
+}
+
