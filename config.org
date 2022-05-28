@@ -1435,10 +1435,11 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
 ;:ensure-system-package ((zsh))
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
 ;:init   (setq vterm-always-compile-module t)
-:config (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+:config 
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
         (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
         (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
+        (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
 )
 
 
@@ -1477,7 +1478,7 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package with-editor :ensure t
+(use-package with-editor :ensure t :disabled
 :hook ((shell-mode term-exec eshll-mode vterm-mode) . with-editor-export-editor)
 )
 
@@ -1761,19 +1762,14 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Fly-spell
 #+BEGIN_SRC elisp
-(use-package flyspell :ensure t :defer 1
+(use-package flyspell :ensure t :after flycheck
+:hook ((prog-mode . flyspell-prog-mode)
+       (text-mode . flyspell-mode))
 :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
                  "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
 :custom (ispell-dictionary   "en_US")
         (ispell-program-name "aspell")
 :config
-    (global-flycheck-mode t)
-    ;(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-    ;(add-hook 'text-mode-hook 'flyspell-mode)
-    (setq ispell-dictionary "en_US")
-    (setq ispell-program-name "aspell")
-    ;(setq ispell-program-name "hunspell")
-
     ;; 스펠체크 넘어가는 부분 설정
     (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
     (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
@@ -1947,8 +1943,8 @@ shell exits, the buffer is killed."
     (setq company-minimum-prefix-length 1)
     (setq company-tooltip-align-annotations nil)
     (setq company-dabbrev-downcase nil)
-    ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
     ;(add-to-list 'company-backends #'company-capf)
+    ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
 )
 
 
@@ -2016,7 +2012,6 @@ shell exits, the buffer is killed."
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
                  "pp" '(xref-go-back                    :wk "lsp pop")
                  "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
-
                  "fi" '(lsp-ui-peek-find-implementation :wk "lsp impl")
                  "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :hook   (lsp-mode  . lsp-enable-which-key-integration)
@@ -2041,11 +2036,18 @@ shell exits, the buffer is killed."
     (setq lsp-go-use-gofumpt t)
     (setq lsp-gopls-hover-kind "NoDocumentation")
     (lsp-register-custom-settings
-        '(("gopls.staticcheck" t t)))
+        '(("gopls.staticcheck" t t)
+          ("gopls.allExperiments" t t) 
+          ("gopls.usePlaceholders" t t)
+             ))
+    (setq lsp-go-analyses
+        '((unusedparams . t)
+          (unreachable . t)
+          (unusedwrite . t)
+          (fieldalignment . t)
+          (useany . t)))
     ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-go-gopls-placeholders nil)
-    ;(lsp-register-custom-settings '(("gopls.codelenses" t)
-    ;                                ("gopls.symbolStyle" t)))
 )
 
 (use-package lsp-ui :ensure t 
@@ -2111,6 +2113,7 @@ shell exits, the buffer is killed."
 :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
         (global-flycheck-mode)
 )
+
 #+END_SRC
 ** Yasnippet mode
 #+BEGIN_SRC elisp
@@ -2467,7 +2470,8 @@ shell exits, the buffer is killed."
 (use-package go-mode :ensure t 
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
-                        (gofumpt . "go install mvdan.cc/gofumpt@latest"))
+                        (gofumpt . "go install mvdan.cc/gofumpt@latest")
+                        (revive . "go install github.com/mgechev/revive@latest"))
              
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
@@ -2504,6 +2508,26 @@ shell exits, the buffer is killed."
 )
 
 (use-package gotest :ensure t :after go-mode)
+
+(use-package go-errcheck :ensure t :after go-mode
+:ensure-system-package (errcheck . "go install github.com/kisielk/errcheck@latest")
+)
+
+(defvar-local flycheck-local-checkers nil)
+(defun +flycheck-checker-get(fn checker property)
+    (or (alist-get property (alist-get checker flycheck-local-checkers))
+        (funcall fn checker property)))
+(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
+
+(use-package flycheck-golangci-lint :ensure t :after (go-mode flycheck)
+:ensure-system-package (golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
+;:hook (go-mode . flycheck-golangci-lint-setup)
+:config 
+    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "gofumpt" "revive"))
+    (setq flycheck-golangci-lint-disable-linters '("structcheck"))
+    (add-hook 'go-mode-hook (lambda() (flycheck-golangci-lint-setup)
+                                (setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))
+)
 
 #+END_SRC
 ** Jump to Definition
@@ -3006,3 +3030,39 @@ truncate_to_repo = false
 	process = git-lfs filter-process
 	required = true
 #+END_SRC
+** Golang Linter Config :Revive
+#+BEGIN_SRC toml :tangle "~/revive.toml"
+ignoreGeneratedHeader = false
+severity = "warning"
+confidence = 0.8
+errorCode = 0
+warningCode = 0
+
+[rule.blank-imports]
+[rule.context-as-argument]
+[rule.context-keys-type]
+[rule.dot-imports]
+[rule.error-return]
+[rule.error-strings]
+[rule.error-naming]
+[rule.exported]
+    Disabled=true
+[rule.if-return]
+[rule.increment-decrement]
+[rule.var-naming]
+[rule.var-declaration]
+[rule.package-comments]
+[rule.range]
+[rule.receiver-naming]
+[rule.time-naming]
+[rule.unexported-return]
+[rule.indent-error-flow]
+[rule.errorf]
+[rule.empty-block]
+[rule.superfluous-else]
+[rule.unused-parameter]
+[rule.unreachable-code]
+[rule.redefines-builtin-id]
+#+END_SRC
+
+
