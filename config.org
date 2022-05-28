@@ -3014,8 +3014,8 @@ truncate_to_repo = false
 #+END_SRC
 
 ** ~/.gitconfig 
+;#+BEGIN_SRC json :tangle no
 #+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
-  ;#+BEGIN_SRC json :tangle no
 [user]
 	name = injae
 	email = 8687lee@gmail.com
