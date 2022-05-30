@@ -9,3 +9,4 @@ org-roam.db
 .last-package-update-day
 org-gcal/
 .org-generic-id-locations
+custom-variable.el
