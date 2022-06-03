@@ -2418,6 +2418,10 @@ shell exits, the buffer is killed."
 :config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
+(use-package poetry :ensure t :after python
+:hook (python-mode . poetry-tracking-mode)
+)
+
 (use-package lsp-pyright :ensure t 
 :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
@@ -2427,7 +2431,6 @@ shell exits, the buffer is killed."
 ;:init (setq lsp-python-ms-auto-install-server t)
 ;      (setq lsp-python-ms-executable "~/.emacs.d/var/lsp-python-ms/Microsoft.Python.LanguageServer")
 ;)
-
 
 #+END_SRC
 ** Flutter mode
@@ -2470,8 +2473,7 @@ shell exits, the buffer is killed."
 (use-package go-mode :ensure t 
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
-                        (gofumpt . "go install mvdan.cc/gofumpt@latest")
-                        (revive . "go install github.com/mgechev/revive@latest"))
+                        (gofumpt . "go install mvdan.cc/gofumpt@latest"))
              
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
@@ -2520,10 +2522,12 @@ shell exits, the buffer is killed."
 (advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
 (use-package flycheck-golangci-lint :ensure t :after (go-mode flycheck)
-:ensure-system-package (golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
-;:hook (go-mode . flycheck-golangci-lint-setup)
+    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
+                            (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
+                            (revive . "go install github.com/mgechev/revive@latest")
+                            (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
 :config 
-    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "gofumpt" "revive"))
+    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "revive"))
     (setq flycheck-golangci-lint-disable-linters '("structcheck"))
     (add-hook 'go-mode-hook (lambda() (flycheck-golangci-lint-setup)
                                 (setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))
@@ -2789,11 +2793,14 @@ zinit light iam4x/zsh-iterm-touchbar
 
 eval "$(starship init zsh)"
 
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-eval "$(pipenv --completion)"
-alias python='python3'
-alias pip='pip3'
+#eval "$(pyenv virtualenv-init -)"
+#eval "$(pipenv --completion)"
+#alias python='python3'
+#alias pip='pip3'
 
 # neovim setting
 #export EDITOR=/usr/local/bin/nvim
@@ -2924,6 +2931,7 @@ alias vmstop='vmrun suspend ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwar
 #+BEGIN_SRC shell :tangle "~/.zshenv"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/.pyenv/shims:$PATH"
 export PATH="$HOME/.cppm/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
@@ -3014,8 +3022,8 @@ truncate_to_repo = false
 #+END_SRC
 
 ** ~/.gitconfig 
-;#+BEGIN_SRC json :tangle no
-#+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
+;#+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
+#+BEGIN_SRC json :tangle no
 [user]
 	name = injae
 	email = 8687lee@gmail.com

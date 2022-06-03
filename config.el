@@ -1307,10 +1307,11 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
 ;:ensure-system-package ((zsh))
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
 ;:init   (setq vterm-always-compile-module t)
-:config (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+:config 
         (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
         (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
         (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
+        (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
 )
 
 
@@ -1914,10 +1915,6 @@ shell exits, the buffer is killed."
         (global-flycheck-mode)
 )
 
-(use-package flycheck-posframe :ensure t :after flycheck
-:hook (flycheck-mode . flycheck-posframe-mode)
-)
-
 (use-package yasnippet :ensure t  
 ;https://github.com/joaotavora/yasnippet
 :after (company)
@@ -2223,8 +2220,7 @@ shell exits, the buffer is killed."
 (use-package go-mode :ensure t 
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
-                        (gofumpt . "go install mvdan.cc/gofumpt@latest")
-                        (revive . "go install github.com/mgechev/revive@latest"))
+                        (gofumpt . "go install mvdan.cc/gofumpt@latest"))
              
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
@@ -2273,10 +2269,12 @@ shell exits, the buffer is killed."
 (advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
 (use-package flycheck-golangci-lint :ensure t :after (go-mode flycheck)
-:ensure-system-package (golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
-;:hook (go-mode . flycheck-golangci-lint-setup)
+    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
+                            (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
+                            (revive . "go install github.com/mgechev/revive@latest")
+                            (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
 :config 
-    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "gofumpt" "revive"))
+    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "revive"))
     (setq flycheck-golangci-lint-disable-linters '("structcheck"))
     (add-hook 'go-mode-hook (lambda() (flycheck-golangci-lint-setup)
                                 (setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))
