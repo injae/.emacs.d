@@ -1283,7 +1283,7 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
     )
 )
 
-(use-package org-agenda :ensure nil 
+(use-package org-agenda :ensure nil :disabled
 :after org
 :config (use-package evil-org :ensure t 
         :after (org evil)
@@ -2030,7 +2030,7 @@ shell exits, the buffer is killed."
         (lsp-enable-snippet t)
 
         (lsp-rust-analyzer-server-display-inlay-hints nil)
-        (lsp-rust-analyzer-cargo-watch-command "clipy")
+        ;(lsp-rust-analyzer-cargo-watch-command "clipy")
 :config
     ;(lsp-mode)
     (setq lsp-go-use-gofumpt t)
@@ -2039,6 +2039,7 @@ shell exits, the buffer is killed."
         '(("gopls.staticcheck" t t)
           ("gopls.allExperiments" t t) 
           ("gopls.usePlaceholders" t t)
+          ("rust-analyzer.cargo.runBuildScript" t t)
              ))
     (setq lsp-go-analyses
         '((unusedparams . t)
@@ -2301,8 +2302,10 @@ shell exits, the buffer is killed."
     (setq lsp-eldoc-hook nil)
     (setq lsp-enable-symbol-highlighting nil)
     (setq lsp-signature-auto-activate nil)
+    (setq rustic-lsp-server 'rust-analyzer)
+    (lsp-flycheck-add-mode 'rustic-mode)
     (setq lsp-rust-server 'rust-analyzer)
-    (setq lsp-rust-analyzer-cargo-watch-enable nil) ;; large project에서 cargo crate를 check하는것을 방지
+    ;(setq lsp-rust-analyzer-cargo-watch-enable nil) ;; large project에서 cargo crate를 check하는것을 방지
     ;(setq rustic-format-on-save t)
     (add-hook 'rustic-mode-hook 'ij/rustic-mode-hook)
 )
