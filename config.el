@@ -405,8 +405,8 @@ All permutations equally likely."
 )
 
 (use-package evil :ensure t 
-:custom (evil-want-keybinding nil)
 :init   (setq evil-want-integration t)
+        (setq evil-want-keybinding nil)
 :config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
         ;(define-key evil-normal-state-map (kbd "q") 'nil)
@@ -2184,15 +2184,19 @@ shell exits, the buffer is killed."
 :config (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended)
 )
 
-(use-package lsp-pyright :ensure t 
-:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
+(use-package poetry :ensure t :after python
+:hook (python-mode . poetry-tracking-mode)
 )
 
-;(use-package lsp-python-ms :ensure t
-;:hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
-;:init (setq lsp-python-ms-auto-install-server t)
-;      (setq lsp-python-ms-executable "~/.emacs.d/var/lsp-python-ms/Microsoft.Python.LanguageServer")
+;(use-package lsp-pyright :ensure t 
+;:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 ;)
+
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+    :hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
+    )  ; or lsp-deferred
 
 (use-package dart-mode :ensure t 
 :after lsp
