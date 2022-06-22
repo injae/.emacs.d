@@ -2607,6 +2607,19 @@ shell exits, the buffer is killed."
 :after  (company restclient)
 :config (add-to-list 'company-backends 'company-restclient)
 )
+
+(use-package prettier-js :ensure t
+:hook (js2-mode . prettier-js-mode)
+      (web-mode . prettier-js-mode)
+)
+
+(use-package vue-mode :ensure t
+:mode "\\.vue\\'"
+:hook (vue-mode . prettier-js-mode)
+:config (add-hook 'vue-mode-hook #'lsp)
+        (setq prettier-js-mode '("--parser vue"))
+)
+
 #+END_SRC
 ** Ruby Mode
 #+BEGIN_SRC elisp

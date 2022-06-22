@@ -2192,11 +2192,11 @@ shell exits, the buffer is killed."
 ;:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 ;)
 
-(use-package lsp-python-ms
-  :ensure t
-  :init (setq lsp-python-ms-auto-install-server t)
-    :hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
-    )  ; or lsp-deferred
+(use-package lsp-python-ms :after python
+:ensure t
+:init (setq lsp-python-ms-auto-install-server t)
+:hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
+)  ; or lsp-deferred
 
 (use-package dart-mode :ensure t 
 :after lsp
@@ -2352,6 +2352,18 @@ shell exits, the buffer is killed."
 (use-package company-restclient :ensure t 
 :after  (company restclient)
 :config (add-to-list 'company-backends 'company-restclient)
+)
+
+(use-package prettier-js :ensure t
+:hook (js2-mode . prettier-js-mode)
+      (web-mode . prettier-js-mode)
+)
+
+(use-package vue-mode :ensure t
+:mode "\\.vue\\'"
+:hook (vue-mode . prettier-js-mode)
+:config (add-hook 'vue-mode-hook #'lsp)
+        (setq prettier-js-mode '("--parser vue"))
 )
 
 (use-package ruby-mode :ensure t 
