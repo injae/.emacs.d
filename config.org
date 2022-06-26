@@ -2273,9 +2273,9 @@ shell exits, the buffer is killed."
 #+END_SRC
 ** Tree Sitter 
 #+BEGIN_SRC elisp
-(use-package tree-sitter :ensure t :disabled
-:config (tree-sitter-hl-mode)
-        (global-tree-sitter-mode)
+(use-package tree-sitter :ensure t
+:config ;(tree-sitter-hl-mode)
+        ;(global-tree-sitter-mode)
 )
 (use-package tree-sitter-langs :ensure t :after tree-sitter)
 ;(use-package tree-sitter-indent :ensure t)
@@ -2553,14 +2553,19 @@ shell exits, the buffer is killed."
 ** Web Mode
 #+BEGIN_SRC elisp
 (use-package web-mode :ensure t 
-:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
-:commands (web-mode)
+;:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
+;:commands (web-mode)
 :mode    (("\\.html?\\'"  . web-mode)
           ("\\.xhtml$\\'" . web-mode)
-          ("\\.tsx$"      . web-mode)
+          ("\\.tsx\\'"   . web-mode)
           ("\\.vue\\'"    . web-mode))
 :custom (web-mode-enable-engine-detection t)
-        (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+        ;(web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+    (add-hook 'web-mode-hook
+        (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name)
+                      (setup-tide-mode)))))
+    (flycheck-add-mode 'typescript-tslint 'web-mode 'jsx-tide)
 )
 
 (use-package js2-mode :ensure t 
@@ -2877,11 +2882,6 @@ PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
 TOUCHBAR_GIT_ENABLED=true
 YARN_ENABLED=true
 
-# nvm setting
-export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # Ruby setting
 # macos home-brew rbenv setting
 # rvm setting
@@ -2894,10 +2894,16 @@ darwin*)
     alias clang++=clang++-13
     alias gcc=gcc-11
     alias g++=g++-11
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+    [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 ;;
 linux*)
     alias clang=clang-13
     alias clang++=clang++-13
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 ;;
 dragonfly*|freebsd*|netbsd*|openbsd*)
     # ...
@@ -2914,7 +2920,7 @@ fi
 
 export CC=clang
 export CXX=clang++
-export LD=ld.lld
+expor
 export AR=llvm-ar
 export RANLIB=llvm-ranlib
 alias CC=$CC
@@ -2957,7 +2963,7 @@ export PATH="$HOME/vcpkg:$PATH"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:/Users/nieel/.local/bin"
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$HOME/.cppm/local/lib/pkg-config:/usr/local/opt/libpq/lib/pkgconfig"
-export PostgreSQL_ROOT="/usr/local/opt/libpq"
+export
 # kotline language server
 export PATH="$HOME/dev/tools/kotlin-language-server:$PATH"
 # openjdk setting
