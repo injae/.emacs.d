@@ -2057,9 +2057,9 @@ shell exits, the buffer is killed."
 :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode)
 )
 
-(use-package tree-sitter :ensure t :disabled
-:config (tree-sitter-hl-mode)
-        (global-tree-sitter-mode)
+(use-package tree-sitter :ensure t
+:config ;(tree-sitter-hl-mode)
+        ;(global-tree-sitter-mode)
 )
 (use-package tree-sitter-langs :ensure t :after tree-sitter)
 ;(use-package tree-sitter-indent :ensure t)
@@ -2299,14 +2299,19 @@ shell exits, the buffer is killed."
 )
 
 (use-package web-mode :ensure t 
-:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
-:commands (web-mode)
+;:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
+;:commands (web-mode)
 :mode    (("\\.html?\\'"  . web-mode)
           ("\\.xhtml$\\'" . web-mode)
-          ("\\.tsx$"      . web-mode)
+          ("\\.tsx\\'"   . web-mode)
           ("\\.vue\\'"    . web-mode))
 :custom (web-mode-enable-engine-detection t)
-        (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+        ;(web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+    (add-hook 'web-mode-hook
+        (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name)
+                      (setup-tide-mode)))))
+    (flycheck-add-mode 'typescript-tslint 'web-mode 'jsx-tide)
 )
 
 (use-package js2-mode :ensure t 
