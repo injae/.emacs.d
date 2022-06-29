@@ -71,9 +71,11 @@
 (add-to-list 'load-path "~/.emacs.d/private/")
 
 (use-package emacs-gc-setting :no-require t
-:init (setq gc-cons-threshold 100000000); emacs speed up setting in 16GB RAM
+:init (setq gc-cons-threshold (* 100 1 00000)); emacs speed up setting in 16GB RAM
       (setq read-process-output-max (* 1024 1024))
       (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
+      (add-hook 'focus-out-hook 'garbage-collect)
+      (run-with-idle-timer 5 t 'garbage-collect)
 )
 
 (use-package esup :ensure t)
