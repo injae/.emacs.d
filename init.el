@@ -4,59 +4,52 @@
 ;; This config start here
 ;;; Code:
 
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
 
 ;(require 'esup) ; emacs config profiling
-(when (eval-when-compile (version< emacs-version "27"))
-    (load "~/.emacs.d/early-init.el");)
-    (package-initialize)
-   )
+(require 'use-package)
+(use-package use-package :straight t
+:custom (use-package-compute-statistics t)
+)
 
-(unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package t))
+(load-file "~/.emacs.d/config.el")
+;;;
 
+
+;(require 'cl-lib)
+
+;(unless (package-installed-p 'use-package)
+;    (package-refresh-contents)
+;    (package-install 'use-package t))
 ;(eval-when-compile
 ;  ;; Following line is not needed if use-package.el is in ~/.emacs.d
 ;  ;(add-to-list 'load-path "<path where use-package is installed>")
 ;  (require 'use-package))
-
-(require 'use-package)
-(require 'cl-lib)
-
-(use-package use-package :ensure t
-:custom (use-package-compute-statistics t)
-)
-
-(use-package auto-compile :ensure t
-:init
-    (setq load-prefer-newer t)
-    (setq auto-compile-mode-line-counter t)
-:config
-    (auto-compile-on-load-mode)
-    (auto-compile-on-save-mode)
-)
-
-(use-package auto-package-update :ensure t
-:custom (auto-package-update-delete-old-versions t)
-        (auto-package-update-prompt-before-update t)
-        ;(auto-package-update-hide-results t)
-:config (auto-package-update-maybe)
-)
-
-; for native comp
-;(setq package-native-compile t)
-;(setq comp-deferred-compilation t)
-;(setq-default comp-deferred-compilation-deny-list '("powerline" "polymode-core" "cc-mode" "progmodes" "cc-engine"))
-;(native-compile-async "~/.emacs.d/init.el")
-;(native-compile-async "~/.emacs.d/config.el")
-;(load-file "~/.emacs.d/init.el")
-
-(when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
-  (progn
-    (setq native-comp-async-report-warnings-errors nil)
-    ;(setq comp-deferred-compilation t)
-    (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
-    (setq package-native-compile t)
-    ))
-(load-file "~/.emacs.d/config.el")
-;;;
+;(use-package auto-compile :ensure t
+;:init
+;    (setq load-prefer-newer t)
+;    (setq auto-compile-mode-line-counter t)
+;:config
+;    (auto-compile-on-load-mode)
+;    (auto-compile-on-save-mode)
+;)
+;
+;(use-package auto-package-update :ensure t
+;:custom (auto-package-update-delete-old-versions t)
+;        (auto-package-update-prompt-before-update t)
+;        ;(auto-package-update-hide-results t)
+;:config (auto-package-update-maybe)
+;)
