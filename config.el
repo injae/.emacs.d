@@ -8,8 +8,7 @@
 
 (require 'use-package)
 ;(use-package use-package :straight t)
-(use-package use-package-ensure-system-package :straight t
-    :after use-package)
+(use-package use-package-ensure-system-package :straight t :after use-package)
 (use-package el-patch :straight t)
 ;(toggle-debug-on-error)
 ;(setq byte-compile-error-on-warn t)
@@ -90,7 +89,7 @@
 
 
 (use-package bug-hunter :straight t)
-(use-package explain-pause-mode :straight (:host github :repo "lastquestion/explain-pause-mode")
+(use-package explain-pause-mode :straight (:host github :repo "lastquestion/explain-pause-mode") :disabled
 :config (explain-pause-mode)
 )
 
@@ -296,7 +295,7 @@
 
 ; large data blob read
 (setq read-process-output-max (* 1024 1024)) ; 1mb
-  
+
 (defun new-buffer-save (name buffer-major-mode)
     (interactive)
     (let ((buffer (generate-new-buffer name)))
@@ -390,7 +389,7 @@ All permutations equally likely."
 ;                                   `([,(cdr char-regexp) 0 font-shape-gstring]))))
 ;)
 
-(use-package keypression :straight t 
+(use-package keypression :straight t
 :commands keypression-mode
 :custom (keypression-use-child-frame t)
         (keypression-fade-out-delay 1.0)
@@ -403,12 +402,12 @@ All permutations equally likely."
         (keypression-font-face-attribute '(:width normal :height 200 :weight bold))
 )
 
-(use-package evil :straight t 
+(use-package evil :straight t
 :init   (setq evil-want-integration t)
         (setq evil-want-keybinding nil)
 :config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
-        ;(define-key evil-normal-state-map (kbd "q") 'nil)
+        (define-key evil-normal-state-map (kbd "q") 'nil) ; evil macro disable
         (define-key evil-visual-state-map (kbd "R") 'evil-visual-exchange-corners)
         (evil-ex-define-cmd "k" 'kill-this-buffer)
         (setq-default evil-kill-on-visual-paste nil)
@@ -423,7 +422,7 @@ All permutations equally likely."
 :config (move-text-default-bindings)
 )
 
-(use-package general :straight t 
+(use-package general :straight t
 :after evil
 :init (setq general-override-states '(insert emacs  hybrid   normal
                                       visual motion override operator replace))
@@ -575,11 +574,13 @@ All permutations equally likely."
 (use-package evil-collection :straight t
 :after (evil)
 :custom (evil-collection-setup-minibuffer t)
+
 ;:init  (add-hook 'magit-mode-hook     (lambda () (evil-collection-magit-setup)     (evil-collection-init)))
 ;       (add-hook 'neotree-mode-hook   (lambda () (evil-collection-neotree-setup)   (evil-collection-init)))
 ;       (add-hook 'which-key-mode-hook (lambda () (evil-collection-which-key-setup) (evil-collection-init)))
        ;(add-hook 'evil-mc-mode-hook   (lambda () (evil-collection-evil-mc-setup)   (evil-collection-init)))
 :config
+       (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
        ;(evil-collection-pdf-setup)
        ;(evil-collection-occur-setup)
        ;(evil-collection-buff-menu-setup)
@@ -588,7 +589,7 @@ All permutations equally likely."
        ;(evil-collection-calc-setup)
        ;(evil-collection-which-key-setup)
        ;(evil-collection-ivy-setup)
-       (evil-collection-vterm-setup) 
+       ;(evil-collection-vterm-setup) 
        ;(evil-collection-wgrep-setup)
        ;(evil-collection-forge-setup)
        (evil-collection-init)
@@ -744,7 +745,7 @@ All permutations equally likely."
 ;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 )
 
-(use-package highlight-indentation :straight t
+(use-package highlight-indentation :straight t :disabled
 :hook (prog-mode . highlight-indentation-mode)
 )
 
@@ -923,7 +924,7 @@ All permutations equally likely."
                  "fG" '(counsel-projectile-rg               :wk "Grep in Project")
                  "bS" '(counsel-project
 ile-switch-to-buffer :wk "Search Buffer in Project"))
-          
+
 :config (counsel-projectile-mode 1)
 
 )
@@ -948,9 +949,11 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
 )
 
 (use-package ivy-rich :straight t 
-:init (setq ivy-rich-path-style    'abbrev)
-      (setq ivy-virtual-abbreviate 'full)
-:config (ivy-rich-mode 1)
+    :init (setq ivy-rich-path-style    'abbrev)
+          (setq ivy-virtual-abbreviate 'full)
+    :config
+    ;(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+    (ivy-rich-mode 1)
 )
 
 (use-package smex :straight t 
@@ -1296,10 +1299,9 @@ ile-switch-to-buffer :wk "Search Buffer in Project"))
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
 ;:init   (setq vterm-always-compile-module t)
 :config 
-        (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
-        (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
-        (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
-        (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+    (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
+    (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
+    (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
 )
 
 
@@ -1650,8 +1652,8 @@ shell exits, the buffer is killed."
 
 (use-package smeargle :straight t )
 
-(use-package polymode :straight t 
-:hook (polymode . centaur-tabs-mode-hook) 
+(use-package polymode :straight t
+;:hook (polymode . centaur-tabs-mode-hook)
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
 :custom (polymode-display-process-buffers nil)
 )
@@ -1671,14 +1673,11 @@ shell exits, the buffer is killed."
     (define-polymode poly-golang-lua-mode
         :hostmode   'poly-golang-lua-hostmode
         :innermodes '(poly-golang-lua-innermode))
-    ; --
 )
 
-
-
-(use-package poly-org :straight t
+(use-package poly-org :straight t 
 :hook (org-mode . poly-org-mode)
-      (poly-org-mode . git-gutter-mode)
+      ;(poly-org-mode . git-gutter-mode)
 :init (evil-set-initial-state 'poly-org-mode 'normal)
 )
 
@@ -1731,6 +1730,9 @@ shell exits, the buffer is killed."
 :commands (alert)
 :init (setq alert-default-style 'notifier))
 
+;fold mode
+;(use-package origami :straight (:type git :host github :repo "gregsexton/origami.el") :disabled)
+
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
 (use-package company :straight t 
 :init (global-company-mode 1)
@@ -1745,7 +1747,6 @@ shell exits, the buffer is killed."
     ;(add-to-list 'company-backends #'company-capf)
     ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
 )
-
 
 (use-package company-statistics :straight t 
 :after company
@@ -1873,6 +1874,7 @@ shell exits, the buffer is killed."
 )
 
 (use-package cov :straight t)
+;(use-package coverlay :straight t :disabled)
 
 (use-package editorconfig :straight t)
 (use-package copilot :straight (:host github :repo "zerolfx/copilot.el")
@@ -2027,7 +2029,7 @@ shell exits, the buffer is killed."
 (use-package scratch-comment :straight t 
 :general (:keymaps 'lisp-interaction-mode-map "C-j" 'scratch-comment-eval-sexp)
 )
-  
+
 (use-package slime :straight t  :disabled
 :commands slime
 :config
@@ -2046,11 +2048,14 @@ shell exits, the buffer is killed."
 )
 
 (use-package tree-sitter :straight t
-:config ;(tree-sitter-hl-mode)
-        ;(global-tree-sitter-mode)
+:config 
+    (global-tree-sitter-mode)
+    ;(add-hook 'tree-sitter-after-on-hook 'tree-sitter-hl-mode)
 )
+
 (use-package tree-sitter-langs :straight t :after tree-sitter)
-;(use-package tree-sitter-indent :straight t)
+;(use-package tree-sitter-indent :straight t :after tree-sitter)
+;(use-package tsi :straight (:type git :host github :repo "orzechowskid/tsi.el") :after tree-sitter :disabled)
 
 (use-package csharp-mode :straight t
 :mode (("\\.cs\\'" . csharp-mode))
@@ -2216,7 +2221,7 @@ shell exits, the buffer is killed."
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
                         (gofumpt . "go install mvdan.cc/gofumpt@latest"))
-             
+
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
 :config 
@@ -2291,14 +2296,14 @@ shell exits, the buffer is killed."
 ;:commands (web-mode)
 :mode    (("\\.html?\\'"  . web-mode)
           ("\\.xhtml$\\'" . web-mode)
-          ("\\.tsx\\'"   . web-mode)
+          ;("\\.tsx\\'"   . web-mode)
           ("\\.vue\\'"    . web-mode))
 :custom (web-mode-enable-engine-detection t)
         ;(web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-    (add-hook 'web-mode-hook
-        (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name)
-                      (setup-tide-mode)))))
+    ;(add-hook 'web-mode-hook
+    ;    (lambda ()
+    ;        (when (string-equal "tsx" (file-name-extension buffer-file-name)
+    ;                  (setup-tide-mode)))))
     (flycheck-add-mode 'typescript-tslint 'web-mode 'jsx-tide)
 )
 
@@ -2320,11 +2325,13 @@ shell exits, the buffer is killed."
         (html-mode . skewer-html-mode))
 )
 
-(use-package typescript-mode :straight t 
-:mode  (("\\.ts\\'"  . typescript-mode)
-        ("\\.tsx\\'" . typescript-mode))
-:hook (typescript-mode . (lambda () (lsp)))
+(use-package typescript-mode :straight t
+    :after tree-sitter
+    :mode  ("\\.ts\\'"  . typescript-mode)
+    :hook (typescript-mode . (lambda () (lsp)))
 )
+
+;(use-package tsx-mode :straight (:type git :host github :repo "orzechowskid/tsx-mode.el") :disabled)
 
 (use-package tide :straight t 
 :after (typescript-mode company flycheck)
