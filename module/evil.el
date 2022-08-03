@@ -1,7 +1,7 @@
 ;;; evil-mode
+
 (use-package evil :straight t
-:init   
-    (setq evil-want-keybinding nil)
+:init (setq evil-want-keybinding nil)
       ;(setq evil-want-integration t)
 :config (setq evil-want-C-u-scroll t)
         (setq evil-symbol-word-search t)
@@ -48,7 +48,7 @@
               "hr"    '(:wk "Rust")
               "er"    '(restart-emacs :wk "Restart")
               "el"    '(reload-emacs :wk "Reload")
-              "et"    '((lambda ()(interactive) (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))) :wk "tangle config.org" )
+              ;;"et"    '((lambda ()(interactive) (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))) :wk "tangle config.org" )
               "ot"    '(org-babel-tangle :wk "tangle config.org" )
               "ff"    '(find-file :wk "Find File")
               "fu"    '(browse-url :wk "Browse url")

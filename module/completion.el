@@ -161,7 +161,7 @@
 		       :states 'insert
 		       "C-n" #'corfu-next
 		       "C-p" #'corfu-previous
-		       "<escape>" #'corfu-quit
+		       "<escape>" (lambda () (corfu-quit) (evil-normal-state))
 		       "C-<return>" #'corfu-insert
 		       "M-d" #'corfu-show-documentation
 		       "M-l" #'corfu-show-location)
@@ -173,9 +173,10 @@
 :custom
     (corfu-auto t)
     (corfu-auto-prefix 1)
-    (corfu-preselect-first t)
+    (corfu-quit-no-match t)
+    (corfu-preselect-first nil)
     (corfu-max-witdh corfu-min-width)
-    :init (global-corfu-mode)
+:init (global-corfu-mode)
 )
 
 (use-package corfu-doc :straight t :after corfu

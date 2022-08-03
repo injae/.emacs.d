@@ -3,8 +3,15 @@
 ;;; Commentary:
 ;;; This config start here
 ;;; Code:
-
 ;; profile
+(use-package use-package)
+
+(use-package use-package-ensure-system-package :straight t)
+(use-package exec-path-from-shell :straight t 
+:config (exec-path-from-shell-initialize)
+        ;(exec-path-from-shell-copy-env "PATH")
+)
+
 (load-file (expand-file-name "~/.emacs.d/module/lisp-util.el"))
 
 (setq user-full-name "InJae Lee")

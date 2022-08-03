@@ -1,5 +1,5 @@
 (use-package editorconfig :straight t)
-(use-package copilot :straight (:host github :repo "zerolfx/copilot.el")
+(use-package copilot :straight (:host github :repo "zerolfx/copilot.el") :disabled
     :after editorconfig 
     :config
         (add-hook 'prog-mode-hook 'copilot-mode)

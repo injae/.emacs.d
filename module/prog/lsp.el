@@ -128,8 +128,4 @@
 )
 
 ;;
-(use-package consult-lsp :ensure t
-    :config
-    )
-
-
+(use-package consult-lsp :straight t)
