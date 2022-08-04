@@ -1,7 +1,10 @@
+;;;
 
 (use-package projectile :straight t 
-:init   (projectile-mode t)
-:config (setq projectile-require-project-root nil)
+    :init
+    (projectile-mode t)
+    :config
+    (setq projectile-require-project-root nil)
 	(setq projectile-enable-caching t)
 	(setq projectile-globally-ignored-directories
 	    (append '(".ccls-cache" ".git" "__pycache__") projectile-globally-ignored-directories))
@@ -9,3 +12,5 @@
 	(evil-ex-define-cmd "kp" 'projectile-kill-buffers)
 	;(setq projectile-globally-ignored-files (append '() projectile-globaly-ignore-files))
 )
+
+;;;

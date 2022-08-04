@@ -1,5 +1,7 @@
 ;;; navigater
-(use-package which-key :straight t 
+;;; Code:
+
+(use-package which-key :straight t
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
         (setq which-key-show-operator-state-maps t)
@@ -33,11 +35,10 @@
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist :straight t :init (savehist-mode))
 
-(use-package consult :straight t :after projectile
-    :general (leader
-                 "fp" '(consult-projectile-find-file   :wk "Search in Project")
-                 "fG" '(consult-ripgrep                :wk "Grep in Project")
-                 "bS" '(consult-project-switch         :wk "Search Buffer in Project"))
+(use-package consult :straight t :after (projectile evil-collection)
+    :general (leader "fp" '(consult-projectile-find-file   :wk "Search in Project")
+                     "fG" '(consult-ripgrep                :wk "Grep in Project")
+                     "bS" '(consult-project-switch         :wk "Search Buffer in Project"))
     :bind (;; C-c bindings (mode-specific-map)
             ("C-c h" . consult-history)
             ("C-c m" . consult-mode-command)
@@ -75,7 +76,7 @@
             ("M-s G" . consult-git-grep)
             ("M-s r" . consult-ripgrep)
             ("M-s l" . consult-line)
-            ("C-s"   . consult-line) 
+            ("C-s"   . consult-line)
             ("M-s L" . consult-line-multi)
             ("M-s m" . consult-multi-occur)
             ("M-s k" . consult-keep-lines)
@@ -86,53 +87,53 @@
             ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
             ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
             ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-            ("M-s L" . consult-line-multi)  
+            ("M-s L" . consult-line-multi)
             ;; needed by consult-line to detect isearch
             ;; Minibuffer history
             :map minibuffer-local-map
             ("M-s" . consult-history)                 ;; orig. next-matching-history-element
             ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
-  :init
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
+    :init
+    (setq register-preview-delay 0.5
+          register-preview-function #'consult-register-format)
 
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
+    ;; Optionally tweak the register preview window.
+    ;; This adds thin lines, sorting and hides the mode line of the window.
+    (advice-add #'register-preview :override #'consult-register-window)
 
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
 
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-  :config
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
-   :preview-key (kbd "M-."))
+    ;; Configure other variables and modes in the :config section,
+    ;; after lazily loading the package.
+    :config
+    (setq consult-preview-key 'any)
+    ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+    ;; For some commands and buffer sources it is useful to configure the
+    ;; :preview-key on a per-command basis using the `consult-customize' macro.
+    (consult-customize
+        consult-theme
+        :preview-key '(:debounce 0.2 any)
+        consult-ripgrep consult-git-grep consult-grep
+        consult-bookmark consult-recent-file consult-xref
+        consult--source-bookmark consult--source-recent-file
+        consult--source-project-recent-file
+        :preview-key (kbd "M-."))
 
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
+    ;; Optionally configure the narrowing key.
+    ;; Both < and C-+ work reasonably well.
 
-  ;;(setq consult-narrow-key "<") ;; (kbd "C-+")
+    ;;(setq consult-narrow-key "<") ;; (kbd "C-+")
 
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; You may want to use `embark-prefix-help-command' or which-key instead.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-function (lambda (_) (projectile-project-root))))
+    ;; Optionally make narrowing help available in the minibuffer.
+    ;; You may want to use `embark-prefix-help-command' or which-key instead.
+    ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+    (autoload 'projectile-project-root "projectile")
+    (setq consult-project-function (lambda (_) (projectile-project-root)))
+    :config (evil-collection-consult-setup)
+    )
 
 (use-package consult-projectile :straight t)
 
@@ -156,12 +157,12 @@
 )
 
 ;;; input
-(use-package corfu :straight t
+(use-package corfu :straight t :after evil-collection
 :general (:keymaps 'corfu-map
 		       :states 'insert
 		       "C-n" #'corfu-next
 		       "C-p" #'corfu-previous
-		       "<escape>" (lambda () (corfu-quit) (evil-normal-state))
+		       "<escape>" #'evil-collection-corfu-quit-and-escape
 		       "C-<return>" #'corfu-insert
 		       "M-d" #'corfu-show-documentation
 		       "M-l" #'corfu-show-location)
@@ -217,6 +218,21 @@
   ;(add-to-list 'completion-at-point-functions #'cape-dict)
   ;(add-to-list 'completion-at-point-functions #'cape-symbol)
   ;(add-to-list 'completion-at-point-functions #'cape-line)
+  :config
+    (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
+    (evil-make-overriding-map corfu-map)
+    ;; Enable Corfu more generally for every minibuffer, as long as no other
+    ;; completion UI is active. If you use Mct or Vertico as your main minibuffer
+    ;; completion UI. From
+    ;; https://github.com/minad/corfu#completing-with-corfu-in-the-minibuffer
+    (defun corfu-enable-always-in-minibuffer ()
+        "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+        (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
+                    (bound-and-true-p vertico--input))
+        (setq-local corfu-auto nil)       ; Ensure auto completion is disabled
+        (corfu-mode 1)))
+    (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
+    ;; Setup lsp to use corfu for lsp completion
 )
 
 (use-package kind-icon :straight t :after corfu

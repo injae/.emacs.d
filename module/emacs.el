@@ -1,4 +1,7 @@
-;; default setting
+;;; package --- Summary
+;;; Commentary:
+;;; Code:
+
 (defvar *is-mac*     (eq system-type 'darwin))
 (defvar *is-windows* (eq system-type 'windows-nt))
 (defvar *is-cygwin*  (eq system-type 'cygwin))
@@ -7,18 +10,15 @@
 (defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
 (use-package emacs
-  :init
-
+    :init
     (setq ad-redefinition-action 'accept)
     (setq max-lisp-eval-depth 10000)
     (setq max-specpdl-size 32000)
     ;(setq debug-on-error t) ; debug option
-
     ;; emacs gc setting
 
-    (setq gc-cons-threshold (* 100 1 00000)); emacs speed up setting in 16GB RAM
+    (setq gc-cons-threshold (* 100 1 00000)) ; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024))
-    (run-with-idle-timer 2 t (lambda () (garbage-collect)))  ; 2초마다, repeat
     (add-hook 'focus-out-hook 'garbage-collect)
     (run-with-idle-timer 5 t 'garbage-collect)
 
@@ -116,7 +116,6 @@
 
 )
 
-
 ;(use-package pixel-scoll-smooth :no-require t  :straight nil
 ;;; default text parsing direction left -> right
 ;:if (version<= "29" emacs-version)
@@ -130,4 +129,5 @@
 :config (explain-pause-mode)
 )
 ;(setq warning-minimum-level :error)
-;;;
+
+;;; emacs.el

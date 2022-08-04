@@ -4,6 +4,9 @@
         (global-flycheck-mode)
 )
 
+(use-package flycheck-package :straight t :after flycheck
+    :config (flycheck-package-setup))
+
 (use-package flyspell :straight t :after flycheck
 :hook ((prog-mode . flyspell-prog-mode)
        (text-mode . flyspell-mode))

@@ -29,7 +29,7 @@
     (setq lsp-gopls-hover-kind "NoDocumentation")
     (lsp-register-custom-settings
         '(("gopls.staticcheck" t t)
-          ("gopls.allExperiments" t t) 
+          ("gopls.allExperiments" t t)
           ("gopls.usePlaceholders" t t)
           ("rust-analyzer.cargo.runBuildScript" t t)
              ))
