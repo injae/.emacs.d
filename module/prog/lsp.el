@@ -91,7 +91,7 @@
     (dap-mode 1)
 )
 
-(use-package dap-ui-setting :no-require t
+(use-package dap-ui-setting :no-require t :straight nil
 :after dap-mode
 :preface
   (defun my/window-visible (b-name)

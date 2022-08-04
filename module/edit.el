@@ -1,5 +1,5 @@
 ;; indent
-(use-package indent4-mode :no-require t 
+(use-package indent4-mode :no-require t :straight nil
 :preface
     (defun my-set-indent (n)
         (setq-default tab-width n)
@@ -48,7 +48,7 @@
       (show-smartparens-global-mode)
 )
 ;elisp double quote problem fix setting
-(use-package smartparens-config :ensure smartparens)
+(use-package smartparens-config :after smartparens :straight nil)
 
 ;(use-package aggressive-indent :straight t  :disabled
 ;; https://github.com/Malabarba/aggressive-indent-mode

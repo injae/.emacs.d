@@ -2,7 +2,7 @@
 (use-package try :straight t  :defer t)
 
 
-(use-package sudo-mode :no-require t :ensure nil
+(use-package sudo-mode :no-require t :straight nil
 :preface
 (defun sudo-find-file (file-name)
     "sudo open"
@@ -59,7 +59,7 @@
 :init (global-hungry-delete-mode)
 )
 
-(use-package face-picker :no-require t :ensure nil
+(use-package face-picker :no-require t :straight nil
 :preface
 (defun what-face (pos)
      (interactive "d")
@@ -134,4 +134,5 @@ All permutations equally likely."
     (global-undo-tree-mode)
 )
 
-(use-package server :config (unless (server-running-p) (server-start)))
+(use-package server :straight nil
+    :config (unless (server-running-p) (server-start)))

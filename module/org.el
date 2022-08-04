@@ -33,7 +33,7 @@
     :after org
     :hook (org-mode . toc-org-mode))
 
-(use-package org-babel :no-require t
+(use-package org-babel :no-require t :straight nil
 :after org
 :config (org-babel-do-load-languages
             'org-babel-load-languages
@@ -44,7 +44,7 @@
               (C          . t)))
 )
 
-(use-package org-use-package :no-require t
+(use-package org-use-package :no-require t :straight nil
 :after (evil org)
 :preface
 (defun org-use-package-install ()

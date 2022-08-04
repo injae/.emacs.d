@@ -4,13 +4,6 @@
 ;;; This config start here
 ;;; Code:
 ;; profile
-(use-package use-package)
-
-(use-package use-package-ensure-system-package :straight t)
-(use-package exec-path-from-shell :straight t 
-:config (exec-path-from-shell-initialize)
-        ;(exec-path-from-shell-copy-env "PATH")
-)
 
 (load-file (expand-file-name "~/.emacs.d/module/lisp-util.el"))
 
@@ -18,7 +11,7 @@
 (setq user-mail-address "8687lee@gmail.com")
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/.emacs.d/module/")
+;(add-to-list 'load-path "~/.emacs.d/module/")
 (add-to-list 'load-path "~/.emacs.d/private/")
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")

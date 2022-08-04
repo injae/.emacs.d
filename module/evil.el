@@ -1,5 +1,6 @@
 ;;; evil-mode
 
+
 (use-package evil :straight t
 :init (setq evil-want-keybinding nil)
       ;(setq evil-want-integration t)
@@ -14,7 +15,7 @@
 )
 
 (use-package evil-collection :straight t
-:after (evil)
+:after evil
 :custom (evil-collection-setup-minibuffer t)
 :config
     (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)

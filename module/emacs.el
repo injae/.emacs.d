@@ -84,7 +84,7 @@
         (setq frame-title-format nil)
 )
 
-(use-package wsl-setting :no-require t
+(use-package wsl-setting :straight nil :no-require t
 :if *is-wsl*
 :config
     (defconst powershell-exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
@@ -101,12 +101,12 @@
         (pixel-scroll-precision-mode)
 )
 
-(use-package not-wsl-setting :no-require t
+(use-package not-wsl-setting :straight nil :no-require t
 :unless *is-wsl*
 :config (set-frame-parameter nil 'alpha 0.95)
 )
 ;; emacs large file setting
-(use-package so-long-mode :no-require t
+(use-package so-long-mode :straight nil :no-require t
 ;;; default text parsing direction left -> right
 :if (version<= "27.1" emacs-version)
 :config
@@ -117,7 +117,7 @@
 )
 
 
-;(use-package pixel-scoll-smooth :no-require t 
+;(use-package pixel-scoll-smooth :no-require t  :straight nil
 ;;; default text parsing direction left -> right
 ;:if (version<= "29" emacs-version)
 ;:config (pixel-scroll-precision-mode)

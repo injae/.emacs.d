@@ -4,7 +4,7 @@
 :custom (polymode-display-process-buffers nil)
 )
 
-(use-package poly-jetbrain-lua :no-require t :after polymode
+(use-package poly-jetbrain-lua :no-require t :after polymode :straight nil
 :config
     ; jetbrain golang lua mode
     (define-hostmode poly-golang-lua-hostmode :mode 'go-mode)

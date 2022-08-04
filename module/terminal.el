@@ -15,7 +15,7 @@
 :general (leader "tn" 'multi-vterm :wk "new terminal")
 )
 
-(use-package vterm-with-centaur-tab :no-require t
+(use-package vterm-with-centaur-tab :no-require t :straight nil
 :after (vterm-toggle centaur-tabs)
 :preface (defun vmacs-awesome-tab-buffer-groups ()
           "`vmacs-awesome-tab-buffer-groups' control buffers' group rules. "
@@ -46,7 +46,7 @@
 :init    (global-set-key (kbd "<C-t>") 'shell-pop)
 )
 
-(use-package vterm-command :no-require t
+(use-package vterm-command :no-require t :straight nil
 :after (vterm)
 :preface
 (defun run-in-vterm-kill (process event)

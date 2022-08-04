@@ -1,6 +1,6 @@
 
 ; brew install rust base system command
-(use-package rust-system-command :no-require t :ensure nil
+(use-package rust-system-command :no-require t :straight nil
 :ensure-system-package ((rg    . "cargo install ripgrep")
                         (exa   . "cargo install exa")
                         (bat   . "cargo install bat")

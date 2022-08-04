@@ -1,6 +1,6 @@
 
 
-(use-package emacs-lisp :no-require t :after general
+(use-package emacs-lisp :no-require t :after general :straight nil
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
 )
 
@@ -21,6 +21,6 @@
 :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
 )
 
-(use-package prettify-symbols :no-require t
+(use-package prettify-symbols :no-require t :straight nil
 :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode)
 )

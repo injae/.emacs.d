@@ -18,9 +18,18 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
-;(use-package straight :custom (straight-use-package-by-default t))
+(use-package straight :custom (straight-use-package-by-default t))
 
 ;(require 'esup) ; emacs config profiling
+
+(use-package use-package :straight t)
+(eval-when-compile (require 'use-package))
+(use-package use-package-ensure-system-package :straight t)
+(use-package exec-path-from-shell :straight (:build (:not compile))
+:preface (require 'use-package)
+:config (exec-path-from-shell-initialize)
+        ;(exec-path-from-shell-copy-env "PATH")
+)
 
 (load-file "~/.emacs.d/config.el")
 ;;;

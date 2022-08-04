@@ -19,7 +19,7 @@
 :config (setup-esh-help-eldoc)
 )
 
-(use-package eshell-prompt-extras :straight t 
+(use-package eshell-prompt-extras :straight (:build (:not compile))
 :after eshell
 :config
     (autoload 'epe-theme-lambda   "eshell-prompt-extras")
