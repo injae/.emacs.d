@@ -29,7 +29,7 @@
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
 )
-(use-package highlight-numbers :straight t
+(use-package highlight-numbers :straight t :disabled
 :hook (prog-mode . highlight-numbers-mode)
 )
 

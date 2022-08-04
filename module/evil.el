@@ -19,8 +19,8 @@
 :custom (evil-collection-setup-minibuffer t)
 :config
     (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
-    (evil-collection-consult-setup)
     (evil-collection-init)
+    (evil-collection-consult-setup)
 )
 
 (use-package general :straight t

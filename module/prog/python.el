@@ -18,12 +18,12 @@
 :hook (python-mode . poetry-tracking-mode)
 )
 
-;(use-package lsp-pyright :straight t 
-;:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
-;)
+(use-package lsp-pyright :straight t 
+:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
+)
 
-(use-package lsp-python-ms :after python
-:straight t
-:init (setq lsp-python-ms-auto-install-server t)
-:hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
-)  ; or lsp-deferred
+;(use-package lsp-python-ms :after python
+;:straight t
+;:init (setq lsp-python-ms-auto-install-server t)
+;:hook (python-mode . (lambda () (require 'lsp-python-ms) (lsp)))
+;)  ; or lsp-deferred
