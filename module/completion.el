@@ -33,12 +33,16 @@
 )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist :straight t :init (savehist-mode))
+(use-package savehist :straight t
+    :init (savehist-mode))
 
 (use-package consult :straight t :after (projectile evil-collection)
-    :general (leader "fp" '(consult-projectile-find-file   :wk "Search in Project")
-                     "fG" '(consult-ripgrep                :wk "Grep in Project")
-                     "bS" '(consult-project-switch         :wk "Search Buffer in Project"))
+    :general (leader
+                 "fp" '(consult-projectile-find-file   :wk "Search in Project")
+                 "fG" '(consult-ripgrep                :wk "Grep in Project")
+                 "bs" '(consult-buffer                 :wk "Search Buffer")
+                 "bS" '(consult-project-switch         :wk "Search Buffer in Project")
+                 )
     :bind (;; C-c bindings (mode-specific-map)
             ("C-c h" . consult-history)
             ("C-c m" . consult-mode-command)
@@ -91,6 +95,7 @@
             ;; needed by consult-line to detect isearch
             ;; Minibuffer history
             :map minibuffer-local-map
+            ("C-s" . consult-history)                 ;; orig. next-matching-history-element
             ("M-s" . consult-history)                 ;; orig. next-matching-history-element
             ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
@@ -136,6 +141,10 @@
     )
 
 (use-package consult-projectile :straight t)
+(use-package consult-flycheck :straight t)
+(use-package consult-flyspell :straight t
+    :config
+    (setq consult-flyspell-correct-function 'flyspell-correct-at-point))
 
 (use-package marginalia :straight t :config (marginalia-mode))
 

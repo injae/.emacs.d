@@ -3,7 +3,6 @@
 (use-package buffer-move :straight t
 :general (leader
 	   "b c" #'clean-buffer-list
-	   "b s" 'switch-to-buffer
        "b r" 'eval-buffer
 	   "b h" 'buf-move-left
 	   "b j" 'buf-move-down
