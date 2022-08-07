@@ -17,11 +17,21 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(add-to-list 'load-path "~/.emacs.d/straight/build/")
+
+(eval-when-compile
+    (add-to-list 'load-path "~/.emacs.d/straight/build/use-package")
+    (add-to-list 'load-path "~/.emacs.d/straight/build/bind-key")
+    (require 'use-package)
+    (require 'bind-key)
+    )
+
 (straight-use-package 'use-package)
 (use-package straight :custom (straight-use-package-by-default t))
 
 ;(require 'esup) ; emacs config profiling
 (use-package use-package :straight t)
+
 (use-package use-package-ensure-system-package :straight t)
 (use-package exec-path-from-shell :straight (:build (:not compile))
 :preface (require 'use-package)
@@ -29,5 +39,85 @@
         ;(exec-path-from-shell-copy-env "PATH")
 )
 
-(load-file "~/.emacs.d/config.el")
-;;;
+;;; font Setting
+;; +------------+------------+
+;; | 일이삼사오 | 일이삼사오 |
+;; +------------+------------+
+;; | ABCDEFGHIJ | ABCDEFGHIJ |
+;; +------------+------------+
+;; | 1234567890 | 1234567890 |
+;; +------------+------------+
+;; | abcdefghij | abcdefghij |
+;; +------------+------------+
+
+(setq user-full-name "InJae Lee")
+(setq user-mail-address "8687lee@gmail.com")
+
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/module/")
+(add-to-list 'load-path "~/.emacs.d/module/prog/")
+(add-to-list 'load-path "~/.emacs.d/private/")
+
+(setq-default custom-file "~/.emacs.d/custom-variable.el")
+(when (file-exists-p custom-file) (load-file custom-file))
+
+;; 개인 설정
+(defvar private-config-file "~/.emacs.d/private/token.el")
+(setq-default private-config-file "~/.emacs.d/private/token.el")
+(when (file-exists-p private-config-file) (load-file private-config-file))
+
+(load (expand-file-name "~/.emacs.d/module/module-lisp-util"))
+
+;;; emacs 기본설정
+(load-modules-with-list "~/.emacs.d/module/" '(
+    "emacs"
+    "font"
+    "evil" ;;; evil and keymap
+    "git"
+    "grep-util"
+    "extension"
+    "project-manage"
+    "completion"
+    "window"
+    "buffer"
+    "ui" ;;; pretty ui
+    "org"
+    "terminal"
+    "edit" ;; edit (indent,,,)
+    "flycheck"
+    "search"
+    "multi-mode"
+    "util"
+))
+
+;;; programming 설정
+(load-modules-with-list "~/.emacs.d/module/prog/" '(
+    "lsp"
+    "snippet"
+    "highlight"
+    "prog-search"
+    "doc"
+    "ssh"
+    "coverage"
+    "copilot"
+    "tools"
+    ;; language
+    "cpp"
+    "lisp"
+    "csharp"
+    "rust"
+    "haskell"
+    "python"
+    "flutter"
+    "web"
+    "ruby"
+    "jvm"
+    "go"
+    "config-file"
+    "docker"
+))
+
+(require 'server)
+(unless (server-running-p) (server-start))
+
+;;; init.el ends here
