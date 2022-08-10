@@ -3,6 +3,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'use-package)
+(require 'straight)
+
 (use-package indent4-mode :no-require t :straight nil
 :preface
     (defun my-set-indent (n)
@@ -32,17 +35,17 @@
     (setq-default indent-tabs-mode nil)
 )
 
-(use-package paren :straight t 
+(use-package paren :straight t
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
 )
 
-(use-package expand-region :straight t 
+(use-package expand-region :straight t
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
 
-(use-package smartparens :straight t 
+(use-package smartparens :straight t
 ;:general (leader "pr " 'sp-rewrap-sexp
 ;                 "pll" 'sp-forward-slurp-sexp
 ;                 "phh" 'sp-backward-slurp-sexp

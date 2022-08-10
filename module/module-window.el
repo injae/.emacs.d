@@ -3,6 +3,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'use-package)
+(require 'straight)
+
 ;; window manage
 (use-package ace-window :straight t
 :commands (ace-window)

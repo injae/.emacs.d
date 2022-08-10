@@ -61,10 +61,6 @@
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
-;; 개인 설정
-(defvar private-config-file "~/.emacs.d/private/token.el")
-(setq-default private-config-file "~/.emacs.d/private/token.el")
-(when (file-exists-p private-config-file) (load-file private-config-file))
 
 (load (expand-file-name "~/.emacs.d/module/module-lisp-util"))
 
@@ -89,6 +85,10 @@
     "multi-mode"
     "util"
 ))
+
+;; 개인 설정
+(defvar private-config-file "~/.emacs.d/private/token.el")
+(setq-default private-config-file "~/.emacs.d/private/token.el")
 
 ;;; programming 설정
 (load-modules-with-list "~/.emacs.d/module/prog/" '(
@@ -116,6 +116,8 @@
     "config-file"
     "docker"
 ))
+
+(when (file-exists-p private-config-file) (load-file private-config-file))
 
 (require 'server)
 (unless (server-running-p) (server-start))

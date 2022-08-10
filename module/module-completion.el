@@ -3,7 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package) (require 'straight)
+(require 'use-package)
+(require 'straight)
 
 (use-package which-key :straight t
 :init   (which-key-mode t)
@@ -183,19 +184,21 @@
         ("TAB" . corfu-next)
         ([tab] . corfu-next)
         ("S-TAB" . corfu-previous)
-        ([backtab] . corfu-previous))     
+        ([backtab] . corfu-previous))
 :custom
     (corfu-auto t)
-    (corfu-auto-prefix 1)
+    (corfu-auto-prefix 2)
     (corfu-quit-no-match t)
     (corfu-preselect-first nil)
     (corfu-max-witdh corfu-min-width)
 :init (global-corfu-mode)
 )
 
+(use-package corfu-history :straight nil :load-path "straight/repos/corfu/extensions/"
+    :config (add-hook 'curfu-mode-hook #'curfu-history-mode))
+
 (use-package corfu-doc :straight t :after corfu
-:config (add-hook 'corfu-mode-hook #'corfu-doc-mode)
-)
+    :config (add-hook 'corfu-mode-hook #'corfu-doc-mode))
 
 ;; Add extensions
 (use-package cape :straight t

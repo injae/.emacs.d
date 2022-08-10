@@ -69,6 +69,9 @@
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 (global-set-key (kbd "<Hangul>") 'toggle-input-method)
 
+(require 'use-package)
+(require 'straight)
+
 (use-package default-text-scale :straight t
 :config (default-text-scale-mode)
         ;(if *is-wsl* (default-text-scale-increment 20))
@@ -81,7 +84,7 @@
 ; Enable the www ligature in every possible major mode
 (ligature-set-ligatures 't '("www"))
 (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-; Enable ligatures in programming modes                                                           
+; Enable ligatures in programming modes
 (ligature-set-ligatures '(prog-mode org-mode)
         '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
           ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
@@ -96,16 +99,16 @@
 (global-ligature-mode t)
 )
 
-(use-package emojify :straight t 
+(use-package emojify :straight t
 :if window-system
-:config 
+:config
         (setq emojify-display-style 'image)
         ;(setq emojify-emoji-styles  '(unicode))
         ;(setq emojify-emoji-set "emojione-v2.2.6")
         (global-emojify-mode 1)
 )
 
-;(use-package textsize :load-path "lisp/textsize")
+(use-package textsize :straight (:type git :host github :repo "WJCFerguson/textsize"))
 
 (provide 'module-font)
 ;;; module-font.el ends here

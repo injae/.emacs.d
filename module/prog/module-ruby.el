@@ -3,6 +3,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'use-package)
+(require 'straight)
+
 (use-package ruby-mode :straight t
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
