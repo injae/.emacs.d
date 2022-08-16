@@ -2,14 +2,19 @@
 # name: go unittntest
 # key:  testing
 # --
-func Test$1(t *testing.T) {
+func Test$1_$2(t *testing.T) {
 	for _, tt := range []struct {
 		description string
+        // data
+        // want 
         hasErr bool
 	}{
-      {},
+      {
+         //
+      },
     } {
 		t.Run(tt.description, func(t *testing.T) {
+            // got, err := $2()
 
             // assert.Equal(t, tt.hasErr , err != nil)
             // assert.Equal(t, tt.want, tt.got)        

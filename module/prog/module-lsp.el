@@ -47,11 +47,10 @@
           (unusedwrite . t)
           (fieldalignment . t)
           (useany . t)))
-    ;(setq lsp-enable-which-key-integration t)
     ;(setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui :straight t 
+(use-package lsp-ui :straight t
 :commands lsp-ui-mode
 :after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame

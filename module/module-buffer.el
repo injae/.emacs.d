@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-pacakge)
+(require 'use-package)
 (require 'straight)
 
 ;; buffer manage

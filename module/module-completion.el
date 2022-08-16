@@ -22,6 +22,21 @@
 
 ;;; minibuffer
 (use-package vertico :straight t
+                                        ;:straight (vertico :files (:defaults "extensions/*")
+                     ;              :includes (;vertico-indexed
+                                              ;vertico-mouse
+                                              ;vertico-quick
+                                              ;vertico-directory
+                                              ;vertico-repeat
+                                              ;vertico-buffer
+                                              ;vertico-multiform
+                                              ;vertico-reverse
+                                              ;vertico-flat
+                                              ;vertico-grid
+                                              ;vertico-unobtrusive))
+:general (:keymaps 'vertico-map
+             :state 'insert
+             "<escape>" #'evil-normal-state)
   :config (vertico-mode)
   ;; Different scroll margin
   ;; (setq vertico-scroll-margin 0)
@@ -186,8 +201,11 @@
         ("S-TAB" . corfu-previous)
         ([backtab] . corfu-previous))
 :custom
-    (corfu-auto t)
+    ;(corfu-auto t)
     (corfu-auto-prefix 2)
+    (corfu-auto-delay 0.25)
+    (corfu-count 14)
+    (corfu-scroll-margin 4)
     (corfu-quit-no-match t)
     (corfu-preselect-first nil)
     (corfu-max-witdh corfu-min-width)
@@ -257,9 +275,17 @@
 
 ;; Completion
 (use-package orderless :straight t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+    :custom
+    (completion-styles '(orderless))
+    (completion-category-overrides '((file (styles basic orderless))))
+    ;(orderless-matching-styles
+    ;    '(orderless-literal
+    ;      orderless-prefixes
+    ;      orderless-initialism
+    ;      orderless-regexp
+    ;      orderless-flex
+    ;     ))
+    )
 
 
 (provide 'module-completion)
