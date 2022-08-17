@@ -21,8 +21,10 @@
 
 (eval-when-compile
     (add-to-list 'load-path "~/.emacs.d/straight/build/use-package")
+    (add-to-list 'load-path "~/.emacs.d/straight/build/use-package-ensure-system-package")
     (add-to-list 'load-path "~/.emacs.d/straight/build/bind-key")
     (require 'use-package)
+    (require 'use-package-ensure-system-package)
     (require 'bind-key)
     )
 

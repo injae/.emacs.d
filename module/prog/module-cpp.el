@@ -20,7 +20,7 @@
 ;      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
-(use-package ccls :straight t 
+(use-package ccls  
 :hook  ((c-mode c++-mode objc-mode cuda-mode c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :config
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
@@ -37,16 +37,16 @@
                  "hcr" (lambda () (eshell-command "cppm run  ")))
 )
 
-(use-package clang-format :straight t 
+(use-package clang-format  
 :after  (c++-mode)
 :init   (add-hook 'c++-mode-hook 'clang-format)
 :general (leader "hccf" 'clang-format-regieon)
 )
 
 ; only c/c++
-(use-package disaster :straight t  :commands disaster)
+(use-package disaster   :commands disaster)
 
-(use-package quickrun :straight t
+(use-package quickrun 
 :general (leader "qr" #'quickrun)
 :config
     (quickrun-add-command "c++/c1z"

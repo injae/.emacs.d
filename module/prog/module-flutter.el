@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-;(use-package dart-mode :straight t 
+;(use-package dart-mode  
 ;:after lsp
 ;:mode   ("\\.dart\\'" . dart-mode)
 ;:custom (dart-format-on-save t)
@@ -15,7 +15,7 @@
 ;:init (add-hook 'dart-mode-hook 'lsp)
 ;)
 ;
-;(use-package flutter :straight t 
+;(use-package flutter  
 ;:after dart-mode
 ;:general (:keymaps 'dart-mode-map "C-M-x" 'flutter-run-or-hot-reload)
 ;:custom (flutter-sdk-path (expand-file-name "~/dev/flutter/"))

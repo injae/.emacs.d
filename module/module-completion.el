@@ -6,13 +6,13 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package which-key :straight t
+(use-package which-key 
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
         (setq which-key-show-operator-state-maps t)
 )
 
-(use-package which-key-posframe :straight t  :disabled
+(use-package which-key-posframe   :disabled
 :after which-key
 :config
     (setq which-key-posframe-border-width 15)
@@ -21,7 +21,7 @@
 )
 
 ;;; minibuffer
-(use-package vertico :straight t
+(use-package vertico 
                                         ;:straight (vertico :files (:defaults "extensions/*")
                      ;              :includes (;vertico-indexed
                                               ;vertico-mouse
@@ -46,17 +46,17 @@
   ;; (setq vertico-cycle t)
   )
 
-(use-package vertico-posframe :straight t
+(use-package vertico-posframe 
 :config
     (setq vertico-posframe-poshandler #'posframe-poshandler-frame-top-center)
 	(vertico-posframe-mode t)
 )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist :straight t
+(use-package savehist 
     :init (savehist-mode))
 
-(use-package consult :straight t :after (projectile evil-collection)
+(use-package consult  :after (projectile evil-collection)
     :general (leader
                  "fp" '(consult-projectile-find-file   :wk "Search in Project")
                  "fG" '(consult-ripgrep                :wk "Grep in Project")
@@ -160,15 +160,15 @@
     :config (evil-collection-consult-setup)
     )
 
-(use-package consult-projectile :straight t)
-(use-package consult-flycheck :straight t)
-(use-package consult-flyspell :straight t
+(use-package consult-projectile )
+(use-package consult-flycheck )
+(use-package consult-flyspell 
     :config
     (setq consult-flyspell-correct-function 'flyspell-correct-at-point))
 
-(use-package marginalia :straight t :config (marginalia-mode))
+(use-package marginalia  :config (marginalia-mode))
 
-(use-package embark :straight t
+(use-package embark 
   :bind
     (("C-." . embark-act)         ;; pick some comfortable binding
      ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -181,12 +181,12 @@
   (add-to-list 'display-buffer-alist '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none)))))
 
 ;; Consult users will also want the embark-consult package.
-(use-package embark-consult :straight t :after (embark consult) :demand t ; only necessary if you have the hook below
+(use-package embark-consult  :after (embark consult) :demand t ; only necessary if you have the hook below
   :hook (embark-collect-mode . consult-preview-at-point-mode)
 )
 
 ;;; input
-(use-package corfu :straight t :after evil-collection
+(use-package corfu  :after evil-collection
 :general (:keymaps 'corfu-map
 		       :states 'insert
 		       "C-n" #'corfu-next
@@ -201,7 +201,7 @@
         ("S-TAB" . corfu-previous)
         ([backtab] . corfu-previous))
 :custom
-    ;(corfu-auto t)
+    (corfu-auto t)
     (corfu-auto-prefix 2)
     (corfu-auto-delay 0.25)
     (corfu-count 14)
@@ -215,11 +215,11 @@
 (use-package corfu-history :straight nil :load-path "straight/repos/corfu/extensions/"
     :config (add-hook 'curfu-mode-hook #'curfu-history-mode))
 
-(use-package corfu-doc :straight t :after corfu
+(use-package corfu-doc  :after corfu
     :config (add-hook 'corfu-mode-hook #'corfu-doc-mode))
 
 ;; Add extensions
-(use-package cape :straight t
+(use-package cape 
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf
@@ -269,12 +269,12 @@
     ;; Setup lsp to use corfu for lsp completion
 )
 
-(use-package kind-icon :straight t :after corfu
+(use-package kind-icon  :after corfu
     :custom (kind-icon-default-face 'corfu-default)
     :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;; Completion
-(use-package orderless :straight t
+(use-package orderless 
     :custom
     (completion-styles '(orderless))
     (completion-category-overrides '((file (styles basic orderless))))

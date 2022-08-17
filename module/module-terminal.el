@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package vterm :straight t ;:after (evil-collection exec-path-from-shell)
+(use-package vterm  ;:after (evil-collection exec-path-from-shell)
 ;:commands (vterm)
 ;:ensure-system-package ((zsh . "chsh -s $(which zsh)")
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
@@ -15,7 +15,7 @@
 )
 
 
-(use-package multi-vterm :straight t 
+(use-package multi-vterm  
 :general (leader "tn" 'multi-vterm :wk "new terminal")
 )
 
@@ -42,7 +42,7 @@
         (setq vterm-toggle--vterm-buffer-p-function 'vmacs-term-mode-p)
 )
 
-(use-package shell-pop :straight t
+(use-package shell-pop 
 :custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) )))
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)

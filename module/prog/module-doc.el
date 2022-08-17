@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package eldoc :straight t  :diminish eldoc-mode :commands eldoc-mode)
+(use-package eldoc   :diminish eldoc-mode :commands eldoc-mode)
 
 (provide 'module-doc)
 ;;; module-doc.el ends here

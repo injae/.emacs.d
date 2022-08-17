@@ -6,17 +6,17 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package yaml-mode :straight t
+(use-package yaml-mode 
 :mode (("\\.yaml\\'" . yaml-mode)
        ("\\.yml\\'"  . yaml-mode))
 )
 
-(use-package toml-mode :straight t
+(use-package toml-mode 
 :mode (("\\.toml\\'" . toml-mode)
        ("Pipfile\\'" . toml-mode))
 )
 
-(use-package cmake-mode :straight t
+(use-package cmake-mode 
 :ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
@@ -25,7 +25,7 @@
 :init (setq cmake-tab-width 4)
 )
 
-(use-package markdown-mode :straight t
+(use-package markdown-mode 
 :after poly-markdown
 :mode  (("\\README.md\\'" . gfm-mode)
         ("\\.md\\'"       . gfm-mode)
@@ -35,14 +35,14 @@
         (poly-markdown-mode)
 )
 
-(use-package markdown-preview-mode :straight t :defer t)
-(use-package gh-md :straight t  :defer t
+(use-package markdown-preview-mode  :defer t)
+(use-package gh-md   :defer t
 :general (leader "hmr" 'gh-md-render-buffer)
 )
 
-(use-package powershell :straight t)
+(use-package powershell )
 
-(use-package json-mode :straight t
+(use-package json-mode 
 :mode  (("\\.json\\'"       . json-mode)
         ("/Pipfile.lock\\'" . json-mode))
 )
@@ -51,11 +51,11 @@
     :after so-long
     :custom (jsonian-no-so-long-mode))
 
-(use-package json-reformat :straight t
+(use-package json-reformat 
 :commands json-reformat-region
 )
 
-(use-package terraform-mode :straight t
+(use-package terraform-mode 
     :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")
     :mode   ("\\.tf\\'" . terraform-mode)
     :config
@@ -69,6 +69,9 @@
     (add-hook 'terraform-mode-hook 'lsp))
 ;;
 
+(use-package dotenv-mode 
+:mode ("\\.env\\..*\\'" . dotenv-mode)
+)
 
 (provide 'module-config-file)
 ;;; module-config-file.el ends here

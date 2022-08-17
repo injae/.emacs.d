@@ -6,26 +6,26 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package docker :straight t
+(use-package docker 
 :commands docker
 :general (leader "hud" 'docker)
 :custom (docker-image-run-arguments '("-i", "-t", "--rm"))
 )
 
-(use-package dockerfile-mode :straight t
+(use-package dockerfile-mode 
 :mode ("Dockerfile\\'" . dockerfile-mode)
 )
 
-(use-package kubernetes :straight t :commands (kubernetes-overview))
+(use-package kubernetes  :commands (kubernetes-overview))
 
 ;; If you want to pull in the Evil compatibility package.
-(use-package kubernetes-evil :straight t :after kubernetes)
+(use-package kubernetes-evil  :after kubernetes)
 
-(use-package k8s-mode :straight t
+(use-package k8s-mode 
 :hook (k8s-mode . yas-minor-mode)
 )
 
-(use-package docker-compose-mode :straight t)
+(use-package docker-compose-mode )
 
 (provide 'module-docker)
 ;;; module-docker.el ends here

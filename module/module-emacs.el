@@ -78,7 +78,7 @@
     (setq tab-always-indent 'complete)
 )
 
-(use-package ns-auto-titlebar :straight t
+(use-package ns-auto-titlebar 
 :if *is-mac*
 :config (ns-auto-titlebar-mode)
         (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -125,8 +125,8 @@
 ;)
 
 ;; emacs debug utils
-(use-package esup :straight t)
-(use-package bug-hunter :straight t)
+(use-package esup )
+(use-package bug-hunter )
 (use-package explain-pause-mode
     :straight (:type git :host github :repo "lastquestion/explain-pause-mode")
     :config (explain-pause-mode)

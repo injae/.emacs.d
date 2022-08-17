@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package ruby-mode :straight t
+(use-package ruby-mode 
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
 :mode "Gemfile\\'"
@@ -17,28 +17,28 @@
         (ruby-indent-tabs-mode nil)
 )
 
-(use-package rvm :straight t
+(use-package rvm 
 :after ruby-mode
 :ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
 )
 
-(use-package yari :straight t :after ruby-mode)
+(use-package yari  :after ruby-mode)
 
-(use-package rubocop :straight t
+(use-package rubocop 
 :ensure-system-package (rubocop . "sudo gem install rubocop")
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe :straight t
+(use-package robe 
 :after (ruby-mode company)
 :ensure-system-package (pry . "sudo gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)
 :config (push 'company-robe company-backends)
 )
 
-(use-package ruby-tools :straight t
+(use-package ruby-tools 
 :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 )

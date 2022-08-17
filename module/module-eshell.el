@@ -14,12 +14,12 @@
         (setq eshell-cmpl-cycle-completions nil)
 )
 
-(use-package eshell-did-you-mean :straight t 
+(use-package eshell-did-you-mean  
 :after  eshell
 :config (eshell-did-you-mean-setup)
 )
 
-(use-package esh-help :straight t 
+(use-package esh-help  
 :after (eshell eldoc)
 :config (setup-esh-help-eldoc)
 )
@@ -32,19 +32,19 @@
     (setq eshell-prompt-function  'epe-theme-lambda)
 )
 
-(use-package fish-completion :straight t 
+(use-package fish-completion  
 :after eshell
 :config (when (and (executable-find "fish")
                    (require 'fish-completion nil t))
               (global-fish-completion-mode))
 )
 
-(use-package esh-autosuggest :straight t 
+(use-package esh-autosuggest  
 :after eshell
 :hook (eshell-mode . esh-autosuggest-mode)
 )
 
-(use-package eshell-up :straight t :disabled
+(use-package eshell-up  :disabled
 :after eshell
 :config (add-hook 'eshell-mode-hook (lambda () (eshell/alias "up" "eshell-up $1")
                                           (eshell/alias "pk" "eshell-up-peek $1")))

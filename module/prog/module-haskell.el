@@ -6,11 +6,11 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package haskell-mode :straight t
+(use-package haskell-mode 
 :mode ("\\.hs\\'"    . haskell-mode)
 )
 
-(use-package lsp-haskell :straight t :after haskell-mode
+(use-package lsp-haskell  :after haskell-mode
 :hook ((haskell-mode . (lambda () (lsp)))
        (haskell-literate-mode . (lambda () (lsp))))
 )

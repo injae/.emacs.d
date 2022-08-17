@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package projectile :straight t
+(use-package projectile 
     :init (projectile-mode)
     :config
     (setq projectile-require-project-root nil)

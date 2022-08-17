@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package ivy :straight t
+(use-package ivy 
 ;:after evil-collection
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
@@ -29,7 +29,7 @@
 ;:config (counsel-mode)
 ;)
 
-(use-package swiper :straight t 
+(use-package swiper  
 :after ivy
 :general ("C-s"    'swiper)
          ("C-S-s"  'swiper-all)
@@ -38,7 +38,7 @@
         (setq swiper-stay-on-quit t)
 )
 
-(use-package ivy-posframe :straight t 
+(use-package ivy-posframe  
 :after ivy
 :custom (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
         (ivy-posframe-parameters '((left-fringe . 8) (right-fringe . 8) (internal-border-width . 10)))
@@ -51,48 +51,48 @@
         (ivy-posframe-mode t)
 )
 
-(use-package counsel-osx-app :straight t 
+(use-package counsel-osx-app  
 :after counsel
 :general (leader "fa" '(counsel-osx-app :wk "Execute OSX App"))
 )
 
-(use-package counsel-fd :straight t  :disabled
+(use-package counsel-fd   :disabled
 :after counsel
 :commands (counsel-fd-dired-jump counsel-fd-file-jump)
 )
 
 
-(use-package ivy-yasnippet :straight t 
+(use-package ivy-yasnippet  
 :after (ivy yasnippet)
 :general  ("C-c C-y" 'ivy-yasnippet)
 ;:config (advice-add #'ivy-yasnippet--preview :override #'ignore)
 )
 
-(use-package historian :straight t
+(use-package historian 
 :after  (ivy)
 :config (historian-mode)
 )
 
-(use-package ivy-historian :straight t 
+(use-package ivy-historian  
 :after  (ivy historian)
 :config (ivy-historian-mode)
 )
 
-(use-package all-the-icons-ivy :straight t 
+(use-package all-the-icons-ivy  
 :config (all-the-icons-ivy-setup)
 )
 
-(use-package ivy-xref :straight t  :disabled
+(use-package ivy-xref   :disabled
 :after (ivy xref)
 :config (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 )
 
-(use-package lsp-ivy :straight t 
+(use-package lsp-ivy  
 :general (leader "hs" '(lsp-ivy-workspace-symbol :wk "Search Symbol")
                  "hS" '(lsp-ivy-global-workspace-symbol :wk "Search Global Symbol"))
 )
 
-(use-package counsel-projectile :straight t 
+(use-package counsel-projectile  
 :after  (counsel projectile)
 :custom (projectile-completion-system 'ivy)
         (counsel-find-file-ignore-regexp ".ccls-cache/")
@@ -103,27 +103,27 @@
 :config (counsel-projectile-mode 1)
 
 )
-(use-package counsel-world-clock :straight t 
+(use-package counsel-world-clock  
 :after (counsel)
 :general (:keymaps 'counsel-mode-map "C-c c k"  'counsel-world-clock)
 )
 
-(use-package counsel-tramp :straight t 
+(use-package counsel-tramp  
 :after counsel
 :commands counsel-tramp
 :general ("C-c s" 'counsel-tramp)
 :init (setq tramp-default-method "ssh")
 )
 
-(use-package counsel-org-clock :straight t  :after (counsel org))
+(use-package counsel-org-clock   :after (counsel org))
 
-(use-package all-the-icons-ivy-rich :straight t 
+(use-package all-the-icons-ivy-rich  
 :config
     (setq ivy-rich-parse-remote-buffer nil)
     (all-the-icons-ivy-rich-mode t)
 )
 
-(use-package ivy-rich :straight t 
+(use-package ivy-rich  
     :init (setq ivy-rich-path-style    'abbrev)
           (setq ivy-virtual-abbreviate 'full)
     :config

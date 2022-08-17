@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package try :straight t  :defer t)
+(use-package try   :defer t)
 
 
 (use-package sudo-mode :no-require t :straight nil
@@ -16,19 +16,19 @@
 :general (leader "fs" #'sudo-find-file)
 )
 
-(use-package goto-last-change :straight t  :defer t
+(use-package goto-last-change   :defer t
 ;https://github.com/camdez/goto-last-change.el
 :general (leader "fl" 'goto-last-change)
 )
 
-(use-package no-littering :straight t 
+(use-package no-littering  
 :config (require 'recentf)
         (add-to-list 'recentf-exclude no-littering-var-directory)
         (add-to-list 'recentf-exclude no-littering-etc-directory)
         (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 )
 
-(use-package restart-emacs :straight t)
+(use-package restart-emacs )
 
 (defun reload-emacs ()
     ; reload emacs config 
@@ -58,7 +58,7 @@
     (new-buffer "untitled" 'text-mode)
 )
 
-(use-package hungry-delete :straight t :disabled
+(use-package hungry-delete  :disabled
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
@@ -112,7 +112,7 @@ All permutations equally likely."
     list)
 
 ;;; 키입력 보여주는 플러그인
-(use-package keypression :straight t
+(use-package keypression 
 :commands keypression-mode
 :custom (keypression-use-child-frame t)
         (keypression-fade-out-delay 1.0)
@@ -125,7 +125,7 @@ All permutations equally likely."
         (keypression-font-face-attribute '(:width normal :height 200 :weight bold))
 )
 
-(use-package undo-tree :straight t  :diminish undo-tree-mode :after general
+(use-package undo-tree   :diminish undo-tree-mode :after general
 :commands (undo-tree-undo undo-tree-redo)
 :general (leader "uu" 'undo-tree-undo
                  "ur" 'undo-tree-redo)

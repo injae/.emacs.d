@@ -5,9 +5,9 @@
 
 (require 'use-package)
 
-(use-package direnv :straight t :config (direnv-mode))
+(use-package direnv  :config (direnv-mode))
 
-(use-package gdscript-mode :straight t :disabled
+(use-package gdscript-mode  :disabled
 :hook   (gdscript-mode . lsp)
 :custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
 )
@@ -16,15 +16,15 @@
 ;:config (add-to-list 'company-backends 'company-godot-gdscript)
 ;)
 
-(use-package protobuf-mode :straight t)
+(use-package protobuf-mode )
 
-(use-package graphql-mode :straight t
+(use-package graphql-mode 
 :mode ((".graphql\\'" . graphql-mode)
        (".prisma\\'"  . graphql-mode))
 :hook (graphql-mode . (lambda () (require 'lsp-graphql) (lsp)))
 )
 
-(use-package lua-mode :straight t
+(use-package lua-mode 
 :mode ("\\.lua\\'" . lua-mode)
 )
 

@@ -4,7 +4,7 @@
 ;;; Code:
 
 ;; spotify controller
-(use-package smudge :straight t :defer t
+(use-package smudge  :defer t
 ; in private/token.el
 :general (leader "sn" 'smudge-controller-next-track
                  "hp" 'smudge-controller-previous-track)
@@ -16,8 +16,8 @@
 :commands (alert)
 :init (setq alert-default-style 'notifier))
 
-(use-package page-break-lines :straight t  :defer t)
-(use-package dashboard :straight t 
+(use-package page-break-lines   :defer t)
+(use-package dashboard  
 :init (dashboard-setup-startup-hook)
 :config
     (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))

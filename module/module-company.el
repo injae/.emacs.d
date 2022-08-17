@@ -4,7 +4,7 @@
 ;;; Code:
 
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
-(use-package company :straight t 
+(use-package company  
 :init (global-company-mode 1)
 :config
     (company-tng-mode t)
@@ -18,24 +18,24 @@
     ;(add-to-list 'company-backends '(company-capf :with company-yasnippet))
 )
 
-(use-package company-statistics :straight t 
+(use-package company-statistics  
 :after company
 :config (company-statistics-mode)
 )
 
 ;company-quickhelp speed up setting
-(use-package company-posframe :straight t 
+(use-package company-posframe  
 :after company
 :config (company-posframe-mode 1)
 )
 
-(use-package company-suggest :straight t
+(use-package company-suggest 
 :config (setq company-suggest-complete-sentence t)
         (add-to-list 'company-backend 'company-suggest-google)
 )
 
 
-(use-package company-box :straight t :diminish ""
+(use-package company-box  :diminish ""
 :after company-mode
 :hook   (company-mode . company-box-mode)
 :custom (company-box-max-candidates 30)
@@ -75,17 +75,17 @@
         ;(company-box-doc-delay 0.5)
 )
 
-(use-package company-c-headers :straight t 
+(use-package company-c-headers  
 :after  (company c++-mode)
 :config (add-to-list 'company-backends 'company-c-headers)
 )
 
-(use-package company-shell :straight t
+(use-package company-shell 
 :after (company eshell)
 :init (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell))
 )
 
-(use-package company-restclient :straight t 
+(use-package company-restclient  
 :after  (company restclient)
 :config (add-to-list 'company-backends 'company-restclient)
 )

@@ -6,19 +6,20 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package all-the-icons :straight t)
+(use-package all-the-icons )
 
-(use-package all-the-icons-ibuffer :straight t
+(use-package all-the-icons-ibuffer 
 :after all-the-icons
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
 )
 
-(use-package all-the-icons-completion :straight t
+(use-package all-the-icons-completion 
 :config (all-the-icons-completion-mode)
 )
 
-(use-package beacon :straight t :config (beacon-mode t))
-(use-package git-gutter :straight t
+(use-package beacon  :disabled
+    :config (beacon-mode t))
+(use-package git-gutter 
 :custom
     (git-gutter:lighter       " GG")
     (git-gutter:window-width  1)
@@ -36,17 +37,17 @@
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
 )
-(use-package highlight-numbers :straight t :disabled
+(use-package highlight-numbers  :disabled
 :hook (prog-mode . highlight-numbers-mode)
 )
 
 (setq custom-safe-themes t)
-(use-package doom-themes :straight t
+(use-package doom-themes 
 :init    (load-theme   'doom-vibrant t)
          ;(enable-theme 'doom-nord)
 :config (doom-themes-org-config)
 )
-(use-package doom-modeline :straight t
+(use-package doom-modeline 
 :hook   (after-init . doom-modeline-mode)
 :init   (setq find-file-visit-truename t)
         (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
@@ -83,16 +84,16 @@
         (with-eval-after-load 'lsp-treemacs (doom-themes-treemacs-config))
 )
 
-(use-package rainbow-mode :straight t 
+(use-package rainbow-mode  
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
 
-(use-package rainbow-delimiters :straight t
+(use-package rainbow-delimiters 
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package modern-fringes :straight t :defer t
+(use-package modern-fringes  :defer t
 :config (modern-fringes-invert-arrows)
         (modern-fringes-mode)
 )
@@ -110,31 +111,31 @@
 :config (run-with-idle-timer 60 t (lambda () (set-system-dark-mode)))  ; 1분마다, repeat
 )
 
-(use-package hide-mode-line :straight t 
+(use-package hide-mode-line  
 :after (neotree)
 :hook  (neotree-mode . hide-mode-line-mode)
 )
 
-(use-package nyan-mode :straight t 
+(use-package nyan-mode  
 ;:after  (doom-modeline)
 :config (setq nyan-wavy-trail t)
         (nyan-mode)
         (nyan-start-animation)
 )
 
-(use-package fancy-battery :straight t 
+(use-package fancy-battery  
 :hook   (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t)
 )
 
-(use-package diminish :straight t  :defer t
+(use-package diminish   :defer t
 :init
     (diminish 'c++-mode "C++ Mode")
     (diminish 'c-mode   "C Mode"  )
 )
 
-(use-package neotree :straight t 
+(use-package neotree  
 :after (projectile all-the-icons)
 :commands (neotree-toggle)
 :general (leader "n" #'neotree-toggle)
@@ -149,7 +150,7 @@
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-show-hidden-files t)
 )
-(use-package all-the-icons-dired :straight t 
+(use-package all-the-icons-dired  
 :after all-the-icons
 :init  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
@@ -163,7 +164,7 @@
 )
 
 ;; tab
-(use-package centaur-tabs :straight t
+(use-package centaur-tabs 
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 :hook   (dashboard-mode . centaur-tabs-local-mode)

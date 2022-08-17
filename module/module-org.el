@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package org :straight t
+(use-package org 
 :mode ("\\.org\\'" . org-mode)
 :general (leader "oa" 'org-agenda
                  "ob" 'org-iswitchb
@@ -19,7 +19,7 @@
 :config (setq org-startup-indented   nil)
 )
 
-(use-package org-superstar :straight t
+(use-package org-superstar 
 :after org
 :hook (org-mode . org-superstar-mode)
 :custom (org-superstar-special-todo-items t)
@@ -31,13 +31,13 @@
 ;    (org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
 
-(use-package valign :straight t
+(use-package valign 
     :after org-mode
     :hook (org-mode . valign-mode))
 
-(use-package orgtbl-aggregate :straight t)
+(use-package orgtbl-aggregate )
 
-(use-package toc-org :straight t
+(use-package toc-org 
     :after org
     :hook (org-mode . toc-org-mode))
 
@@ -67,7 +67,7 @@
                  "or" 'save-buffer)
 )
 
-;(use-package org-roam :straight t :disabled
+;(use-package org-roam  :disabled
 ;:custom  (org-roam-dailies-directory "journals/")
 ;:general (leader "of" '(org-roam-node-find :wk "Note"))
 ;:custom  (org-roam-directory (expand-file-name "~/GDrive/Roam/"))
@@ -82,9 +82,9 @@
 ;    ;(org-roam-setup)
 ;)
 ;
-;(use-package websocket :straight t :after org-roam)
+;(use-package websocket  :after org-roam)
 ;
-;(use-package org-roam-ui :straight t
+;(use-package org-roam-ui 
 ;:after org-roam
 ;:config (setq org-roam-ui-sync-theme t)
 ;        (setq org-roam-ui-follow t)
@@ -92,7 +92,7 @@
 ;        (setq org-roam-ui-open-on-start t)
 ;)
 
-;(use-package org-journal :straight t :disabled
+;(use-package org-journal  :disabled
 ;:after org
 ;:preface
 ;    (defun org-journal-find-location ()
@@ -130,7 +130,7 @@
 ;
 ;(use-package org-agenda :ensure nil :disabled
 ;:after org
-;:config (use-package evil-org :straight t 
+;:config (use-package evil-org  
 ;        :after (org evil)
 ;        :init (add-hook 'org-mode-hook 'evil-org-mode)
 ;            (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
@@ -140,7 +140,7 @@
 ;        )
 ;)
 ;
-;(use-package org-pomodoro :straight t 
+;(use-package org-pomodoro  
 ;:after org-agenda
 ;:custom
 ;    (org-pomodoro-ask-upon-killing t)
@@ -162,15 +162,15 @@
 ;:general (:keymaps 'org-agenda-mode-map "p"  'org-pomodoro)
 ;)
 
-;(use-package calfw :straight t :disabled
+;(use-package calfw  :disabled
 ;:commands cfw:open-calendar-buffer
 ;:config (use-package calfw-org :config (setq cfw:org-agenda-schedule-args '(:deadline :timestamp :sexp)))
 ;)
 ;
-;(use-package calfw-gcal :straight t  :disabled
+;(use-package calfw-gcal   :disabled
 ;:init (require 'calfw-gcal))
 ;
-;(use-package ob-restclient :straight t 
+;(use-package ob-restclient  
 ;:after  (org restclient)
 ;:config (org-babel-do-load-languages 'org-babel-load-languages '((restclient . t)))
 ;)

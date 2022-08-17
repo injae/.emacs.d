@@ -7,7 +7,7 @@
 (require 'straight)
 
 ;; window manage
-(use-package ace-window :straight t
+(use-package ace-window 
 :commands (ace-window)
 :general (leader "wo" 'ace-window
                  "wd" 'delete-other-windows)
@@ -15,7 +15,7 @@
 :config (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8))
 )
 
-(use-package eyebrowse :straight t :defer t
+(use-package eyebrowse  :defer t
 :init (eyebrowse-mode t)
 :general (leader
 	   "w;" 'eyebrowse-last-window-config

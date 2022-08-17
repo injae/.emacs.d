@@ -6,8 +6,10 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package lsp-mode :straight t ;:after exec-path-from-shell
+(use-package lsp-mode ;:after exec-path-from-shell
 :commands lsp
+:hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
+       (lsp-mode  . lsp-enable-which-key-integration))
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
                  "pp" '(xref-go-back                    :wk "lsp pop")
                  "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
@@ -29,10 +31,10 @@
 :init
     (defun my/lsp-mode-setup-completion ()
         (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults)) '(orderless)))
-:hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
-       (lsp-mode  . lsp-enable-which-key-integration))
 :config
     ;(lsp-mode)
+    ;corfu + lsp pause bugfix
+    (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
     (setq lsp-go-use-gofumpt t)
     (setq lsp-gopls-hover-kind "NoDocumentation")
     (lsp-register-custom-settings
@@ -50,7 +52,7 @@
     ;(setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui :straight t
+(use-package lsp-ui 
 :commands lsp-ui-mode
 :after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame
@@ -74,18 +76,18 @@
         ;(lsp-ui-sideline-show-diagnostics t)
 )
 
-(use-package treemacs :straight t :config (setq treemacs-resize-icons 22))
-(use-package treemacs-evil :straight t :after (treemacs evil))
-(use-package treemacs-projectile :straight t :after (treemacs projectile))
+(use-package treemacs  :config (setq treemacs-resize-icons 22))
+(use-package treemacs-evil  :after (treemacs evil))
+(use-package treemacs-projectile  :after (treemacs projectile))
 
-(use-package lsp-treemacs :straight t 
+(use-package lsp-treemacs  
 :after (lsp-mode doom-modeline)
 :config ;(setq lsp-metals-treeview-enable t)
         ;(setq lsp-metals-treeview-show-when-views-received t)
         (lsp-treemacs-sync-mode 1)
 ) 
 
-(use-package dap-mode :straight t 
+(use-package dap-mode  
 :after lsp-mode
 :commands (dap-debug)
 :general (leader "dd" 'dap-debug)
@@ -130,12 +132,12 @@
     (add-hook 'dap-stopped-hook 'my/show-debug-windows)
 )
 
-(use-package lsp-grammarly :straight t :disabled
+(use-package lsp-grammarly  :disabled
 :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
 )
 
 ;;
-(use-package consult-lsp :straight t)
+(use-package consult-lsp )
 
 (provide 'module-lsp)
 ;;; module-lsp.el ends here

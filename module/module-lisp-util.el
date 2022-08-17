@@ -6,11 +6,11 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package dash :straight t :init (global-dash-fontify-mode t))
-(use-package dash-functional :straight t :after dash)
-(use-package f :straight t)
-(use-package s :straight t)
-(use-package srefactor :straight t
+(use-package dash  :init (global-dash-fontify-mode t))
+(use-package dash-functional  :after dash)
+(use-package f )
+(use-package s )
+(use-package srefactor 
     :config (require 'srefactor-lisp))
  
 (defun load-modules-with-list (module-path modules)

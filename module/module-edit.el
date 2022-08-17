@@ -35,17 +35,17 @@
     (setq-default indent-tabs-mode nil)
 )
 
-(use-package paren :straight t
+(use-package paren 
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
 )
 
-(use-package expand-region :straight t
+(use-package expand-region 
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
 
-(use-package smartparens :straight t
+(use-package smartparens 
 ;:general (leader "pr " 'sp-rewrap-sexp
 ;                 "pll" 'sp-forward-slurp-sexp
 ;                 "phh" 'sp-backward-slurp-sexp
@@ -57,14 +57,14 @@
 ;elisp double quote problem fix setting
 (use-package smartparens-config :after smartparens :straight nil)
 
-;(use-package aggressive-indent :straight t  :disabled
+;(use-package aggressive-indent   :disabled
 ;; https://github.com/Malabarba/aggressive-indent-mode
 ;:config (electric-indent-mode nil)
 ;;exclud mode
 ;;(add-to-list 'aggresive-indent-excluded-modes 'html-mode)
 ;)
 ;
-;(use-package highlight-indentation :straight t :disabled
+;(use-package highlight-indentation  :disabled
 ;:hook (prog-mode . highlight-indentation-mode)
 ;)
 

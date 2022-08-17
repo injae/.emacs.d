@@ -3,15 +3,15 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package magit :straight t
+(use-package magit 
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
         ;(setq auth-source '("~/.authinfo"))
 )
 
-(use-package cov :straight t)
-;(use-package coverlay :straight t :disabled)
+(use-package cov )
+;(use-package coverlay  :disabled)
 
 (provide 'module-coverage)
 ;;; module-coverage.el ends here

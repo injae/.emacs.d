@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package dumb-jump :straight t 
+(use-package dumb-jump  
 :after  company
 :custom ;(dumb-jump-selector 'ivy)
         (dumb-jump-force-searcher 'rg)

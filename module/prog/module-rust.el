@@ -4,15 +4,15 @@
 ;;; Code:
 
 (require 'use-package)
+(require 'use-package-ensure-system-package)
 (require 'straight)
 
-(use-package rustic :straight t
+(use-package rustic
 :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 :mode ("\\.rs\\'" . rustic-mode)
 :general (leader "hrf" 'rust-format-buffer)
 :init
-(defun ij/rustic-mode-hook ()
-    (when buffer-file-name (setq-local buffer-save-without-query t)))
+(defun ij/rustic-mode-hook () (when buffer-file-name (setq-local buffer-save-without-query t)))
 
 :config
     (setq lsp-eldoc-hook nil)
@@ -26,7 +26,7 @@
     (add-hook 'rustic-mode-hook 'ij/rustic-mode-hook)
 )
 
-;(use-package rust-mode :straight t
+;(use-package rust-mode 
 ;:ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
 ;:mode ("\\.rs\\'" . rust-mode)
 ;:hook (rust-mode . lsp)
@@ -39,12 +39,12 @@
 ;         ;(add-hook 'rust-mode-hook (lambda () (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 ;)
 
-(use-package flycheck-rust :straight t 
+(use-package flycheck-rust  
 :after  (flycheck rust-mode)
 :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 )
 
-(use-package cargo :straight t 
+(use-package cargo  
 :after  rust-mode
 :hook (rust-mode . cargo-minor-mode)
 :commands cargo-minor-mode

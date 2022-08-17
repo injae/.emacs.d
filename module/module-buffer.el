@@ -7,7 +7,7 @@
 (require 'straight)
 
 ;; buffer manage
-(use-package buffer-move :straight t
+(use-package buffer-move 
 :general (leader
 	   "b c" #'clean-buffer-list
        "b r" 'eval-buffer
@@ -23,7 +23,7 @@
 )
 
 ;; buffer log
-(use-package command-log-mode :straight t)
+(use-package command-log-mode )
 
 (use-package buffer-zoom :straight nil
 :general (leader "tu" 'text-scale-increase

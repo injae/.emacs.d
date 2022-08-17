@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package go-mode :straight t
+(use-package go-mode 
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
                         (gofumpt . "go install mvdan.cc/gofumpt@latest"))
@@ -28,7 +28,7 @@
 
 ;:go-tag-add xml db
 ;go-tag-add json,omitempty
-(use-package go-tag :straight t :after go-mode
+(use-package go-tag  :after go-mode
 :ensure-system-package (gomodifytags . "go install github.com/fatih/gomodifytags@latest")
 )
 
@@ -37,17 +37,17 @@
                         (godoc . "go install golang.org/x/tools/cmd/godoc@latest"))
 )
 
-(use-package go-fill-struct :straight t :after go-mode
+(use-package go-fill-struct  :after go-mode
 :ensure-system-package (fillstruct . "go install github.com/davidrjenni/reftools/cmd/fillstruct@latest")
 )
 
-(use-package go-gen-test :straight t :after go-mode
+(use-package go-gen-test  :after go-mode
 :ensure-system-package (gotests . "go install github.com/cweill/gotests/...@latest")
 )
 
-(use-package gotest :straight t :after go-mode)
+(use-package gotest  :after go-mode)
 
-(use-package go-errcheck :straight t :after go-mode
+(use-package go-errcheck  :after go-mode
 :ensure-system-package (errcheck . "go install github.com/kisielk/errcheck@latest")
 )
 
@@ -57,7 +57,7 @@
         (funcall fn checker property)))
 (advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
-(use-package flycheck-golangci-lint :straight t :after (go-mode flycheck)
+(use-package flycheck-golangci-lint  :after (go-mode flycheck)
     :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
                             (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
                             (revive . "go install github.com/mgechev/revive@latest")

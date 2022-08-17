@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package editorconfig :straight t)
+(use-package editorconfig )
 (use-package copilot :straight (:host github :repo "zerolfx/copilot.el") :disabled
     :after editorconfig 
     :config

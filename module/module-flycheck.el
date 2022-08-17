@@ -5,7 +5,7 @@
 
 (require 'use-package)
 
-(use-package flycheck :straight t
+(use-package flycheck 
     :custom
     (flycheck-clang-language-standard "c++17")
     :config
@@ -14,10 +14,10 @@
     (global-flycheck-mode)
 )
 
-(use-package flycheck-package :straight t :after flycheck
+(use-package flycheck-package  :after flycheck
     :config (flycheck-package-setup))
 
-(use-package flyspell :straight t :after flycheck
+(use-package flyspell  :after flycheck
 :hook ((prog-mode . flyspell-prog-mode)
        (text-mode . flyspell-mode))
 :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")

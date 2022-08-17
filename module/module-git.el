@@ -3,14 +3,14 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package magit :straight t
+(use-package magit 
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)
         ;(setq auth-source '("~/.authinfo"))
 )
 
-(use-package forge :straight t  :after magit
+(use-package forge   :after magit
     :config
     ;(defclass forge-gitlab-http-repository (forge-gitlab-repository)
     ;    ((issues-url-format         :initform "http://%h/%o/%n/issues")
@@ -28,7 +28,7 @@
     ;(add-to-list 'ghub-insecure-hosts "git.private.network.repo/api/v4")
 )
 
-(use-package git-messenger :straight t
+(use-package git-messenger 
 :commands git-messenger:popup-message
 :general (leader "gm" 'git-messenger:popup-message)
 :config (setq git-messenger:use-magit-popup t)
@@ -36,18 +36,18 @@
 
 
 ; 현재 git repo의 homepage link를 clipboard에 넣어준다
-(use-package git-link :straight t
+(use-package git-link 
 :general (leader "gh" 'git-link-homepage)
 :config  ;(setq git-link-use-single-line-number t)
          (setf git-link-use-commit t)
 )
 
 ;; git history view mode
-(use-package smeargle :straight t 
+(use-package smeargle  
 :commands smeagle
 )
 
-(use-package blamer :straight t :defer t
+(use-package blamer  :defer t
 :custom
     (blamer-view 'overlay)
     (blamer-idle-time 0.3)
@@ -60,7 +60,7 @@
                      :italic t)))
 )
 
-(use-package evil-ediff :straight t 
+(use-package evil-ediff  
 :after evil
 :config (evil-ediff-init)
 )
