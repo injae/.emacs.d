@@ -17,7 +17,7 @@ func Test$1_$2(t *testing.T) {
             // got, err := $2()
 
             // assert.Equal(t, tt.hasErr , err != nil)
-            // assert.Equal(t, tt.want, tt.got)        
+            // assert.Equal(t, tt.want, got)
 		})
 	}
 }

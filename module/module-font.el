@@ -72,7 +72,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package default-text-scale 
+(use-package default-text-scale :disabled
 :config (default-text-scale-mode)
         ;(if *is-wsl* (default-text-scale-increment 20))
         ;(if *is-wsl* (default-text-scale-increment 45))
@@ -99,7 +99,7 @@
 (global-ligature-mode t)
 )
 
-(use-package emojify 
+(use-package emojify :disabled
 :if window-system
 :config
         (setq emojify-display-style 'image)

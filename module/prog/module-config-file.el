@@ -6,17 +6,17 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package yaml-mode 
+(use-package yaml-mode
 :mode (("\\.yaml\\'" . yaml-mode)
        ("\\.yml\\'"  . yaml-mode))
 )
 
-(use-package toml-mode 
+(use-package toml-mode
 :mode (("\\.toml\\'" . toml-mode)
        ("Pipfile\\'" . toml-mode))
 )
 
-(use-package cmake-mode 
+(use-package cmake-mode
 :ensure-system-package (cmake-language-server . "pip3 install cmake-language-server")
 :commands cmake-mode
 :mode (("\\.cmake\\'"    . cmake-mode)
@@ -25,7 +25,7 @@
 :init (setq cmake-tab-width 4)
 )
 
-(use-package markdown-mode 
+(use-package markdown-mode
 :after poly-markdown
 :mode  (("\\README.md\\'" . gfm-mode)
         ("\\.md\\'"       . gfm-mode)
@@ -42,20 +42,20 @@
 
 (use-package powershell )
 
-(use-package json-mode 
-:mode  (("\\.json\\'"       . json-mode)
-        ("/Pipfile.lock\\'" . json-mode))
+(use-package json-mode
+    :mode  (("\\.json\\'"       . json-mode)
+            ("/Pipfile.lock\\'" . json-mode))
 )
 
 (use-package jsonian :straight (:type git :host github :repo "iwahbe/jsonian")
     :after so-long
     :custom (jsonian-no-so-long-mode))
 
-(use-package json-reformat 
+(use-package json-reformat
 :commands json-reformat-region
 )
 
-(use-package terraform-mode 
+(use-package terraform-mode
     :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")
     :mode   ("\\.tf\\'" . terraform-mode)
     :config
