@@ -8,18 +8,19 @@
 
 (use-package all-the-icons )
 
-(use-package all-the-icons-ibuffer 
+(use-package all-the-icons-ibuffer
 :after all-the-icons
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
 )
 
-(use-package all-the-icons-completion 
+(use-package all-the-icons-completion
 :config (all-the-icons-completion-mode)
 )
 
-(use-package beacon  :disabled
+(use-package beacon
     :config (beacon-mode t))
-(use-package git-gutter 
+
+(use-package git-gutter
 :custom
     (git-gutter:lighter       " GG")
     (git-gutter:window-width  1)
@@ -42,12 +43,12 @@
 )
 
 (setq custom-safe-themes t)
-(use-package doom-themes 
+(use-package doom-themes
 :init    (load-theme   'doom-vibrant t)
          ;(enable-theme 'doom-nord)
 :config (doom-themes-org-config)
 )
-(use-package doom-modeline 
+(use-package doom-modeline
 :hook   (after-init . doom-modeline-mode)
 :init   (setq find-file-visit-truename t)
         (setq doom-modeline-buffer-file-name-style 'truncate-with-project)

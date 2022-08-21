@@ -4,18 +4,16 @@
 ;;; Code:
 
 (require 'use-package)
-(require 'straight)
 
-(use-package dash  :init (global-dash-fontify-mode t))
-(use-package dash-functional  :after dash)
-(use-package f )
-(use-package s )
-(use-package srefactor 
+(use-package dash :init (global-dash-fontify-mode t))
+(use-package dash-functional :after dash)
+(use-package f)
+(use-package s)
+
+(use-package srefactor
     :config (require 'srefactor-lisp))
  
 (defun load-modules-with-list (module-path modules)
-    (require 'use-package)
-    (require 'straight)
     (setq-local target
         (-map
             (lambda (module)
@@ -26,7 +24,7 @@
         )
     (dolist
         (it target)
-        (native-compile-async (f-swap-ext it "el"))
+        ;(native-compile-async (f-swap-ext it "el"))
         (require (intern (f-filename it)))
         ))
 ;;;

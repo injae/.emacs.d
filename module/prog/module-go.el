@@ -3,10 +3,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
+(eval-when-compile (require 'use-package))
 
-(use-package go-mode 
+
+(use-package go-mode
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
                         (gofumpt . "go install mvdan.cc/gofumpt@latest"))

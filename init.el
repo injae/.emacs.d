@@ -22,9 +22,11 @@
 (eval-when-compile
     (add-to-list 'load-path "~/.emacs.d/straight/build/use-package")
     (add-to-list 'load-path "~/.emacs.d/straight/build/use-package-ensure-system-package")
+    (add-to-list 'load-path "~/.emacs.d/straight/build/general/")
     (add-to-list 'load-path "~/.emacs.d/straight/build/bind-key")
     (require 'use-package)
     (require 'use-package-ensure-system-package)
+    (require 'general)
     (require 'bind-key)
     )
 
@@ -32,7 +34,11 @@
 (use-package straight :custom (straight-use-package-by-default t))
 
 ;(require 'esup) ; emacs config profiling
-(use-package use-package :straight t)
+(use-package use-package)
+(use-package gcmh :defer t
+    :config (gcmh-mode t))
+
+
 
 (use-package use-package-ensure-system-package :straight t)
 (use-package exec-path-from-shell :straight (:build (:not compile))

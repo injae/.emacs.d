@@ -73,5 +73,7 @@
 :mode ("\\.env\\..*\\'" . dotenv-mode)
 )
 
+(use-package protobuf-mode)
+
 (provide 'module-config-file)
 ;;; module-config-file.el ends here
