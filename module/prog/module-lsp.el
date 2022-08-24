@@ -41,8 +41,7 @@
         '(("gopls.staticcheck" t t)
           ("gopls.allExperiments" t t)
           ("gopls.usePlaceholders" t t)
-          ("rust-analyzer.cargo.runBuildScript" t t)
-             ))
+          ("rust-analyzer.cargo.runBuildScript" t t)))
     (setq lsp-go-analyses
         '((unusedparams . t)
           (unreachable . t)
@@ -52,7 +51,7 @@
     ;(setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui 
+(use-package lsp-ui
 :commands lsp-ui-mode
 :after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame
@@ -80,18 +79,18 @@
 (use-package treemacs-evil  :after (treemacs evil))
 (use-package treemacs-projectile  :after (treemacs projectile))
 
-(use-package lsp-treemacs  
+(use-package lsp-treemacs
 :after (lsp-mode doom-modeline)
 :config ;(setq lsp-metals-treeview-enable t)
         ;(setq lsp-metals-treeview-show-when-views-received t)
         (lsp-treemacs-sync-mode 1)
-) 
+)
 
-(use-package dap-mode  
+(use-package dap-mode
 :after lsp-mode
 :commands (dap-debug)
 :general (leader "dd" 'dap-debug)
-;:custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode")) 
+;:custom (dap-lldb-debug-program '("/Users/nieel/.vscode/extensions/lanza.lldb-vscode-0.2.2/bin/darwin/bin/lldb-vscode"))
 :config
     (setq dap-auto-configure-features '(sessions locals controls tooltip))
     (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
@@ -136,7 +135,6 @@
 :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
 )
 
-;;
 (use-package consult-lsp )
 
 (provide 'module-lsp)

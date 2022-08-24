@@ -3,14 +3,12 @@
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile (require 'use-package))
-
+(require 'use-package)
 
 (use-package go-mode
 :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                         (godef . "go install github.com/rogpeppe/godef@latest")
                         (gofumpt . "go install mvdan.cc/gofumpt@latest"))
-
 :mode ("\\.go\\''" . go-mode)
 :hook (go-mode . (lambda () (lsp)))
 :config
@@ -51,23 +49,23 @@
 :ensure-system-package (errcheck . "go install github.com/kisielk/errcheck@latest")
 )
 
-(defvar-local flycheck-local-checkers nil)
-(defun +flycheck-checker-get(fn checker property)
-    (or (alist-get property (alist-get checker flycheck-local-checkers))
-        (funcall fn checker property)))
-(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
+;(defvar-local flycheck-local-checkers nil)
+;(defun +flycheck-checker-get(fn checker property)
+;    (or (alist-get property (alist-get checker flycheck-local-checkers))
+;        (funcall fn checker property)))
+;(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
-(use-package flycheck-golangci-lint  :after (go-mode flycheck)
+(use-package flycheck-golangci-lint :after flycheck
     :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
                             (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
                             (revive . "go install github.com/mgechev/revive@latest")
                             (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
-:config
-    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst"))
+    :config
+    (setq flycheck-golangci-lint-enable-linters
+        '("gocritic" "misspell" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst"))
     (setq flycheck-golangci-lint-disable-linters '("structcheck" "goimports"))
-    (add-hook 'go-mode-hook (lambda ()
-                                (flycheck-golangci-lint-setup)
-                                (setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))
+    (add-hook 'go-mode-hook (lambda () (flycheck-golangci-lint-setup)))
+                                  ;(setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))
 )
 
 (provide 'module-go)

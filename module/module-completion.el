@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package which-key 
+(use-package which-key
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
         (setq which-key-show-operator-state-maps t)
@@ -21,39 +21,39 @@
 )
 
 ;;; minibuffer
-(use-package vertico 
-                                        ;:straight (vertico :files (:defaults "extensions/*")
-                     ;              :includes (;vertico-indexed
-                                              ;vertico-mouse
-                                              ;vertico-quick
-                                              ;vertico-directory
-                                              ;vertico-repeat
-                                              ;vertico-buffer
-                                              ;vertico-multiform
-                                              ;vertico-reverse
-                                              ;vertico-flat
-                                              ;vertico-grid
-                                              ;vertico-unobtrusive))
-:general (:keymaps 'vertico-map
+(use-package vertico
+    ;:straight (vertico :files (:defaults "extensions/*")
+                        ;:includes (;vertico-indexed
+                            ;vertico-mouse
+                            ;vertico-quick
+                            ;vertico-directory
+                            ;vertico-repeat
+                            ;vertico-buffer
+                            ;vertico-multiform
+                            ;vertico-reverse
+                            ;vertico-flat
+                            ;vertico-grid
+                            ;vertico-unobtrusive))
+    :general (:keymaps 'vertico-map
              :state 'insert
              "<escape>" #'evil-normal-state)
-  :config (vertico-mode)
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-  (setq vertico-count 20)
-  (setq vertico-resize t)
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
+    :config (vertico-mode)
+    ;; Different scroll margin
+    ;; (setq vertico-scroll-margin 0)
+    (setq vertico-count 20)
+    (setq vertico-resize t)
+    ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+    ;; (setq vertico-cycle t)
+)
 
-(use-package vertico-posframe 
+(use-package vertico-posframe
 :config
     (setq vertico-posframe-poshandler #'posframe-poshandler-frame-top-center)
-	(vertico-posframe-mode t)
+    (vertico-posframe-mode t)
 )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist 
+(use-package savehist
     :init (savehist-mode))
 
 (use-package consult  :after (projectile evil-collection)
@@ -161,14 +161,11 @@
     )
 
 (use-package consult-projectile )
-(use-package consult-flycheck )
-(use-package consult-flyspell 
-    :config
-    (setq consult-flyspell-correct-function 'flyspell-correct-at-point))
+(use-package consult-flycheck)
 
-(use-package marginalia  :config (marginalia-mode))
+(use-package marginalia :config (marginalia-mode))
 
-(use-package embark 
+(use-package embark
   :bind
     (("C-." . embark-act)         ;; pick some comfortable binding
      ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -188,13 +185,13 @@
 ;;; input
 (use-package corfu  :after evil-collection
 :general (:keymaps 'corfu-map
-		       :states 'insert
-		       "C-n" #'corfu-next
-		       "C-p" #'corfu-previous
-		       "<escape>" #'evil-collection-corfu-quit-and-escape
-		       "C-<return>" #'corfu-insert
-		       "M-d" #'corfu-show-documentation
-		       "M-l" #'corfu-show-location)
+               :states 'insert
+               "C-n" #'corfu-next
+               "C-p" #'corfu-previous
+               "<escape>" #'evil-collection-corfu-quit-and-escape
+               "C-<return>" #'corfu-insert
+               "M-d" #'corfu-show-documentation
+               "M-l" #'corfu-show-location)
 :bind (:map corfu-map
         ("TAB" . corfu-next)
         ([tab] . corfu-next)
@@ -219,14 +216,13 @@
     :config (add-hook 'corfu-mode-hook #'corfu-doc-mode))
 
 ;; Add extensions
-(use-package cape 
+(use-package cape
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf
          ("C-c p t" . complete-tag)        ;; etags
          ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
          ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
          ("C-c p k" . cape-keyword)
          ("C-c p s" . cape-symbol)
          ("C-c p a" . cape-abbrev)
@@ -274,7 +270,7 @@
     :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;; Completion
-(use-package orderless 
+(use-package orderless
     :custom
     (completion-styles '(orderless))
     (completion-category-overrides '((file (styles basic orderless))))
