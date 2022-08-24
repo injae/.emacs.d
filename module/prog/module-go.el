@@ -63,14 +63,11 @@
                             (revive . "go install github.com/mgechev/revive@latest")
                             (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
 :config
-    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "revive"))
-    (setq flycheck-golangci-lint-disable-linters '("structcheck"))
-    (add-hook 'go-mode-hook (lambda()
+    (setq flycheck-golangci-lint-enable-linters '("gocritic" "misspell" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst"))
+    (setq flycheck-golangci-lint-disable-linters '("structcheck" "goimports"))
+    (add-hook 'go-mode-hook (lambda ()
                                 (flycheck-golangci-lint-setup)
-                                (setq flycheck-local-checkers
-                                    '((lsp . ((next-checkers . (golangci-lint)))
-                                          ))
-                                    )))
+                                (setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))
 )
 
 (provide 'module-go)

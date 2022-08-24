@@ -27,6 +27,14 @@
         ;(native-compile-async (f-swap-ext it "el"))
         (require (intern (f-filename it)))
         ))
+
+(defun temp-buffer ()
+    "open up a guaranteed new scratch buffer"
+    (interactive)
+    (switch-to-buffer (cl-loop for num from 0
+                            for name = (format "temp-%03i" num)
+                            while (get-buffer name)
+                            finally return name)))
 ;;;
 
 (provide 'module-lisp-util)
