@@ -35,6 +35,13 @@
                             for name = (format "temp-%03i" num)
                             while (get-buffer name)
                             finally return name)))
+
+(defun json-pretty (start end)
+    (interactive "*r")
+    (replace-string "\\\"" "\"" nil start end)
+    (json-pretty-print start end)
+    )
+
 ;;;
 
 (provide 'module-lisp-util)

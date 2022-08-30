@@ -62,7 +62,7 @@
                             (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
     :config
     (setq flycheck-golangci-lint-enable-linters
-        '("gocritic" "misspell" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst"))
+        '("gocritic" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst")) ; "misspell"
     (setq flycheck-golangci-lint-disable-linters '("structcheck" "goimports"))
     (add-hook 'go-mode-hook (lambda () (flycheck-golangci-lint-setup)))
                                   ;(setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))))

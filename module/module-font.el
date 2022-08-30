@@ -102,7 +102,7 @@
 (global-ligature-mode t)
 )
 
-(use-package emojify :disabled
+(use-package emojify
 :if window-system
 :config
         (setq emojify-display-style 'image)
