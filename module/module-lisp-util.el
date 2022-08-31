@@ -39,8 +39,8 @@
 (defun json-pretty (start end)
     (interactive "*r")
     (replace-string "\\\"" "\"" nil start end)
-    (json-pretty-print start end)
-    )
+    (json-pretty-print-buffer)
+)
 
 ;;;
 

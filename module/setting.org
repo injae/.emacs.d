@@ -46,6 +46,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-history-substring-search
 zinit light MichaelAquilina/zsh-you-should-use
 zinit light iam4x/zsh-iterm-touchbar
+zinit load agkozak/zsh-z
 
 
 ### End of Zinit's installer chunk

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 99 
+personal_ws-1.1 en 103 
 Accu
 Attr
 Cnt
@@ -24,6 +24,7 @@ Vec
 api
 arg
 args
+attr
 aws
 awsvpc
 bifrost
@@ -90,11 +91,14 @@ str
 strftime
 struct
 terraform
+touchbar
 tt
 uber
 uintptr
 unmarshal
 url
 utils
+uuid
 vec
 vpc
+zinit
