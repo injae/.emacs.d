@@ -1,5 +1,6 @@
 ;;; module-ui.el --- Summery
 ;;; -*- lexical-binding: t; -*-
+
 ;;; Commentary:
 ;;; Code:
 
@@ -43,12 +44,19 @@
 )
 
 (setq custom-safe-themes t)
+
 (use-package doom-themes
-:init    (load-theme   'doom-vibrant t)
-         ;(enable-theme 'doom-nord)
-:config (doom-themes-org-config)
+:config (load-theme   'doom-vibrant t)
+        (doom-themes-org-config)
+       ;(enable-theme 'doom-nord)
 )
-(use-package doom-modeline
+
+(use-package nano-theme :disabled
+    :straight (:type git :host github :repo "rougier/nano-theme")
+    :config (load-theme 'nano-dark t)
+)
+
+(use-package doom-modeline :after doom-themes
 :hook   (after-init . doom-modeline-mode)
 :init   (setq find-file-visit-truename t)
         (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
@@ -85,16 +93,16 @@
         (with-eval-after-load 'lsp-treemacs (doom-themes-treemacs-config))
 )
 
-(use-package rainbow-mode  
+(use-package rainbow-mode :disabled
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
 
-(use-package rainbow-delimiters 
+(use-package rainbow-delimiters
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package modern-fringes  :defer t
+(use-package modern-fringes :defer t
 :config (modern-fringes-invert-arrows)
         (modern-fringes-mode)
 )
@@ -102,7 +110,7 @@
 ; 자동으로 Dark mode Light mode 변환
 (use-package mac-dark-mode :no-require t :disabled
 :if *is-mac*
-:preface 
+:preface
 (defun set-system-dark-mode ()
     (interactive)
     (if (string= (shell-command-to-string "printf %s \"$( osascript -e \'tell application \"System Events\" to tell appearance preferences to return dark mode\' )\"") "true")
@@ -112,31 +120,31 @@
 :config (run-with-idle-timer 60 t (lambda () (set-system-dark-mode)))  ; 1분마다, repeat
 )
 
-(use-package hide-mode-line  
+(use-package hide-mode-line
 :after (neotree)
 :hook  (neotree-mode . hide-mode-line-mode)
 )
 
-(use-package nyan-mode  
+(use-package nyan-mode
 ;:after  (doom-modeline)
 :config (setq nyan-wavy-trail t)
         (nyan-mode)
         (nyan-start-animation)
 )
 
-(use-package fancy-battery  
+(use-package fancy-battery
 :hook   (after-init . fancy-battery-mode)
 :config (fancy-battery-default-mode-line)
         (setq fancy-battery-show-percentage t)
 )
 
-(use-package diminish   :defer t
+(use-package diminish :defer t
 :init
     (diminish 'c++-mode "C++ Mode")
     (diminish 'c-mode   "C Mode"  )
 )
 
-(use-package neotree  
+(use-package neotree
 :after (projectile all-the-icons)
 :commands (neotree-toggle)
 :general (leader "n" #'neotree-toggle)
@@ -151,7 +159,8 @@
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-show-hidden-files t)
 )
-(use-package all-the-icons-dired  
+
+(use-package all-the-icons-dired
 :after all-the-icons
 :init  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
@@ -165,7 +174,7 @@
 )
 
 ;; tab
-(use-package centaur-tabs 
+(use-package centaur-tabs
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 :hook   (dashboard-mode . centaur-tabs-local-mode)
