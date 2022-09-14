@@ -1,4 +1,4 @@
-personal_ws-1.1 en 225 
+personal_ws-1.1 en 228 
 Accu
 Asc
 Asm
@@ -88,9 +88,11 @@ dep
 deps
 desc
 deserialize
+difftastic
 dired
 downloader
 dyn
+ediff
 elif
 endif
 ent
@@ -138,6 +140,7 @@ latencies
 len
 lifecycle
 lsp
+magit
 marshaller
 middleware
 mmlog
