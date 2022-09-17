@@ -13,7 +13,7 @@
         ;(setq auth-source '("~/.authinfo"))
 )
 
-(use-package forge   :after magit
+(use-package forge :after magit
     :config
     ;(defclass forge-gitlab-http-repository (forge-gitlab-repository)
     ;    ((issues-url-format         :initform "http://%h/%o/%n/issues")
@@ -68,8 +68,9 @@
 :config (evil-ediff-init)
 )
 
-(use-package magit-difftastic :after magit :straight nil
-    :config
+(use-package magit-difftastic :straight nil :no-require t
+:config
+(require 'magit)
 (defun th/magit--with-difftastic (buffer command)
   "Run COMMAND with GIT_EXTERNAL_DIFF=difft then show result in BUFFER."
   (let ((process-environment
@@ -168,7 +169,6 @@
    ("d" "Difftastic Diff (dwim)" th/magit-diff-with-difftastic)
    ("s" "Difftastic Show" th/magit-show-with-difftastic)])
 )
-
 
 (provide 'module-git)
 ;;; module-git.el ends here

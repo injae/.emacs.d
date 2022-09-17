@@ -78,7 +78,7 @@
     (setq tab-always-indent 'complete)
 )
 
-(use-package ns-auto-titlebar 
+(use-package ns-auto-titlebar
 :if *is-mac*
 :config (ns-auto-titlebar-mode)
         (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))

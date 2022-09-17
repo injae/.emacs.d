@@ -1,4 +1,4 @@
-personal_ws-1.1 en 228 
+personal_ws-1.1 en 240 
 Accu
 Asc
 Asm
@@ -21,17 +21,21 @@ Goroutine
 Gosched
 HPP
 HotjoinFound
+INFOPATH
 Idx
 Inferrer
 Invoker
 JSON
 KST
+LDFLAGS
 Laptime
 Latencies
+MANPATH
 Mappable
 Marshaller
 Mutex
 Nop
+OSTYPE
 Ord
 Param
 Params
@@ -51,6 +55,7 @@ arg
 argc
 args
 argv
+aseprite
 asm
 attr
 attrs
@@ -80,6 +85,7 @@ cppm
 cstdlib
 ctx
 dao
+darwin
 datetime
 decltype
 declval
@@ -99,6 +105,7 @@ ent
 enum
 env
 environ
+esac
 esquery
 esup
 eval
@@ -139,6 +146,7 @@ laptime
 latencies
 len
 lifecycle
+linux
 lsp
 magit
 marshaller
@@ -164,6 +172,7 @@ nullopt
 num
 ok
 omitempty
+openbsd
 opensearch
 ord
 os
@@ -181,6 +190,8 @@ protoAttrClone
 protojson
 pydantic
 pytz
+qstore
+redis
 repo
 req
 reqs
@@ -192,6 +203,7 @@ runtime
 sagemaker
 sagemakerruntime
 sdk
+sdl
 serde
 serdepp
 sexp

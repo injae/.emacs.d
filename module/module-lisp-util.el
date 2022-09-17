@@ -10,8 +10,8 @@
 (use-package f)
 (use-package s)
 
-(use-package srefactor
-    :config (require 'srefactor-lisp))
+;(use-package srefactor
+;    :config (require 'srefactor-lisp))
  
 (defun load-modules-with-list (module-path modules)
     (setq-local target
