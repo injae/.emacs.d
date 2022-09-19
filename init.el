@@ -72,7 +72,7 @@
 
 (load (expand-file-name "~/.emacs.d/module/module-lisp-util"))
 
-;;; emacs 기본설정
+;;; Emacs 기본설정
 (load-modules-with-list "~/.emacs.d/module/" '(
     "emacs"
     "font"
