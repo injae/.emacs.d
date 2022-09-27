@@ -69,6 +69,7 @@
 )
 
 (use-package magit-difftastic :straight nil :no-require t
+:ensure-system-package (difft . "cargo install difftastic")
 :config
 (require 'magit)
 (defun th/magit--with-difftastic (buffer command)
