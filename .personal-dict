@@ -39,6 +39,7 @@ Impl
 Inferrer
 Infos
 Invoker
+Iteratorable
 JSON
 KST
 LDFLAGS
@@ -83,6 +84,7 @@ arg
 argc
 args
 argv
+arrayable
 aseprite
 asm
 ast
@@ -90,6 +92,7 @@ attr
 attrs
 aws
 awsvpc
+backend
 bifrost
 blueviolet
 bool
@@ -120,6 +123,7 @@ cron
 crynut
 cstdlib
 ctx
+cvref
 dao
 darwin
 datetime
@@ -295,6 +299,7 @@ sz
 taf
 terraform
 thirdparty
+tl
 todo
 toml
 toolchain
