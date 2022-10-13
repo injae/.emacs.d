@@ -30,21 +30,15 @@
   :ensure-system-package (dasel sqlite3)
   :config
   (add-hook 'python-mode-hook
-            (lambda ()
-              (setq-local python-shell-interpreter (pet-executable-find "python")
-                          python-shell-virtualenv-root (pet-virtualenv-root))
-
+            (lambda () (setq-local python-shell-interpreter (pet-executable-find "python")
+                              python-shell-virtualenv-root (pet-virtualenv-root))
               (pet-flycheck-setup)
               (flycheck-mode 1)
 
-              (setq-local lsp-jedi-executable-command
-                          (pet-executable-find "jedi-language-server"))
-
-              (setq-local lsp-pyright-python-executable-cmd python-shell-interpreter
-                          lsp-pyright-venv-path python-shell-virtualenv-root)
+              ;(setq-local lsp-jedi-executable-command (pet-executable-find "jedi-language-server"))
+              (setq-local lsp-pyright-python-executable-cmd python-shell-interpreter lsp-pyright-venv-path python-shell-virtualenv-root)
 
               (lsp)
-
               (setq-local dap-python-executable python-shell-interpreter)
 
               (setq-local python-pytest-executable (pet-executable-find "pytest"))
@@ -62,7 +56,7 @@
 ;)
 
 (use-package lsp-pyright
-:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
+;:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
 (provide 'module-python)
