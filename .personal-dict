@@ -1,4 +1,4 @@
-personal_ws-1.1 en 326 
+personal_ws-1.1 en 347 
 Accu
 Adaptor
 Addr
@@ -17,6 +17,9 @@ Ctrl
 Decl
 DimKey
 Downloader
+Dto
+EMB
+Elo
 Eq
 Errorf
 Expr
@@ -60,6 +63,7 @@ Params
 Printf
 Probs
 Proto
+Ptr
 RW
 Serdepp
 Sha
@@ -74,6 +78,7 @@ Vcpkg
 Vec
 acc
 accu
+accumatch
 accumatches
 ai
 alg
@@ -110,6 +115,7 @@ cmp
 cnt
 codecov
 compatibilities
+conf
 config
 const
 constexpr
@@ -131,11 +137,13 @@ dep
 deps
 desc
 deserialize
+dev
 difft
 difftastic
 dired
 downloader
 dst
+dto
 dyn
 ediff
 el
@@ -167,14 +175,17 @@ fs
 func
 gc
 gcmh
+getter
 github
 gitignore
 gitlab
+gjallarhorn
 goland
 golang
 gomock
 gonum
 hc
+hotjoin
 hpp
 http
 https
@@ -192,10 +203,12 @@ isort
 iter
 iterable
 itertools
+jp
 json
 jsonencode
 kbd
 kr
+kwargs
 laptime
 latencies
 len
@@ -206,8 +219,10 @@ linux
 logitem
 lsp
 magit
+maplestory
 marshaller
 matchable
+matchmob
 middleware
 middlewares
 mmcalc
@@ -281,6 +296,7 @@ sdl
 sep
 serde
 serdepp
+serializer
 serviceIDs
 sexp
 sql
@@ -288,9 +304,11 @@ sqlite
 src
 ss
 str
+stretchr
 strftime
 struct
 subcommand
+svc
 sz
 taf
 terraform
@@ -299,6 +317,7 @@ todo
 toml
 toolchain
 touchbar
+traefik
 transcompile
 trueskill
 tt
@@ -318,6 +337,8 @@ utf
 util
 utils
 uuid
+validator
+valuetype
 vec
 vpc
 vx

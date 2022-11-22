@@ -69,7 +69,7 @@
     (add-hook 'terraform-mode-hook 'lsp))
 ;;
 
-(use-package dotenv-mode 
+(use-package dotenv-mode
 :mode ("\\.env\\..*\\'" . dotenv-mode)
 )
 

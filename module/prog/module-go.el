@@ -14,6 +14,7 @@
 :config
     ;(setq gofmt-command "goimports-reviser")
     ;(add-hook 'before-save-hook 'gofmt-before-save)
+    (require 'dap-dlv-go)
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
         (add-hook 'before-save-hook #'lsp-organize-imports))

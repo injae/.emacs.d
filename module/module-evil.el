@@ -64,10 +64,11 @@
               "wh"    '(shrink-window-horizontally :wk "Right size up")
               "wj"    '(enlarge-window :wk "Right size down")
               "wk"    '(shrink-window :wk "Bottom size up")
-              "wl"    '(enlarge-window-horizontally :wk "Bootom size down"))
+              "wl"    '(enlarge-window-horizontally :wk "Bottom size down"))
+              "jp"    `(json-pretty :wk "Json Pretty")
 )
 
-;(use-package drag-stuff 
+;(use-package drag-stuff
 ;:after evil
 ;:config
 ;    (drag-stuff-define-keys)
