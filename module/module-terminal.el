@@ -3,7 +3,9 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package vterm  ;:after (evil-collection exec-path-from-shell)
+(require 'use-package)
+
+(use-package vterm :after (evil-collection exec-path-from-shell)
 ;:commands (vterm)
 ;:ensure-system-package ((zsh . "chsh -s $(which zsh)")
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
@@ -15,7 +17,7 @@
 )
 
 
-(use-package multi-vterm  
+(use-package multi-vterm
 :general (leader "tn" 'multi-vterm :wk "new terminal")
 )
 
