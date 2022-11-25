@@ -121,6 +121,7 @@
     "ruby"
     "jvm"
     "go"
+    "nix"
     "config-file"
     "docker"
 ))

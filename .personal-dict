@@ -1,4 +1,4 @@
-personal_ws-1.1 en 347 
+personal_ws-1.1 en 396 
 Accu
 Adaptor
 Addr
@@ -19,7 +19,6 @@ Decl
 DimKey
 Downloader
 Dto
-EMB
 Elo
 Eq
 Errorf
@@ -47,6 +46,7 @@ Infos
 Invoker
 Iteratorable
 JSON
+KRPC
 KST
 LDFLAGS
 Laptime
@@ -83,6 +83,7 @@ Unmarshal
 Validator
 Vcpkg
 Vec
+XBOX
 acc
 accu
 accumatch
@@ -169,6 +170,7 @@ el
 elasticsearch
 elif
 emacs
+emb
 endif
 ent
 enum
@@ -200,21 +202,15 @@ github
 gitignore
 gitlab
 gjallarhorn
+gmail
 goland
 golang
 gomock
 gonum
-hc
-hotjoin
-hpp
-http
-https
-=======
-gmail
-gomock
-gonum
 grafana
+hc
 hostname
+hotjoin
 hpa
 hpp
 http
