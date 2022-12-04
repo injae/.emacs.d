@@ -27,6 +27,7 @@
     (evil-collection-init)
     (evil-collection-consult-setup)
     (evil-collection-embark-setup)
+    ;(evil-collection-forge-setup)
 )
 
 (use-package general

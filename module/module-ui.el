@@ -7,7 +7,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package all-the-icons )
+(use-package all-the-icons)
 
 (use-package all-the-icons-ibuffer
 :after all-the-icons
@@ -39,7 +39,7 @@
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
 )
-(use-package highlight-numbers  :disabled
+(use-package highlight-numbers :disabled
 :hook (prog-mode . highlight-numbers-mode)
 )
 

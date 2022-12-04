@@ -73,6 +73,8 @@
 :mode ("\\.env\\..*\\'" . dotenv-mode)
 )
 
+(use-package nix-mode :mode "\\.nix\\'")
+
 (use-package protobuf-mode)
 
 (provide 'module-config-file)

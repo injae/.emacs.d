@@ -45,7 +45,7 @@
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
 
-(use-package smartparens 
+(use-package smartparens
 ;:general (leader "pr " 'sp-rewrap-sexp
 ;                 "pll" 'sp-forward-slurp-sexp
 ;                 "phh" 'sp-backward-slurp-sexp

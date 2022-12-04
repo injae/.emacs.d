@@ -47,7 +47,7 @@
 
 ;; git history view mode
 (use-package smeargle
-:commands smeagle
+:commands smeargle
 )
 
 (use-package blamer  :defer t

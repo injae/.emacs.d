@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package ivy 
+(use-package ivy
 ;:after evil-collection
  ;ivy S-SPC remapping toogle-input-method
 :general ("M-x" 'counsel-M-x )
@@ -103,12 +103,12 @@
 :config (counsel-projectile-mode 1)
 
 )
-(use-package counsel-world-clock  
+(use-package counsel-world-clock
 :after (counsel)
 :general (:keymaps 'counsel-mode-map "C-c c k"  'counsel-world-clock)
 )
 
-(use-package counsel-tramp  
+(use-package counsel-tramp
 :after counsel
 :commands counsel-tramp
 :general ("C-c s" 'counsel-tramp)

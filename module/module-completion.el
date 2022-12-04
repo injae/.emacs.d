@@ -212,8 +212,8 @@
 (use-package corfu-history :straight nil :load-path "straight/repos/corfu/extensions/"
     :config (add-hook 'curfu-mode-hook #'curfu-history-mode))
 
-(use-package corfu-doc  :after corfu
-    :config (add-hook 'corfu-mode-hook #'corfu-doc-mode))
+(use-package corfu-popupinfo :straight nil :load-path "straight/repos/corfu/extensions/"
+    :config (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 
 ;; Add extensions
 (use-package cape
