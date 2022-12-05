@@ -1,4 +1,4 @@
-personal_ws-1.1 en 412 
+personal_ws-1.1 en 438 
 Accu
 Adaptor
 Addr
@@ -91,6 +91,7 @@ Validator
 Vcpkg
 Vec
 aarch
+abcdefghij
 acc
 accu
 accumatch
@@ -114,6 +115,7 @@ async
 attr
 attrs
 auth
+authinfo
 aws
 awsvpc
 backend
@@ -151,6 +153,7 @@ cpu
 cron
 crt
 crynut
+csharp
 cstdlib
 ctx
 cvref
@@ -242,14 +245,19 @@ istio
 iter
 iterable
 itertools
+jaeger
 jp
 json
 jsonencode
 kbd
+keymap
 keymaps
 kiali
 kibana
 kr
+kub
+kube
+kubernetes
 kwargs
 langs
 laptime
@@ -293,9 +301,12 @@ namespaces
 nano
 neotree
 nexon
+nfs
+nginx
 nieel
 nixos
 nixpkgs
+nlohmann
 noinspection
 nomessage
 np
@@ -326,6 +337,7 @@ pre
 prec
 prev
 println
+prog
 proj
 prometheus
 proto
@@ -361,6 +373,7 @@ serde
 serdepp
 serializer
 serviceIDs
+setq
 sexp
 sidcar
 sni
@@ -377,6 +390,7 @@ stretchr
 strftime
 struct
 subcommand
+sv
 svc
 sz
 taf
@@ -415,6 +429,7 @@ valuetype
 vec
 vpc
 vpn
+vterm
 vx
 wg
 www

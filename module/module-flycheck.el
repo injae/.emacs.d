@@ -3,6 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'straight)
 (require 'use-package)
 
 (use-package flycheck
@@ -10,7 +11,6 @@
     (flycheck-clang-language-standard "c++17")
     :config
     (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-    (setq straight-fix-flycheck t)
     (global-flycheck-mode)
 )
 

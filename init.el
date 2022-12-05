@@ -17,13 +17,13 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(add-to-list 'load-path "~/.emacs.d/straight/build/")
+(add-to-list 'load-path (expand-file-name"~/.emacs.d/straight/build"))
 
 (eval-when-compile
-    (add-to-list 'load-path "~/.emacs.d/straight/build/use-package")
-    (add-to-list 'load-path "~/.emacs.d/straight/build/use-package-ensure-system-package")
-    (add-to-list 'load-path "~/.emacs.d/straight/build/general/")
-    (add-to-list 'load-path "~/.emacs.d/straight/build/bind-key")
+    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
+    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package-ensure-system-package"))
+    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/general"))
+    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/bind-key"))
     (require 'use-package)
     (require 'use-package-ensure-system-package)
     (require 'general)
@@ -31,12 +31,14 @@
     )
 
 (straight-use-package 'use-package)
-(use-package straight :custom (straight-use-package-by-default t))
+(use-package straight
+    :custom (straight-use-package-by-default t)
+            (straight-fix-flycheck t))
 
 ;(require 'esup) ; emacs config profiling
 (use-package use-package)
-(use-package gcmh :defer t
-    :config (gcmh-mode t))
+(use-package gcmh
+    :hook (after-init . gcmh-mode))
 
 
 
@@ -61,17 +63,15 @@
 (setq user-full-name "InJae Lee")
 (setq user-mail-address "8687lee@gmail.com")
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/.emacs.d/module/")
-(add-to-list 'load-path "~/.emacs.d/module/prog/")
-(add-to-list 'load-path "~/.emacs.d/private/")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/module"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/module/prog"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/private"))
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
-
-(load (expand-file-name "~/.emacs.d/module/module-lisp-util"))
-
+(require 'module-lisp-util)
 ;;; Emacs 기본설정
 (load-modules-with-list "~/.emacs.d/module/" '(
     "emacs"

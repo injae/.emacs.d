@@ -7,7 +7,7 @@
 (require 'straight)
 
 ;; buffer manage
-(use-package buffer-move 
+(use-package buffer-move
 :general (leader
 	   "b c" #'clean-buffer-list
        "b r" 'eval-buffer
