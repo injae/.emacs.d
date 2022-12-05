@@ -7,6 +7,8 @@
 (require 'straight)
 
 (use-package yaml-mode
+:ensure-system-package (yaml-language-server . "npm install -g yaml-language-server")
+:hook (yaml-mode . (lambda () (lsp)))
 :mode (("\\.yaml\\'" . yaml-mode)
        ("\\.yml\\'"  . yaml-mode))
 )
@@ -76,6 +78,10 @@
 (use-package nix-mode :mode "\\.nix\\'")
 
 (use-package protobuf-mode)
+
+(use-package plantuml-mode
+:mode ("\\.plantuml\\'" . plantuml-mode)
+)
 
 (provide 'module-config-file)
 ;;; module-config-file.el ends here

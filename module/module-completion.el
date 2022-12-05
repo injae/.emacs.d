@@ -183,7 +183,7 @@
 )
 
 ;;; input
-(use-package corfu  :after evil-collection
+(use-package corfu :after evil-collection
 :general (:keymaps 'corfu-map
                :states 'insert
                "C-n" #'corfu-next
@@ -272,6 +272,9 @@
 ;; Completion
 (use-package orderless
     :custom
+    ;(completion-styles '(orderless partial-completion-basic))
+    ;(completion-category-defaults nil)
+    ;(completion-category-overrides nil)
     (completion-styles '(orderless))
     (completion-category-overrides '((file (styles basic orderless))))
     ;(orderless-matching-styles

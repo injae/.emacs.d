@@ -10,4 +10,4 @@
 )
 
 (provide 'module-nix)
-;;; module-go.el ends here
+;;; module-nix.el ends here

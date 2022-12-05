@@ -35,7 +35,7 @@
     (setq-default indent-tabs-mode nil)
 )
 
-(use-package paren 
+(use-package paren
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)

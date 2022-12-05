@@ -19,7 +19,6 @@
     (setq max-specpdl-size 32000)
     ;(setq debug-on-error t) ; debug option
     ;; emacs gc setting
-
     (setq gc-cons-threshold (* 100 1 00000)) ; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024))
     (run-with-idle-timer 5 t 'garbage-collect)
@@ -132,6 +131,10 @@
     :config (explain-pause-mode)
 )
 ;(setq warning-minimum-level :error)
+
+(use-package gc-buffers
+:config (gc-buffers-mode)
+)
 
 (provide 'module-emacs)
 ;;; module-emacs.el ends here
