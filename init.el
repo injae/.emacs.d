@@ -37,13 +37,9 @@
 
 ;(require 'esup) ; emacs config profiling
 (use-package use-package)
-<<<<<<< HEAD
 (use-package gcmh :defer t :config (gcmh-mode t))
-=======
 (use-package gcmh
     :hook (after-init . gcmh-mode))
->>>>>>> 56bb6d9f85e0b8d96c0d3fe4f2c5f66a6151dc4f
-
 
 
 (use-package use-package-ensure-system-package :straight t)
@@ -67,17 +63,10 @@
 (setq user-full-name "InJae Lee")
 (setq user-mail-address "8687lee@gmail.com")
 
-<<<<<<< HEAD
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/module/"))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/module/prog/"))
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/private/"))
-=======
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/module"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/module/prog"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/private"))
->>>>>>> 56bb6d9f85e0b8d96c0d3fe4f2c5f66a6151dc4f
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
