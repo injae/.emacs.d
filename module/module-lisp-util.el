@@ -4,6 +4,7 @@
 ;;; Code:
 
 (require 'use-package)
+(require 'straight)
 
 (use-package dash :init (global-dash-fontify-mode t))
 (use-package dash-functional :after dash)

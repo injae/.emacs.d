@@ -7,7 +7,7 @@
 (require 'straight)
 
 ;; window manage
-(use-package ace-window 
+(use-package ace-window
 :commands (ace-window)
 :general (leader "wo" 'ace-window
                  "wd" 'delete-other-windows)

@@ -35,8 +35,7 @@
 
 ;(require 'esup) ; emacs config profiling
 (use-package use-package)
-(use-package gcmh :defer t
-    :config (gcmh-mode t))
+(use-package gcmh :defer t :config (gcmh-mode t))
 
 
 
@@ -61,10 +60,10 @@
 (setq user-full-name "InJae Lee")
 (setq user-mail-address "8687lee@gmail.com")
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/.emacs.d/module/")
-(add-to-list 'load-path "~/.emacs.d/module/prog/")
-(add-to-list 'load-path "~/.emacs.d/private/")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/module/"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/module/prog/"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/private/"))
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
