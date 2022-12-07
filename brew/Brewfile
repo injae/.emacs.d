@@ -1,0 +1,194 @@
+tap "bufbuild/buf"
+tap "cjbassi/ytop"
+tap "cloudflare/cloudflare"
+tap "d12frosted/emacs-plus"
+tap "datawire/blackbird"
+tap "go-swagger/go-swagger"
+tap "hashicorp/tap"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "khanhas/tap"
+tap "louisbrunner/valgrind"
+tap "orf/brew"
+tap "railwaycat/emacsmacport"
+brew "act"
+brew "antigen"
+brew "ca-certificates"
+brew "aspell"
+brew "autoconf"
+brew "bat"
+brew "glib"
+brew "python@3.9"
+brew "carthage"
+brew "ccache"
+brew "cmake"
+brew "gmp"
+brew "coreutils"
+brew "libssh2"
+brew "curl"
+brew "dasel"
+brew "difftastic"
+brew "direnv"
+brew "docker", link: false
+brew "docker-compose", link: false
+brew "python@3.10"
+brew "erlang"
+brew "exa"
+brew "fd"
+brew "libavif"
+brew "gd"
+brew "gdk-pixbuf"
+brew "gh"
+brew "ghc"
+brew "ghcup"
+brew "git"
+brew "glances"
+brew "unbound"
+brew "gnutls"
+brew "libksba"
+brew "gnupg"
+brew "go"
+brew "gobject-introspection"
+brew "gping"
+brew "openjdk"
+brew "gradle"
+brew "groonga"
+brew "grpc"
+brew "harfbuzz"
+brew "helm"
+brew "htop"
+brew "hyperkit"
+brew "libheif"
+brew "python@3.8"
+brew "imagemagick"
+brew "istioctl"
+brew "jq"
+brew "k3d"
+brew "k9s"
+brew "kind"
+brew "kompose"
+brew "kubernetes-cli"
+brew "pango"
+brew "librsvg"
+brew "libxml2"
+brew "llvm"
+brew "llvm@9"
+brew "luajit", args: ["HEAD"]
+brew "mailutils"
+brew "mariadb"
+brew "mas"
+brew "minikube"
+brew "mysql-client"
+brew "ncdu"
+brew "neofetch"
+brew "tree-sitter"
+brew "neovim"
+brew "nghttp2"
+brew "ninja"
+brew "node"
+brew "nvm"
+brew "perl"
+brew "php"
+brew "pipx"
+brew "poetry"
+brew "procs"
+brew "pyenv"
+brew "pyenv-virtualenv"
+brew "rabbitmq"
+brew "rabbitmq-c"
+brew "ruby-build"
+brew "rbenv"
+brew "redis"
+brew "rename"
+brew "rust-analyzer"
+brew "rustup-init"
+brew "sdl2"
+brew "sdl2_gfx"
+brew "sdl2_image"
+brew "sdl2_mixer"
+brew "sdl2_ttf"
+brew "shellcheck"
+brew "sphinx-doc"
+brew "starship"
+brew "swagger-codegen"
+brew "teleport"
+brew "tldr"
+brew "tokei"
+brew "tree"
+brew "vim"
+brew "wget"
+brew "wifi-password"
+brew "yarn"
+brew "zeromq"
+brew "bufbuild/buf/buf"
+brew "cjbassi/ytop/ytop"
+brew "cloudflare/cloudflare/cloudflared"
+brew "d12frosted/emacs-plus/emacs-plus@29", args: ["with-imagemagick", "with-mailutils", "with-native-comp", "with-poll"]
+brew "datawire/blackbird/telepresence"
+brew "hashicorp/tap/terraform"
+brew "khanhas/tap/spicetify-cli"
+brew "louisbrunner/valgrind/valgrind", args: ["HEAD"]
+cask "appcleaner"
+cask "cheatsheet"
+cask "docker"
+cask "dotnet-sdk"
+cask "dozer"
+cask "font-d2coding"
+cask "font-fira-code"
+cask "font-fira-mono"
+cask "font-hack-nerd-font"
+cask "font-powerline-symbols"
+cask "godot"
+cask "gureumkim"
+cask "iterm2"
+cask "karabiner-elements"
+cask "keycastr"
+cask "lens"
+cask "logseq"
+cask "mark-text"
+cask "multipass"
+cask "ngrok"
+cask "noti"
+cask "openlens"
+cask "postman"
+cask "proxyman"
+cask "soundflower"
+cask "spotmenu"
+cask "vlc"
+cask "xbar"
+mas "Amphetamine", id: 937984704
+mas "Aware", id: 1082170746
+mas "Battery Monitor", id: 836505650
+mas "ColorSlurp", id: 1287239339
+mas "EasyRes", id: 688211836
+mas "GarageBand", id: 682658836
+mas "GIPHY CAPTURE", id: 668208984
+mas "GITGET", id: 1317170245
+mas "GoodNotes", id: 1444383602
+mas "iMovie", id: 408981434
+mas "iShot", id: 1485844094
+mas "Keynote", id: 409183694
+mas "LINE", id: 539883307
+mas "Magnet", id: 441258766
+mas "Memory Diag", id: 748212890
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft PowerPoint", id: 462062816
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Microsoft Word", id: 462054704
+mas "Numbers", id: 409203825
+mas "OneDrive", id: 823766827
+mas "Pages", id: 409201541
+mas "RunCat", id: 1429033973
+mas "Save to Pocket", id: 1477385213
+mas "SimpleMind", id: 439654198
+mas "Spark", id: 1176895641
+mas "The Unarchiver", id: 425424353
+mas "Vimari", id: 1480933944
+mas "Xcode", id: 497799835
+mas "Yoink", id: 457622435
+mas "유니콘 HTTPS", id: 1475628500
+mas "카카오톡", id: 869223134
+mas "한컴오피스 한글 2014 VP 뷰어", id: 416746898

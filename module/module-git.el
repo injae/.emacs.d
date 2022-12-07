@@ -4,7 +4,6 @@
 ;;; Code:
 
 (require 'use-package)
-(require 'straight)
 
 (use-package magit
 :commands magit-status
@@ -50,7 +49,8 @@
 :commands smeargle
 )
 
-(use-package blamer  :defer t
+(use-package blamer
+:bind (("s-i" . blamer-show-commit-info))
 :custom
     (blamer-view 'overlay)
     (blamer-idle-time 0.3)

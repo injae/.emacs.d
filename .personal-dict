@@ -127,6 +127,7 @@ async
 attr
 attrs
 auth
+authinfo
 aws
 awsvpc
 backend
@@ -164,6 +165,7 @@ cpu
 cron
 crt
 crynut
+csharp
 cstdlib
 ctx
 cvref
@@ -262,6 +264,7 @@ istio
 iter
 iterable
 itertools
+jaeger
 jp
 json
 jsonencode
@@ -271,6 +274,9 @@ keymaps
 kiali
 kibana
 kr
+kub
+kube
+kubernetes
 kwargs
 langs
 laptime
@@ -314,9 +320,12 @@ namespaces
 nano
 neotree
 nexon
+nfs
+nginx
 nieel
 nixos
 nixpkgs
+nlohmann
 noinspection
 nomessage
 np
@@ -383,6 +392,7 @@ serde
 serdepp
 serializer
 serviceIDs
+setq
 sexp
 sidcar
 sni
@@ -399,6 +409,7 @@ stretchr
 strftime
 struct
 subcommand
+sv
 svc
 sz
 taf
@@ -438,6 +449,7 @@ vec
 viewpage
 vpc
 vpn
+vterm
 vx
 wg
 www
