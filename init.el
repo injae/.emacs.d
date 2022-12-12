@@ -40,8 +40,7 @@
 ;(require 'esup) ; emacs config profiling
 (use-package use-package)
 (use-package gcmh :defer t :config (gcmh-mode t))
-(use-package gcmh
-    :hook (after-init . gcmh-mode))
+;(use-package gcmh :hook (after-init . gcmh-mode))
 
 
 (use-package use-package-ensure-system-package :straight t)
