@@ -41,7 +41,7 @@
 :config (setq show-paren-delay 0)
 )
 
-(use-package expand-region 
+(use-package expand-region
 :general (leader "tw" '(er/expand-region :wk "Text Wrap"))
 )
 

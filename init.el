@@ -32,8 +32,10 @@
 
 (straight-use-package 'use-package)
 (use-package straight
-    :custom (straight-use-package-by-default t)
-            (straight-fix-flycheck t))
+    :custom
+    (straight-use-package-by-default t)
+    ;(straight-fix-flycheck t)
+)
 
 ;(require 'esup) ; emacs config profiling
 (use-package use-package)
