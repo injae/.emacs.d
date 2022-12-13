@@ -72,8 +72,8 @@
 ;;
 
 (use-package dotenv-mode
-:mode ("\\.env\\..*\\'" . dotenv-mode)
-)
+    :mode (("\\.env\\..*\\'" . dotenv-mode)
+           ("\\.envrc\\'" . dotenv-mode)))
 
 (use-package nix-mode :mode "\\.nix\\'")
 

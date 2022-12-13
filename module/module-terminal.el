@@ -44,7 +44,7 @@
         (setq vterm-toggle--vterm-buffer-p-function 'vmacs-term-mode-p)
 )
 
-(use-package shell-pop 
+(use-package shell-pop
 :custom (shell-pop-shell-type '("term" "vterm" (lambda () (vterm) )))
         (shell-pop-term-shell "/bin/zsh")
         (shell-pop-full-span t)
