@@ -84,31 +84,31 @@
 ; FiraCode같은 텍스트모드 활성 모드
 (use-package ligature :straight (:host github :repo "mickeynp/ligature.el")
 :config
-; Enable the www ligature in every possible major mode
-(ligature-set-ligatures 't '("www"))
-(ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-; Enable ligatures in programming modes
-(ligature-set-ligatures '(prog-mode org-mode)
-        '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
-          ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
-          "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
-          "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
-          "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
-          "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
-          "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
-          "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
-          "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
-          "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
-(global-ligature-mode t)
+    ; Enable the www ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ; Enable ligatures in programming modes
+    (ligature-set-ligatures '(prog-mode org-mode)
+            '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+            ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+            "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+            "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+            "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+            "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+            "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+            "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+            "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+            "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
+    (global-ligature-mode t)
 )
 
 (use-package emojify
 :if window-system
 :config
-        (setq emojify-display-style 'image)
-        ;(setq emojify-emoji-styles  '(unicode))
-        ;(setq emojify-emoji-set "emojione-v2.2.6")
-        (global-emojify-mode 1)
+    (add-hook 'after-init-hook #'global-emojify-mode)
+    ;(setq emojify-display-style 'unicode)
+    ;(emojify-set-emoji-styles 'github)
+    ;(setq emojify-emoji-set "emojione-v2.2.6")
 )
 
 (use-package textsize :straight (:type git :host github :repo "WJCFerguson/textsize"))

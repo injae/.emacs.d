@@ -1,4 +1,4 @@
-personal_ws-1.1 en 465 
+personal_ws-1.1 en 470 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -26,6 +26,7 @@ Dto
 ECK
 Elo
 Eq
+Errf
 Errorf
 Expr
 FFA
@@ -68,6 +69,7 @@ Mw
 NFS
 NUR
 Nanos
+NanumGothic
 Nop
 OSTYPE
 Ord
@@ -177,6 +179,7 @@ datetime
 decls
 decltype
 declval
+defclass
 defun
 dep
 deps
@@ -200,6 +203,7 @@ elif
 elsa
 emacs
 emb
+emojify
 endif
 ent
 enum
@@ -441,6 +445,7 @@ uintptr
 umask
 uname
 unary
+unicode
 unmarshal
 uri
 url
