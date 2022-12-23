@@ -1,4 +1,4 @@
-personal_ws-1.1 en 470 
+personal_ws-1.1 en 496 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -114,6 +114,7 @@ af
 ai
 alg
 algo
+alist
 apache
 api
 apiserver
@@ -140,7 +141,9 @@ bool
 bson
 buf
 bufio
+bugfix
 calc
+capf
 ccls
 cd
 cel
@@ -148,8 +151,10 @@ celgo
 cerr
 cfg
 chan
+cidrs
 cli
 cloudflare
+cls
 cmake
 cmd
 cmp
@@ -162,6 +167,7 @@ config
 const
 constexpr
 corfu
+cpp
 cppkg
 cppm
 cpu
@@ -179,6 +185,7 @@ datetime
 decls
 decltype
 declval
+defaultdict
 defclass
 defun
 dep
@@ -190,6 +197,7 @@ difft
 difftastic
 dir
 dired
+dirvish
 dns
 downloader
 dst
@@ -200,6 +208,7 @@ egressgateway
 el
 elasticsearch
 elif
+eln
 elsa
 emacs
 emb
@@ -210,6 +219,7 @@ enum
 env
 environ
 envrc
+eq
 esac
 esquery
 esup
@@ -221,6 +231,7 @@ fallthrough
 fargate
 fastapi
 fc
+fd
 fi
 filesystem
 filesystems
@@ -246,6 +257,7 @@ gomock
 gonum
 grafana
 gzip
+haskell
 hc
 hostname
 hotjoin
@@ -268,7 +280,9 @@ io
 iostream
 ioutil
 ip
+isinstance
 isort
+ispell
 istio
 iter
 iterable
@@ -304,6 +318,7 @@ maplestory
 marshaller
 matchable
 matchmob
+matchtime
 middleware
 middlewares
 mmcalc
@@ -312,6 +327,7 @@ mmlogic
 mmmetrics
 mmmiddleware
 mmob
+mmplugin
 mmpoolconfig
 mmr
 mmstd
@@ -328,6 +344,7 @@ namespace
 namespaces
 nano
 nav
+ne
 neotree
 nexon
 nfs
@@ -350,6 +367,7 @@ openbsd
 opensearch
 openshift
 ord
+orderless
 os
 ostream
 param
@@ -376,6 +394,7 @@ protojson
 provisioner
 pvc
 pydantic
+pyperclip
 pyright
 pytest
 pytz
@@ -388,6 +407,7 @@ reqhandler
 reqmodifier
 reqs
 ret
+rfc
 rhs
 rnd
 rng
@@ -396,6 +416,7 @@ routable
 runtime
 sagemaker
 sagemakerruntime
+scaler
 sdk
 sdl
 sep
@@ -403,10 +424,13 @@ serde
 serdepp
 serializer
 serviceIDs
+setf
 setq
 sexp
+sgml
 sidcar
 sni
+spotify
 sql
 sqlite
 src
@@ -425,6 +449,7 @@ svc
 sz
 taf
 terraform
+tex
 thirdparty
 tl
 tls
@@ -466,6 +491,7 @@ vx
 wg
 www
 yaml
+yasnippet
 ymir
 yml
 zinit

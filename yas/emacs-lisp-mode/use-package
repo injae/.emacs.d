@@ -2,6 +2,7 @@
 # name: use-package emacs lisp 
 # key: upkg
 # --
-(use-package $1 :straight t
+(use-package $1
+:init
 :config
 )

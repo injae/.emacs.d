@@ -6,6 +6,8 @@
 (require 'use-package)
 (require 'straight)
 
+
+
 (use-package which-key
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
@@ -215,6 +217,9 @@
 (use-package corfu-popupinfo :straight nil :load-path "straight/repos/corfu/extensions/"
     :config (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 
+(use-package cape-yasnippet :straight (:host github :repo "elken/cape-yasnippet")
+    :after (yasnippet))
+
 ;; Add extensions
 (use-package cape
   ;; Bind dedicated completion commands
@@ -239,6 +244,7 @@
   (add-to-list 'completion-at-point-functions #'cape-file)
   ;(add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-history)
+  (add-to-list 'completion-at-point-functions #'cape-yasnippet)
   ;(add-to-list 'completion-at-point-functions #'cape-keyword)
   ;(add-to-list 'completion-at-point-functions #'cape-tex)
   ;(add-to-list 'completion-at-point-functions #'cape-sgml)
@@ -272,11 +278,11 @@
 ;; Completion
 (use-package orderless
     :custom
-    ;(completion-styles '(orderless partial-completion-basic))
-    ;(completion-category-defaults nil)
-    ;(completion-category-overrides nil)
-    (completion-styles '(orderless))
-    (completion-category-overrides '((file (styles basic orderless))))
+    (completion-styles '(orderless partial-completion basic))
+    (completion-category-defaults nil)
+    (completion-category-overrides nil)
+    ;(completion-styles '(orderless partial-completion basic))
+    ;(completion-category-overrides '((file (styles basic orderless))))
     ;(orderless-matching-styles
     ;    '(orderless-literal
     ;      orderless-prefixes

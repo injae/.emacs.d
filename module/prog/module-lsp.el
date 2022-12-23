@@ -23,14 +23,15 @@
         (lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
         (lsp-eldoc-render-all nil)
-        (lsp-completion-provider :none) ; with corfu
         (lsp-lens-enable t)
         (lsp-enable-snippet t)
         (lsp-rust-analyzer-server-display-inlay-hints nil)
+        (lsp-completion-provider :none) ; with corfu
         ;(lsp-rust-analyzer-cargo-watch-command "clipy")
 :init
     (defun my/lsp-mode-setup-completion ()
-        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults)) '(orderless)))
+        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless)))
 :config
     ;(lsp-mode)
     ;corfu + lsp pause bugfix

@@ -126,15 +126,21 @@
 ;; emacs debug utils
 ;(use-package esup)
 ;(use-package bug-hunter)
-(use-package explain-pause-mode
+(use-package explain-pause-mode :disabled
     :straight (:type git :host github :repo "lastquestion/explain-pause-mode")
     :config (explain-pause-mode)
 )
 ;(setq warning-minimum-level :error)
 
-;(use-package gc-buffers
-;:config (gc-buffers-mode)
-;)
+(use-package gc-buffers
+    :config (gc-buffers-mode)
+)
+
+(use-package helpful
+:bind (("C-h f" . helpful-callable)
+        ("C-h v" . helpful-variable)
+        ("C-h k" . helpful-key))
+)
 
 (provide 'module-emacs)
 ;;; module-emacs.el ends here
