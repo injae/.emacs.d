@@ -50,6 +50,7 @@ Idx
 Inferrer
 Infos
 Invoker
+Iso
 Iteratorable
 JSON
 KRPC
@@ -97,6 +98,7 @@ Str
 TCP
 TODO
 Unary
+Unfree
 Unmarshal
 Unmarshaller
 Validator
@@ -111,6 +113,7 @@ accumatch
 accumatches
 addr
 af
+agenix
 ai
 alg
 algo
@@ -193,8 +196,10 @@ deps
 desc
 deserialize
 dev
+devshell
 difft
 difftastic
+digga
 dir
 dired
 dirvish
@@ -259,10 +264,12 @@ grafana
 gzip
 haskell
 hc
+hm
 hostname
 hotjoin
 hpa
 hpp
+htop
 http
 https
 ibm
@@ -270,12 +277,14 @@ idx
 ielm
 ifelse
 ifndef
+iinjaeui
 impl
 indexs
 inferrer
 ingressgateway
 init
 injae
+injaeui
 io
 iostream
 ioutil
@@ -306,6 +315,7 @@ laptime
 latencies
 len
 letsencrypt
+lfinal
 lhs
 libra
 lifecycle
@@ -321,6 +331,7 @@ matchmob
 matchtime
 middleware
 middlewares
+mk
 mmcalc
 mmlog
 mmlogic
@@ -360,6 +371,7 @@ npm
 ntc
 nullopt
 num
+nur
 nurpkgs
 ok
 omitempty
@@ -375,6 +387,7 @@ params
 pb
 pc
 persistentvolumes
+pkgs
 plantuml
 playerIDs
 poolConfigs
@@ -436,6 +449,7 @@ sqlite
 src
 ss
 ssl
+stdenv
 stderr
 stdout
 storageclass
@@ -495,3 +509,4 @@ yasnippet
 ymir
 yml
 zinit
+zsh

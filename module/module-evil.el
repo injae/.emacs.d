@@ -27,6 +27,7 @@
 :config
     (evil-collection-init)
     (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+    (add-hook 'forge-mode-hook #'evil-collection-forge-setup)
     (evil-collection-consult-setup)
     (evil-collection-embark-setup)
     ;(evil-collection-forge-setup)

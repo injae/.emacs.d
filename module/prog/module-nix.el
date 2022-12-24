@@ -7,6 +7,8 @@
 
 (use-package nix-mode
 :mode "\\.nix\\'"
+:hook (nix-mode . (lambda () (lsp)))
+
 )
 
 (provide 'module-nix)
