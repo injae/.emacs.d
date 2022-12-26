@@ -50,7 +50,7 @@
 :commands smeargle
 )
 
-(use-package blamer
+(use-package blamer :disabled
 :bind (("s-i" . blamer-show-commit-info))
 :custom
     (blamer-view 'overlay)

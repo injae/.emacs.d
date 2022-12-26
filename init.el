@@ -43,11 +43,9 @@
 ;(use-package gcmh :hook (after-init . gcmh-mode))
 
 
-(use-package use-package-ensure-system-package :straight t)
-(use-package exec-path-from-shell :straight (:build (:not compile))
-:preface (require 'use-package)
-:config (exec-path-from-shell-initialize)
-        ;(exec-path-from-shell-copy-env "PATH")
+(use-package use-package-ensure-system-package)
+(use-package exec-path-from-shell
+    :config (exec-path-from-shell-initialize)
 )
 
 ;;; font Setting
@@ -72,64 +70,48 @@
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
-(require 'module-lisp-util)
-;;; Emacs 기본설정
-(load-modules-with-list "~/.emacs.d/module/" '(
-    "emacs"
-    "font"
-    "evil" ;;; evil and keymap
-    "git"
-    "grep-util"
-    "extension"
-    "project-manage"
-    "completion"
-    "window"
-    "buffer"
-    "ui" ;;; pretty ui
-    "org"
-    "terminal"
-    "edit" ;; edit (indent,,,)
-    "flycheck"
-    "search"
-    "multi-mode"
-    "util"
-))
+(use-package module-lisp-util :straight nil
+    :config
+    ;;; Emacs 기본설정
+    (load-modules-with-list "~/.emacs.d/module/" '(
+        "emacs" "font" "evil"
+        "git" "grep-util" "extension"
+        "project-manage" "completion" "window"
+        "buffer" "ui" "org"
+        "terminal" "edit" "flycheck"
+        "search" "multi-mode" "util"
+    ))
+    ;;; programming 설정
+    (load-modules-with-list "~/.emacs.d/module/prog/" '(
+        "lsp" "snippet" "highlight"
+        "prog-search" "doc" "ssh"
+        "coverage" "copilot" "tools"
+        ;; language
+        "cpp" "lisp" "csharp"
+        "rust" "haskell" "python"
+        "flutter" "web" "ruby"
+        "jvm" "go" "nix"
+        "config-file" "docker"
+    ))
+)
 
 ;; 개인 설정
-(defvar private-config-file "~/.emacs.d/private/token.el")
 (setq-default private-config-file "~/.emacs.d/private/token.el")
+(when (file-exists-p private-config-file)
+    (load-file private-config-file))
 
-;;; programming 설정
-(load-modules-with-list "~/.emacs.d/module/prog/" '(
-    "lsp"
-    "snippet"
-    "highlight"
-    "prog-search"
-    "doc"
-    "ssh"
-    "coverage"
-    "copilot"
-    "tools"
-    ;; language
-    "cpp"
-    "lisp"
-    "csharp"
-    "rust"
-    "haskell"
-    "python"
-    "flutter"
-    "web"
-    "ruby"
-    "jvm"
-    "go"
-    "nix"
-    "config-file"
-    "docker"
-))
+(use-package filenotify :straight nil :after org
+    :preface
+    (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))
+    (defun update-env-org-file (event)
+        (funcall-interactively 'org-babel-tangle-file env-org-file))
+    :config
+    (file-notify-add-watch env-org-file
+        '(change attribute-change) 'update-env-org-file)
+    )
 
-(when (file-exists-p private-config-file) (load-file private-config-file))
-
-(require 'server)
-(unless (server-running-p) (server-start))
+(use-package server :straight nil
+    :config
+    (unless (server-running-p) (server-start)))
 
 ;;; init.el ends here

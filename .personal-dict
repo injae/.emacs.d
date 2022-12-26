@@ -1,4 +1,4 @@
-personal_ws-1.1 en 496 
+personal_ws-1.1 en 522 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -135,6 +135,7 @@ attr
 attrs
 auth
 authinfo
+autoload
 aws
 awsvpc
 backend
@@ -191,6 +192,7 @@ declval
 defaultdict
 defclass
 defun
+defvar
 dep
 deps
 desc
@@ -238,6 +240,7 @@ fastapi
 fc
 fd
 fi
+filenotify
 filesystem
 filesystems
 flycheck
@@ -247,6 +250,7 @@ fn
 fo
 fs
 func
+funcall
 gc
 gcmh
 getter
@@ -261,6 +265,7 @@ golang
 gomock
 gonum
 grafana
+gvm
 gzip
 haskell
 hc
@@ -300,6 +305,7 @@ jaeger
 jp
 json
 jsonencode
+jvm
 kbd
 keymap
 keymaps
@@ -401,6 +407,7 @@ println
 prog
 proj
 prometheus
+promptsubst
 proto
 protoAttrClone
 protojson
@@ -479,6 +486,7 @@ txt
 typeinfo
 typename
 uber
+ui
 uint
 uintptr
 umask
@@ -508,5 +516,8 @@ yaml
 yasnippet
 ymir
 yml
+zicompinit
 zinit
 zsh
+zshenv
+zshrc
