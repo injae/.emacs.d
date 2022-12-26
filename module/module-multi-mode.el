@@ -6,7 +6,7 @@
 (require 'use-package)
 (require 'straight)
 
-(use-package polymode 
+(use-package polymode
 ;:hook (polymode . centaur-tabs-mode-hook)
 :init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
 :custom (polymode-display-process-buffers nil)
@@ -29,7 +29,7 @@
         :innermodes '(poly-golang-lua-innermode))
 )
 
-(use-package poly-org 
+(use-package poly-org
 :hook (org-mode . poly-org-mode)
       ;(poly-org-mode . git-gutter-mode)
 :init (evil-set-initial-state 'poly-org-mode 'normal)

@@ -141,7 +141,7 @@
 (use-package diminish :defer t
 :init
     (diminish 'c++-mode "C++ Mode")
-    (diminish 'c-mode   "C Mode"  )
+    (diminish 'c-mode   "C Mode")
 )
 
 (use-package neotree
@@ -172,13 +172,13 @@
         (kill-new filename)
             (message "Copied buffer file name '%s' to the clipboard." filename)))
 )
-
+;; env.org[shell]
 ;; tab
-(use-package centaur-tabs
+(use-package centaur-tabs :after (s dashboard vterm)
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
-:hook   (dashboard-mode . centaur-tabs-local-mode)
-          (vterm-mode     . centaur-tabs-local-mode)
+:hook   ((dashboard-mode . centaur-tabs-local-mode)
+         (vterm-mode     . centaur-tabs-local-mode))
 :custom (centaur-tabs-background-color (face-background 'default))
         (centaur-tabs-set-icons t)
         (centaur-tabs-set-bar 'over)
@@ -213,6 +213,7 @@
                     (string-prefix-p "*pyright::stderr*" name)
                     (string-prefix-p "*Async-native-compile-log*" name)
                     (string-prefix-p "config.org[" name)
+                    (s-matches? "^.*\\[.*\\]$" name)
                     ;; Is not magit buffer.
                     (and (string-prefix-p "magit" name)
                         (not (file-name-extension name)))

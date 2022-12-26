@@ -1,4 +1,4 @@
-personal_ws-1.1 en 522 
+personal_ws-1.1 en 530 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -47,6 +47,7 @@ IPs
 IPv
 Ident
 Idx
+InJae
 Inferrer
 Infos
 Invoker
@@ -71,6 +72,7 @@ NFS
 NUR
 Nanos
 NanumGothic
+NanumGothicCoding
 Nop
 OSTYPE
 Ord
@@ -231,6 +233,7 @@ esac
 esquery
 esup
 eval
+exe
 expr
 exprpb
 f'https
@@ -267,8 +270,10 @@ gonum
 grafana
 gvm
 gzip
+hangul
 haskell
 hc
+hfs
 hm
 hostname
 hotjoin
@@ -305,12 +310,14 @@ jaeger
 jp
 json
 jsonencode
+jsonian
 jvm
 kbd
 keymap
 keymaps
 kiali
 kibana
+korean
 kr
 kub
 kube
@@ -511,6 +518,7 @@ vpn
 vterm
 vx
 wg
+wsl
 www
 yaml
 yasnippet

@@ -34,7 +34,6 @@
     (xterm-mouse-mode)
 
     ;(set-frame-parameter nil 'alpha 0.95)
-
     (set-variable 'cursor-type '(hbar . 10))
 
     ; no # ~ file
@@ -117,11 +116,11 @@
 
 )
 
-;(use-package pixel-scoll-smooth :no-require t  :straight nil
-;;; default text parsing direction left -> right
-;:if (version<= "29" emacs-version)
-;:config (pixel-scroll-precision-mode)
-;)
+(use-package pixel-scoll-smooth :straight nil :no-require t
+;; default text parsing direction left -> right
+:if (version<= "29" emacs-version)
+:config (pixel-scroll-precision-mode)
+)
 
 ;; emacs debug utils
 ;(use-package esup)
@@ -138,8 +137,8 @@
 
 (use-package helpful
 :bind (("C-h f" . helpful-callable)
-        ("C-h v" . helpful-variable)
-        ("C-h k" . helpful-key))
+       ("C-h v" . helpful-variable)
+       ("C-h k" . helpful-key))
 )
 
 (provide 'module-emacs)

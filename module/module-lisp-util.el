@@ -7,7 +7,6 @@
 (require 'straight)
 
 (use-package dash :init (global-dash-fontify-mode t))
-(use-package dash-functional :after dash)
 (use-package f)
 (use-package s)
 
@@ -43,7 +42,14 @@
     (json-pretty-print-buffer)
 )
 
-;;;
+(defun temp-json-pretty-buffer ()
+    "json pretty print buffer"
+    (interactive)
+    (temp-buffer)
+    (jsonian-mode)
+    (yank-pop)
+    (json-pretty (region-beginning) (region-end))
+    )
 
 (provide 'module-lisp-util)
 ;;; module-lisp-util.el ends here

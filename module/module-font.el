@@ -53,8 +53,7 @@
         (require 'ucs-normalize)
         (set-file-name-coding-system 'utf-8-hfs)
         (setq default-process-coding-system '(utf-8-hfs . utf-8-hfs))
-        (set-terminal-coding-system  'utf-8-hfs)
-        ))
+        (set-terminal-coding-system  'utf-8-hfs)))
 
 (setq-default line-spacing 3)
 
@@ -71,9 +70,6 @@
 (global-set-key (kbd "S-SPC") 'toggle-input-method) ; Ivy모드를 사용하면 S-SPC를 ivy-minibuffer-map에서 remapping 해줘야 한다.
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 (global-set-key (kbd "<Hangul>") 'toggle-input-method)
-
-(require 'use-package)
-(require 'straight)
 
 (use-package default-text-scale :disabled
 :config (default-text-scale-mode)
