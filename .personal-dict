@@ -1,4 +1,4 @@
-personal_ws-1.1 en 530 
+personal_ws-1.1 en 531 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -220,6 +220,7 @@ elif
 eln
 elsa
 emacs
+emacsclient
 emb
 emojify
 endif

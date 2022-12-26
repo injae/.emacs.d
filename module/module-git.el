@@ -71,7 +71,7 @@
 ;    ;:custom (magit-delta-delta-args "--true-color always")
 ;    )
 
-(use-package magit-difftastic :straight nil :no-require t :after magit
+(use-package magit-difftastic :straight nil :no-require t :after magit :disabled
 :ensure-system-package (difft . "cargo install difftastic")
 :config
     (require 'magit)
