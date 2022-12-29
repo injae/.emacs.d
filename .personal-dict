@@ -1,4 +1,4 @@
-personal_ws-1.1 en 531 
+personal_ws-1.1 en 540 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -224,6 +224,7 @@ emacsclient
 emb
 emojify
 endif
+ensurepath
 ent
 enum
 env
@@ -401,6 +402,7 @@ params
 pb
 pc
 persistentvolumes
+pipx
 pkgs
 plantuml
 playerIDs
@@ -421,7 +423,12 @@ protoAttrClone
 protojson
 provisioner
 pvc
+pycodestyle
 pydantic
+pydocstyle
+pyflakes
+pylint
+pylsp
 pyperclip
 pyright
 pytest
@@ -464,6 +471,7 @@ sqlite
 src
 ss
 ssl
+staticcheck
 stdenv
 stderr
 stdout
@@ -522,6 +530,7 @@ wg
 wsl
 www
 yaml
+yapf
 yasnippet
 ymir
 yml

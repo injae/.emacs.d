@@ -27,6 +27,7 @@
         (lsp-enable-snippet t)
         (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-completion-provider :none) ; with corfu
+
         ;(lsp-rust-analyzer-cargo-watch-command "clipy")
 :init
     (defun my/lsp-mode-setup-completion ()
@@ -42,7 +43,10 @@
         '(("gopls.staticcheck" t t)
           ("gopls.allExperiments" t t)
           ("gopls.usePlaceholders" t t)
-          ("rust-analyzer.cargo.runBuildScript" t t)))
+          ("rust-analyzer.cargo.runBuildScript" t t)
+          ("pylsp.plugins.black.enabled" t t)
+          ("pylsp.plugins.ruff.enabled" t t)))
+
     (setq lsp-go-analyses
         '((unusedparams . t)
           (unreachable . t)
@@ -55,7 +59,7 @@
             :new-connection (lsp-stdio-connection '("rnix-lsp"))
             :major-modes '(nix-mode)
             :server-id 'nix))
-    ;(setq lsp-go-gopls-placeholders nil)
+   ;(setq lsp-go-gopls-placeholders nil)
 )
 
 (use-package lsp-ui
