@@ -49,7 +49,6 @@
         (lsp-pylsp-plugins-pylint-enabled nil)
         (lsp-pylsp-plugins-rope-completion-enabled t)
         (lsp-pylsp-plugins-pycodestyle-enabled t)
-    (setq lsp-pylsp-plugins-)
     )
 
 ;(use-package pet
