@@ -5,7 +5,7 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-zicompinit
+#zicompinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 ZSH_THEME="lambda"
@@ -28,8 +28,8 @@ zinit ice as"completion"
 
 zinit ice blockf atpull'zinit creinstall -q .'
 
-autoload compinit
-compinit
+#autoload compinit
+#compinit
 
 zinit light djui/alias-tips
 zinit light zsh-users/zsh-completions
@@ -39,7 +39,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-history-substring-search
 zinit light MichaelAquilina/zsh-you-should-use
 zinit light iam4x/zsh-iterm-touchbar
-
+zinit load agkozak/zsh-z
 
 ### End of Zinit's installer chunk
 
@@ -65,8 +65,8 @@ eval "$(pyenv init -)"
 eval "$(direnv hook zsh)"
 
 # emacs setting
-#export EDITOR=emacsclient
-export EDITOR=nvim
+export EDITOR=emacsclient
+#export EDITOR=nvim
 export VISUAL=$EDITOR
 
 # emacs vterm setting
@@ -121,17 +121,17 @@ case "$OSTYPE" in
 darwin*)
     # ...
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-    alias clang=clang-14
-    alias clang++=clang++-14
-    alias gcc=gcc-12
-    alias g++=g++-12
+    alias clang=clang-13
+    alias clang++=clang++-13
+    alias gcc=gcc-11
+    alias g++=g++-11
     export NVM_DIR="$HOME/.nvm"
     [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
     [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 ;;
 linux*)
-    alias clang=clang-14
-    alias clang++=clang++-14
+    alias clang=clang-13
+    alias clang++=clang++-13
     export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
     export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
     export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
@@ -163,9 +163,9 @@ alias CC=$CC
 alias CXX=$CXX
 alias cc=$CC
 
-#alias ld=$LD
-#alias ar=$AR
-#alias ranlib=$RANLIB
+alias ld=$LD
+alias ar=$AR
+alias ranlib=$RANLIB
 # more fast system command , use rust base command
 alias ls='exa -g --time-style=long-iso'
 alias cat='bat'
@@ -176,15 +176,15 @@ alias top='ytop'
 #alias python='rustpython'
 
 # kuberneties setting
-alias kub=kubectl
 #source "$(kubectl completion zsh)"
 
 alias vmrun='/Applications/VMWare\ Fusion.app/Contents/Library/vmrun'
 alias vmsee='vmrun list'
 alias vmstart='vmrun start ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm nogui'
 alias vmstop='vmrun suspend ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm'
-
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+alias vpn-start='wsl.exe -d wsl-vpnkit --cd /app service wsl-vpnkit start'
 
 [[ -s "/home/nieel/.gvm/scripts/gvm" ]] && source "/home/nieel/.gvm/scripts/gvm"
 
+
+add-zsh-hook -Uz chpwd(){ source <(tea -Eds) }  #tea

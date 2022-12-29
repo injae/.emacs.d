@@ -24,7 +24,7 @@ export SCOUT_DISABLE=1
 
 # llvm@stable setting
 export PATH="/usr/local/opt/llvm/bin:$PATH"
-#export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
 
 # aseprite setting
 export ASEPRITE_USER_FOLDER="$HOME/.config/aseprite/"
@@ -33,13 +33,10 @@ export ASEPRITE_USER_FOLDER="$HOME/.config/aseprite/"
 
 export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
 
+#export KUBECONFIG="$HOME/.config/kubernetes/admin.conf"
+export KUBECONFIG="$HOME/.kube/config"
 # helm local docker registry flag
 export HELM_EXPERIMENTAL_OCI=1
-
-# istio ingress-gateway
-#export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http-1")].nodePort}')
-#export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
-#export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].nodePort}')
 
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
@@ -48,5 +45,6 @@ export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 export PATH="$HOME/.tfenv/bin:$PATH"
 
 # emacs lsp-mode 
-export LISP_USE_PLISTS=true
+export LSP_USE_PLISTS=true
 
+if [ -e /home/nieel/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nieel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
