@@ -31,25 +31,25 @@
     :ensure-system-package ((poetry . "pipx install poetry")
                             (pylsp  . "pip install python-lsp-server[all] pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff pylint"))
     :hook ((python-mode . poetry-tracking-mode)
-           ;(python-mode . (lambda () (require 'lsp-pyright) (lsp))
-           (python-mode . (lambda () (require 'lsp-pylsp) (lsp)))))
+            ;(python-mode . (lambda () (require 'lsp-pylsp) (lsp)))
+           ))
 
-(use-package lsp-mode
-    :custom
-        (lsp-pylsp-plugins-black-enabled t)
-        ;(lsp-pylsp-plugins-yapf-enabled nil) black
-        ;(lsp-pylsp-plugins-autopep8-enabled nil) black
-
-        (lsp-pylsp-plugins-pydocstyle-enabled nil)
-        ;(lsp-pylsp-plugins-pydocstyle-ignore ["D100" "D101" "D102" "D105"])
-
-        (lsp-pylsp-plugins-flake8-enabled t)
-       ;(lsp-pylsp-plugins-flake8-ignore [])
-        (lsp-pylsp-plugins-pyflakes-enabled t)
-        (lsp-pylsp-plugins-pylint-enabled nil)
-        (lsp-pylsp-plugins-rope-completion-enabled t)
-        (lsp-pylsp-plugins-pycodestyle-enabled t)
-    )
+;(use-package lsp-mode
+;    :custom
+;        (lsp-pylsp-plugins-black-enabled t)
+;        ;(lsp-pylsp-plugins-yapf-enabled nil) black
+;        ;(lsp-pylsp-plugins-autopep8-enabled nil) black
+;
+;        (lsp-pylsp-plugins-pydocstyle-enabled nil)
+;        ;(lsp-pylsp-plugins-pydocstyle-ignore ["D100" "D101" "D102" "D105"])
+;
+;        (lsp-pylsp-plugins-flake8-enabled t)
+;       ;(lsp-pylsp-plugins-flake8-ignore [])
+;        (lsp-pylsp-plugins-pyflakes-enabled t)
+;        (lsp-pylsp-plugins-pylint-enabled nil)
+;        (lsp-pylsp-plugins-rope-completion-enabled t)
+;        (lsp-pylsp-plugins-pycodestyle-enabled t)
+;    )
 
 ;(use-package pet
 ;  :ensure-system-package (dasel sqlite3)
@@ -79,9 +79,9 @@
 ;:hook (python-mode . poetry-tracking-mode)
 ;)
 
-;(use-package lsp-pyright
-;;:hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
-;)
+(use-package lsp-pyright
+    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
+)
 
 (provide 'module-python)
 ;;; module-python.el ends here

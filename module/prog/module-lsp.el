@@ -44,8 +44,10 @@
           ("gopls.allExperiments" t t)
           ("gopls.usePlaceholders" t t)
           ("rust-analyzer.cargo.runBuildScript" t t)
-          ("pylsp.plugins.black.enabled" t t)
-          ("pylsp.plugins.ruff.enabled" t t)))
+          ;("pylsp.plugins.black.enabled" t t)
+          ;("pylsp.plugins.ruff.enabled" t t)
+          ;("pylsp.plugins.rope_autoimport.enabled" t t)
+          ))
 
     (setq lsp-go-analyses
         '((unusedparams . t)
