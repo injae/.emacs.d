@@ -1,4 +1,4 @@
-personal_ws-1.1 en 540 
+personal_ws-1.1 en 542 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -167,6 +167,7 @@ cmp
 cnt
 codec
 codecov
+compat
 compatibilities
 conf
 config
@@ -232,6 +233,7 @@ environ
 envrc
 eq
 esac
+eshell
 esquery
 esup
 eval

@@ -4,6 +4,7 @@
 ;; This config start here
 ;;; Code:
 
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -109,9 +110,4 @@
     (file-notify-add-watch env-org-file
         '(change attribute-change) 'update-env-org-file)
     )
-
-(use-package server :straight nil
-    :config
-    (unless (server-running-p) (server-start)))
-
 ;;; init.el ends here

@@ -5,6 +5,10 @@
 
 (require 'use-package)
 
+(use-package compat)
+
+(use-package git-commit)
+
 (use-package magit
 :commands magit-status
 :general (leader "gs" 'magit-status)

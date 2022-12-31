@@ -17,7 +17,7 @@
     (setq ad-redefinition-action 'accept)
     (setq max-lisp-eval-depth 10000)
     (setq max-specpdl-size 32000)
-    ;(setq debug-on-error t) ; debug option
+    (setq debug-on-error t) ; debug option
     ;; emacs gc setting
     (setq gc-cons-threshold (* 100 100000)) ; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024))
@@ -140,6 +140,18 @@
        ("C-h v" . helpful-variable)
        ("C-h k" . helpful-key))
 )
+
+(use-package with-editor
+    :hook ((shell-mode  . with-editor-export-editor)
+           (eshell-mode . with-editor-export-editor)
+           (term-mode   . with-editor-export-editor)
+           (vterm-mode  . with-editor-export-editor))
+    :config
+    (define-key (current-global-map)
+        [remap async-shell-command] 'with-editor-async-shell-command)
+    (define-key (current-global-map)
+        [remap shell-command] 'with-editor-shell-command)
+    )
 
 (provide 'module-emacs)
 ;;; module-emacs.el ends here
