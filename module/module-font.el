@@ -28,7 +28,6 @@
 (prefer-coding-system 'utf-8)
 (setq system-time-locale "C")
 
-
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
 ; NanumGothicCoding Setting
@@ -48,12 +47,18 @@
 ;(setq face-font-rescale-alist '(("D2coding" . 1.03877)))
 ;(setq face-font-rescale-alist '(("D2coding" . 0.85)))
 
+(defun change-mac-input-method ()
+    "change input-source in MacOS"
+    (interactive)
+    (call-process "osascript" nil t nil "-e" "tell application \"System Events\" to keystroke space using { shift down }")
+    )
+
 (when *is-mac*
     (progn
         (require 'ucs-normalize)
-        (set-file-name-coding-system 'utf-8-hfs)
-        (setq default-process-coding-system '(utf-8-hfs . utf-8-hfs))
-        (set-terminal-coding-system  'utf-8-hfs)))
+        (set-file-name-coding-system 'utf-8)
+        (setq default-process-coding-system '(utf-8 . utf-8))
+        (set-terminal-coding-system  'utf-8)))
 
 (setq-default line-spacing 3)
 
