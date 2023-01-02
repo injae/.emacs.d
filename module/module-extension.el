@@ -3,8 +3,10 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'use-package)
+
 ;; spotify controller
-(use-package smudge  :defer t
+(use-package smudge :defer t
 ; in private/token.el
 :general (leader "sn" 'smudge-controller-next-track
                  "hp" 'smudge-controller-previous-track)
@@ -14,29 +16,27 @@
 ; slack config in private token setting
 (use-package alert
 :commands (alert)
-:init (setq alert-default-style 'notifier))
+:custom (alert-default-style 'notifier))
 
 (use-package page-break-lines :defer t)
 
 (use-package dashboard
-:init (dashboard-setup-startup-hook)
-:config
-    (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
-    (setq dashboard-banner-logo-title "Happy Hacking")
-    (setq dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
-    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-show-shortcuts nil)
-    (setq dashboard-set-navigator t)
-    (setq dashboard-week-agenda t)
-
-    ;(setq dashboard-center-content t)
-    (setq dashboard-set-init-info t)
-    (setq dashboard-items '((recents   . 5)
-                            (bookmarks . 5)
-                            (projects  . 5)
-                            (agenda    . 5)))
+    :custom (
+        (dashboard-banner-logo-title "Happy Hacking")
+        (dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
+        (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+        (dashboard-set-heading-icons t)
+        (dashboard-set-file-icons t)
+        (dashboard-show-shortcuts nil)
+        (dashboard-set-navigator t)
+        (dashboard-week-agenda t)
+        (dashboard-items '((recents   . 5)
+                           (bookmarks . 5)
+                           (projects  . 5)
+                           (agenda    . 5)))
+        (dashboard-set-init-info t))
+    :config
+        (dashboard-setup-startup-hook)
 )
 
 (provide 'module-extension)
