@@ -101,6 +101,9 @@
 (when (file-exists-p private-config-file)
     (load-file private-config-file))
 
+(use-package token :straight (:host github :repo "injae/private_config"))
+
+
 (use-package filenotify :straight nil :after org
     :preface
     (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))

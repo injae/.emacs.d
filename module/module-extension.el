@@ -16,8 +16,9 @@
 :commands (alert)
 :init (setq alert-default-style 'notifier))
 
-(use-package page-break-lines   :defer t)
-(use-package dashboard  
+(use-package page-break-lines :defer t)
+
+(use-package dashboard
 :init (dashboard-setup-startup-hook)
 :config
     (add-hook 'dashboard-mode-hook (lambda () (display-line-numbers-mode -1) ))
