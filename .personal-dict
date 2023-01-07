@@ -1,4 +1,4 @@
-personal_ws-1.1 en 546 
+personal_ws-1.1 en 548 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -339,6 +339,7 @@ lfinal
 lhs
 libra
 lifecycle
+lineno
 linux
 logitem
 lsp
@@ -489,6 +490,7 @@ struct
 subcommand
 sv
 svc
+sys
 sz
 taf
 terraform

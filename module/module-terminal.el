@@ -11,8 +11,8 @@
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
 ;:init   (setq vterm-always-compile-module t)
 :config
-    (define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
-    (define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
+    ;(define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
+    ;(define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)
     (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode -1)))
 )
 

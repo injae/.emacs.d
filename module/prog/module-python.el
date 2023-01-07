@@ -23,9 +23,13 @@
 (use-package python-pytest)
 
 (use-package python-black :after python-mode
-    :hook (python-mode . python-black-on-save-mode))
+    :ensure-system-package ((black . "pip install black"))
+    :hook (python-mode . python-black-on-save-mode)
+    )
 
-(use-package python-isort)
+(use-package python-isort :after python
+    :ensure-system-package ((isort . "pip install isort"))
+    )
 
 (use-package poetry :after python
     :ensure-system-package ((poetry . "pipx install poetry")
@@ -49,7 +53,7 @@
 ;        (lsp-pylsp-plugins-pylint-enabled nil)
 ;        (lsp-pylsp-plugins-rope-completion-enabled t)
 ;        (lsp-pylsp-plugins-pycodestyle-enabled t)
-;    )
+;
 
 ;(use-package pet
 ;  :ensure-system-package (dasel sqlite3)
