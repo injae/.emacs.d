@@ -29,6 +29,7 @@
 
 (use-package python-isort :after python
     :ensure-system-package ((isort . "pip install isort"))
+    :hook (python-mode . python-isort-on-save-mode)
     )
 
 (use-package poetry :after python

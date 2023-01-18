@@ -1,4 +1,4 @@
-personal_ws-1.1 en 548 
+personal_ws-1.1 en 572 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -22,9 +22,11 @@ Ctrl
 Debugf
 Decl
 DimKey
+Dockerfile
 Downloader
 Dto
 ECK
+ENTRYPOINT
 Elo
 Eq
 Errf
@@ -55,6 +57,7 @@ Invoker
 Iso
 Iteratorable
 JSON
+KANIKO
 KRPC
 KST
 LDFLAGS
@@ -79,6 +82,11 @@ OSTYPE
 Ord
 PASSTHROUGH
 PLISTS
+PPYTHONHASHSEED
+PYTHONDONTWRITEBYTECODE
+PYTHONFAULTHANDLER
+PYTHONHASHSEED
+PYTHONUNBUFFERED
 Param
 Params
 Printf
@@ -104,9 +112,11 @@ Unary
 Unfree
 Unmarshal
 Unmarshaller
+VIRTUALENVS
 Validator
 Vcpkg
 Vec
+WORKDIR
 XBOX
 aarch
 abcdefghij
@@ -121,6 +131,7 @@ ai
 alg
 algo
 alist
+amd
 apache
 api
 apiserver
@@ -139,6 +150,7 @@ attrs
 auth
 authinfo
 autoload
+autoremove
 aws
 awsvpc
 backend
@@ -158,6 +170,7 @@ celgo
 cerr
 cfg
 chan
+ci
 cidrs
 cli
 cloudflare
@@ -179,6 +192,7 @@ cpp
 cppkg
 cppm
 cpu
+credsStore
 cron
 crt
 crynut
@@ -210,6 +224,7 @@ dir
 dired
 dirvish
 dns
+dockerfile
 downloader
 dst
 dto
@@ -229,6 +244,7 @@ emojify
 endif
 ensurepath
 ent
+entrypoint
 enum
 env
 environ
@@ -319,6 +335,7 @@ json
 jsonencode
 jsonian
 jvm
+kaniko
 kbd
 keymap
 keymaps
@@ -353,6 +370,7 @@ matchtime
 middleware
 middlewares
 mk
+mkdir
 mmcalc
 mmlog
 mmlogic
@@ -387,6 +405,7 @@ nixpkgs
 nlohmann
 noinspection
 nomessage
+noninteractive
 np
 npm
 ntc
@@ -430,6 +449,7 @@ protoAttrClone
 protojson
 provisioner
 pvc
+py
 pycodestyle
 pydantic
 pydocstyle
@@ -437,9 +457,11 @@ pyflakes
 pylint
 pylsp
 pyperclip
+pyproject
 pyright
 pytest
 pytz
+qq
 qstore
 quantile
 redis
@@ -530,6 +552,8 @@ validator
 valuetype
 vec
 viewpage
+vip
+virtualenvs
 vpc
 vpn
 vterm
