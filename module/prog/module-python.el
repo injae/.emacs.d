@@ -85,7 +85,7 @@
 ;)
 
 (use-package lsp-pyright
-    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
+    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
 )
 
 (provide 'module-python)

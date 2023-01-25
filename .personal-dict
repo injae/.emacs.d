@@ -149,6 +149,7 @@ attr
 attrs
 auth
 authinfo
+authlib
 autoload
 autoremove
 aws
@@ -302,6 +303,8 @@ hostname
 hotjoin
 hpa
 hpp
+href
+html
 htop
 http
 https
@@ -318,6 +321,7 @@ ingressgateway
 init
 injae
 injaeui
+integrations
 io
 iostream
 ioutil
@@ -413,6 +417,7 @@ nullopt
 num
 nur
 nurpkgs
+oauth
 ok
 omitempty
 openbsd
@@ -500,6 +505,7 @@ sqlite
 src
 ss
 ssl
+starlette
 staticcheck
 stdenv
 stderr
@@ -542,12 +548,14 @@ unicode
 unmarshal
 uri
 url
+userinfo
 usize
 utcnow
 utf
 util
 utils
 uuid
+uvicorn
 validator
 valuetype
 vec

@@ -6,8 +6,6 @@
 (require 'use-package)
 (require 'straight)
 
-
-
 (use-package which-key
 :init   (which-key-mode t)
 :config (setq which-key-allow-evil-operators t)
@@ -58,7 +56,7 @@
 (use-package savehist
     :init (savehist-mode))
 
-(use-package consult  :after (projectile evil-collection)
+(use-package consult :after (projectile evil-collection)
     :general (leader
                  "fp" '(consult-projectile-find-file   :wk "Search in Project")
                  "fG" '(consult-ripgrep                :wk "Grep in Project")
@@ -159,10 +157,9 @@
     ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
     (autoload 'projectile-project-root "projectile")
     (setq consult-project-function (lambda (_) (projectile-project-root)))
-    :config (evil-collection-consult-setup)
     )
 
-(use-package consult-projectile )
+(use-package consult-projectile)
 (use-package consult-flycheck)
 
 (use-package marginalia :config (marginalia-mode))
