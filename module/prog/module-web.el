@@ -3,10 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
-(use-package web-mode 
+(use-package web-mode
 ;:ensure-system-package (nvm . "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
 ;:commands (web-mode)
     :mode (("\\.html?\\'"  . web-mode)
@@ -37,25 +34,25 @@
     (add-hook 'web-mode-hook #'lsp)
 )
 
-(use-package js2-mode 
+(use-package js2-mode
 :mode (("\\.js\\'"  . js2-mode)
        ("\\.mjs\\'" . js2-mode))
 :hook (js2-mode . (lambda () (lsp)))
 )
 
-(use-package xref-js2 
+(use-package xref-js2
 :after (js2-mode xref)
 :config (add-hook 'js2-mode-hook (lambda () (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 )
 
-(use-package skewer-mode 
+(use-package skewer-mode
 :after js2-mode
 :hook  ((js2-mode  . skewer-mode)
         (css-mode  . skewer-css-mode)
         (html-mode . skewer-html-mode))
 )
 
-(use-package typescript-mode 
+(use-package typescript-mode
     :after tree-sitter
     :mode  ("\\.ts\\'"  . typescript-mode)
     :hook (typescript-mode . (lambda () (lsp)))
@@ -63,14 +60,14 @@
 
 ;(use-package tsx-mode :straight (:type git :host github :repo "orzechowskid/tsx-mode.el") :disabled)
 
-(use-package tide 
+(use-package tide
 :after (typescript-mode company flycheck)
 :hook  ((typescript-mode . tide-setup)
         (typescript-mode . tide-hl-identifier-mode)
         (before-save . tide-format-before-save))
 )
 
-;(use-package vue-mode 
+;(use-package vue-mode
 ;    ;; install lsp-volar-* and typescript (npm install -g typescript)
 ;    :mode "\\.vue\\'"
 ;    :hook (vue-mode . prettier-js-mode)
@@ -78,7 +75,7 @@
 ;            (setq prettier-js-mode '("--parser vue"))
 ;)
 
-(use-package prettier-js 
+(use-package prettier-js
 :hook (js2-mode . prettier-js-mode)
       (web-mode . prettier-js-mode)
 )

@@ -3,8 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
 (use-package vterm :after (evil-collection exec-path-from-shell)
 ;:commands (vterm)
 ;:ensure-system-package ((zsh . "chsh -s $(which zsh)")

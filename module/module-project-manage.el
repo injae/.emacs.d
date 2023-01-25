@@ -3,9 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
-(use-package projectile
+(use-package projectile :after evil
 :config
     (setq projectile-require-project-root nil)
 	(setq projectile-enable-caching t)

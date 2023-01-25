@@ -3,12 +3,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
 
 (use-package editorconfig )
 (use-package copilot :straight (:host github :repo "zerolfx/copilot.el") :disabled
-    :after editorconfig 
+    :after editorconfig
     :config
         (add-hook 'prog-mode-hook 'copilot-mode)
         (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))

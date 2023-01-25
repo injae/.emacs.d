@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package yasnippet 
+(use-package yasnippet
 ;https://github.com/joaotavora/yasnippet
 :custom (yas-snippet-dirs '("~/.emacs.d/yas/"))
 :general (leader  "hy"  '(:wk "Yasnippet")
@@ -14,7 +14,7 @@
 
 (use-package yasnippet-snippets   :after yasnippet)
 
-(use-package auto-yasnippet 
+(use-package auto-yasnippet
 ;https://github.com/abo-abo/auto-yasnippet
 :after yasnippet
 :general (leader "hyc" 'aya-create

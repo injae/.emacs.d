@@ -3,9 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 ;; buffer manage
 (use-package buffer-move
 :general (leader

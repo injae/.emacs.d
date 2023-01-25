@@ -3,10 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
-(use-package csharp-mode 
+(use-package csharp-mode
 :mode (("\\.cs\\'" . csharp-mode))
        ;("\\.cs\\'" . csharp-tree-sitter-mode))
 :hook (csharp-mode . lsp)

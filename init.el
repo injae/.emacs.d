@@ -4,48 +4,31 @@
 ;; This config start here
 ;;; Code:
 
-
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(add-to-list 'load-path (expand-file-name"~/.emacs.d/straight/build"))
-
 (eval-when-compile
     (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
-    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package-ensure-system-package"))
-    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/general"))
-    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/bind-key"))
+    ;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package-ensure-system-package"))
+    ;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/general"))
+    ;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/bind-key"))
     (require 'use-package)
-    (require 'use-package-ensure-system-package)
-    (require 'general)
-    (require 'bind-key)
+    ;(require 'use-package-ensure-system-package)
+    ;(require 'general)
+    ;(require 'bind-key)
     )
 
-(straight-use-package 'use-package)
 (use-package straight
-    :custom
-    (straight-use-package-by-default t)
-    ;(straight-fix-flycheck t)
-)
+    :custom (straight-use-package-by-default t))
 
-;(require 'esup) ; emacs config profiling
+(use-package esup) ; emacs config profiling
 (use-package use-package)
-(use-package gcmh :defer t :config (gcmh-mode t))
+(use-package gcmh
+    :functions gcmh-mode
+    :config (gcmh-mode t))
 ;(use-package gcmh :hook (after-init . gcmh-mode))
 
 
 (use-package use-package-ensure-system-package)
 (use-package exec-path-from-shell
+    :functions exec-path-from-shell-initialize
     :config (exec-path-from-shell-initialize)
 )
 
@@ -97,14 +80,14 @@
 )
 
 ;; 개인 설정
-(setq-default private-config-file "~/.emacs.d/private/token.el")
+(defvar private-config-file "~/.emacs.d/private/token.el")
 (when (file-exists-p private-config-file)
     (load-file private-config-file))
 
 ;(use-package token :straight (:host github :repo "injae/private_config"))
 
-
-(use-package filenotify :straight nil :after org
+(use-package filenotify :straight nil
+    :after org
     :preface
     (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))
     (defun update-env-org-file (event)

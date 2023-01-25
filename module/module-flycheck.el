@@ -3,9 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'straight)
-(require 'use-package)
-
 (use-package flycheck
     :custom
     (flycheck-clang-language-standard "c++17")
@@ -47,11 +44,11 @@
     )
 
 (use-package consult-flyspell :after flyspell-correct
-    :config
-    (setq consult-flyspell-select-function nil
+    :custom
+    (consult-flyspell-select-function nil
           consult-flyspell-set-point-after-word t
           consult-flyspell-always-check-buffer nil)
-    (setq consult-flyspell-correct-function (lambda () (flyspell-correct-at-point) (consult-flyspell))))
+    (consult-flyspell-correct-function (lambda () (flyspell-correct-at-point) (consult-flyspell))))
 
 
 (provide 'module-flycheck)

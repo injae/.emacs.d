@@ -3,9 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 (use-package docker
 :commands docker
 :general (leader "hud" 'docker)

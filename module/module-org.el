@@ -3,10 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
-(use-package org 
+(use-package org
 :mode ("\\.org\\'" . org-mode)
 :general (leader "oa" 'org-agenda
                  "ob" 'org-iswitchb
@@ -19,7 +16,7 @@
 :config (setq org-startup-indented   nil)
 )
 
-(use-package org-superstar 
+(use-package org-superstar
 :after org
 :hook (org-mode . org-superstar-mode)
 :custom (org-superstar-special-todo-items t)
@@ -31,13 +28,13 @@
 ;    (org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
 
-(use-package valign 
+(use-package valign
     :after org-mode
     :hook (org-mode . valign-mode))
 
 (use-package orgtbl-aggregate )
 
-(use-package toc-org 
+(use-package toc-org
     :after org
     :hook (org-mode . toc-org-mode))
 
@@ -84,7 +81,7 @@
 ;
 ;(use-package websocket  :after org-roam)
 ;
-;(use-package org-roam-ui 
+;(use-package org-roam-ui
 ;:after org-roam
 ;:config (setq org-roam-ui-sync-theme t)
 ;        (setq org-roam-ui-follow t)

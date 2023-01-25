@@ -3,16 +3,14 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 (use-package which-key
-:init   (which-key-mode t)
-:config (setq which-key-allow-evil-operators t)
-        (setq which-key-show-operator-state-maps t)
+:functions which-key-mode
+:custom  (which-key-allow-evil-operators t)
+         (which-key-show-operator-state-maps t)
+ :config (which-key-mode)
 )
 
-(use-package which-key-posframe   :disabled
+(use-package which-key-posframe :disabled
 :after which-key
 :config
     (setq which-key-posframe-border-width 15)
@@ -46,10 +44,37 @@
     ;; (setq vertico-cycle t)
 )
 
+(use-package savehist
+    :init
+    (savehist-mode))
+
+
+(use-package emacs
+    :defines crm-separator
+    :preface
+    (defun crm-indicator (args)
+        (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" "" crm-separator)
+                  (car args))
+            (cdr args)))
+    :init
+    ;; vertico
+    ;; Add prompt indicator to `completing-read-multiple'.
+    ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+    ;; Do not allow the cursor in the minibuffer prompt
+    (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+    ; --
+    )
+
+
 (use-package vertico-posframe
-:config
-    (setq vertico-posframe-poshandler #'posframe-poshandler-frame-top-center)
-    (vertico-posframe-mode t)
+:functions vertico-posframe-mode
+:custom (vertico-posframe-poshandler #'posframe-poshandler-frame-top-center)
+:config (vertico-posframe-mode t)
 )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
@@ -162,41 +187,47 @@
 (use-package consult-projectile)
 (use-package consult-flycheck)
 
-(use-package marginalia :config (marginalia-mode))
+(use-package marginalia
+    :functions marginalia-mode
+    :config (marginalia-mode))
 
 (use-package embark
-  :bind
-    (("C-." . embark-act)         ;; pick some comfortable binding
-     ("C-;" . embark-dwim)        ;; good alternative: M-.
-     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-  :init
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-  :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none)))))
+    :functions embark-prefix-help-command
+    :bind (("C-." . embark-act)         ;; pick some comfortable binding
+           ("C-;" . embark-dwim)        ;; good alternative: M-.
+           ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+    :init
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none)))))
 
 ;; Consult users will also want the embark-consult package.
-(use-package embark-consult  :after (embark consult) :demand t ; only necessary if you have the hook below
-  :hook (embark-collect-mode . consult-preview-at-point-mode)
+(use-package embark-consult
+    :after (embark consult)
+    :demand t ; only necessary if you have the hook below
+    :hook (embark-collect-mode . consult-preview-at-point-mode)
 )
 
 ;;; input
 (use-package corfu :after evil-collection
-:general (:keymaps 'corfu-map
-               :states 'insert
-               "C-n" #'corfu-next
-               "C-p" #'corfu-previous
-               "<escape>" #'evil-collection-corfu-quit-and-escape
-               "C-<return>" #'corfu-insert
-               "M-d" #'corfu-show-documentation
-               "M-l" #'corfu-show-location)
-:bind (:map corfu-map
+    :general
+    (:keymaps 'corfu-map
+        :states 'insert
+        "C-n" #'corfu-next
+        "C-p" #'corfu-previous
+        "<escape>" #'evil-collection-corfu-quit-and-escape
+        "C-<return>" #'corfu-insert
+        "M-d" #'corfu-show-documentation
+        "M-l" #'corfu-show-location)
+    :bind
+    (:map corfu-map
         ("TAB" . corfu-next)
         ([tab] . corfu-next)
         ("S-TAB" . corfu-previous)
         ([backtab] . corfu-previous))
-:custom
+    :custom
     (corfu-auto t)
     (corfu-auto-prefix 2)
     (corfu-auto-delay 0.25)
@@ -205,7 +236,8 @@
     (corfu-quit-no-match t)
     (corfu-preselect-first nil)
     (corfu-max-witdh corfu-min-width)
-:init (global-corfu-mode)
+    :config
+    (global-corfu-mode)
 )
 
 (use-package corfu-history :straight nil :load-path "straight/repos/corfu/extensions/"
@@ -218,7 +250,7 @@
     :after (yasnippet))
 
 ;; Add extensions
-(use-package cape
+(use-package cape :after evil
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf
@@ -236,12 +268,19 @@
          ("C-c p ^" . cape-tex)
          ("C-c p &" . cape-sgml)
          ("C-c p r" . cape-rfc1345))
+  :preface
+    (defun corfu-enable-always-in-minibuffer ()
+        "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+        (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
+                    (bound-and-true-p vertico--input))
+        (setq-local corfu-auto nil)       ; Ensure auto completion is disabled
+        (corfu-mode 1)))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
-  ;(add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-history)
   (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+  ;(add-to-list 'completion-at-point-functions #'cape-dabbrev)
   ;(add-to-list 'completion-at-point-functions #'cape-keyword)
   ;(add-to-list 'completion-at-point-functions #'cape-tex)
   ;(add-to-list 'completion-at-point-functions #'cape-sgml)
@@ -251,6 +290,7 @@
   ;(add-to-list 'completion-at-point-functions #'cape-dict)
   ;(add-to-list 'completion-at-point-functions #'cape-symbol)
   ;(add-to-list 'completion-at-point-functions #'cape-line)
+   
   :config
     (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map)
@@ -258,17 +298,13 @@
     ;; completion UI is active. If you use Mct or Vertico as your main minibuffer
     ;; completion UI. From
     ;; https://github.com/minad/corfu#completing-with-corfu-in-the-minibuffer
-    (defun corfu-enable-always-in-minibuffer ()
-        "Enable Corfu in the minibuffer if Vertico/Mct are not active."
-        (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
-                    (bound-and-true-p vertico--input))
-        (setq-local corfu-auto nil)       ; Ensure auto completion is disabled
-        (corfu-mode 1)))
-    (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
     ;; Setup lsp to use corfu for lsp completion
+    (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
 )
 
 (use-package kind-icon  :after corfu
+    :defines corfu-margin-formatters
+    :functions kind-icon-margin-formatter
     :custom (kind-icon-default-face 'corfu-default)
     :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 

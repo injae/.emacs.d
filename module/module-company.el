@@ -4,7 +4,7 @@
 ;;; Code:
 
 ; 오직 company-complete-selection으로 만 해야지 snippet 자동완성이 작동됨
-(use-package company  
+(use-package company
 :init (global-company-mode 1)
 :config
     (company-tng-mode t)

@@ -3,9 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 (use-package indent4-mode :no-require t :straight nil
 :preface
     (defun my-set-indent (n)
@@ -51,8 +48,8 @@
 ;                 "phh" 'sp-backward-slurp-sexp
 ;                 "plh" 'sp-forward-barf-sexp
 ;                 "phl" 'sp-backward-barf-sexp)
-:init (smartparens-global-mode)
-      (show-smartparens-global-mode)
+:config (smartparens-global-mode)
+        (show-smartparens-global-mode)
 )
 ;elisp double quote problem fix setting
 (use-package smartparens-config :after smartparens :straight nil)

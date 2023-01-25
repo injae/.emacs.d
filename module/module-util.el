@@ -3,9 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
-(use-package try   :defer t)
+(use-package try :defer t)
 
 (use-package sudo-mode :no-require t :straight nil
 :preface

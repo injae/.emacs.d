@@ -3,8 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
 (use-package python-mode
 :mode (("\\.py\\'" . python-mode)
        ("\\.wsgi$" . python-mode))

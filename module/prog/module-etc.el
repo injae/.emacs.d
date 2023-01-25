@@ -3,8 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
 (use-package direnv  :config (direnv-mode))
 
 (use-package gdscript-mode  :disabled
@@ -16,15 +14,15 @@
 ;:config (add-to-list 'company-backends 'company-godot-gdscript)
 ;)
 
-(use-package protobuf-mode )
+(use-package protobuf-mode)
 
-(use-package graphql-mode 
+(use-package graphql-mode
 :mode ((".graphql\\'" . graphql-mode)
        (".prisma\\'"  . graphql-mode))
 :hook (graphql-mode . (lambda () (require 'lsp-graphql) (lsp)))
 )
 
-(use-package lua-mode 
+(use-package lua-mode
 :mode ("\\.lua\\'" . lua-mode)
 )
 

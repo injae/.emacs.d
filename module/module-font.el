@@ -15,8 +15,6 @@
 ;; | abcdefghij | abcdefghij |
 ;; +------------+------------+
 
-(require 'use-package)
-
 ;; text utf-8 setting
 ;(setq utf-translate-cjk-mode nil)
 (set-language-environment "Korean")

@@ -3,9 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 (use-package lsp-mode ;:after exec-path-from-shell
 :commands lsp
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)

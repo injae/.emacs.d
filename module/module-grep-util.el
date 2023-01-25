@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package rg  :after general
+(use-package rg :after general
      :ensure-system-package (rg . "cargo install ripgrep")
      :general (leader "fg" 'rg-menu)
      :config
@@ -18,10 +18,10 @@
          "t" #'rg-rerun-change-literal)
 )
 
-(use-package wgrep 
-:after (evil-collection  rg)
+(use-package wgrep
+:after (evil-collection rg)
 :config (setq wgrep-auto-save-buffer t)
-        (evil-collection-wgrep-setup)
+       ;(evil-collection-wgrep-setup)
        ;(setq wgrep-enable-key "r")
 )
 

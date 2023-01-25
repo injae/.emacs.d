@@ -3,8 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
 ;; spotify controller
 (use-package smudge :defer t
 ; in private/token.el
@@ -21,6 +19,7 @@
 (use-package page-break-lines :defer t)
 
 (use-package dashboard
+    :functions dashboard-setup-startup-hook
     :custom (
         (dashboard-banner-logo-title "Happy Hacking")
         (dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change

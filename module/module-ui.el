@@ -4,9 +4,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 (use-package all-the-icons)
 
 (use-package all-the-icons-ibuffer

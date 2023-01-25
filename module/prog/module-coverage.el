@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package magit 
+(use-package magit
 :commands magit-status
 :general (leader "gs" 'magit-status)
 :config (setq vc-handled-backends nil)

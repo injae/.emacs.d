@@ -3,9 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
 (use-package cpp-mode ;:load-path "lisp/cpp-mode"
 :no-require t
 :straight nil
@@ -20,7 +17,7 @@
 ;      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
-(use-package ccls  
+(use-package ccls
 :hook  ((c-mode c++-mode objc-mode cuda-mode c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :config
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))

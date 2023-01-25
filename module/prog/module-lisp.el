@@ -4,8 +4,6 @@
 ;;; Code:
 
 
-(require 'use-package)
-
 (use-package emacs-lisp :no-require t :after general :straight nil
 :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
 )

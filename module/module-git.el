@@ -17,7 +17,7 @@
 )
 
 (use-package forge :after magit
-    :init (setq forge-add-default-bindings nil)
+    :custom (forge-add-default-bindings nil)
     :config
     ;(defclass forge-gitlab-http-repository (forge-gitlab-repository)
     ;    ((issues-url-format         :initform "http://%h/%o/%n/issues")

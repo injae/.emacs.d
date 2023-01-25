@@ -3,10 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
-(use-package dash :init (global-dash-fontify-mode t))
+(use-package dash :config (global-dash-fontify-mode))
 (use-package f)
 (use-package s)
 
@@ -46,6 +43,7 @@
     "json pretty print buffer"
     (interactive)
     (temp-buffer)
+    (require 'jsonian-mode)
     (jsonian-mode)
     (yank-pop)
     (json-pretty (region-beginning) (region-end))
