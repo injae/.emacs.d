@@ -1,18 +1,10 @@
-#+TITLE: InJae's System Configure File
-#+OPTIONS: toc:4 h:4
-#+PROPERTY: header-args :cache yes :mkdir yes
-
-* DotEnv
-** ~/.zshrc
-#+BEGIN_SRC shell :tangle "~/.zshrc"
-
-export LANG="ko_KR.UTF-8" # emacs libvterm korea encoding fix
+export LANG=ko_KR.UTF-8 # emacs libvterm korea encoding fix
 export LANGUAGE="ko_KR.UTF-8"
 
+#source "$HOME/.zinit/zinit.zsh"
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
 
 #zicompinit
 # Load a few important annexes, without Turbo
@@ -32,7 +24,6 @@ zinit snippet OMZP::pip
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::colored-man-pages
 
-
 zinit ice as"completion"
 #zinit snippet OMZP::docker/_docker
 
@@ -40,7 +31,6 @@ zinit ice blockf atpull'zinit creinstall -q .'
 
 #autoload compinit
 #compinit
-
 
 zinit light djui/alias-tips
 zinit light zsh-users/zsh-completions
@@ -57,6 +47,7 @@ zinit load agkozak/zsh-z
 ### End of Zinit's installer chunk
 
 eval "$(starship init zsh)"
+
 
 #export PYENV_ROOT="$HOME/.pyenv"
 #command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
@@ -76,9 +67,9 @@ eval "$(starship init zsh)"
 # direnv
 #eval "$(direnv hook zsh)"
 
+
 # emacs setting
 export EDITOR=emacsclient
-alias edit=emacsclient
 #export EDITOR=nvim
 export VISUAL=$EDITOR
 
@@ -105,7 +96,9 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
 fi
 
 vterm_prompt_end() {
+
     vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+
 }
 setopt PROMPT_SUBST
 PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
@@ -128,12 +121,12 @@ YARN_ENABLED=true
 
 # Ruby setting
 # macos home-brew rbenv setting
-
 # rvm setting
 # macos don't use apple clang
 case "$OSTYPE" in
 darwin*)
     # ...
+
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
     alias clang=clang-13
     alias clang++=clang++-13
@@ -146,6 +139,7 @@ darwin*)
 linux*)
     #alias clang=clang-13
     #alias clang++=clang++-13
+
     #export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
     #export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
     #export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
@@ -193,136 +187,3 @@ alias vmsee='vmrun list'
 alias vmstart='vmrun start ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm nogui'
 alias vmstop='vmrun suspend ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm'
 alias vpn-start='wsl.exe -d wsl-vpnkit --cd /app service wsl-vpnkit start'
-#+END_SRC
-
-** ~/.zshenv
-#+BEGIN_SRC shell :tangle "~/.zshenv"
-
-export PATH="/usr/local/sbin:$PATH"
-export PATH="$HOME/.pyenv/bin:$PATH"
-export PATH="$HOME/.pyenv/shims:$PATH"
-export PATH="$HOME/.cppm/bin:$PATH"
-export PATH="$HOME/.ghcup/bin:$PATH"
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/vcpkg:$PATH"
-export PATH="$PATH:$HOME/go/bin"
-export PATH="$PATH:/Users/nieel/.local/bin"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$HOME/.cppm/local/lib/pkg-config:/usr/local/opt/libpq/lib/pkgconfig"
-# kotline language server
-export PATH="$HOME/dev/tools/kotlin-language-server:$PATH"
-# openjdk setting
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
-# telepresence kubectl 정보수집 비활성화
-export SCOUT_DISABLE=1
-
-
-## llvm@9 setting
-#export PATH="/usr/local/opt/llvm@9/bin:$PATH"
-#export LDFLAGS="-L/usr/local/opt/llvm@9/lib"
-#export CPPFLAGS="-I/usr/local/opt/llvm@9/include"
-
-# llvm@stable setting
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/llvm/lib"
-
-# aseprite setting
-export ASEPRITE_USER_FOLDER="$HOME/.config/aseprite/"
-
-# rust sdl2 link setting
-
-export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-
-#export KUBECONFIG="$HOME/.config/kubernetes/admin.conf"
-export KUBECONFIG="$HOME/.kube/config"
-# helm local docker registry flag
-export HELM_EXPERIMENTAL_OCI=1
-
-
-
-export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
-
-# terraform version manager option
-# git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-export PATH="$HOME/.tfenv/bin:$PATH"
-
-# emacs lsp-mode 
-export LSP_USE_PLISTS=true
-
-#if [ -e /home/nieel/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nieel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-
-#+END_SRC
-
-** ~/.config/starship.toml
-#+BEGIN_SRC toml :tangle "~/.config/starship.toml"
-
-  add_newline = false
-    
-  [directory]
-  truncate_to_repo = false
-
-  #full_symbol = "🔋"
-  #charging_symbol = "⚡️"
-  #discharging_symbol = "💀"   
-
-#+END_SRC
-
-** ~/.gitconfig 
-;#+BEGIN_SRC gitconfig :tangle "~/.gitconfig"
-#+BEGIN_SRC json :tangle no
-
-[user]
-	name = injae
-	email = 8687lee@gmail.com
-
-[core]
-	precomposeunicode = true
-	qutepath = false
-
-[github]
-	user = injae
-
-[filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-
-#+END_SRC
-
-** Golang Linter Config :Revive
-#+BEGIN_SRC toml :tangle "~/revive.toml"
-
-  ignoreGeneratedHeader = false
-  severity = "warning"
-  confidence = 0.8
-  errorCode = 0
-  warningCode = 0
-
-  [rule.blank-imports]
-  [rule.context-as-argument]
-  [rule.context-keys-type]
-  [rule.dot-imports]
-  [rule.error-return]
-  [rule.error-strings]
-  [rule.error-naming]
-  [rule.exported]
-      Disabled=true
-  [rule.if-return]
-  [rule.increment-decrement]
-  [rule.var-naming]
-
-  [rule.package-comments]
-  [rule.range]
-  [rule.receiver-naming]
-  [rule.time-naming]
-  [rule.unexported-return]
-  [rule.indent-error-flow]
-  [rule.errorf]
-  [rule.empty-block]
-  [rule.superfluous-else]
-  [rule.unused-parameter]
-  [rule.unreachable-code]
-  [rule.redefines-builtin-id]
-
-#+END_SRC

@@ -1,0 +1,8 @@
+add_newline = false
+
+[directory]
+truncate_to_repo = false
+
+#full_symbol = "🔋"
+#charging_symbol = "⚡️"
+#discharging_symbol = "💀"

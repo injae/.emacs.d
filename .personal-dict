@@ -1,4 +1,4 @@
-personal_ws-1.1 en 601 
+personal_ws-1.1 en 606 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -141,6 +141,7 @@ args
 argv
 armv
 arrayable
+asdf
 aseprite
 asm
 ast
@@ -192,6 +193,7 @@ config
 const
 constexpr
 corfu
+cp
 cpp
 cppkg
 cppm
@@ -288,6 +290,7 @@ functool
 gc
 gcmh
 getter
+gitconfig
 github
 gitignore
 gitlab
@@ -370,6 +373,7 @@ libra
 lifecycle
 lineno
 linux
+ln
 logitem
 lsp
 lua
@@ -533,6 +537,7 @@ stretchr
 strftime
 struct
 subcommand
+sudo
 sv
 svc
 sys

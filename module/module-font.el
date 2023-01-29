@@ -24,7 +24,7 @@
 (set-keyboard-coding-system  'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-(setq system-time-locale "C")
+;(setq system-time-locale "C")
 
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
@@ -74,7 +74,7 @@
 (global-set-key (kbd "<f17>") 'toggle-input-method) ; macos shift-space setting Karabiner를 사용해야된다.
 (global-set-key (kbd "<Hangul>") 'toggle-input-method)
 
-(use-package default-text-scale :disabled
+(use-package default-text-scale
 :config (default-text-scale-mode)
         ;(if *is-wsl* (default-text-scale-increment 20))
         ;(if *is-wsl* (default-text-scale-increment 45))

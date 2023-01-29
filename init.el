@@ -6,46 +6,46 @@
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+         (bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+            (url-retrieve-synchronously
+                "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+                'silent 'inhibit-cookies)
+            (goto-char (point-max))
+            (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
 
 (eval-when-compile
     (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
-    ;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package-ensure-system-package"))
-    ;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/general"))
-    ;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/bind-key"))
+    ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package-ensure-system-package"))
+    ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/general"))
+    ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/bind-key"))
     (require 'use-package)
-    ;(require 'use-package-ensure-system-package)
-    ;(require 'general)
-    ;(require 'bind-key)
+    ;;(require 'use-package-ensure-system-package)
+    ;;(require 'general)
+    ;;(require 'bind-key)
     )
 
 (use-package straight
     :custom (straight-use-package-by-default t))
 
-(use-package esup) ; emacs config profiling
+;(use-package esup) ; emacs config profiling
 (use-package use-package)
 (use-package gcmh
     :functions gcmh-mode
     :config (gcmh-mode t))
-;(use-package gcmh :hook (after-init . gcmh-mode))
+                                        ;(use-package gcmh :hook (after-init . gcmh-mode))
 
 
 (use-package use-package-ensure-system-package)
 (use-package exec-path-from-shell
     :functions exec-path-from-shell-initialize
     :config (exec-path-from-shell-initialize)
-)
+    )
 
 ;;; font Setting
 ;; +------------+------------+
@@ -72,34 +72,37 @@
 (use-package module-lisp-util :straight nil
     :config
     ;;; Emacs 기본설정
-    (load-modules-with-list "~/.emacs.d/module/" '(
-        "emacs" "font" "evil"
-        "git" "grep-util" "extension"
-        "project-manage" "completion" "window"
-        "buffer" "ui" "org"
-        "terminal" "edit" "flycheck"
-        "search" "multi-mode" "util"
-    ))
+    (load-modules-with-list "~/.emacs.d/module/"
+        '( ;; emacs modules
+             "emacs" "font" "evil"
+             "git" "grep-util" "extension"
+             "project-manage" "completion" "window"
+             "buffer" "ui" "org"
+             "terminal" "edit" "flycheck"
+             "search" "multi-mode" "util"
+             ))
     ;;; programming 설정
-    (load-modules-with-list "~/.emacs.d/module/prog/" '(
-        "lsp" "snippet" "highlight"
-        "prog-search" "doc" "ssh"
-        "coverage" "copilot" "tools"
-        ;; language
-        "cpp" "lisp" "csharp"
-        "rust" "haskell" "python"
-        "flutter" "web" "ruby"
-        "jvm" "go" "nix"
-        "config-file" "docker"
-    ))
-)
+    (load-modules-with-list "~/.emacs.d/module/prog/"
+        '( ;; programming modules
+             "lsp" "snippet" "highlight"
+             "prog-search" "doc" "ssh"
+             "coverage" "copilot" "tools"
+             ;; language support
+             "cpp" "lisp" "csharp"
+             "rust" "haskell" "python"
+             "flutter" "web" "ruby"
+             "jvm" "go" "nix"
+             "config-file" "docker"
+             "formatting"
+             ))
+    )
 
 ;; 개인 설정
 (defvar private-config-file "~/.emacs.d/private/token.el")
 (when (file-exists-p private-config-file)
     (load-file private-config-file))
 
-;(use-package token :straight (:host github :repo "injae/private_config"))
+;; (use-package token :straight (:host github :repo "injae/private_config"))
 
 (use-package filenotify :straight nil
     :after org

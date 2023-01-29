@@ -1,0 +1,15 @@
+[user]
+	name = injae
+	email = 8687lee@gmail.com
+
+[core]
+	precomposeunicode = true
+	qutepath = false
+
+[github]
+	user = injae
+
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
