@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# yay installed package
+# asdf-vm 0.11.1-2
+# emacs-git 30.0.50.164738-1
+# ttf-d2coding 1.3.2-2
+# ttf-nanum 2018-1
+# yay-bin 11.3.2-1
+
+
+
 cp ./config/.zshrc ~/.zshrc
 cp ./config/.zshenv ~/.zshenv
 cp ./config/.gitconfig ~/.gitconfig
