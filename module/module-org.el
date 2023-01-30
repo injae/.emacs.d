@@ -32,7 +32,7 @@
     :after org-mode
     :hook (org-mode . valign-mode))
 
-(use-package orgtbl-aggregate )
+(use-package orgtbl-aggregate)
 
 (use-package toc-org
     :after org

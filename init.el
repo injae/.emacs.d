@@ -33,19 +33,26 @@
 (use-package straight
     :custom (straight-use-package-by-default t))
 
-;(use-package esup) ; emacs config profiling
+;; (use-package esup) ; emacs config profiling
 (use-package use-package)
 (use-package gcmh
     :functions gcmh-mode
     :config (gcmh-mode t))
-                                        ;(use-package gcmh :hook (after-init . gcmh-mode))
-
 
 (use-package use-package-ensure-system-package)
+
+
+
 (use-package exec-path-from-shell
     :functions exec-path-from-shell-initialize
     :config (exec-path-from-shell-initialize)
     )
+
+(use-package asdf :straight (:host github :repo "tabfugnic/asdf.el")
+    :config (asdf-enable)
+    )
+
+
 
 ;;; font Setting
 ;; +------------+------------+
@@ -104,8 +111,7 @@
 
 ;; (use-package token :straight (:host github :repo "injae/private_config"))
 
-(use-package filenotify :straight nil
-    :after org
+(use-package filenotify :straight nil :after org
     :preface
     (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))
     (defun update-env-org-file (event)

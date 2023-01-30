@@ -10,11 +10,12 @@
     :config
     (setq evil-want-C-u-scroll t)
     (setq evil-symbol-word-search t)
+    (setq evil-want-minibuffer t)
     (define-key evil-normal-state-map (kbd "q") 'nil) ; evil macro disable
     (define-key evil-visual-state-map (kbd "R") 'evil-visual-exchange-corners)
     (evil-ex-define-cmd "k" 'kill-this-buffer)
     (setq-default evil-kill-on-visual-paste nil)
-    ;(fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
+    (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
     (evil-mode)
 )
 
@@ -25,8 +26,7 @@
         (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
 )
 
-(use-package general
-:after evil
+(use-package general :after evil
 :custom (general-override-states '(insert emacs hybrid normal visual motion override operator replace))
 :config
       (general-evil-setup :with-shortname-maps)
@@ -140,7 +140,7 @@
                  "\\" 'evilnc-comment-operator)
 )
 
-(use-package evil-args   :after evil
+(use-package evil-args :after evil
 ; change argument: c-i-a, delete arguemnt: d-a-a
 :config (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
         (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)

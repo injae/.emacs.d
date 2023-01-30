@@ -3,11 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package polymode :after evil
-;:hook (polymode . centaur-tabs-mode-hook)
-:init (add-hook 'polymode-init-inner-hook #'evil-normalize-keymaps)
-:custom (polymode-display-process-buffers nil)
-)
+(use-package polymode)
+(use-package poly-org)
 
 (use-package poly-jetbrain-lua :no-require t :after polymode :straight nil
 :config
@@ -26,13 +23,7 @@
         :innermodes '(poly-golang-lua-innermode))
 )
 
-(use-package poly-org :after (polymode evil)
-:hook (org-mode . poly-org-mode)
-      ;(poly-org-mode . git-gutter-mode)
-:init (evil-set-initial-state 'poly-org-mode 'normal)
-)
-
-(use-package poly-markdown  :disabled
+(use-package poly-markdown :disabled
 ;:after (markdown-mode polymode)
 :hook (markdown-mode . poly-markdown-mode)
 ;:init (evil-set-initial-state 'poly-org-mode 'normal)

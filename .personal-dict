@@ -1,4 +1,4 @@
-personal_ws-1.1 en 608 
+personal_ws-1.1 en 618 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -54,6 +54,7 @@ InJae
 Inferrer
 Infos
 Invoker
+Isearch
 Iso
 Iteratorable
 JSON
@@ -133,6 +134,7 @@ algo
 alist
 amd
 apache
+apheleia
 api
 apiserver
 arg
@@ -209,6 +211,8 @@ ctx
 cvref
 dao
 darwin
+dataclass
+dataclasses
 dataplane
 datetime
 decls
@@ -244,6 +248,7 @@ elasticsearch
 elcord
 elif
 eln
+elo
 elsa
 emacs
 emacsclient
@@ -288,6 +293,7 @@ fs
 func
 funcall
 functool
+functools
 gc
 gcmh
 getter
@@ -357,6 +363,7 @@ keymap
 keymaps
 kiali
 kibana
+kmacro
 korean
 kr
 kub
@@ -446,6 +453,7 @@ param
 params
 pb
 pc
+peotry
 persistentvolumes
 pipx
 pkgs
@@ -497,6 +505,7 @@ ret
 rfc
 rg
 rhs
+ripgrep
 rnd
 rng
 rnix
@@ -529,6 +538,7 @@ ss
 ssl
 starlette
 staticcheck
+staticmethod
 stdenv
 stderr
 stdout

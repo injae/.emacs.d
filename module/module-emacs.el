@@ -3,6 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
+
 (defvar *is-mac*     (eq system-type 'darwin))
 (defvar *is-windows* (eq system-type 'windows-nt))
 (defvar *is-cygwin*  (eq system-type 'cygwin))
@@ -108,7 +109,7 @@
 
 ;; emacs debug utils
 ;(use-package esup)
-(use-package bug-hunter)
+;(use-package bug-hunter)
 
 (use-package explain-pause-mode :disabled
     :straight (:type git :host github :repo "lastquestion/explain-pause-mode")

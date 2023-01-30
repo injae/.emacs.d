@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package flycheck
+(use-package flycheck :after exec-path-from-shell
     :custom
     (flycheck-clang-language-standard "c++17")
     :config

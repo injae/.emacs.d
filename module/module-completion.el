@@ -20,34 +20,36 @@
 
 ;;; minibuffer
 (use-package vertico
-    ;:straight (vertico :files (:defaults "extensions/*")
-                        ;:includes (;vertico-indexed
-                            ;vertico-mouse
-                            ;vertico-quick
-                            ;vertico-directory
-                            ;vertico-repeat
-                            ;vertico-buffer
-                            ;vertico-multiform
-                            ;vertico-reverse
-                            ;vertico-flat
-                            ;vertico-grid
-                            ;vertico-unobtrusive))
+    :straight (vertico :files (:defaults "extensions/*")
+                       :includes (
+                          vertico-indexed
+                          vertico-mouse
+                          vertico-quick
+                          vertico-directory
+                          vertico-repeat
+                          vertico-buffer
+                          vertico-multiform
+                          vertico-reverse
+                          vertico-flat
+                          vertico-grid
+                          vertico-unobtrusive))
     :general (:keymaps 'vertico-map
              :state 'insert
              "<escape>" #'evil-normal-state)
-    :config (vertico-mode)
+    :custom
     ;; Different scroll margin
-    ;; (setq vertico-scroll-margin 0)
-    (setq vertico-count 20)
-    (setq vertico-resize t)
+    ;; (vertico-scroll-margin 0)
+    (vertico-count 20)
+    (vertico-resize t)
     ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-    ;; (setq vertico-cycle t)
+    (vertico-cycle t)
+    :config
+    (vertico-mode)
 )
 
+;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-    :init
-    (savehist-mode))
-
+    :init (savehist-mode))
 
 (use-package emacs
     :defines crm-separator
@@ -67,7 +69,8 @@
     (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
     (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-    ; --
+
+    (setq enable-recursive-minibuffers t)
     )
 
 
@@ -77,9 +80,6 @@
 :config (vertico-posframe-mode t)
 )
 
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-    :init (savehist-mode))
 
 (use-package consult :after (projectile evil-collection)
     :general (leader
@@ -89,15 +89,18 @@
                  "bs" '(consult-buffer                 :wk "Search Buffer")
                  "bS" '(consult-project-switch         :wk "Search Buffer in Project")
                  )
+    ;; Replace bindings. Lazily loaded due by `use-package'.
     :bind (;; C-c bindings (mode-specific-map)
+            ("C-c M-x" . consult-mode-command)
             ("C-c h" . consult-history)
-            ("C-c m" . consult-mode-command)
             ("C-c k" . consult-kmacro)
+            ("C-c m" . consult-man)
+            ("C-c i" . consult-info)
+            ([remap Info-search] . consult-info)
             ;; C-x bindings (ctl-x-map)
             ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
             ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
             ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-
             ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
             ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
             ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
@@ -107,17 +110,15 @@
             ("C-M-#" . consult-register)
             ;; Other custom bindings
             ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-            ("<help> a" . consult-apropos)            ;; orig. apropos-command
             ;; M-g bindings (goto-map)
             ("M-g e" . consult-compile-error)
-            ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+            ("M-g f" . consult-flycheck)               ;; Alternative: consult-flycheck
             ("M-g g" . consult-goto-line)             ;; orig. goto-line
             ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
             ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
             ("M-g m" . consult-mark)
             ("M-g k" . consult-global-mark)
             ("M-g i" . consult-imenu)
-
             ("M-g I" . consult-imenu-multi)
             ;; M-s bindings (search-map)
             ("M-s d" . consult-find)
@@ -126,9 +127,8 @@
             ("M-s G" . consult-git-grep)
             ("M-s r" . consult-ripgrep)
             ("M-s l" . consult-line)
-            ("C-s"   . consult-line)
+            ("C-s" . consult-line)
             ("M-s L" . consult-line-multi)
-            ("M-s m" . consult-multi-occur)
             ("M-s k" . consult-keep-lines)
             ("M-s u" . consult-focus-lines)
             ;; Isearch integration
@@ -137,14 +137,12 @@
             ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
             ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
             ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-            ("M-s L" . consult-line-multi)
-            ;; needed by consult-line to detect isearch
+            ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
             ;; Minibuffer history
             :map minibuffer-local-map
-            ("C-s" . consult-history)                 ;; orig. next-matching-history-element
             ("M-s" . consult-history)                 ;; orig. next-matching-history-element
             ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-
+    :hook (completion-list-mode . consult-preview-at-point-mode)
     :init
     (setq register-preview-delay 0.5
           register-preview-function #'consult-register-format)
@@ -165,13 +163,12 @@
     ;; For some commands and buffer sources it is useful to configure the
     ;; :preview-key on a per-command basis using the `consult-customize' macro.
     (consult-customize
-        consult-theme
-        :preview-key '(:debounce 0.2 any)
+        consult-theme :preview-key '(:debounce 0.2 any)
         consult-ripgrep consult-git-grep consult-grep
         consult-bookmark consult-recent-file consult-xref
-        consult--source-bookmark consult--source-recent-file
-        consult--source-project-recent-file
-        :preview-key (kbd "M-."))
+        consult--source-bookmark consult--source-file-register
+        consult--source-recent-file consult--source-project-recent-file
+        :preview-key '(:debounce 0.4 any))
 
     ;; Optionally configure the narrowing key.
     ;; Both < and C-+ work reasonably well.
@@ -197,10 +194,9 @@
     :bind (("C-." . embark-act)         ;; pick some comfortable binding
            ("C-;" . embark-dwim)        ;; good alternative: M-.
            ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-    :init
+    :config
     ;; Optionally replace the key help with a completing-read interface
     (setq prefix-help-command #'embark-prefix-help-command)
-    :config
     ;; Hide the mode line of the Embark live/completions buffers
     (add-to-list 'display-buffer-alist '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none)))))
 
@@ -235,9 +231,14 @@
     (corfu-count 14)
     (corfu-scroll-margin 4)
     (corfu-quit-no-match t)
-    (corfu-preselect-first nil)
+    (corfu-preselect-first t)
+    (corfu-cycle t)
+    (corfu-preselect 'prompt)
     (corfu-max-witdh corfu-min-width)
     :config
+    ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+    ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+    (setq read-extended-command-predicate #'command-completion-default-include-p)
     (global-corfu-mode)
 )
 
