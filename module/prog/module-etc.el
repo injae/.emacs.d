@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package direnv  :config (direnv-mode))
+(use-package direnv :config (direnv-mode))
 
 (use-package gdscript-mode  :disabled
 :hook   (gdscript-mode . lsp)
