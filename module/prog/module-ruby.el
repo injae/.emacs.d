@@ -3,10 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-(require 'straight)
-
-(use-package ruby-mode 
+(use-package ruby-mode
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
 :mode "Gemfile\\'"
@@ -17,32 +14,27 @@
         (ruby-indent-tabs-mode nil)
 )
 
-(use-package rvm 
+(use-package rvm
 :after ruby-mode
-:ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
+;:ensure-system-package (rvm . "curl -sSL https://get.rvm.io | bash -s stable")
 :config (rvm-use-default)
 )
 
-(use-package yari  :after ruby-mode)
+(use-package yari :after ruby-mode)
 
-(use-package rubocop 
-:ensure-system-package (rubocop . "sudo gem install rubocop")
-:after ruby-mode
+(use-package rubocop :after ruby-mode
+:ensure-system-package (rubocop . "gem install rubocop")
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe 
-:after (ruby-mode company)
-:ensure-system-package (pry . "sudo gem install pry pry-doc")
+(use-package robe :after ruby-mode
+:ensure-system-package (pry . "gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)
-:config (push 'company-robe company-backends)
 )
 
-(use-package ruby-tools 
-:after ruby-mode
+(use-package ruby-tools :after ruby-mode
 :init (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 )
-
 
 (provide 'module-ruby)
 ;;; module-ruby.el ends here
