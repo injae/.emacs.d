@@ -3,15 +3,18 @@
 ;;; Commentary:
 ;;; Code:
 
-;; spotify controller
-(use-package smudge :defer t
-; in private/token.el
+
+;; spotify (smudge) setting token in private c
+(use-package smudge
+:commands (smudge-controller-next-track smudge-controller-previous-track)
 :general (leader "sn" 'smudge-controller-next-track
-                 "hp" 'smudge-controller-previous-track)
-:config  (setq smudge-transport 'connect)
+                 "sp" 'smudge-controller-previous-track
+                 "ss" 'smudge-controller-toggle-play)
+:config (setq smudge-transport 'connect)
 )
 
-; slack config in private token setting
+;; slack config in private token setting
+
 (use-package alert
 :commands (alert)
 :custom (alert-default-style 'notifier))
@@ -37,6 +40,16 @@
     :config
         (dashboard-setup-startup-hook)
 )
+
+;; print file info
+(use-package file-info
+    :config
+    (setq hydra-hint-display-type 'posframe)
+    (setq hydra-posframe-show-params `(:poshandler posframe-poshandler-frame-center
+                                             :internal-border-width 2
+                                             :internal-border-color "#61AFEF"
+                                             :left-fringe 16
+                                             :right-fringe 16)))
 
 (provide 'module-extension)
 ;;; module-extension.el ends here

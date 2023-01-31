@@ -1,4 +1,4 @@
-personal_ws-1.1 en 622 
+personal_ws-1.1 en 624 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -329,6 +329,7 @@ htop
 http
 https
 ibm
+ibuffer
 idx
 ielm
 ifelse
@@ -457,6 +458,7 @@ params
 pb
 pc
 peotry
+perl
 persistentvolumes
 pipx
 pkgs

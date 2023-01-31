@@ -16,36 +16,42 @@
 )
 
 (use-package beacon
-    :config (beacon-mode t))
+    :config (beacon-mode))
 
 (use-package git-gutter
-:custom
+    :custom
     (git-gutter:lighter       " GG")
     (git-gutter:window-width  1)
     (git-gutter:modified-sign ".")
     (git-gutter:added-sign    "+")
     (git-gutter:deleted-sign  "-")
-:config
-    (global-git-gutter-mode t)
+
+    :config
     (setq-default display-line-numbers-width 3)
-    ;(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-    ;(add-hook 'org-mode-hook 'display-line-numbers-mode)
     (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
+
     (set-face-foreground 'git-gutter:added    "#daefa3")
     (set-face-foreground 'git-gutter:deleted  "#FA8072")
     (set-face-foreground 'git-gutter:modified "#b18cce")
+    (global-git-gutter-mode t)
 )
-(use-package highlight-numbers :disabled
+(use-package highlight-numbers
 :hook (prog-mode . highlight-numbers-mode)
 )
 
 (setq custom-safe-themes t)
 
+;; 현재 발견된 doom-theme 버그
+;; emacs29 이상에서 아래 메세지 출력
+;; Warning: setting attribute ‘:background’ of face ‘font-lock-comment-face’: nil value is invalid, use ‘unspecified’ instead.
 (use-package doom-themes
 :config (load-theme   'doom-vibrant t)
+        (doom-themes-neotree-config)
         (doom-themes-org-config)
-       ;(enable-theme 'doom-nord)
+        ;(setq doom-themes-treemacs-theme "doom-atom")
+        (doom-themes-treemacs-config)
+        ;(enable-theme 'doom-nord)
 )
 
 (use-package nano-theme :disabled
@@ -54,43 +60,43 @@
 )
 
 (use-package doom-modeline :after doom-themes
-:hook   (after-init . doom-modeline-mode)
-:init   (setq find-file-visit-truename t)
-        (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
-        (setq inhibit-compacting-font-caches t)
-        (setq doom-modeline-height 30)
-        (setq doom-modeline-icon t) ; current version has error
-        (setq doom-modeline-persp-name t)
-        (setq doom-modeline-major-mode-icon t)
-        (setq doom-modeline-enable-word-count t)
-        (setq doom-modeline-lsp t)
-
-        (setq doom-modeline-current-window t)
-        (setq doom-modeline-env-version t)
-        (setq doom-modeline-env-enable-python t)
-        ;(setq doom-modeline-python-executable "pipenv")
-        (setq doom-modeline-env-enable-ruby t)
-        (setq doom-modeline-env-ruby-executable "ruby")
-        (setq doom-modeline-env-enable-elixir t)
-        (setq doom-modeline-env-elixir-executable "iex")
-        (setq doom-modeline-env-enable-go t)
-        (setq doom-modeline-env-go-executable "go")
-
-        (setq doom-modeline-env-enable-perl t)
-        (setq doom-modeline-env-perl-executable "perl")
-
-        (setq doom-modeline-env-rust-executable "rustc")
-        (setq doom-modeline-github t)
-        ;(setq doom-modeline-iconer-state-icon t)
-        ;(setq doom-modeline--battery-status t)
-        (setq doom-modeline--flycheck-icon t)
-        (setq doom-modeline-current-window t)
-        (setq doom-modeline-major-mode-color-icon t)
-:config (add-hook 'after-init-hook 'doom-modeline-mode)
-        (with-eval-after-load 'lsp-treemacs (doom-themes-treemacs-config))
+    :hook (after-init . doom-modeline-mode)
+    :custom
+    (doom-modeline-buffer-file-name-style 'truncate-with-project)
+    (doom-modeline-height 30)
+    (doom-modeline-icon t) ; current version has error
+    (doom-modeline-persp-name t)
+    (doom-modeline-major-mode-icon t)
+    (doom-modeline-enable-word-count t)
+    (doom-modeline-lsp t)
+    
+    (doom-modeline-current-window t)
+    (doom-modeline-env-version t)
+    (doom-modeline-env-enable-python t)
+    (doom-modeline-env-enable-ruby t)
+    (doom-modeline-env-ruby-executable "ruby")
+    (doom-modeline-env-enable-elixir t)
+    (doom-modeline-env-elixir-executable "iex")
+    (doom-modeline-env-enable-go t)
+    (doom-modeline-env-go-executable "go")
+    (doom-modeline-env-enable-perl t)
+    (doom-modeline-env-perl-executable "perl")
+    (doom-modeline-env-rust-executable "rustc")
+    (doom-modeline-github t)
+    (doom-modeline--flycheck-icon t)
+    (doom-modeline-current-window t)
+    (doom-modeline-major-mode-color-icon t)
+    ;; (doom-modeline-iconer-state-icon t)
+    ;; (doom-modeline--battery-status t)
+    :init
+    (setq find-file-visit-truename t)
+    (setq inhibit-compacting-font-caches t)
+    :config
+    (add-hook 'after-init-hook 'doom-modeline-mode)
+    (with-eval-after-load 'lsp-treemacs (doom-themes-treemacs-config))
 )
 
-(use-package rainbow-mode :disabled
+(use-package rainbow-mode
 :hook   (prog-mode text-mode)
 :config (rainbow-mode)
 )
@@ -99,9 +105,10 @@
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package modern-fringes :defer t
-:config (modern-fringes-invert-arrows)
-        (modern-fringes-mode)
+(use-package modern-fringes
+    :config
+    (modern-fringes-mode)
+    (modern-fringes-invert-arrows)
 )
 
 ; 자동으로 Dark mode Light mode 변환
@@ -117,32 +124,23 @@
 :config (run-with-idle-timer 60 t (lambda () (set-system-dark-mode)))  ; 1분마다, repeat
 )
 
-(use-package hide-mode-line
-:after (neotree)
-:hook  (neotree-mode . hide-mode-line-mode)
+(use-package hide-mode-line :after neotree
+    :hook  (neotree-mode . hide-mode-line-mode)
 )
 
 (use-package nyan-mode
-;:after  (doom-modeline)
-:config (setq nyan-wavy-trail t)
-        (nyan-mode)
-        (nyan-start-animation)
+    :custom (nyan-wavy-trail t)
+    :config (nyan-mode)
+            (nyan-start-animation)
 )
 
 (use-package fancy-battery
-:hook   (after-init . fancy-battery-mode)
-:config (fancy-battery-default-mode-line)
-        (setq fancy-battery-show-percentage t)
+    :hook   (after-init . fancy-battery-mode)
+    :custom (fancy-battery-show-percentage t)
+    :config (fancy-battery-default-mode-line)
 )
 
-(use-package diminish :defer t
-:init
-    (diminish 'c++-mode "C++ Mode")
-    (diminish 'c-mode   "C Mode")
-)
-
-(use-package neotree
-:after (projectile all-the-icons)
+(use-package neotree :after (projectile all-the-icons)
 :commands (neotree-toggle)
 :general (leader "n" #'neotree-toggle)
 :init

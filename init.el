@@ -21,14 +21,7 @@
 
 (eval-when-compile
     (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
-    ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package-ensure-system-package"))
-    ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/general"))
-    ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/bind-key"))
-    (require 'use-package)
-    ;;(require 'use-package-ensure-system-package)
-    ;;(require 'general)
-    ;;(require 'bind-key)
-    )
+    (require 'use-package))
 
 (use-package straight
     :custom (straight-use-package-by-default t))
@@ -41,8 +34,6 @@
 
 (use-package use-package-ensure-system-package)
 
-
-
 (use-package exec-path-from-shell
     :functions exec-path-from-shell-initialize
     :config (exec-path-from-shell-initialize)
@@ -51,8 +42,6 @@
 (use-package asdf :straight (:host github :repo "tabfugnic/asdf.el")
     :config (asdf-enable)
     )
-
-
 
 ;;; font Setting
 ;; +------------+------------+
@@ -78,7 +67,7 @@
 
 (use-package module-lisp-util :straight nil
     :config
-    ;;; Emacs 기본설정
+    ;; Emacs 기본설정
     (load-modules-with-list "~/.emacs.d/module/"
         '( ;; emacs modules
              "emacs" "font" "evil"
@@ -88,7 +77,7 @@
              "terminal" "edit" "flycheck"
              "search" "multi-mode" "util"
              ))
-    ;;; programming 설정
+    ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
         '( ;; programming modules
              "lsp" "snippet" "highlight"
@@ -108,8 +97,6 @@
 (defvar private-config-file "~/.emacs.d/private/token.el")
 (when (file-exists-p private-config-file)
     (load-file private-config-file))
-
-;; (use-package token :straight (:host github :repo "injae/private_config"))
 
 (use-package filenotify :straight nil :after org
     :preface

@@ -2,5 +2,6 @@ private/
 eln-cache/   
 straight/
 var/
+.cache/
 projectile-bookmarks.eld
 .org-generic-id-locations

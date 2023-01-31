@@ -49,21 +49,6 @@
               (C          . t)))
 )
 
-(use-package org-use-package :no-require t :straight nil
-:after (evil org)
-:preface
-(defun org-use-package-install ()
-    "org babel emacs config evaluate"
-    (interactive)
-    (org-babel-tangle)
-    (org-babel-execute-maybe)
-    (undo-tree-undo))
-:general (leader "oi" 'org-use-package-install
-                 ;"ot" 'polymode-next-chunk
-                 "oh" 'polymode-previous-chunk
-                 "or" 'save-buffer)
-)
-
 ;(use-package org-roam  :disabled
 ;:custom  (org-roam-dailies-directory "journals/")
 ;:general (leader "of" '(org-roam-node-find :wk "Note"))
