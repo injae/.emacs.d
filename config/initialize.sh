@@ -1,7 +1,7 @@
 #!/bin/bash
-cp ./config/.zshrc ~/.zshrc
-cp ./config/.zshenv ~/.zshenv
-cp ./config/.gitconfig ~/.gitconfig
+cp .zshrc ~/.zshrc
+cp .zshenv ~/.zshenv
+cp .gitconfig ~/.gitconfig
 
 # zinit install
 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"

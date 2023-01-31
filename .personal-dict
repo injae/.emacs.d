@@ -1,4 +1,4 @@
-personal_ws-1.1 en 618 
+personal_ws-1.1 en 622 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -100,6 +100,7 @@ Qv
 RW
 Relabelings
 RwLock
+SPC
 STORAGECLASS
 Serdepp
 Sha
@@ -218,6 +219,7 @@ datetime
 decls
 decltype
 declval
+defalias
 defaultdict
 defclass
 defun
@@ -290,6 +292,7 @@ formatter
 formatters
 freebsd
 fs
+fu
 func
 funcall
 functool
@@ -602,6 +605,7 @@ visualstar
 vpc
 vpn
 vterm
+vundo
 vx
 wg
 wgrep
