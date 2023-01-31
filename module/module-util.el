@@ -124,18 +124,36 @@ All permutations equally likely."
         (keypression-font-face-attribute '(:width normal :height 200 :weight bold))
 )
 
-(use-package undo-tree   :diminish undo-tree-mode :after general
-:commands (undo-tree-undo undo-tree-redo)
-:general (leader "uu" 'undo-tree-undo
-                 "ur" 'undo-tree-redo)
-:init
-    (evil-define-key 'normal 'global (kbd "C-r") #'undo-tree-redo)
-    (evil-define-key 'normal 'global "u" #'undo-tree-undo)
-    (defalias 'redo 'undo-tree-redo)
-    (defalias 'undo 'undo-tree-undo)
-:config
-    (global-undo-tree-mode)
+;; (use-package undo-tree :diminish undo-tree-mode :after general
+;; :commands (undo-tree-undo undo-tree-redo)
+;; :general (leader "uu" 'undo-tree-undo
+;;                  "ur" 'undo-tree-redo)
+;; :init
+;;     (evil-define-key 'normal 'global (kbd "C-r") #'undo-tree-redo)
+;;     (evil-define-key 'normal 'global "u" #'undo-tree-undo)
+;;     (defalias 'redo 'undo-tree-redo)
+;;     (defalias 'undo 'undo-tree-undo)
+;; :config
+;;     (global-undo-tree-mode)
+;; )
+
+(use-package undo-fu :after general
+    :general (leader "uu" 'undo-fu-only-undo
+                     "ur" 'undo-fu-only-redo)
+    :config
+    (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
+    (evil-define-key 'normal 'global "u" #'undo-fu-only-undo)
+    (defalias 'redo 'undo-fu-only-redo)
+    (defalias 'undo 'undo-fu-only-undo)
+    (setq evil-undo-system 'undo-fu)
 )
+
+(use-package undo-fu-session :after undo-fu
+    :functions undo-fu-session-global-mode 
+    :config (undo-fu-session-global-mode))
+
+(use-package vundo :after general
+    :general (leader "uv" 'vundo))
 
 (use-package server :straight nil
     :config (unless (server-running-p) (server-start)))

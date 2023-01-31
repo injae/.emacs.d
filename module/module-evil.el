@@ -15,7 +15,8 @@
     (define-key evil-visual-state-map (kbd "R") 'evil-visual-exchange-corners)
     (evil-ex-define-cmd "k" 'kill-this-buffer)
     (setq-default evil-kill-on-visual-paste nil)
-    (fset 'evil-visual-update-x-selection 'ignore) ; visual mode 'p' command update clipboard problem fix
+    ;; visual mode 'p' command update clipboard problem fix
+    (fset 'evil-visual-update-x-selection 'ignore)
     (evil-mode)
 )
 
