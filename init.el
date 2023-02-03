@@ -23,12 +23,14 @@
     (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
     (require 'use-package))
 
+
 (use-package straight
     :custom (straight-use-package-by-default t))
 
 ;; (use-package esup) ; emacs config profiling
 (use-package use-package)
-(use-package gcmh
+
+(use-package gcmh :disabled
     :functions gcmh-mode
     :config (gcmh-mode t))
 
@@ -40,6 +42,7 @@
     )
 
 (use-package asdf :straight (:host github :repo "tabfugnic/asdf.el")
+    :after exec-path-from-shell
     :config (asdf-enable)
     )
 

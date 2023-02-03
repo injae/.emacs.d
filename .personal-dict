@@ -1,4 +1,4 @@
-personal_ws-1.1 en 624 
+personal_ws-1.1 en 631 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -297,6 +297,7 @@ func
 funcall
 functool
 functools
+gameresult
 gc
 gcmh
 getter
@@ -416,6 +417,7 @@ modeline
 mongo
 mongodb
 mooreung
+mpmath
 mrkdwn
 msg
 mut
@@ -438,9 +440,11 @@ nomessage
 noninteractive
 np
 npm
+npt
 ntc
 nullopt
 num
+numpy
 nur
 nurpkgs
 oauth
@@ -460,6 +464,7 @@ pc
 peotry
 perl
 persistentvolumes
+pid
 pipx
 pkgs
 plantuml
@@ -520,6 +525,7 @@ sagemaker
 sagemakerruntime
 savehist
 scaler
+schemas
 sdk
 sdl
 sep
@@ -564,6 +570,7 @@ terraform
 tex
 tfenv
 thirdparty
+titlebar
 tl
 tls
 todo

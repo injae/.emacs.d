@@ -3,10 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'use-package)
-
-(use-package git-commit)
-
 (use-package magit
 :commands magit-status
 :general (leader "gs" 'magit-status)

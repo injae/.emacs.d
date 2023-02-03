@@ -22,6 +22,8 @@
         (lsp-eldoc-render-all nil)
         (lsp-lens-enable t)
         (lsp-enable-snippet t)
+        (lsp-idle-delay 0.500)
+        (lsp-log-io nil)
         (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-completion-provider :none) ; with corfu
 

@@ -1,16 +1,8 @@
-arch-install-scripts
 asdf-vm
 aspell
 aspell-en
-autoconf
-automake
-base
-binutils
-bison
 clang
 cmake
-debugedit
-emacs-git
 fakeroot
 fd
 flex
@@ -43,5 +35,4 @@ ttf-nerd-fonts-symbols-common
 vim
 wget
 which
-yay-bin
 zsh

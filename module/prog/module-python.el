@@ -7,8 +7,7 @@
 :mode (("\\.py\\'" . python-mode)
        ("\\.wsgi$" . python-mode))
 :interpreter (("python" . python-mode))
-:ensure-system-package (;(pyenv . "")
-                        (pipx . "python3 -m pip install --user pipx && python3 -m pipx ensurepath"))
+;; :ensure-system-package ((pipx . "pip install --user pipx && python3 -m pipx ensurepath"))
 :custom (python-indent-offset 4)
 )
 
@@ -35,7 +34,7 @@
 )
 
 (use-package poetry :after python
-    :ensure-system-package ((poetry . "pipx install poetry")
+    :ensure-system-package ((poetry . "pip install poetry")
                             (pylint . "pip install pylint pylint-strict-informational")
                             (mypy   . "pip install mypy")
                             (flake8 . "pip install flake8")

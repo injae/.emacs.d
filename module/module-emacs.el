@@ -17,9 +17,9 @@
     (setq max-lisp-eval-depth 10000)
     ;(setq debug-on-error t) ; debug option
     ;; emacs gc setting
-    (setq gc-cons-threshold (* 100 100000)) ; emacs speed up setting in 16GB RAM
-    (setq read-process-output-max (* 1024 1024))
-    (run-with-idle-timer 5 t 'garbage-collect)
+    (setq gc-cons-threshold (* 100 1000000)) ;; emacs speed up setting in 16GB RAM
+    (setq read-process-output-max (* 1024 1024)) ;; 1mb
+    ;(run-with-idle-timer 5 t 'garbage-collect)
 
     ;; scroll bar
     (scroll-bar-mode -1)
@@ -111,7 +111,7 @@
 ;(use-package esup)
 ;(use-package bug-hunter)
 
-(use-package explain-pause-mode :disabled
+(use-package explain-pause-mode
     :straight (:type git :host github :repo "lastquestion/explain-pause-mode")
     :config (explain-pause-mode)
 )
