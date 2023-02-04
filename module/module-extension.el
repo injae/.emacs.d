@@ -51,5 +51,17 @@
                                              :left-fringe 16
                                              :right-fringe 16)))
 
+(use-package elfeed
+    :custom
+    (elfeed-feeds '("https://sachachua.com/blog/category/emacs/feed/"
+                    "http://feeds.feedburner.com/geeknews-feed"
+                    "https://qiita.com/popular-items/feed"
+                    "https://www.reddit.com/r/emacs.rss"))
+    )
+
+(use-package atomic-chrome
+    :config (atomic-chrome-start-server)
+    )
+
 (provide 'module-extension)
 ;;; module-extension.el ends here
