@@ -48,15 +48,17 @@
 :commands smeargle
 )
 
-(use-package blamer :disabled
-:bind (("s-i" . blamer-show-commit-info))
-:custom
-    (blamer-view 'overlay)
-    (blamer-idle-time 0.3)
-    (blamer-min-offset 70)
-    (blamer-force-truncate-long-line t)
+(use-package blamer
+:bind (("s-i" . blamer-show-posframe-commit-info))
+:general (leader "gb" 'blamer-show-posframe-commit-info)
 :custom-face
     (blamer-face ((t :foreground "#7a88cf" :background nil :height 1.0 :italic t)))
+:custom
+    ;(blamer-view 'overlay)
+    (blamer-idle-time 0.3)
+    (blamer-min-offset 70)
+    ;(blamer-force-truncate-long-line t)
+:hook (emacs-startup . global-blamer-mode)
 )
 
 (use-package evil-ediff :after evil
