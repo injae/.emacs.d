@@ -4,8 +4,7 @@
 ;;; Code:
 
 (use-package evil
-    :defines evil-want-keybinding
-    :init
+    :preface
     (setq evil-want-keybinding nil)
     :config
     (setq evil-want-C-u-scroll t)
