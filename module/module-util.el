@@ -15,8 +15,7 @@
 :general (leader "fs" #'sudo-find-file)
 )
 
-(use-package goto-last-change   :defer t
-;https://github.com/camdez/goto-last-change.el
+(use-package goto-last-change
 :general (leader "fl" 'goto-last-change)
 )
 
@@ -25,12 +24,16 @@
         (add-to-list 'recentf-exclude no-littering-var-directory)
         (add-to-list 'recentf-exclude no-littering-etc-directory)
         (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+        (when (fboundp 'startup-redirect-eln-cache)
+            (startup-redirect-eln-cache
+                (convert-standard-filename
+                    (expand-file-name  "var/eln-cache/" user-emacs-directory))))
 )
 
 (use-package restart-emacs )
 
 (defun reload-emacs ()
-    ; reload emacs config 
+    ;; reload emacs config 
     (interactive)
     (load-file (expand-file-name "~/.emacs.d/init.el"))
 )
@@ -45,7 +48,6 @@
 )
 
 (defun new-buffer (name buffer-major-mode)
-
     (let ((buffer (generate-new-buffer name)))
          (switch-to-buffer buffer)
          (set-buffer-major-mode buffer)
@@ -123,19 +125,6 @@ All permutations equally likely."
         (keypression-frames-maxnum 20)
         (keypression-font-face-attribute '(:width normal :height 200 :weight bold))
 )
-
-;; (use-package undo-tree :diminish undo-tree-mode :after general
-;; :commands (undo-tree-undo undo-tree-redo)
-;; :general (leader "uu" 'undo-tree-undo
-;;                  "ur" 'undo-tree-redo)
-;; :init
-;;     (evil-define-key 'normal 'global (kbd "C-r") #'undo-tree-redo)
-;;     (evil-define-key 'normal 'global "u" #'undo-tree-undo)
-;;     (defalias 'redo 'undo-tree-redo)
-;;     (defalias 'undo 'undo-tree-undo)
-;; :config
-;;     (global-undo-tree-mode)
-;; )
 
 (use-package undo-fu :after general
     :general (leader "uu" 'undo-fu-only-undo
