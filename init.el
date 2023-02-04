@@ -79,6 +79,7 @@
              "buffer" "ui" "org"
              "terminal" "edit" "flycheck"
              "search" "multi-mode" "util"
+             "run-command"
              ))
     ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
