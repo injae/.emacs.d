@@ -28,9 +28,9 @@
 
 ; some font use mode speed up config (ex: org-superstar)
 (setq inhibit-compacting-font-caches t)
-; NanumGothicCoding Setting
-(set-face-attribute   'default            nil       :family "Fira Code" :height 130)
-;(set-face-attribute   'default           nil        :family "FiraCode Nerd Font Mono" :height 130)
+;;  NanumGothicCoding Setting
+;; (set-face-attribute   'default            nil       :family "Fira Code" :height 130)
+(set-face-attribute   'default           nil        :family "FiraCode Nerd Font Mono" :height 130)
 (set-fontset-font nil 'hangul            (font-spec :family "NanumGothicCoding"  :pixelsize 17))
 (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "NanumGothicCoding"  :pixelsize 17))
 (setq face-font-rescale-alist '(("NanumGothicCoding" . 1.2)))
