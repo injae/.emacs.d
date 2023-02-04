@@ -1,4 +1,4 @@
-personal_ws-1.1 en 636 
+personal_ws-1.1 en 644 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -294,6 +294,7 @@ formatters
 freebsd
 fs
 fu
+fullscreen
 func
 funcall
 functool
@@ -370,6 +371,7 @@ kaniko
 kbd
 keymap
 keymaps
+keypression
 kiali
 kibana
 kmacro
@@ -401,6 +403,7 @@ matchable
 matcher
 matchmob
 matchtime
+md
 middleware
 middlewares
 minibuffer
@@ -442,6 +445,7 @@ nlohmann
 noinspection
 nomessage
 noninteractive
+norefresh
 np
 npm
 npt
@@ -470,6 +474,7 @@ perl
 persistentvolumes
 pid
 pipx
+pixelsize
 pkgs
 plantuml
 playerIDs
@@ -509,6 +514,8 @@ pytz
 qq
 qstore
 quantile
+readme
+recentf
 redis
 repo
 req
@@ -537,6 +544,7 @@ serde
 serdepp
 serializer
 serviceIDs
+setcar
 setf
 setq
 sexp
