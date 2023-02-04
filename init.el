@@ -30,6 +30,17 @@
 ;; (use-package esup) ; emacs config profiling
 (use-package use-package)
 
+(use-package no-littering
+:config (require 'recentf)
+        (add-to-list 'recentf-exclude no-littering-var-directory)
+        (add-to-list 'recentf-exclude no-littering-etc-directory)
+        (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+        (when (fboundp 'startup-redirect-eln-cache)
+            (startup-redirect-eln-cache
+                (convert-standard-filename
+                    (expand-file-name  "var/eln-cache/" user-emacs-directory))))
+)
+
 (use-package gcmh
     :functions gcmh-mode
     :config (gcmh-mode t))
