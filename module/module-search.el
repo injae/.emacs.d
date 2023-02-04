@@ -13,12 +13,13 @@
 (use-package go-translate
 :general (leader "ft" 'gts-do-translate)
 :config
-    (setq gts-translate-list '(("en" "ko") ("ko" "en") ("jp" "ko") ("ko" "jp")))
+    (setq gts-translate-list '(("en" "ko") ("jp" "ko")))
     (setq gts-default-translator
         (gts-translator
             :picker (gts-prompt-picker)
             :engines (list (gts-bing-engine) (gts-google-engine))
-            :render (gts-buffer-render)))
+            :render (gts-posframe-pop-render)
+            ))
 )
 
 (use-package avy
