@@ -29,10 +29,6 @@
 ;    :hook (python-mode . python-isort-on-save-mode)
 ;    )
 
-(use-package lsp-pyright
-    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
-)
-
 (use-package poetry :after python
     :ensure-system-package ((poetry . "pip install poetry")
                             (pylint . "pip install pylint pylint-strict-informational")
@@ -43,6 +39,10 @@
                          ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
                             )
     :hook ((python-mode . poetry-tracking-mode))
+)
+
+(use-package lsp-pyright
+    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
 )
 
 ;(use-package lsp-mode

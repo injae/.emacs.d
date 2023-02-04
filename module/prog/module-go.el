@@ -10,7 +10,7 @@
                         (godef . "go install github.com/rogpeppe/godef@latest")
                         (gofumpt . "go install mvdan.cc/gofumpt@latest"))
 :mode ("\\.go\\''" . go-mode)
-:hook (go-mode . (lambda () (lsp)))
+:hook (go-mode . (lambda () (lsp-deferred)))
 :config
     ;(setq gofmt-command "goimports-reviser")
     ;(add-hook 'before-save-hook 'gofmt-before-save)

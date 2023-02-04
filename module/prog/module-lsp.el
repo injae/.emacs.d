@@ -4,7 +4,7 @@
 ;;; Code:
 
 (use-package lsp-mode ;:after exec-path-from-shell
-:commands lsp
+:commands (lsp lsp-deferred)
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
        (lsp-mode  . lsp-enable-which-key-integration))
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
@@ -17,7 +17,7 @@
         (lsp-enable-file-watchers nil)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
-        (lsp-file-watch-threshold nil)
+        ;(lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
         (lsp-eldoc-render-all nil)
         (lsp-lens-enable t)
@@ -106,9 +106,7 @@
 :config
     (setq dap-auto-configure-features '(sessions locals controls tooltip))
     (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
-    ;(require 'dap-gdb-lldb) ; gdb mode
-    (require 'dap-go)
-    (dap-mode 1)
+    (dap-mode)
 )
 
 (use-package dap-ui-setting :no-require t :straight nil
