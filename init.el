@@ -30,7 +30,7 @@
 ;; (use-package esup) ; emacs config profiling
 (use-package use-package)
 
-(use-package gcmh :disabled
+(use-package gcmh
     :functions gcmh-mode
     :config (gcmh-mode t))
 
