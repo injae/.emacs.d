@@ -170,14 +170,6 @@
         consult--source-recent-file consult--source-project-recent-file
         :preview-key '(:debounce 0.4 any))
 
-    ;; Optionally configure the narrowing key.
-    ;; Both < and C-+ work reasonably well.
-
-    ;;(setq consult-narrow-key "<") ;; (kbd "C-+")
-
-    ;; Optionally make narrowing help available in the minibuffer.
-    ;; You may want to use `embark-prefix-help-command' or which-key instead.
-    ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
     (autoload 'projectile-project-root "projectile")
     (setq consult-project-function (lambda (_) (projectile-project-root)))
     )
@@ -234,12 +226,9 @@
     (corfu-preselect-first t)
     (corfu-cycle t)
     (corfu-preselect 'prompt)
-    (corfu-max-witdh corfu-min-width)
-    :config
-    ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-    ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-    (setq read-extended-command-predicate #'command-completion-default-include-p)
-    (global-corfu-mode)
+    ;(corfu-max-width corfu-min-width)
+
+    :hook (emacs-startup . global-corfu-mode)
 )
 
 (use-package corfu-history :straight nil :load-path "straight/repos/corfu/extensions/"
@@ -270,38 +259,14 @@
          ("C-c p ^" . cape-tex)
          ("C-c p &" . cape-sgml)
          ("C-c p r" . cape-rfc1345))
-  :preface
-    (defun corfu-enable-always-in-minibuffer ()
-        "Enable Corfu in the minibuffer if Vertico/Mct are not active."
-        (unless (or (bound-and-true-p mct--active) ; Useful if I ever use MCT
-                    (bound-and-true-p vertico--input))
-        (setq-local corfu-auto nil)       ; Ensure auto completion is disabled
-        (corfu-mode 1)))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-history)
   (add-to-list 'completion-at-point-functions #'cape-yasnippet)
-  ;(add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  ;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;(add-to-list 'completion-at-point-functions #'cape-ispell)
-  ;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;(add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;(add-to-list 'completion-at-point-functions #'cape-line)
-   
   :config
     (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map)
-    ;; Enable Corfu more generally for every minibuffer, as long as no other
-    ;; completion UI is active. If you use Mct or Vertico as your main minibuffer
-    ;; completion UI. From
-    ;; https://github.com/minad/corfu#completing-with-corfu-in-the-minibuffer
-    ;; Setup lsp to use corfu for lsp completion
-    (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
 )
 
 (use-package kind-icon  :after corfu
@@ -314,17 +279,6 @@
 (use-package orderless
     :custom
     (completion-styles '(orderless partial-completion basic))
-    (completion-category-defaults nil)
-    (completion-category-overrides nil)
-    ;(completion-styles '(orderless partial-completion basic))
-    ;(completion-category-overrides '((file (styles basic orderless))))
-    ;(orderless-matching-styles
-    ;    '(orderless-literal
-    ;      orderless-prefixes
-    ;      orderless-initialism
-    ;      orderless-regexp
-    ;      orderless-flex
-    ;     ))
     )
 
 
