@@ -15,7 +15,7 @@
 :hook (emacs-startup . all-the-icons-completion-mode)
 )
 
-(use-package beacon
+(use-package beacon :disabled
     :hook (emacs-startup . beacon-mode))
 
 (use-package diff-hl
