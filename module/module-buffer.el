@@ -27,5 +27,8 @@
                  "td" 'text-scale-decrease)
 )
 
+;; buffer diff
+(use-package vdiff)
+
 (provide 'module-buffer)
 ;;; module-buffer.el ends here
