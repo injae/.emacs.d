@@ -1,4 +1,4 @@
-personal_ws-1.1 en 631 
+personal_ws-1.1 en 636 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -248,6 +248,7 @@ egressgateway
 el
 elasticsearch
 elcord
+eldoc
 elif
 eln
 elo
@@ -301,6 +302,7 @@ gameresult
 gc
 gcmh
 getter
+ghcup
 gitconfig
 github
 gitignore
@@ -319,6 +321,7 @@ hangul
 haskell
 hc
 hfs
+hl
 hm
 hostname
 hotjoin
@@ -349,6 +352,7 @@ io
 iostream
 ioutil
 ip
+isearch
 isinstance
 isort
 ispell
@@ -605,6 +609,7 @@ uuid
 uvicorn
 validator
 valuetype
+vcpkg
 vec
 vertico
 viewpage
