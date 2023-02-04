@@ -1,4 +1,4 @@
-personal_ws-1.1 en 644 
+personal_ws-1.1 en 646 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -249,6 +249,7 @@ el
 elasticsearch
 elcord
 eldoc
+elfeed
 elif
 eln
 elo
@@ -531,6 +532,7 @@ rnd
 rng
 rnix
 routable
+rss
 runtime
 sagemaker
 sagemakerruntime
