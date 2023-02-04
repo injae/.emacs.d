@@ -12,30 +12,24 @@
 )
 
 (use-package all-the-icons-completion
-:config (all-the-icons-completion-mode)
+:hook (emacs-startup . all-the-icons-completion-mode)
 )
 
 (use-package beacon
-    :config (beacon-mode))
+    :hook (emacs-startup . beacon-mode))
 
-(use-package git-gutter
-    :custom
-    (git-gutter:lighter       " GG")
-    (git-gutter:window-width  1)
-    (git-gutter:modified-sign ".")
-    (git-gutter:added-sign    "+")
-    (git-gutter:deleted-sign  "-")
-
-    :config
+(use-package diff-hl
+    :hook
+    ((magit-pre-refresh . diff-hl-magit-pre-refresh)
+     (magit-post-refresh . diff-hl-magit-post-refresh)
+     (emacs-startup . global-diff-hl-mode))
+    :init
     (setq-default display-line-numbers-width 3)
     (global-display-line-numbers-mode t)
     (global-hl-line-mode t)
-
-    (set-face-foreground 'git-gutter:added    "#daefa3")
-    (set-face-foreground 'git-gutter:deleted  "#FA8072")
-    (set-face-foreground 'git-gutter:modified "#b18cce")
-    (global-git-gutter-mode t)
+    ;:custom (diff-hl-side 'right)
 )
+
 (use-package highlight-numbers
 :hook (prog-mode . highlight-numbers-mode)
 )
@@ -167,8 +161,7 @@
         (kill-new filename)
             (message "Copied buffer file name '%s' to the clipboard." filename)))
 )
-;; env.org[shell]
-;; tab
+
 (use-package centaur-tabs :after (s dashboard vterm)
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
@@ -180,6 +173,7 @@
         (centaur-tabs-set-close-button t)
         (centaure-tabs-set-bar t)
         (centaur-tabs-style "chamfer")
+
 :config (setq centaur-tabs-height 26)
         (setq centaur-tabs-cycle-scope 'tabs)
         (centaur-tabs-mode t)
@@ -207,8 +201,7 @@
                     (string-prefix-p "*pyright*" name)
                     (string-prefix-p "*pyright::stderr*" name)
                     (string-prefix-p "*Async-native-compile-log*" name)
-                    (string-prefix-p "config.org[" name)
-                    (s-matches? "^.*\\[.*\\]$" name)
+                    ;(s-matches? "^.*\\[.*\\]$" name) ;; disable poly-mode buffer
                     ;; Is not magit buffer.
                     (and (string-prefix-p "magit" name)
                         (not (file-name-extension name)))
