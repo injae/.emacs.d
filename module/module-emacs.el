@@ -130,8 +130,8 @@
 (use-package with-editor
     :hook ((shell-mode  . with-editor-export-editor)
            (eshell-mode . with-editor-export-editor)
-           (term-mode   . with-editor-export-editor)
-           (vterm-mode  . with-editor-export-editor))
+           ;; (vterm-mode  . with-editor-export-editor) in .zshrc
+           (term-mode   . with-editor-export-editor))
     :config
     (define-key (current-global-map)
         [remap async-shell-command] 'with-editor-async-shell-command)
