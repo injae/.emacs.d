@@ -25,9 +25,9 @@
 :config (dap-go-setup)
 )
 
-;:go-tag-add xml db
-;go-tag-add json,omitempty
-(use-package go-tag  :after go-mode
+;; :go-tag-add xml db
+;; :go-tag-add json,omitempty
+(use-package go-tag :after go-mode
 :ensure-system-package (gomodifytags . "go install github.com/fatih/gomodifytags@latest")
 )
 

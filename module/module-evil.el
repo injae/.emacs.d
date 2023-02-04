@@ -6,17 +6,18 @@
 (use-package evil
     :preface
     (setq evil-want-keybinding nil)
+    :custom
+    (evil-want-C-u-scroll t)
+    (evil-symbol-word-search t)
+    (evil-want-minibuffer t)
     :config
-    (setq evil-want-C-u-scroll t)
-    (setq evil-symbol-word-search t)
-    (setq evil-want-minibuffer t)
     (define-key evil-normal-state-map (kbd "q") 'nil) ; evil macro disable
     (define-key evil-visual-state-map (kbd "R") 'evil-visual-exchange-corners)
-    (evil-ex-define-cmd "k" 'kill-this-buffer)
     (setq-default evil-kill-on-visual-paste nil)
     ;; visual mode 'p' command update clipboard problem fix
-    (fset 'evil-visual-update-x-selection 'ignore)
     (evil-mode)
+    (evil-ex-define-cmd "k" 'kill-this-buffer)
+    (fset 'evil-visual-update-x-selection 'ignore)
 )
 
 (use-package evil-collection :after evil
