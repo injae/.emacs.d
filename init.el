@@ -23,12 +23,13 @@
     (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
     (require 'use-package))
 
+(use-package use-package)
+(use-package use-package-ensure-system-package)
 
 (use-package straight
     :custom (straight-use-package-by-default t))
 
 ;; (use-package esup) ; emacs config profiling
-(use-package use-package)
 
 (use-package no-littering
 :config (require 'recentf)
@@ -44,8 +45,6 @@
 (use-package gcmh
     :functions gcmh-mode
     :config (gcmh-mode t))
-
-(use-package use-package-ensure-system-package)
 
 (use-package exec-path-from-shell
     :functions exec-path-from-shell-initialize
@@ -114,6 +113,7 @@
     (load-file private-config-file))
 
 (use-package filenotify :straight nil :after org
+    :ensure-system-package (watchexec . "cargo install watchexec-cli")
     :preface
     (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))
     (defun update-env-org-file (event)
