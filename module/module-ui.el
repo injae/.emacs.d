@@ -122,6 +122,10 @@
     :hook  (neotree-mode . hide-mode-line-mode)
 )
 
+(use-package highlight-indentation
+    :hook (prog-mode . highlight-indentation-mode)
+    )
+
 (use-package nyan-mode
     :custom (nyan-wavy-trail t)
     :config (nyan-mode)
