@@ -26,10 +26,7 @@
 (use-package use-package)
 (use-package use-package-ensure-system-package)
 
-(use-package straight
-    :custom (straight-use-package-by-default t))
-
-;; (use-package esup) ; emacs config profiling
+(use-package straight :custom (straight-use-package-by-default t))
 
 (use-package no-littering
 :config (require 'recentf)
@@ -42,10 +39,6 @@
                     (expand-file-name  "var/eln-cache/" user-emacs-directory))))
 )
 
-(use-package gcmh
-    :functions gcmh-mode
-    :config (gcmh-mode t))
-
 (use-package exec-path-from-shell
     :functions exec-path-from-shell-initialize
     :config (exec-path-from-shell-initialize)
@@ -56,29 +49,16 @@
     :config (asdf-enable)
     )
 
-;;; font Setting
-;; +------------+------------+
-;; | 일이삼사오 | 일이삼사오 |
-;; +------------+------------+
-;; | ABCDEFGHIJ | ABCDEFGHIJ |
-;; +------------+------------+
-;; | 1234567890 | 1234567890 |
-;; +------------+------------+
-;; | abcdefghij | abcdefghij |
-;; +------------+------------+
-
 (setq user-full-name "InJae Lee")
 (setq user-mail-address "8687lee@gmail.com")
 
+;; custom lisp library
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/module/"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/module/prog/"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/private/"))
 
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
-(use-package module-lisp-util :straight nil
+(use-package +lisp-util :load-path "module/" :straight nil
     :config
     ;; Emacs 기본설정
     (load-modules-with-list "~/.emacs.d/module/"
@@ -94,7 +74,7 @@
     ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
         '( ;; programming modules
-             "lsp" "snippet" "highlight"
+             "tree-sitter" "lsp" "snippet"
              "prog-search" "doc" "ssh"
              "coverage" "copilot" "tools"
              ;; language support
@@ -108,6 +88,7 @@
     )
 
 ;; 개인 설정
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/private/"))
 (defvar private-config-file "~/.emacs.d/private/token.el")
 (when (file-exists-p private-config-file)
     (load-file private-config-file))

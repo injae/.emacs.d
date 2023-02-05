@@ -1,4 +1,4 @@
-personal_ws-1.1 en 648 
+personal_ws-1.1 en 655 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -238,6 +238,8 @@ dired
 dirvish
 dns
 dockerfile
+dolist
+dotenv
 downloader
 dst
 dto
@@ -314,6 +316,7 @@ gmail
 gnupg
 goland
 golang
+golangci
 gomock
 gonum
 grafana
@@ -498,6 +501,7 @@ prometheus
 promptsubst
 proto
 protoAttrClone
+protobuf
 protojson
 provisioner
 pvc
@@ -594,6 +598,7 @@ toolchain
 touchbar
 traefik
 transcompile
+treesit
 trueskill
 tt
 txt
@@ -608,6 +613,7 @@ uname
 unary
 unicode
 unmarshal
+unparam
 uri
 url
 userinfo
@@ -635,6 +641,7 @@ vx
 watchexec
 wg
 wgrep
+wsgi
 wsl
 www
 yaml

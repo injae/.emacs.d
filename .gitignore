@@ -5,3 +5,4 @@ var/
 .cache/
 projectile-bookmarks.eld
 .org-generic-id-locations
+tree-sitter/

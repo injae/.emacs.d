@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: new package
+# key: pkg
+# --
+
+;;; $1.el --- Summery
+;;; -*- lexical-binding: t; -*-
+;;; Commentary:
+;;; Code:
+
+(provide '$1)
+;;; $1.el ends here
