@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package python-mode :straight nil
+(use-package python-mode
     :mode (("\\.py\\'" . python-mode)
            ("\\.wsgi$" . python-mode))
     :custom (python-indent-offset 4)
