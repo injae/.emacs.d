@@ -102,12 +102,11 @@
 )
 
 (use-package emojify
-:if window-system
-:config
-    (add-hook 'after-init-hook #'global-emojify-mode)
-    ;(setq emojify-display-style 'unicode)
-    ;(emojify-set-emoji-styles 'github)
-    ;(setq emojify-emoji-set "emojione-v2.2.6")
+    :if window-system
+    :custom
+    (emojify-display-style 'unicode)
+    (emojify-emoji-styles '(unicode))
+    :hook (after-init . global-emojify-mode)
 )
 
 (use-package textsize :straight (:type git :host github :repo "WJCFerguson/textsize"))

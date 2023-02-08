@@ -200,7 +200,12 @@
 )
 
 ;;; input
-(use-package corfu :after evil-collection
+(use-package corfu
+    :straight (corfu :files (:defaults "extensions/*")
+                  :includes (
+                    corfu-history
+                    corfu-popupinfo))
+    :after evil-collection
     :general
     (:keymaps 'corfu-map
         :states 'insert
@@ -226,19 +231,20 @@
     (corfu-preselect-first t)
     (corfu-cycle t)
     (corfu-preselect 'prompt)
-    ;(corfu-max-width corfu-min-width)
-
-    :hook (emacs-startup . global-corfu-mode)
+    :hook ((emacs-startup . global-corfu-mode)
+           (corfu-mode    . corfu-history-mode)
+           (corfu-mode    . corfu-popupinfo-mode))
 )
 
-(use-package corfu-history :straight nil :load-path "straight/repos/corfu/extensions/"
-    :config (add-hook 'curfu-mode-hook #'curfu-history-mode))
+(use-package kind-icon :after corfu
+    :defines corfu-margin-formatters
+    :functions kind-icon-margin-formatter
+    :custom (kind-icon-default-face 'corfu-default)
+    :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-(use-package corfu-popupinfo :straight nil :load-path "straight/repos/corfu/extensions/"
-    :config (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
-
-(use-package cape-yasnippet :straight (:host github :repo "elken/cape-yasnippet")
-    :after (yasnippet))
+;; Completion
+(use-package orderless
+    :custom (completion-styles '(orderless partial-completion basic)))
 
 ;; Add extensions
 (use-package cape :after evil
@@ -263,23 +269,14 @@
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-history)
-  (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+
   :config
     (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map)
 )
 
-(use-package kind-icon  :after corfu
-    :defines corfu-margin-formatters
-    :functions kind-icon-margin-formatter
-    :custom (kind-icon-default-face 'corfu-default)
-    :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-;; Completion
-(use-package orderless
-    :custom
-    (completion-styles '(orderless partial-completion basic))
-    )
+(use-package cape-yasnippet :straight (:host github :repo "elken/cape-yasnippet")
+    :after (cape yasnippet))
 
 
 (provide '+completion)

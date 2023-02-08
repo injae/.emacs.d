@@ -82,7 +82,6 @@
 
         (setq-default browse-url-browser-function 'my\wsl-browse-url))
         (setq frame-resize-pixelwise t)
-        (pixel-scroll-precision-mode)
 )
 
 (use-package not-wsl-setting :straight nil :no-require t
@@ -100,9 +99,9 @@
 
 )
 
-(use-package pixel-scoll-smooth :straight nil :no-require t
+(use-package pixel-scoll-smooth :straight nil :no-require t :disabled
 ;; default text parsing direction left -> right
-:if (version<= "29" emacs-version)
+:if (version< "29" emacs-version)
 :config (pixel-scroll-precision-mode)
 )
 
@@ -110,7 +109,7 @@
 ;(use-package esup)
 ;(use-package bug-hunter)
 
-(use-package explain-pause-mode :disabled
+(use-package explain-pause-mode
     :straight (:type git :host github :repo "lastquestion/explain-pause-mode")
     :config (explain-pause-mode)
 )

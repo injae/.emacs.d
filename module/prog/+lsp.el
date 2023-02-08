@@ -3,7 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package lsp-mode ;:after exec-path-from-shell
+(use-package lsp-mode :straight (:host github :repo "emacs-lsp/lsp-mode")
+;; :after exec-path-from-shell
 :commands (lsp lsp-deferred)
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
        (lsp-mode  . lsp-enable-which-key-integration))
@@ -14,10 +15,9 @@
                  "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
-        (lsp-enable-file-watchers nil)
+        ;(lsp-enable-file-watchers nil)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
-        ;(lsp-file-watch-threshold nil)
         (lsp-response-timeout 25)
         (lsp-eldoc-render-all nil)
         (lsp-lens-enable t)
@@ -63,7 +63,7 @@
    ;(setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui
+(use-package lsp-ui :straight (:host github :repo "emacs-lsp/lsp-ui")
 :commands lsp-ui-mode
 :after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame
@@ -98,7 +98,7 @@
         (lsp-treemacs-sync-mode 1)
 )
 
-(use-package dap-mode
+(use-package dap-mode :straight (:host github :repo "emacs-lsp/dap-mode")
 :after lsp-mode
 :commands (dap-debug)
 :general (leader "dd" 'dap-debug)
