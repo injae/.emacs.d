@@ -18,7 +18,7 @@
     ;; emacs gc setting
     (setq gc-cons-threshold (* 100 1000000)) ;; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024)) ;; 1mb
-    ;(run-with-idle-timer 5 t 'garbage-collect)
+    (run-with-idle-timer 5 t 'garbage-collect)
 
     ;; scroll bar
     (scroll-bar-mode -1)
@@ -43,7 +43,7 @@
     ; layout save setting
     (winner-mode t)
     ;(desktop-save-mode 1)
-    (setq frame-resize-pixelwise t) ; emacs plus fullscreen bugfix option
+    ;(setq frame-resize-pixelwise t) ; emacs plus fullscreen bugfix option
     (setq inhibit-startup-message t)
     (setq inhibit-startup-echo-area-message t)
     (setq inhibit-splash-screen t)
@@ -58,6 +58,10 @@
     (setq completion-cycle-threshold 3)
 
     (setq tab-always-indent 'complete)
+
+    ;; native-comp
+    (setq inhibit-automatic-native-compilation t)
+    (setq native-compile-prune-cache t)
 )
 
 (use-package ns-auto-titlebar
@@ -81,7 +85,7 @@
                     nil 0 nil (list "-Command" quotedUrl))))
 
         (setq-default browse-url-browser-function 'my\wsl-browse-url))
-        (setq frame-resize-pixelwise t)
+        ;(setq frame-resize-pixelwise t)
 )
 
 (use-package not-wsl-setting :straight nil :no-require t
@@ -116,12 +120,11 @@
 ;; (setq warning-minimum-level :error)
 
 (use-package gc-buffers
-    :config (gc-buffers-mode)
-)
+    :hook (emacs-startup . gc-buffers-mode))
 
 (use-package gcmh
     :functions gcmh-mode
-    :config (gcmh-mode t))
+    :hook (emacs-startup . gcmh-mode))
 
 (use-package helpful
 :bind (("C-h f" . helpful-callable)
