@@ -113,7 +113,7 @@
 ;(use-package esup)
 ;(use-package bug-hunter)
 
-(use-package explain-pause-mode
+(use-package explain-pause-mode :disabled
     :straight (:type git :host github :repo "lastquestion/explain-pause-mode")
     :config (explain-pause-mode)
 )
