@@ -18,7 +18,7 @@
     ;; emacs gc setting
     (setq gc-cons-threshold (* 100 1000000)) ;; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024)) ;; 1mb
-    (run-with-idle-timer 5 t 'garbage-collect)
+    ;(run-with-idle-timer 5 t 'garbage-collect)
 
     ;; scroll bar
     (scroll-bar-mode -1)
