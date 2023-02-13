@@ -7,6 +7,9 @@
     :mode (("\\.py\\'" . python-mode)
            ("\\.wsgi$" . python-mode))
     :custom (python-indent-offset 4)
+    ;; for treesit-auto
+    :config (setq python-ts-mode-hook python-mode-hook)
+    
 )
 
 (use-package python-pytest)

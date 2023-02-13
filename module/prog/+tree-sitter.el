@@ -23,13 +23,13 @@
     (add-hook 'tree-sitter-after-on-hook 'ts-fold-indicators-mode)
 )
 
-(use-package treesit :straight nil :disabled
+(use-package treesit :straight nil
     :if (treesit-available-p))
+
 (use-package treesit-auto :disabled
     :if (treesit-available-p)
     :hook (emacs-startup . global-treesit-auto-mode)
     :custom (treesit-auto-install 'prompt)
-    :config (add-to-list 'treesit-auto-fallback-alist '(bash-ts-mode . sh-mode))
     )
 
 (provide '+tree-sitter)
