@@ -25,6 +25,7 @@
         (lsp-idle-delay 0.500)
         (lsp-log-io nil)
         (lsp-rust-analyzer-server-display-inlay-hints nil)
+        (lsp-headerline-breadcrumb-enable-diagnostics nil)
         (lsp-completion-provider :none) ; with corfu
 
         ;(lsp-rust-analyzer-cargo-watch-command "clipy")
