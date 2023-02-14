@@ -1,4 +1,4 @@
-personal_ws-1.1 en 664 
+personal_ws-1.1 en 666 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -72,6 +72,7 @@ Mappable
 Marshaller
 Matcher
 Middlewares
+Mul
 Mutex
 Mw
 NFS
@@ -249,6 +250,7 @@ dto
 dwim
 dyn
 ediff
+eglot
 egressgateway
 el
 elasticsearch
