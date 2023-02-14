@@ -14,6 +14,10 @@
 
     )
 
+(use-package flycheck-eglot :after flycheck :disabled
+    :config (global-flycheck-eglot-mode))
+
+
 (use-package python-pytest)
 
 (use-package poetry :after python

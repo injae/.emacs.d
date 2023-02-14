@@ -51,6 +51,8 @@
     (setq global-hl-line-mode +1)
     (defalias 'yes-or-no-p 'y-or-n-p)
     (global-auto-revert-mode)
+
+    (setq auto-save-default nil)
     
     ;; Enable recursive minibuffers
     (setq enable-recursive-minibuffers t)

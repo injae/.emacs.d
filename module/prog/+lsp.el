@@ -5,7 +5,7 @@
 
 (use-package lsp-mode :straight (:host github :repo "emacs-lsp/lsp-mode")
 ;; :after exec-path-from-shell
-:commands (lsp lsp-deferred)
+;:commands (lsp lsp-deferred)
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
        (lsp-mode  . lsp-enable-which-key-integration))
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
@@ -15,7 +15,7 @@
                  "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
-        ;(lsp-enable-file-watchers nil)
+        (lsp-enable-file-watchers nil)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
         (lsp-response-timeout 25)
@@ -146,7 +146,15 @@
 :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
 )
 
-(use-package consult-lsp )
+(use-package consult-lsp)
+
+(use-package eglot
+    :config
+    (add-to-list 'eglot-server-programs '(python-mode . ("pyright")))
+    ;(setq-default eglot-workspace-configuration
+    ;    '((:pylsp . (:configurationSources ["flake8"] :plugins (:pycodestyle (:enabled nil) :mccabe (:enabled nil) :flake8 (:enabled t))))))
+    )
+(use-package consult-eglot :after eglot)
 
 (provide '+lsp)
 ;;; +lsp.el ends here

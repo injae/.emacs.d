@@ -30,7 +30,7 @@
 ;(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
 (use-package flycheck-golangci-lint :after flycheck
-    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2")
+    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.51.1")
                             (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
                             (revive . "go install github.com/mgechev/revive@latest")
                             (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
