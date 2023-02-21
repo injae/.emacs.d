@@ -247,6 +247,17 @@
 (use-package orderless
     :custom (completion-styles '(orderless partial-completion basic)))
 
+
+(use-package affe :after (consult orderless)
+    :preface
+    (defun affe-orderless-regexp-compiler (input _type _ignorecase)
+        (setq input (orderless-pattern-compiler input))
+        (cons input (lambda (str) (orderless--highlight input str))))
+    :config (setq affe-regexp-compiler #'affe-orderless-regexp-compiler)
+            (consult-customize affe-grep affe-find :preview-key 'any)
+    )
+
+
 ;; Add extensions
 (use-package cape :after evil
   ;; Bind dedicated completion commands
