@@ -3,8 +3,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package polymode)
-(use-package poly-org)
+(use-package polymode :defer t)
+(use-package poly-org
+    :hook (org-mode . poly-org-mode)
+    )
 
 (use-package poly-jetbrain-lua :no-require t :after polymode :straight nil
 :config
