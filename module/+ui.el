@@ -126,7 +126,7 @@
     :hook (prog-mode . highlight-indentation-mode)
     )
 
-(use-package nyan-mode
+(use-package nyan-mode :disabled
     :custom (nyan-wavy-trail t)
     :config (nyan-mode)
             (nyan-start-animation)
