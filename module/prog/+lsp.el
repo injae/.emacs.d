@@ -148,7 +148,7 @@
 
 (use-package consult-lsp)
 
-(use-package eglot
+(use-package eglot :disabled
     :config
     (add-to-list 'eglot-server-programs '(python-mode . ("pyright")))
     ;(setq-default eglot-workspace-configuration
