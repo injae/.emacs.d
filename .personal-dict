@@ -1,4 +1,4 @@
-personal_ws-1.1 en 666 
+personal_ws-1.1 en 671 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -54,6 +54,7 @@ Idx
 InJae
 Inferrer
 Infos
+Intn
 Invoker
 Isearch
 Iso
@@ -183,6 +184,7 @@ ci
 cidrs
 cli
 cloudflare
+cloudwatch
 cls
 cmake
 cmd
@@ -249,6 +251,7 @@ dst
 dto
 dwim
 dyn
+ecs
 ediff
 eglot
 egressgateway
@@ -336,6 +339,7 @@ hfs
 hl
 hm
 hostname
+hotfix
 hotjoin
 hpa
 hpp
@@ -598,6 +602,7 @@ taf
 teardown
 terraform
 tex
+tf
 tfenv
 thirdparty
 titlebar
