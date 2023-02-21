@@ -3,26 +3,31 @@
 ;;; Commentary:
 ;;; Code:
 
-
-(use-package editorconfig )
-(use-package copilot :straight (:host github :repo "zerolfx/copilot.el") :disabled
-    :after editorconfig
-    :config
-        (add-hook 'prog-mode-hook 'copilot-mode)
-        (customize-set-variable 'copilot-enable-predicates '(evil-insert-state-p))
-        (defun my-copilot-complete ()
-            (interactive)
-            (or (copilot-accept-completion)
-                (company-indent-or-complete-common nil)))
-            ; modify company-mode behaviors
-            (with-eval-after-load 'company
-            ; disable inline previews
-            (delq 'company-preview-if-just-one-frontend company-frontends)
-                ; enable tab completion
-                (define-key company-mode-map   (kbd "<C-tab>") 'my-copilot-complete)
-                (define-key company-active-map (kbd "<C-return>") 'my-copilot-complete)
-        )
+(use-package copilot :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+    :hook (prog-mode . copilot-mode)
+    :preface
+    (defun my/copilot-tab ()
+        (interactive)
+        (or (copilot-accept-completion)
+            (indent-for-tab-command)))
+    :bind (:map copilot-mode-map
+                ("TAB" . my/copilot-tab)
+                ("C-<return>" . my/copilot-tab)
+                ("C-n" . copilot-next)
+                ("C-p" . copilot-previous)
+                ("C-g" . copilot-abort))
     )
 
+(use-package chatgpt :after python
+    :straight (:host github :repo "joshcho/ChatGPT.el" :files ("dist" "*.el"))
+    :ensure-system-package((chatgpt . "pip install epc && pip install git+https://github.com/mmabrouk/chatgpt-wrapper && chatgpt install"))
+
+    :init
+    (setq chatgpt-repo-path "~/.emacs.d/straight/repos/ChatGPT.el/")
+    :bind ("C-c q" . chatgpt-query))
+
+
+;; you can utilize :map :hook and :config to customize copilot
 (provide '+copilot)
 ;;; +copilot.el ends here
+
