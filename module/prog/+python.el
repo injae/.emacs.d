@@ -6,12 +6,13 @@
 (use-package python-mode
     :mode (("\\.py\\'" . python-mode)
            ("\\.wsgi$" . python-mode))
-    ;; for treesit-auto
-    :hook (python-mode . (lambda () (setq format-all-formatters '(("Python" isort black)))))
+    :preface
+    (defun python-formatting-hook ()
+        (setq format-all-formatters '(("Python" isort black))))
+    :hook (python-base-mode . python-formatting-hook)
     :config
     (setq python-indent-offset 4)
     (setq python-ts-mode-hook python-mode-hook)
-
     )
 
 (use-package flycheck-eglot :after flycheck :disabled
@@ -29,11 +30,11 @@
                             (black . "pip install black")
                             ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
                                )
-    :hook ((python-mode . poetry-tracking-mode))
+    :hook (python-base-mode . poetry-tracking-mode)
     )
 
 (use-package lsp-pyright
-    :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
+    :hook (python-base-mode . (lambda () (require 'lsp-pyright) (lsp)))
     )
 
 ;; (use-package lsp-mode

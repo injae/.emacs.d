@@ -4,19 +4,26 @@
 ;;; Code:
 
 (use-package go-mode
-:ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
-                        (godef . "go install github.com/rogpeppe/godef@latest")
-                        (gofumpt . "go install mvdan.cc/gofumpt@latest"))
-:mode ("\\.go\\''" . go-mode)
-:hook (go-mode . (lambda () (lsp-deferred)))
-:config
-    ;(setq gofmt-command "goimports-reviser")
-    ;(add-hook 'before-save-hook 'gofmt-before-save)
-    (require 'dap-dlv-go)
+    :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
+                            (godef . "go install github.com/rogpeppe/godef@latest")
+                            (gofumpt . "go install mvdan.cc/gofumpt@latest"))
+    :mode ("\\.go\\''" . go-mode)
+    :preface
+    (defun go-formatting-hook () (setq format-all-formatters '("Go")))
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
         (add-hook 'before-save-hook #'lsp-organize-imports))
-    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+    :hook ((go-mode . (lambda () (lsp-deferred)))
+           (go-mode . lsp-go-install-save-hooks)
+           (go-mode . go-formatting-hook)
+           (go-ts-mode . (lambda () (lsp-deferred)))
+           (go-ts-mode . lsp-go-install-save-hooks)
+           (go-ts-mode . go-formatting-hook))
+    :config
+        (require 'dap-dlv-go)
+        (setq go-ts-mode-hook go-mode-hook)
+        ;(add-hook 'before-save-hook 'gofmt-before-save)
 )
 
 (use-package dap-go :ensure dap-mode :after go-mode :disabled
@@ -34,12 +41,11 @@
                             (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
                             (revive . "go install github.com/mgechev/revive@latest")
                             (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
-    :custom
-    (flycheck-golangci-lint-enable-linters
-        '("gocritic" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst")) ; "misspell"
-    (flycheck-golangci-lint-disable-linters '("structcheck" "goimports"))
-    :config
-    (add-hook 'go-mode-hook (lambda () (flycheck-golangci-lint-setup)))
+    :custom (flycheck-golangci-lint-enable-linters
+                '("gocritic" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst")) ; "misspell"
+            (flycheck-golangci-lint-disable-linters '("structcheck" "goimports"))
+    :hook ((go-mode . (lambda () (flycheck-golangci-lint-setup)))
+           (go-ts-mode . (lambda () (flycheck-golangci-lint-setup))))
 )
 
 ;; :go-tag-add xml db
@@ -53,17 +59,17 @@
                         (godoc . "go install golang.org/x/tools/cmd/godoc@latest"))
 )
 
-(use-package go-fill-struct  :after go-mode
+(use-package go-fill-struct :after go-mode
 :ensure-system-package (fillstruct . "go install github.com/davidrjenni/reftools/cmd/fillstruct@latest")
 )
 
-(use-package go-gen-test  :after go-mode
+(use-package go-gen-test :after go-mode
 :ensure-system-package (gotests . "go install github.com/cweill/gotests/...@latest")
 )
 
-(use-package gotest  :after go-mode)
+(use-package gotest :after go-mode)
 
-(use-package go-errcheck  :after go-mode
+(use-package go-errcheck :after go-mode
 :ensure-system-package (errcheck . "go install github.com/kisielk/errcheck@latest")
 )
 

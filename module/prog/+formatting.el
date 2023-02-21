@@ -4,9 +4,8 @@
 ;;; Code:
 
 (use-package format-all
-    :hook
-    (prog-mode . format-all-mode)
-    (format-all-mode . format-all-ensure-formatter)
+    :hook ((prog-mode . format-all-mode)
+           (format-all-mode . format-all-ensure-formatter))
     )
 
 (use-package apheleia :after exec-path-from-shell :disabled
