@@ -81,7 +81,7 @@
              "cpp" "lisp" "csharp"
              "rust" "haskell" "python"
              "flutter" "web" "ruby"
-             "jvm" "go" "nix"
+             "jvm" "go" "nix" "lua"
              "config-file" "docker"
              "formatting"
              ))
