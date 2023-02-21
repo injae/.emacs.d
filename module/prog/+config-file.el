@@ -74,15 +74,20 @@
 (use-package terraform-mode
     :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")
     :mode   ("\\.tf\\'" . terraform-mode)
+    :hook (terraform-mode . lsp)
     :config
-    (setq terraform-indent-level 4)
+    (setq terraform-indent-level 2)
     (setq lsp-terraform-enable-logging t)
-    (lsp-register-client
-        (make-lsp-client
-            :new-connection (lsp-stdio-connection '("~/go/bin/terraform-ls" "serve"))
-            :major-modes    '(terraform-mode)
-            :server-id      'terraform-ls))
-    (add-hook 'terraform-mode-hook 'lsp))
+    (setq lsp-terraform-ls-enable-show-reference t)
+    ;; (setq lsp-semantic-tokens-enable t)
+    ;; (setq lsp-semantic-tokens-honor-refresh-requests t)
+    (setq lsp-enable-links t)
+    ;; (lsp-register-client
+    ;;     (make-lsp-client
+    ;;         :new-connection (lsp-stdio-connection '("~/go/bin/terraform-ls" "serve"))
+    ;;         :major-modes    '(terraform-mode)
+    ;;         :server-id      'terraform-ls))
+    )
 ;;
 
 (use-package dotenv-mode
