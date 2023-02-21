@@ -8,6 +8,7 @@
     (prog-mode . format-all-mode)
     (format-all-mode . format-all-ensure-formatter)
     )
+
 (use-package apheleia :after exec-path-from-shell :disabled
     :config
     (setf (alist-get 'isort apheleia-formatter)

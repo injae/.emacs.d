@@ -21,10 +21,12 @@
 )
 
 (use-package evil-collection :after evil
-:functions evil-collection-init
-:custom (evil-collection-setup-minibuffer t)
-:config (evil-collection-init)
-        (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+    :functions evil-collection-init
+    :preface
+    (setq evil-want-keybinding nil)
+    :custom (evil-collection-setup-minibuffer t)
+    :config (evil-collection-init)
+            (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
 )
 
 (use-package general :after evil
