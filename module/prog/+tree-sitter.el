@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package tree-sitter :disabled
+(use-package tree-sitter
     :hook ((emacs-startup . global-tree-sitter-mode)
            (tree-sitter-after-on . tree-sitter-hl-mode))
 )
@@ -23,10 +23,10 @@
     (add-hook 'tree-sitter-after-on-hook 'ts-fold-indicators-mode)
 )
 
-(use-package treesit :straight nil
+(use-package treesit :straight nil :disabled
     :if (treesit-available-p))
 
-(use-package treesit-auto
+(use-package treesit-auto :disabled
     :if (treesit-available-p)
     :hook (emacs-startup . global-treesit-auto-mode)
     :custom (treesit-auto-install 'prompt)

@@ -22,7 +22,6 @@
            (go-ts-mode . go-formatting-hook))
     :config
         (require 'dap-dlv-go)
-        (setq go-ts-mode-hook go-mode-hook)
         ;(add-hook 'before-save-hook 'gofmt-before-save)
 )
 
