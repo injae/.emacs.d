@@ -1,4 +1,4 @@
-personal_ws-1.1 en 689 
+personal_ws-1.1 en 693 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -38,6 +38,7 @@ Fatalf
 Fifa
 Fprint
 Fprintf
+GPP
 GetPlayerIDs
 Getter
 Gi
@@ -295,6 +296,7 @@ fargate
 fastapi
 fc
 fd
+ffa
 fi
 filenotify
 filesystem
@@ -340,6 +342,7 @@ gomodifytags
 gonum
 gotest
 grafana
+groupby
 gunicorn
 gvm
 gzip
@@ -576,6 +579,7 @@ scaler
 schemas
 sdk
 sdl
+seoul
 sep
 serde
 serdepp
