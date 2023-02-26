@@ -4,29 +4,52 @@
 ;; This config start here
 ;;; Code:
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-         (bootstrap-version 6))
-    (unless (file-exists-p bootstrap-file)
-        (with-current-buffer
-            (url-retrieve-synchronously
-                "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-                'silent 'inhibit-cookies)
-            (goto-char (point-max))
-            (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+(defvar elpaca-installer-version 0.2)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil
+                              :files (:defaults (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(when-let ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+           (build (expand-file-name "elpaca/" elpaca-builds-directory))
+           (order (cdr elpaca-order))
+           ((add-to-list 'load-path (if (file-exists-p build) build repo)))
+           ((not (file-exists-p repo))))
+  (condition-case-unless-debug err
+      (if-let ((buffer (pop-to-buffer-same-window "*elpaca-installer*"))
+               ((zerop (call-process "git" nil buffer t "clone"
+                                     (plist-get order :repo) repo)))
+               (default-directory repo)
+               ((zerop (call-process "git" nil buffer t "checkout"
+                                     (or (plist-get order :ref) "--"))))
+               (emacs (concat invocation-directory invocation-name))
+               ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                     "--eval" "(byte-recompile-directory \".\" 0 'force)"))))
+          (progn (require 'elpaca)
+                 (elpaca-generate-autoloads "elpaca" repo)
+                 (kill-buffer buffer))
+        (error "%s" (with-current-buffer buffer (buffer-string))))
+    ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+(require 'elpaca-autoloads)
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
-(straight-use-package 'use-package)
+(elpaca elpaca-use-package
+  (elpaca-use-package-mode)
+  (setq elpaca-use-package-by-default t)
+  ;;(add-to-list 'elpaca-ignored-dependencies 'paren)
+  )
 
-(eval-when-compile
-    (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
-    (require 'use-package))
+(elpaca-wait)
+
+;; (eval-when-compile
+;;     ;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
+;;     (require 'use-package))
 
 (use-package use-package)
 (use-package use-package-ensure-system-package)
-
-(use-package straight :custom (straight-use-package-by-default t))
 
 (use-package no-littering
 :config (require 'recentf)
@@ -44,10 +67,12 @@
     :config (exec-path-from-shell-initialize)
     )
 
-(use-package asdf :straight (:host github :repo "tabfugnic/asdf.el")
+(use-package asdf :elpaca (:host github :repo "tabfugnic/asdf.el")
     :after exec-path-from-shell
     :config (asdf-enable)
     )
+
+(elpaca-wait)
 
 (setq user-full-name "InJae Lee")
 (setq user-mail-address "8687lee@gmail.com")
@@ -58,19 +83,22 @@
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
-(use-package +lisp-util :load-path "module/" :straight nil
+(use-package +lisp-util :elpaca nil :load-path "module/"
     :config
     ;; Emacs 기본설정
     (load-modules-with-list "~/.emacs.d/module/"
         '( ;; emacs modules
              "emacs" "font" "evil"
              "git" "grep-util" "extension"
-             "project-manage" "completion" "window"
-             "buffer" "ui" "org"
-             "terminal" "edit" "flycheck"
-             "search" "multi-mode" "util"
+             "project-manage" "completion"
+	         "window" "buffer" "ui"
+             "org" "terminal" "edit"
+             "flycheck"
+             "search"
+	         "multi-mode"
+             "util"
              "run-command"
-             ))
+             ) )
     ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
         '( ;; programming modules
@@ -93,7 +121,7 @@
 (when (file-exists-p private-config-file)
     (load-file private-config-file))
 
-(use-package filenotify :straight nil :after org
+(use-package filenotify :elpaca nil :after org
     :ensure-system-package (watchexec . "cargo install watchexec-cli")
     :preface
     (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))

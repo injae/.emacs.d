@@ -1,6 +1,7 @@
 private/
 eln-cache/   
 straight/
+elpaca/
 var/
 .cache/
 projectile-bookmarks.eld

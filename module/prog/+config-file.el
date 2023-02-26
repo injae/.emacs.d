@@ -46,7 +46,7 @@
             ("/Pipfile.lock\\'" . json-mode))
 )
 
-(use-package jsonian :straight (:type git :host github :repo "iwahbe/jsonian")
+(use-package jsonian :elpaca (:type git :host github :repo "iwahbe/jsonian")
     :after so-long
     :custom (jsonian-no-so-long-mode)
     :config
@@ -71,7 +71,7 @@
 :commands json-reformat-region
 )
 
-(use-package terraform-mode
+(use-package terraform-mode :after exec-path-from-shell
     :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")
     :mode   ("\\.tf\\'" . terraform-mode)
     :hook (terraform-mode . lsp)
@@ -93,8 +93,6 @@
 (use-package dotenv-mode
     :mode (("\\.env\\..*\\'" . dotenv-mode)
            ("\\.envrc\\'" . dotenv-mode)))
-
-(use-package nix-mode :mode "\\.nix\\'")
 
 (use-package protobuf-mode :mode "\\.proto\\'")
 

@@ -20,7 +20,7 @@
 
 ;;; minibuffer
 (use-package vertico
-    :straight (vertico :files (:defaults "extensions/*")
+    :elpaca (vertico :files (:defaults "extensions/*")
                        :includes (
                           vertico-indexed
                           vertico-mouse
@@ -48,10 +48,10 @@
 )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
+(use-package savehist :elpaca nil
     :init (savehist-mode))
 
-(use-package emacs
+(use-package emacs :elpaca nil
     :defines crm-separator
     :preface
     (defun crm-indicator (args)
@@ -202,7 +202,7 @@
 
 ;;; input
 (use-package corfu
-    :straight (corfu :files (:defaults "extensions/*")
+    :elpaca (corfu :files (:defaults "extensions/*")
                   :includes (
                     corfu-history
                     corfu-popupinfo))
@@ -287,7 +287,7 @@
     (evil-make-overriding-map corfu-map)
 )
 
-(use-package cape-yasnippet :straight (:host github :repo "elken/cape-yasnippet")
+(use-package cape-yasnippet :elpaca (:host github :repo "elken/cape-yasnippet")
     :after (cape yasnippet))
 
 

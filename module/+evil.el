@@ -66,6 +66,7 @@
               "jp"    `(json-pretty :wk "Json Pretty")
 )
 
+(elpaca-wait)
 ;(use-package drag-stuff
 ;:after evil
 ;:config
@@ -126,7 +127,7 @@
         (evil-goggles-mode)
 )
 
-(use-package evil-traces   :after evil
+(use-package evil-traces :after evil
 ; move: m +{n}, delete: +{n},+{n}d, join: .,+{n}j glboal: g/{target}/{change}
 :config (evil-traces-use-diff-faces)
         (evil-traces-mode)

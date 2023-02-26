@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package copilot :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+(use-package copilot :elpaca (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
     :hook (prog-mode . copilot-mode)
     :preface
     (defun my/copilot-tab ()
@@ -19,7 +19,7 @@
     )
 
 (use-package chatgpt :after python
-    :straight (:host github :repo "joshcho/ChatGPT.el" :files ("dist" "*.el"))
+    :elpaca (:host github :repo "joshcho/ChatGPT.el" :files ("dist" "*.el"))
     :ensure-system-package((chatgpt . "pip install epc && pip install git+https://github.com/mmabrouk/chatgpt-wrapper && chatgpt install"))
 
     :init

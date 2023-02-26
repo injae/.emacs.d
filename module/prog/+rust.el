@@ -4,9 +4,9 @@
 ;;; Code:
 
 
-(use-package rustic
+(use-package rustic :after exec-path-from-shell
     :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
-                           (rust-analyzer . "rustup component add rust-analyzer")
+                           ;; (rust-analyzer . "rustup component add rust-analyzer")
     :mode ("\\.rs\\'" . rustic-mode)
     :general (leader "hrf" 'rust-format-buffer)
     :init (defun ij/rustic-mode-hook ()
@@ -15,7 +15,7 @@
         (setq lsp-eldoc-hook nil)
         (setq lsp-enable-symbol-highlighting nil)
         (setq lsp-signature-auto-activate nil)
-        (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+        (setq rustic-analyzer-command '("rustup run stable rust-analyzer"))
         (setq rustic-lsp-server 'rust-analyzer)
         (setq lsp-rust-server 'rust-analyzer)
         (lsp-flycheck-add-mode 'rustic-mode)

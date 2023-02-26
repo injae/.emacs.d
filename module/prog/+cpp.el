@@ -5,7 +5,7 @@
 
 (use-package cpp-mode ;:load-path "lisp/cpp-mode"
 :no-require t
-:straight nil
+:elpaca nil
 :mode (("\\.h\\'"   . c++-mode)
        ("\\.hpp\\'" . c++-mode))
 ;:commands cpp-mode
@@ -28,7 +28,7 @@
     (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/" ))
 )
 
-(use-package cppm :no-require t :straight nil
+(use-package cppm :no-require t :elpaca nil
 :after c++-mode
 :general (leader "hcb" (lambda () (eshell-command "cppm build"))
                  "hcr" (lambda () (eshell-command "cppm run  ")))

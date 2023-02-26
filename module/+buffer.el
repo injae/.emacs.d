@@ -22,7 +22,7 @@
 ;; buffer log
 (use-package command-log-mode )
 
-(use-package buffer-zoom :straight nil
+(use-package buffer-zoom :elpaca nil
 :general (leader "tu" 'text-scale-increase
                  "td" 'text-scale-decrease)
 )

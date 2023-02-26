@@ -5,7 +5,7 @@
 
 (use-package try :defer t)
 
-(use-package sudo-mode :no-require t :straight nil
+(use-package sudo-mode :no-require t :elpaca nil
 :preface
 (defun sudo-find-file (file-name)
     "sudo open"
@@ -53,7 +53,7 @@
 :init (global-hungry-delete-mode)
 )
 
-(use-package face-picker :no-require t :straight nil
+(use-package face-picker :no-require t :elpaca nil
 :preface
 (defun what-face (pos)
      (interactive "d")
@@ -133,7 +133,7 @@ All permutations equally likely."
 (use-package vundo :after general
     :general (leader "uv" 'vundo))
 
-(use-package server :straight nil
+(use-package server :elpaca nil
     :config (unless (server-running-p) (server-start)))
 
 (provide '+util)

@@ -60,7 +60,7 @@
 
 (setq-default line-spacing 3)
 
-(global-font-lock-mode t)
+;; (global-font-lock-mode t)
 
 ;; 한글입력할때 완성전까지 안보이는 문제 해결을 위해 내장 한글입력기 사용
 ;; Linux 내장 한글입력기 사용법
@@ -81,7 +81,7 @@
 )
 
 ; FiraCode같은 텍스트모드 활성 모드
-(use-package ligature :straight (:host github :repo "mickeynp/ligature.el")
+(use-package ligature :elpaca (:host github :repo "mickeynp/ligature.el")
 :config
     ; Enable the www ligature in every possible major mode
     (ligature-set-ligatures 't '("www"))
@@ -109,7 +109,7 @@
     :hook (after-init . global-emojify-mode)
 )
 
-(use-package textsize :straight (:type git :host github :repo "WJCFerguson/textsize"))
+(use-package textsize :elpaca (:type git :host github :repo "WJCFerguson/textsize"))
 
 (provide '+font)
 ;;; +font.el ends here

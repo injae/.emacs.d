@@ -38,7 +38,7 @@
     :after org
     :hook (org-mode . toc-org-mode))
 
-(use-package org-babel :no-require t :straight nil
+(use-package org-babel :no-require t :elpaca nil
 :after org
 :config (org-babel-do-load-languages
             'org-babel-load-languages

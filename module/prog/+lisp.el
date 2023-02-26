@@ -4,7 +4,7 @@
 ;;; Code:
 
 
-(use-package emacs-lisp :no-require t :after general :straight nil
+(use-package emacs-lisp :no-require t :after general :elpaca nil
     :general (leader "le" '(eval-print-last-sexp :wk "Elisp Evaluate"))
     :hook (emacs-lisp-mode . (lambda () (setq format-all-formatters '(("Emacs Lisp")))))
     )
@@ -26,7 +26,7 @@
     :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode)
     )
 
-(use-package prettify-symbols :no-require t :straight nil
+(use-package prettify-symbols :no-require t :elpaca nil
     :hook ((emacs-lisp-mode lisp-mode org-mode) . prettify-symbols-mode)
     )
 

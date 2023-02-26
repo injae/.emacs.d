@@ -10,10 +10,10 @@
 
 (use-package tree-sitter-langs :after tree-sitter)
 ;(use-package tree-sitter-indent :after tree-sitter)
-;(use-package tsi :straight (:type git :host github :repo "orzechowskid/tsi.el") :after tree-sitter :disabled)
+;(use-package tsi :elpaca (:type git :host github :repo "orzechowskid/tsi.el") :after tree-sitter :disabled)
 
 (use-package ts-fold :disabled
-    :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+    :elpaca (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
     :general (leader "<tab>" #'ts-fold-toggle)
     :custom ((ts-fold-indicators-fringe 'left-fringe)
              (ts-fold-summary-show t)
@@ -23,7 +23,7 @@
     (add-hook 'tree-sitter-after-on-hook 'ts-fold-indicators-mode)
 )
 
-(use-package treesit :straight nil :disabled
+(use-package treesit :elpaca nil :disabled
     :if (treesit-available-p))
 
 (use-package treesit-auto :disabled

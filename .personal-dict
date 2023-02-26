@@ -1,4 +1,4 @@
-personal_ws-1.1 en 693 
+personal_ws-1.1 en 696 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -267,6 +267,7 @@ elfeed
 elif
 eln
 elo
+elpaca
 elsa
 emacs
 emacsclient
@@ -572,6 +573,7 @@ rnix
 routable
 rss
 runtime
+rustup
 sagemaker
 sagemakerruntime
 savehist
@@ -652,6 +654,7 @@ unary
 unicode
 unmarshal
 unparam
+unsetopt
 uri
 url
 userinfo

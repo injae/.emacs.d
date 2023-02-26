@@ -3,15 +3,17 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package dash :hook (emacs-startup . global-dash-fontify-mode))
+(use-package dash) ;:hook (emacs-startup . global-dash-fontify-mode))
 (use-package f)
 (use-package s)
+
+(elpaca-wait)
 
 ;(use-package srefactor
 ;    :config (require 'srefactor-lisp))
  
 (defun load-modules-with-list (module-path modules)
-    "custom module load"
+  "custom module load"
     (add-to-list 'load-path (expand-file-name module-path))
     (setq-local target
         (-map (lambda (module)

@@ -10,8 +10,8 @@
 (defvar *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
 (defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 
-(use-package emacs
-    :init
+(use-package emacs :elpaca nil
+    :config
     (setq ad-redefinition-action 'accept)
     (setq max-lisp-eval-depth 10000)
     ;;(setq debug-on-error t) ; debug option
@@ -74,7 +74,7 @@
         (setq frame-title-format nil)
 )
 
-(use-package wsl-setting :straight nil :no-require t
+(use-package wsl-setting :elpaca nil :no-require t
 :if *is-wsl*
 :config
     (defconst powershell-exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
@@ -90,12 +90,12 @@
         ;(setq frame-resize-pixelwise t)
 )
 
-(use-package not-wsl-setting :straight nil :no-require t
+(use-package not-wsl-setting :elpaca nil :no-require t
 :unless *is-wsl*
 :config (set-frame-parameter nil 'alpha 0.95)
 )
 ;; emacs large file setting
-(use-package so-long-mode :straight nil :no-require t
+(use-package so-long-mode :elpaca nil :no-require t
 ;;; default text parsing direction left -> right
 :if (version<= "27.1" emacs-version)
 :config
@@ -105,7 +105,7 @@
 
 )
 
-(use-package pixel-scoll-smooth :straight nil :no-require t :disabled
+(use-package pixel-scoll-smooth :elpaca nil :no-require t :disabled
 ;; default text parsing direction left -> right
 :if (version< "29" emacs-version)
 :config (pixel-scroll-precision-mode)
@@ -116,7 +116,7 @@
 ;(use-package bug-hunter)
 
 (use-package explain-pause-mode :disabled
-    :straight (:type git :host github :repo "lastquestion/explain-pause-mode")
+    :elpaca (:type git :host github :repo "lastquestion/explain-pause-mode")
     :config (explain-pause-mode)
 )
 ;; (setq warning-minimum-level :error)

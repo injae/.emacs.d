@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package lsp-mode :straight (:host github :repo "emacs-lsp/lsp-mode")
+(use-package lsp-mode :elpaca (:host github :repo "emacs-lsp/lsp-mode")
 ;; :after exec-path-from-shell
 ;:commands (lsp lsp-deferred)
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
@@ -64,7 +64,7 @@
    ;(setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui :straight (:host github :repo "emacs-lsp/lsp-ui")
+(use-package lsp-ui :elpaca (:host github :repo "emacs-lsp/lsp-ui")
 :commands lsp-ui-mode
 :after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame
@@ -99,7 +99,7 @@
         (lsp-treemacs-sync-mode 1)
 )
 
-(use-package dap-mode :straight (:host github :repo "emacs-lsp/dap-mode")
+(use-package dap-mode :elpaca (:host github :repo "emacs-lsp/dap-mode")
 :after lsp-mode
 :commands (dap-debug)
 :general (leader "dd" 'dap-debug)
@@ -110,7 +110,7 @@
     (dap-mode)
 )
 
-(use-package dap-ui-setting :no-require t :straight nil
+(use-package dap-ui-setting :no-require t :elpaca nil
 :after dap-mode
 :preface
   (defun my/window-visible (b-name)

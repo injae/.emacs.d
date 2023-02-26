@@ -22,7 +22,6 @@
 (use-package page-break-lines :defer t)
 
 (use-package dashboard
-    :functions dashboard-setup-startup-hook
     :custom (
         (dashboard-banner-logo-title "Happy Hacking")
         (dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
@@ -37,8 +36,8 @@
                            (projects  . 5)
                            (agenda    . 5)))
         (dashboard-set-init-info t))
-    :config
-        (dashboard-setup-startup-hook)
+    :hook (emacs-startup . dashboard-open)
+        ;; (dashboard-setup-startup-hook)
 )
 
 ;; print file info

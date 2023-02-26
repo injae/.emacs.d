@@ -49,7 +49,7 @@
 )
 
 (use-package nano-theme :disabled
-    :straight (:type git :host github :repo "rougier/nano-theme")
+    :elpaca (:type git :host github :repo "rougier/nano-theme")
     :config (load-theme 'nano-dark t)
 )
 

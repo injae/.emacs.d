@@ -58,7 +58,7 @@
     :hook (typescript-mode . (lambda () (lsp)))
 )
 
-;(use-package tsx-mode :straight (:type git :host github :repo "orzechowskid/tsx-mode.el") :disabled)
+;(use-package tsx-mode :elpaca (:type git :host github :repo "orzechowskid/tsx-mode.el") :disabled)
 
 (use-package tide
 :after (typescript-mode company flycheck)

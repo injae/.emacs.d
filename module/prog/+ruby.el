@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package ruby-mode
+(use-package ruby-mode :elpaca nil
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
 :mode "Gemfile\\'"
