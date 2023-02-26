@@ -88,30 +88,28 @@
     ;; Emacs 기본설정
     (load-modules-with-list "~/.emacs.d/module/"
         '( ;; emacs modules
-             "emacs" "font" "evil"
-             "git" "grep-util" "extension"
-             "project-manage" "completion"
-	         "window" "buffer" "ui"
-             "org" "terminal" "edit"
-             "flycheck"
-             "search"
-	         "multi-mode"
-             "util"
-             "run-command"
+             emacs font evil
+             git grep-util extension
+             project-manage completion
+	         window   buffer  ui
+             org terminal edit
+             flycheck search
+	         multi-mode util
+             run-command
              ) )
     ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
         '( ;; programming modules
-             "tree-sitter" "lsp" "snippet"
-             "prog-search" "doc" "ssh"
-             "coverage" "copilot" "tools"
+              tree-sitter lsp snippet
+              prog-search doc ssh
+              coverage copilot tools
              ;; language support
-             "cpp" "lisp" "csharp"
-             "rust" "haskell" "python"
-             "flutter" "web" "ruby"
-             "jvm" "go" "nix" "lua"
-             "config-file" "docker"
-             "formatting"
+              cpp lisp csharp
+              rust haskell python
+              flutter web ruby
+              jvm  go  nix lua
+              config-file docker
+              formatting
              ))
     )
 

@@ -6,9 +6,7 @@
 (use-package dash) ;:hook (emacs-startup . global-dash-fontify-mode))
 (use-package f)
 (use-package s)
-
 (elpaca-wait)
-
 ;(use-package srefactor
 ;    :config (require 'srefactor-lisp))
  
@@ -18,7 +16,7 @@
     (setq-local target
         (-map (lambda (module)
                 (f-long
-                    (f-join module-path (s-concat "+" module))))
+                    (f-join module-path (s-concat "+" (symbol-name module)))))
             modules)
         )
     (dolist
