@@ -1,4 +1,4 @@
-personal_ws-1.1 en 696 
+personal_ws-1.1 en 700 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -160,6 +160,7 @@ auth
 authinfo
 authlib
 autoload
+autoloads
 autoremove
 aws
 awsvpc
@@ -626,6 +627,7 @@ taf
 teardown
 terraform
 tex
+textobj
 tf
 tfenv
 thirdparty
@@ -633,6 +635,7 @@ titlebar
 tl
 tls
 todo
+tokio
 toml
 toolchain
 touchbar
@@ -690,6 +693,7 @@ yapf
 yasnippet
 ymir
 yml
+zerop
 zicompinit
 zinit
 zsh
