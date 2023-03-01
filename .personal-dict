@@ -1,4 +1,4 @@
-personal_ws-1.1 en 700 
+personal_ws-1.1 en 704 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -159,8 +159,10 @@ attrs
 auth
 authinfo
 authlib
+autoimport
 autoload
 autoloads
+autopep
 autoremove
 aws
 awsvpc
@@ -440,6 +442,7 @@ matchmob
 matchtime
 maxdev
 mb
+mccabe
 md
 middleware
 middlewares
@@ -466,6 +469,7 @@ mrkdwn
 msg
 mut
 mutex
+mypy
 namespace
 namespaces
 nano
