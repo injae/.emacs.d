@@ -37,23 +37,6 @@
     :hook (python-base-mode . (lambda () (require 'lsp-pyright) (lsp)))
     )
 
-;; (use-package lsp-mode
-;;     :custom
-;;         (lsp-pylsp-plugins-black-enabled t)
-;;         ;(lsp-pylsp-plugins-yapf-enabled nil) black
-;;         ;(lsp-pylsp-plugins-autopep8-enabled nil) black
-;;
-;;         (lsp-pylsp-plugins-pydocstyle-enabled nil)
-;;         ;(lsp-pylsp-plugins-pydocstyle-ignore ["D100" "D101" "D102" "D105"])
-;;
-;;         (lsp-pylsp-plugins-flake8-enabled t)
-;;        ;(lsp-pylsp-plugins-flake8-ignore [])
-;;         (lsp-pylsp-plugins-pyflakes-enabled t)
-;;         (lsp-pylsp-plugins-pylint-enabled nil)
-;;         (lsp-pylsp-plugins-rope-completion-enabled t)
-;;         (lsp-pylsp-plugins-pycodestyle-enabled t)
-;;
-
 ;; (use-package python-black :after python-mode
 ;;     :ensure-system-package ((black . "pip install black"))
 ;;     :hook (python-mode . python-black-on-save-mode)
