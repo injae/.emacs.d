@@ -74,6 +74,15 @@
         (setq frame-title-format nil)
 )
 
+;; fix ls does not support --dired; see `dired-use-ls-dired' for more details.
+(use-package dired-wit-mac :elpaca nil :no-require t
+    :if *is-mac*
+    :config
+    (setq dired-use-ls-dired t
+          insert-directory-program "/usr/local/bin/gls"
+          dired-listing-switches "-aBhl --group-directories-first")
+    )
+
 (use-package wsl-setting :elpaca nil :no-require t
 :if *is-wsl*
 :config

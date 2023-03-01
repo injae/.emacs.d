@@ -290,6 +290,5 @@
 (use-package cape-yasnippet :elpaca (:host github :repo "elken/cape-yasnippet")
     :after (cape yasnippet))
 
-
 (provide '+completion)
 ;;; +completion.el ends here

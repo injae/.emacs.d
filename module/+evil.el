@@ -67,19 +67,12 @@
 )
 
 (elpaca-wait)
-;(use-package drag-stuff
-;:after evil
-;:config
-;    (drag-stuff-define-keys)
-;    (drag-stuff-global-mode t)
-;)
-;
-;(use-package move-text  :after (evil drag-stuff)
-;:bind (:map evil-visual-state-map
-;          ("C-j" . drag-stuff-down)
-;          ("C-k" . drag-stuff-up))
-;:config (move-text-default-bindings)
-;)
+
+(use-package move-text :after evil
+    :bind (:map evil-visual-state-map
+            ("C-j" . move-text-down)
+            ("C-k" . move-text-up))
+)
 
 (use-package evil-visualstar
 ; vim visual mode에서 * #를 사용해서 같은 단어 검색가능
@@ -92,14 +85,14 @@
 :config (define-key evil-normal-state-map "gR" 'evil-operator-string-inflection)
 )
 
-(use-package evil-surround
+(use-package evil-surround :after evil
 ; @call-function
 ; visual mode S- or gS-
 ; normal mode ys- or yS-
 ; change surround cs-
 ; delete surround ds-
 ; @select area
-; {call-function}- - ;현재부터 단어 끝까지
+; call-functionu- - ;현재부터 단어 끝까지
 ; {call-function}-i- ;현재 단어
 ; {call-function}-s- ;현재 줄
 ; @wrap function
@@ -109,7 +102,6 @@
 ; 전부 감싸기 => y-s-s-${change}
 ; 바꾸기: => c-s-${target}( "(", "{", "["), ${change}
 ; 벗기기: => d-s-${target}( "(", "{", "[")
-:after  evil
 :functions global-evil-surround-mode
 :config (global-evil-surround-mode)
 )
@@ -122,6 +114,7 @@
 
 ;;; visual hint
 (use-package evil-goggles :after evil
+:functions evil-goggles-mode
 :config (setq evil-goggles-pulse t)
         (setq evil-goggles-duration 0.500)
         (evil-goggles-mode)

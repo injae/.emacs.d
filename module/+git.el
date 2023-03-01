@@ -21,7 +21,7 @@
 )
 
 
-; 현재 git repo의 homepage link를 clipboard에 넣어준다
+;; 현재 git repo의 homepage link를 clipboard에 넣어준다
 (use-package git-link
 :general (leader "gh" 'git-link-homepage)
 :config  ;(setq git-link-use-single-line-number t)
@@ -33,7 +33,7 @@
 :commands smeargle
 )
 
-(use-package blamer 
+(use-package blamer
 :bind (("s-i" . blamer-show-posframe-commit-info))
 :general (leader "gb" 'blamer-show-posframe-commit-info)
 :custom-face

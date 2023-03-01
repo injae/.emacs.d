@@ -25,7 +25,7 @@
     :custom (
         (dashboard-banner-logo-title "Happy Hacking")
         (dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
-        (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+        ;; (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
         (dashboard-set-heading-icons t)
         (dashboard-set-file-icons t)
         (dashboard-show-shortcuts nil)
@@ -37,7 +37,7 @@
                            (agenda    . 5)))
         (dashboard-set-init-info t))
     :hook (emacs-startup . dashboard-open)
-        ;; (dashboard-setup-startup-hook)
+    ;; :config (dashboard-setup-startup-hook)
 )
 
 ;; print file info
