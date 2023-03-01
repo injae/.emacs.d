@@ -149,11 +149,50 @@
 (use-package consult-lsp)
 
 (use-package eglot :disabled
+    :hook (
+        ;; (go-mode . eglot-ensure)
+        ;; (rust-mode . eglot-ensure)
+        (python-mode . eglot-ensure)
+        ;; (nix-mode . eglot-ensure)
+        ;; (js-mode . eglot-ensure)
+        ;; (js2-mode . eglot-ensure)
+        ;; (typescript-mode . eglot-ensure)
+        ;; (web-mode . eglot-ensure)
+        ;; (css-mode . eglot-ensure)
+        ;; (scss-mode . eglot-ensure)
+        ;; (json-mode . eglot-ensure)
+        ;; (yaml-mode . eglot-ensure)
+        ;; (dockerfile-mode . eglot-ensure)
+          )
     :config
-    (add-to-list 'eglot-server-programs '(python-mode . ("pyright")))
-    ;(setq-default eglot-workspace-configuration
-    ;    '((:pylsp . (:configurationSources ["flake8"] :plugins (:pycodestyle (:enabled nil) :mccabe (:enabled nil) :flake8 (:enabled t))))))
+    (setq-default eglot-workspace-configuration
+        '((:pylsp . (:configurationSources ["flake8"]
+                        :plugins (
+                            :pycodestyle (:enabled :json-false)
+                            :mccabe (:enabled :json-false)
+                            :pyflakes (:enabled :json-false)
+                            :flake8 (:enabled :json-false
+                                     :maxLineLength 88)
+                            :ruff (:enabled t
+                                   :lineLength 88)
+                            ;:pydocstyle (:enabled t
+                            ;             :convention "numpy")
+                            :yapf (:enable t)
+                            :autopep8 (:enabled t)
+                            :rope_autoimport (:enabled t)
+                            :black (:enabled t
+                                    :line_length 88
+                                    :cache_config t))))))
     )
+
+(use-package flycheck-eglot :after (flycheck eglot)
+    :functions global-flycheck-eglot-mode
+    :config (global-flycheck-eglot-mode))
+
+(use-package eldoc-box :after eglot
+    :hook (eglot-managed-mode . eldoc-box-hover-mode)
+    )
+
 (use-package consult-eglot :after eglot)
 
 (provide '+lsp)

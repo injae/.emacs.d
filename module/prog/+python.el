@@ -15,9 +15,6 @@
     (setq python-ts-mode-hook python-mode-hook)
     )
 
-(use-package flycheck-eglot :after flycheck :disabled
-    :config (global-flycheck-eglot-mode))
-
 
 (use-package python-pytest)
 
