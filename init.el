@@ -71,8 +71,6 @@
     :config (asdf-enable)
     )
 
-(elpaca-wait)
-
 (setq user-full-name "InJae Lee")
 (setq user-mail-address "8687lee@gmail.com")
 
@@ -82,7 +80,8 @@
 (setq-default custom-file "~/.emacs.d/custom-variable.el")
 (when (file-exists-p custom-file) (load-file custom-file))
 
-(use-package +lisp-util :elpaca nil :load-path "module/"
+(use-package +lisp-util :elpaca nil :load-path "~/.emacs.d/module/")
+(use-package module-util :elpaca nil :after (dash f s asdf)
     :config
     ;; Emacs 기본설정
     (load-modules-with-list "~/.emacs.d/module/"
@@ -95,7 +94,7 @@
              flycheck search
 	         multi-mode util
              run-command
-             ) )
+             ))
     ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
         '( ;; programming modules
