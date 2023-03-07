@@ -9,7 +9,7 @@
 )
 
 (use-package tree-sitter-langs :after tree-sitter)
-(use-package tree-sitter-indent :after tree-sitter
+(use-package tree-sitter-indent :after tree-sitter :disabled
     :hook (tree-sitter-after-on . tree-sitter-indent-mode)
     )
 ;(use-package tsi :elpaca (:type git :host github :repo "orzechowskid/tsi.el") :after tree-sitter :disabled)
