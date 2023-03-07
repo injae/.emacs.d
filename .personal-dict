@@ -1,4 +1,4 @@
-personal_ws-1.1 en 704 
+personal_ws-1.1 en 709 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -285,12 +285,15 @@ env
 environ
 envrc
 eq
+erdtree
 errcheck
 esac
 eshell
 esquery
 esup
+et
 eval
+exa
 exe
 expr
 exprpb
@@ -630,6 +633,7 @@ sz
 taf
 teardown
 terraform
+testutil
 tex
 textobj
 tf
@@ -697,6 +701,7 @@ yapf
 yasnippet
 ymir
 yml
+ytop
 zerop
 zicompinit
 zinit
