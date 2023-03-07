@@ -10,7 +10,8 @@
                         (bat   . "cargo install bat")
                         (procs . "cargo install procs")
                         (dust  . "cargo install du-dust")
-                        (ytop  . "cargo install ytop"))
+                        (ytop  . "cargo install ytop")
+                        (et . "cargo install erdtree"))
 )
 
 (provide '+tools)
