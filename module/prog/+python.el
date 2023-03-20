@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package python-mode
+(use-package python-mode :after exec-path-from-shell
     :mode (("\\.py\\'" . python-mode)
            ("\\.wsgi$" . python-mode))
     :preface

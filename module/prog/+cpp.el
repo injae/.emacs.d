@@ -28,7 +28,7 @@
     (setq ccls-initialization-options '(:compilationDatabaseDirectory "build/" ))
 )
 
-(use-package cppm :no-require t :elpaca nil
+(use-package cppm :elpaca nil :no-require t
 :after c++-mode
 :general (leader "hcb" (lambda () (eshell-command "cppm build"))
                  "hcr" (lambda () (eshell-command "cppm run  ")))

@@ -20,16 +20,9 @@
     (fset 'evil-visual-update-x-selection 'ignore)
 )
 
-(use-package evil-collection :after evil
-    :functions evil-collection-init
-    :preface
-    (setq evil-want-keybinding nil)
-    :custom (evil-collection-setup-minibuffer t)
-    :config (evil-collection-init)
-            (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
-)
+(elpaca-wait)
 
-(use-package general :after evil
+(use-package general
 :custom (general-override-states '(insert emacs hybrid normal visual motion override operator replace))
 :config
       (general-evil-setup :with-shortname-maps)
@@ -64,6 +57,16 @@
               "wk"    '(shrink-window :wk "Bottom size up")
               "wl"    '(enlarge-window-horizontally :wk "Bottom size down"))
               "jp"    `(json-pretty :wk "Json Pretty")
+)
+
+
+(use-package evil-collection :after evil
+    :functions evil-collection-init
+    :preface
+    (setq evil-want-keybinding nil)
+    :custom (evil-collection-setup-minibuffer t)
+    :config (evil-collection-init)
+            (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
 )
 
 (elpaca-wait)
