@@ -164,7 +164,7 @@
             (message "Copied buffer file name '%s' to the clipboard." filename)))
 )
 
-(use-package centaur-tabs :after (s dashboard vterm)
+(use-package centaur-tabs :after (s dashboard vterm) :disabled
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 :hook   ((dashboard-mode . centaur-tabs-local-mode)
