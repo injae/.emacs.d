@@ -36,9 +36,13 @@
 ;(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
 (use-package flycheck-golangci-lint :after flycheck
-    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.51.1")
+    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.0")
                             (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
                             (revive . "go install github.com/mgechev/revive@latest")
+                            (unparam . "go install mvdan.cc/unparam@latest")
+                            (unused . "go install honnef.co/go/tools/cmd/unused@latest")
+                            (ineffassign . "go install github.com/gordonklaus/ineffassign@latest")
+                            (goconst . "go install github.com/jgautheron/goconst/cmd/goconst@latest")
                             (staticcheck . "go install honnef.co/go/tools/cmd/staticcheck@latest"))
     :custom (flycheck-golangci-lint-enable-linters
                 '("gocritic" "revive" "unparam" "unused" "stylecheck" "ineffassign" "goconst")) ; "misspell"
