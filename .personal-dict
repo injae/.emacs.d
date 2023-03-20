@@ -1,4 +1,4 @@
-personal_ws-1.1 en 709 
+personal_ws-1.1 en 719 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -44,6 +44,7 @@ Getter
 Gi
 Goroutine
 Gosched
+GrandPrix
 HPP
 Hotjoin
 HotjoinFound
@@ -95,6 +96,7 @@ PYTHONUNBUFFERED
 Param
 Params
 Printf
+Prix
 Probs
 Proto
 Ptr
@@ -124,6 +126,7 @@ Vcpkg
 Vec
 WORKDIR
 XBOX
+Xbox
 aarch
 abcdefghij
 acc
@@ -145,6 +148,7 @@ api
 apiserver
 arg
 argc
+argparse
 args
 argv
 armv
@@ -198,6 +202,7 @@ cmp
 cnt
 codec
 codecov
+coef
 commenter
 compat
 compatibilities
@@ -218,6 +223,7 @@ crt
 crynut
 csharp
 cstdlib
+csv
 ctx
 cvref
 dao
@@ -327,10 +333,12 @@ functools
 gameresult
 gc
 gcmh
+getscores
 getter
 ghcup
 gitconfig
 github
+githubusercontent
 gitignore
 gitlab
 gjallarhorn
@@ -477,6 +485,7 @@ namespace
 namespaces
 nano
 nav
+ndjson
 ne
 neotree
 nexon
@@ -619,6 +628,7 @@ stderr
 stdout
 storageclass
 str
+strconv
 stretchr
 strftime
 struct
