@@ -1,4 +1,4 @@
-personal_ws-1.1 en 723 
+personal_ws-1.1 en 730 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -226,6 +226,7 @@ cstdlib
 csv
 ctx
 cvref
+dabbrev
 dao
 dap
 darwin
@@ -264,6 +265,7 @@ dst
 dto
 dwim
 dyn
+ecr
 ecs
 ediff
 eglot
@@ -288,8 +290,10 @@ ent
 entrypoint
 enum
 env
+envar
 environ
 envrc
+envvar
 eq
 erdtree
 errcheck
@@ -298,6 +302,7 @@ eshell
 esquery
 esup
 et
+etags
 eval
 exa
 exe
@@ -669,6 +674,7 @@ tt
 txt
 typeinfo
 typename
+typer
 uber
 ui
 uint
@@ -710,6 +716,7 @@ wgrep
 wsgi
 wsl
 www
+xoxb
 yaml
 yapf
 yasnippet
