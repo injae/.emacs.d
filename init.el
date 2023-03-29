@@ -125,7 +125,7 @@
 (when (file-exists-p private-config-file)
       (load-file private-config-file))
 
-(use-package filenotify :elpaca nil :after (exec-path-from-shell org) :disabled
+(use-package filenotify :elpaca nil :after (exec-path-from-shell org)
     :ensure-system-package (watchexec . "cargo install watchexec-cli")
     :preface
     (defvar env-org-file (expand-file-name "~/.emacs.d/env.org"))
