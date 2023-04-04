@@ -1,4 +1,4 @@
-personal_ws-1.1 en 730 
+personal_ws-1.1 en 744 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -19,6 +19,7 @@ Configs
 Cppkg
 Css
 Ctrl
+DSN
 Debugf
 Decl
 DimKey
@@ -29,6 +30,7 @@ ECK
 ENTRYPOINT
 Elo
 Eq
+Equalf
 Errf
 Errorf
 Expr
@@ -89,6 +91,7 @@ Ord
 PASSTHROUGH
 PLISTS
 PPYTHONHASHSEED
+PWD
 PYTHONDONTWRITEBYTECODE
 PYTHONFAULTHANDLER
 PYTHONHASHSEED
@@ -190,6 +193,7 @@ cerr
 cfg
 chan
 chatgpt
+chdir
 ci
 cidrs
 cli
@@ -263,6 +267,7 @@ dotenv
 downloader
 dst
 dto
+du
 dwim
 dyn
 ecr
@@ -338,6 +343,7 @@ functools
 gameresult
 gc
 gcmh
+getcwd
 getscores
 getter
 ghcup
@@ -369,6 +375,7 @@ gzip
 hangul
 haskell
 hc
+hcl
 hfs
 hl
 hm
@@ -446,6 +453,7 @@ linter
 linters
 linux
 ln
+localhost
 logitem
 lsp
 lstrip
@@ -460,6 +468,7 @@ matchtime
 maxdev
 mb
 mccabe
+mcfly
 md
 middleware
 middlewares
@@ -527,6 +536,7 @@ orderless
 os
 ostream
 param
+parametrize
 params
 pb
 pc
@@ -551,6 +561,7 @@ pre
 prec
 prev
 println
+procs
 prog
 progn
 proj
@@ -590,6 +601,7 @@ reqs
 ret
 rfc
 rg
+rglob
 rhs
 ripgrep
 rnd
@@ -625,6 +637,7 @@ softmax
 spotify
 sql
 sqlite
+sqlmock
 src
 ss
 ssl
@@ -644,6 +657,7 @@ struct
 structcheck
 stylecheck
 subcommand
+subprocess
 sudo
 sv
 svc
