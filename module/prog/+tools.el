@@ -11,6 +11,7 @@
                         (procs . "cargo install procs")
                         (dust  . "cargo install du-dust")
                         (ytop  . "cargo install ytop")
+                        (mcfly . "cargo install mcfly")
                         (et . "cargo install erdtree"))
 )
 
