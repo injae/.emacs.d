@@ -10,15 +10,17 @@
     (defun python-formatting-hook ()
         (setq format-all-formatters '(("Python" isort black))))
     :hook (python-base-mode . python-formatting-hook)
-    :config
+    :init
     (setq python-indent-offset 4)
-    (setq python-ts-mode-hook python-mode-hook)
+    ;; :config
+    ;; (setq python-ts-mode-hook python-mode-hook)
     )
 
 
 (use-package python-pytest)
 
 (use-package poetry :after python
+    :functions (poetry-tracking-mode)
     :ensure-system-package ((poetry . "pip install poetry")
                             (pylint . "pip install pylint pylint-strict-informational")
                             (mypy   . "pip install mypy")
@@ -30,7 +32,7 @@
     :hook (python-base-mode . poetry-tracking-mode)
     )
 
-(use-package lsp-pyright
+(use-package lsp-pyright :after python
     :hook (python-base-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
     )
 
