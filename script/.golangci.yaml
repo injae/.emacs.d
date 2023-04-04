@@ -1,0 +1,46 @@
+run:
+  concurrency: 8
+  deadline: 1m
+  issues-exit-code: 1
+  modules-download-mode: readonly
+  tests: true
+  skip-dirs:
+    - vendor
+  build-tags:
+    - continuous_profiler_stackdriver
+    - tracer_static
+    - tracer_static_jaeger
+    - tracer_static_lightstep
+    - tracer_static_datadog
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters:
+  #enable-all: true
+  enable:
+    - gocritic
+    - revive
+    - stylecheck
+    - unparam
+    - errname
+  disable:
+    - golint
+    - maligned
+    - interfacer
+    - dupl
+    - exhaustivestruct
+    - forcetypeassert
+    - funlen
+    - gochecknoglobals
+    - gomnd
+    - nlreturn
+    - paralleltest
+    - scopelint # archived
+    - testpackage
+    - wsl
+    - structcheck
+    - wrapcheck
+    - contextcheck
