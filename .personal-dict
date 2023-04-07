@@ -1,4 +1,4 @@
-personal_ws-1.1 en 744 
+personal_ws-1.1 en 746 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -245,6 +245,7 @@ declval
 defalias
 defaultdict
 defclass
+defconst
 defun
 defvar
 dep
@@ -727,6 +728,7 @@ vx
 watchexec
 wg
 wgrep
+whl
 wsgi
 wsl
 www
