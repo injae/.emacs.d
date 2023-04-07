@@ -3,18 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-
-;; spotify (smudge) setting token in private c
-(use-package smudge
-:commands (smudge-controller-next-track smudge-controller-previous-track)
-:general (leader "sn" 'smudge-controller-next-track
-                 "sp" 'smudge-controller-previous-track
-                 "ss" 'smudge-controller-toggle-play)
-:config (setq smudge-transport 'connect)
-)
-
-;; slack config in private token setting
-
 (use-package alert
 :commands (alert)
 :custom (alert-default-style 'notifier))

@@ -85,7 +85,7 @@
 
 (use-package wsl-setting :elpaca nil :no-require t
 :if *is-wsl*
-:config
+:preface
     (defconst powershell-exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
     (when (file-executable-p powershell-exe)
         (defun my\wsl-browse-url (url &optional _new-window)
@@ -93,10 +93,12 @@
             (interactive (browse-url-interactive-arg "URL: "))
             (let ((quotedUrl (format "start '%s'" url)))
             (apply 'call-process powershell-exe
-                    nil 0 nil (list "-Command" quotedUrl))))
-
-        (setq-default browse-url-browser-function 'my\wsl-browse-url))
-        ;(setq frame-resize-pixelwise t)
+                    nil 0 nil (list "-Command" quotedUrl)))))
+:config
+        (setq-default browse-url-browser-function 'my\wsl-browse-url)
+        ;; (setq browse-url-generic-program "/mnt/c/Windows/System32/cmd.exe")
+        ;; (setq browse-url-generic-args '("/c" "start"))
+        ;; (setq browse-url-browser-function 'browse-url-generic)
 )
 
 (use-package not-wsl-setting :elpaca nil :no-require t

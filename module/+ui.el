@@ -130,7 +130,7 @@
             (nyan-start-animation)
 )
 
-(use-package fancy-battery
+(use-package fancy-battery :disabled
     :hook   (after-init . fancy-battery-mode)
     :custom (fancy-battery-show-percentage t)
     :config (fancy-battery-default-mode-line)
