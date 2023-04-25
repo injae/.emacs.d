@@ -33,7 +33,7 @@
     )
 
 (use-package lsp-pyright :after python
-    :hook (python-base-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
+    :hook (python-base-mode . (lambda () (require 'lsp-pyright) (require 'lsp-ruff-lsp) (lsp-deferred)))
     )
 
 ;; (use-package python-black :after python-mode

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 746 
+personal_ws-1.1 en 769 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -9,9 +9,12 @@ Asm
 Async
 Attr
 Avgs
+Awaitable
 Btm
 CLI
+CORSMiddleware
 CSV
+CVXOPT
 Celgo
 Cnt
 Comparer
@@ -119,6 +122,7 @@ Stddev
 Str
 TCP
 TODO
+UG
 Unary
 Unfree
 Unmarshal
@@ -128,6 +132,7 @@ Validator
 Vcpkg
 Vec
 WORKDIR
+Warhaven
 XBOX
 Xbox
 aarch
@@ -155,6 +160,7 @@ argparse
 args
 argv
 armv
+arn
 arrayable
 asdf
 aseprite
@@ -172,9 +178,11 @@ autoloads
 autopep
 autoremove
 aws
+awslogs
 awsvpc
 backend
 backtab
+balancer
 bifrost
 blueviolet
 bool
@@ -250,6 +258,7 @@ defun
 defvar
 dep
 deps
+deregistration
 desc
 deserialize
 dev
@@ -271,6 +280,7 @@ dto
 du
 dwim
 dyn
+dynamodb
 ecr
 ecs
 ediff
@@ -390,6 +400,7 @@ html
 htop
 http
 https
+iam
 ibm
 ibuffer
 idx
@@ -419,6 +430,7 @@ ispell
 istio
 iter
 iterable
+iterrows
 itertools
 jaeger
 jp
@@ -453,6 +465,7 @@ lineno
 linter
 linters
 linux
+livep
 ln
 localhost
 logitem
@@ -573,6 +586,7 @@ protoAttrClone
 protobuf
 protojson
 provisioner
+ptr
 pvc
 py
 pycodestyle
@@ -658,10 +672,13 @@ struct
 structcheck
 stylecheck
 subcommand
+subnet
+subnets
 subprocess
 sudo
 sv
 svc
+svr
 sys
 sz
 taf
@@ -673,6 +690,8 @@ textobj
 tf
 tfenv
 thirdparty
+threadpool
+timedelta
 titlebar
 tl
 tls
@@ -691,9 +710,11 @@ typeinfo
 typename
 typer
 uber
+ug
 ui
 uint
 uintptr
+ulimits
 umask
 uname
 unary
@@ -705,6 +726,7 @@ uri
 url
 userinfo
 usize
+usr
 utcnow
 utf
 util
@@ -725,6 +747,7 @@ vpn
 vterm
 vundo
 vx
+warhaven
 watchexec
 wg
 wgrep

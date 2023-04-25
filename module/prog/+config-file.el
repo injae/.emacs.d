@@ -74,14 +74,16 @@
 (use-package terraform-mode :after exec-path-from-shell
     :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")
     :mode   ("\\.tf\\'" . terraform-mode)
-    :hook (terraform-mode . lsp)
-    :config
-    (setq terraform-indent-level 2)
-    (setq lsp-terraform-enable-logging t)
-    (setq lsp-terraform-ls-enable-show-reference t)
-    ;; (setq lsp-semantic-tokens-enable t)
-    ;; (setq lsp-semantic-tokens-honor-refresh-requests t)
-    (setq lsp-enable-links t)
+    :hook (terraform-mode . (lambda () (lsp)))
+    :custom
+    (terraform-indent-level 2)
+    (lsp-terraform-enable-logging t)
+    (lsp-terraform-ls-enable-show-reference t)
+    ;; (lsp-semantic-tokens-enable t)
+    ;; (lsp-semantic-tokens-honor-refresh-requests t)
+    (lsp-enable-links t)
+    (lsp-terraform-ls-prefill-required-fields t)
+    (lsp-terraform-ls-validate-on-save t)
     ;; (lsp-register-client
     ;;     (make-lsp-client
     ;;         :new-connection (lsp-stdio-connection '("~/go/bin/terraform-ls" "serve"))
