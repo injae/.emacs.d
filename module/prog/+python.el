@@ -10,6 +10,13 @@
     (defun python-formatting-hook ()
         (setq format-all-formatters '(("Python" isort black))))
     :hook (python-base-mode . python-formatting-hook)
+    :ensure-system-package ((pylint . "pip install pylint pylint-strict-informational")
+                            (mypy   . "pip install mypy")
+                            (flake8 . "pip install flake8")
+                            (isort . "pip install isort")
+                            (black . "pip install black")
+                            ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
+                               )
     :init
     (setq python-indent-offset 4)
     ;; :config
@@ -19,16 +26,17 @@
 
 (use-package python-pytest)
 
+(use-package pyvenv :after python :disabled
+    :functions (pyvenv-tracking-mode)
+    :hook (python-base-mode . pyvenv-tracking-mode)
+    :config
+    (setq pyvenv-virtual-env-name '(".venv" ".virtualenv"))
+    )
+
+
 (use-package poetry :after python
     :functions (poetry-tracking-mode)
-    :ensure-system-package ((poetry . "pip install poetry")
-                            (pylint . "pip install pylint pylint-strict-informational")
-                            (mypy   . "pip install mypy")
-                            (flake8 . "pip install flake8")
-                            (isort . "pip install isort")
-                            (black . "pip install black")
-                            ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
-                               )
+    :ensure-system-package ((poetry . "pip install poetry"))
     :hook (python-base-mode . poetry-tracking-mode)
     )
 
