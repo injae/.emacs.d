@@ -52,7 +52,13 @@
     :config (load-theme 'nano-dark t)
 )
 
-(use-package doom-modeline
+(use-package nerd-icons
+    :elpaca (:type git :host github :repo "rainstormstudio/nerd-icons.el"
+             :files (:defaults "data"))
+)
+
+
+(use-package doom-modeline :after nerd-icons
     :custom
     (doom-modeline-buffer-file-name-style 'truncate-with-project)
     (doom-modeline-height 30)
