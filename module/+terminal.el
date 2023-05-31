@@ -55,15 +55,15 @@
 :after (vterm)
 :preface
 (defun run-in-vterm-kill (process event)
-  "A process sentinel. Kills PROCESS's buffer if it is live."
+  "A process sentinel. Kill PROCESS's buffer if it is live."
   (let ((b (process-buffer process)))
     (and (buffer-live-p b)
          (kill-buffer b))))
 
 (defun run-in-vterm (command)
   "Execute string COMMAND in a new vterm.
-Interactively, prompt for COMMAND with the current buffer's file
-name supplied. When called from Dired, supply the name of the file at point.
+Interactively, prompt for COMMAND with the current buffer's file name supplied.
+When called from Dired, supply the name of the file at point.
 Like `async-shell-command`, but run in a vterm for full terminal features.
 The new vterm buffer is named in the form `*foo bar.baz*`, the
 command and its arguments in earmuffs.
