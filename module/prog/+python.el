@@ -46,16 +46,5 @@
 
 (use-package jinja2-mode)
 
-;; (use-package python-black :after python-mode
-;;     :ensure-system-package ((black . "pip install black"))
-;;     :hook (python-mode . python-black-on-save-mode)
-;;     )
-;;
-;; (use-package python-isort :after python
-;;     :ensure-system-package ((isort . "pip install isort"))
-;;     :hook (python-mode . python-isort-on-save-mode)
-;;     )
-
-
 (provide '+python)
 ;;; +python.el ends here
