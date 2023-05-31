@@ -8,7 +8,7 @@
     :hook (org-mode . poly-org-mode)
     )
 
-(use-package poly-jetbrain-lua :no-require t :after polymode :straight nil
+(use-package poly-jetbrain-lua :no-require t :after polymode :elpaca nil
 :config
     ; jetbrain golang lua mode
     (define-hostmode poly-golang-lua-hostmode :mode 'go-mode)

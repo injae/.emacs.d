@@ -3,67 +3,48 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package python-mode
+(use-package python-mode :after exec-path-from-shell
     :mode (("\\.py\\'" . python-mode)
            ("\\.wsgi$" . python-mode))
     :preface
     (defun python-formatting-hook ()
         (setq format-all-formatters '(("Python" isort black))))
     :hook (python-base-mode . python-formatting-hook)
-    :config
-    (setq python-indent-offset 4)
-    (setq python-ts-mode-hook python-mode-hook)
-    )
-
-(use-package flycheck-eglot :after flycheck :disabled
-    :config (global-flycheck-eglot-mode))
-
-
-(use-package python-pytest)
-
-(use-package poetry :after python
-    :ensure-system-package ((poetry . "pip install poetry")
-                            (pylint . "pip install pylint pylint-strict-informational")
+    :ensure-system-package ((pylint . "pip install pylint pylint-strict-informational")
                             (mypy   . "pip install mypy")
                             (flake8 . "pip install flake8")
                             (isort . "pip install isort")
                             (black . "pip install black")
                             ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
                                )
+    :init
+    (setq python-indent-offset 4)
+    ;; :config
+    ;; (setq python-ts-mode-hook python-mode-hook)
+    )
+
+
+(use-package python-pytest)
+
+(use-package pyvenv :after python :disabled
+    :functions (pyvenv-tracking-mode)
+    :hook (python-base-mode . pyvenv-tracking-mode)
+    :config
+    (setq pyvenv-virtual-env-name '(".venv" ".virtualenv"))
+    )
+
+
+(use-package poetry :after python
+    :functions (poetry-tracking-mode)
+    :ensure-system-package ((poetry . "pip install poetry"))
     :hook (python-base-mode . poetry-tracking-mode)
     )
 
-(use-package lsp-pyright
-    :hook (python-base-mode . (lambda () (require 'lsp-pyright) (lsp)))
+(use-package lsp-pyright :after python
+    :hook (python-base-mode . (lambda () (require 'lsp-pyright) (require 'lsp-ruff-lsp) (lsp-deferred)))
     )
 
-;; (use-package lsp-mode
-;;     :custom
-;;         (lsp-pylsp-plugins-black-enabled t)
-;;         ;(lsp-pylsp-plugins-yapf-enabled nil) black
-;;         ;(lsp-pylsp-plugins-autopep8-enabled nil) black
-;;
-;;         (lsp-pylsp-plugins-pydocstyle-enabled nil)
-;;         ;(lsp-pylsp-plugins-pydocstyle-ignore ["D100" "D101" "D102" "D105"])
-;;
-;;         (lsp-pylsp-plugins-flake8-enabled t)
-;;        ;(lsp-pylsp-plugins-flake8-ignore [])
-;;         (lsp-pylsp-plugins-pyflakes-enabled t)
-;;         (lsp-pylsp-plugins-pylint-enabled nil)
-;;         (lsp-pylsp-plugins-rope-completion-enabled t)
-;;         (lsp-pylsp-plugins-pycodestyle-enabled t)
-;;
-
-;; (use-package python-black :after python-mode
-;;     :ensure-system-package ((black . "pip install black"))
-;;     :hook (python-mode . python-black-on-save-mode)
-;;     )
-;;
-;; (use-package python-isort :after python
-;;     :ensure-system-package ((isort . "pip install isort"))
-;;     :hook (python-mode . python-isort-on-save-mode)
-;;     )
-
+(use-package jinja2-mode)
 
 (provide '+python)
 ;;; +python.el ends here

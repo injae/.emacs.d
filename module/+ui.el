@@ -34,12 +34,11 @@
 :hook (prog-mode . highlight-numbers-mode)
 )
 
-(setq custom-safe-themes t)
-
 ;; 현재 발견된 doom-theme 버그
 ;; emacs29 이상에서 아래 메세지 출력
 ;; Warning: setting attribute ‘:background’ of face ‘font-lock-comment-face’: nil value is invalid, use ‘unspecified’ instead.
 (use-package doom-themes
+:init (setq custom-safe-themes t)
 :config (load-theme   'doom-vibrant t)
         (doom-themes-neotree-config)
         (doom-themes-org-config)
@@ -49,12 +48,17 @@
 )
 
 (use-package nano-theme :disabled
-    :straight (:type git :host github :repo "rougier/nano-theme")
+    :elpaca (:type git :host github :repo "rougier/nano-theme")
     :config (load-theme 'nano-dark t)
 )
 
-(use-package doom-modeline :after doom-themes
-    :hook (after-init . doom-modeline-mode)
+(use-package nerd-icons
+    :elpaca (:type git :host github :repo "rainstormstudio/nerd-icons.el"
+             :files (:defaults "data"))
+)
+
+
+(use-package doom-modeline :after nerd-icons
     :custom
     (doom-modeline-buffer-file-name-style 'truncate-with-project)
     (doom-modeline-height 30)
@@ -86,8 +90,8 @@
     (setq find-file-visit-truename t)
     (setq inhibit-compacting-font-caches t)
     :config
-    (add-hook 'after-init-hook 'doom-modeline-mode)
     (with-eval-after-load 'lsp-treemacs (doom-themes-treemacs-config))
+    (doom-modeline-mode 1)
 )
 
 (use-package rainbow-mode
@@ -99,7 +103,7 @@
 :hook ((prog-mode text-mode) . rainbow-delimiters-mode)
 )
 
-(use-package modern-fringes
+(use-package modern-fringes :disabled
     :config
     (modern-fringes-mode)
     (modern-fringes-invert-arrows)
@@ -132,7 +136,7 @@
             (nyan-start-animation)
 )
 
-(use-package fancy-battery
+(use-package fancy-battery :disabled
     :hook   (after-init . fancy-battery-mode)
     :custom (fancy-battery-show-percentage t)
     :config (fancy-battery-default-mode-line)
@@ -166,7 +170,7 @@
             (message "Copied buffer file name '%s' to the clipboard." filename)))
 )
 
-(use-package centaur-tabs :after (s dashboard vterm)
+(use-package centaur-tabs :after (s dashboard vterm) :disabled
 :general (leader "th" 'centaur-tabs-backward
                  "tl" 'centaur-tabs-forward)
 :hook   ((dashboard-mode . centaur-tabs-local-mode)

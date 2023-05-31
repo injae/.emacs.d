@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package indent4-mode :no-require t :straight nil
+(use-package indent4-mode :elpaca nil :no-require t
 :preface
     (defun my-set-indent (n)
         (setq-default tab-width n)
@@ -32,7 +32,7 @@
     (setq-default indent-tabs-mode nil)
 )
 
-(use-package paren
+(use-package paren :elpaca nil
 :init   (show-paren-mode 0)
         (electric-pair-mode 0)
 :config (setq show-paren-delay 0)
@@ -52,7 +52,7 @@
         (show-smartparens-global-mode)
 )
 ;elisp double quote problem fix setting
-(use-package smartparens-config :after smartparens :straight nil)
+(use-package smartparens-config :after smartparens :elpaca nil)
 
 ;(use-package aggressive-indent   :disabled
 ;; https://github.com/Malabarba/aggressive-indent-mode

@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package lsp-mode :straight (:host github :repo "emacs-lsp/lsp-mode")
+(use-package lsp-mode :elpaca (:host github :repo "emacs-lsp/lsp-mode")
 ;; :after exec-path-from-shell
 ;:commands (lsp lsp-deferred)
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
@@ -64,7 +64,7 @@
    ;(setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui :straight (:host github :repo "emacs-lsp/lsp-ui")
+(use-package lsp-ui :elpaca (:host github :repo "emacs-lsp/lsp-ui")
 :commands lsp-ui-mode
 :after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame
@@ -99,7 +99,7 @@
         (lsp-treemacs-sync-mode 1)
 )
 
-(use-package dap-mode :straight (:host github :repo "emacs-lsp/dap-mode")
+(use-package dap-mode :elpaca (:host github :repo "emacs-lsp/dap-mode")
 :after lsp-mode
 :commands (dap-debug)
 :general (leader "dd" 'dap-debug)
@@ -110,7 +110,7 @@
     (dap-mode)
 )
 
-(use-package dap-ui-setting :no-require t :straight nil
+(use-package dap-ui-setting :no-require t :elpaca nil
 :after dap-mode
 :preface
   (defun my/window-visible (b-name)
@@ -149,11 +149,50 @@
 (use-package consult-lsp)
 
 (use-package eglot :disabled
+    :hook (
+        ;; (go-mode . eglot-ensure)
+        ;; (rust-mode . eglot-ensure)
+        (python-mode . eglot-ensure)
+        ;; (nix-mode . eglot-ensure)
+        ;; (js-mode . eglot-ensure)
+        ;; (js2-mode . eglot-ensure)
+        ;; (typescript-mode . eglot-ensure)
+        ;; (web-mode . eglot-ensure)
+        ;; (css-mode . eglot-ensure)
+        ;; (scss-mode . eglot-ensure)
+        ;; (json-mode . eglot-ensure)
+        ;; (yaml-mode . eglot-ensure)
+        ;; (dockerfile-mode . eglot-ensure)
+          )
     :config
-    (add-to-list 'eglot-server-programs '(python-mode . ("pyright")))
-    ;(setq-default eglot-workspace-configuration
-    ;    '((:pylsp . (:configurationSources ["flake8"] :plugins (:pycodestyle (:enabled nil) :mccabe (:enabled nil) :flake8 (:enabled t))))))
+    (setq-default eglot-workspace-configuration
+        '((:pylsp . (:configurationSources ["flake8"]
+                        :plugins (
+                            :pycodestyle (:enabled :json-false)
+                            :mccabe (:enabled :json-false)
+                            :pyflakes (:enabled :json-false)
+                            :flake8 (:enabled :json-false
+                                     :maxLineLength 88)
+                            :ruff (:enabled t
+                                   :lineLength 88)
+                            ;:pydocstyle (:enabled t
+                            ;             :convention "numpy")
+                            :yapf (:enable t)
+                            :autopep8 (:enabled t)
+                            :rope_autoimport (:enabled t)
+                            :black (:enabled t
+                                    :line_length 88
+                                    :cache_config t))))))
     )
+
+(use-package flycheck-eglot :after (flycheck eglot)
+    :functions global-flycheck-eglot-mode
+    :config (global-flycheck-eglot-mode))
+
+(use-package eldoc-box :after eglot
+    :hook (eglot-managed-mode . eldoc-box-hover-mode)
+    )
+
 (use-package consult-eglot :after eglot)
 
 (provide '+lsp)

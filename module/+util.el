@@ -5,7 +5,7 @@
 
 (use-package try :defer t)
 
-(use-package sudo-mode :no-require t :straight nil
+(use-package sudo-mode :elpaca nil :no-require t
 :preface
 (defun sudo-find-file (file-name)
     "sudo open"
@@ -19,7 +19,7 @@
 :general (leader "fl" 'goto-last-change)
 )
 
-(use-package restart-emacs )
+(use-package restart-emacs)
 
 (defun reload-emacs ()
     ;; reload emacs config 
@@ -48,12 +48,12 @@
     (new-buffer "untitled" 'text-mode)
 )
 
-(use-package hungry-delete  :disabled
+(use-package hungry-delete :disabled
 ; 공백 지울때 한꺼번에 다지워짐
 :init (global-hungry-delete-mode)
 )
 
-(use-package face-picker :no-require t :straight nil
+(use-package face-picker :elpaca nil :no-require t
 :preface
 (defun what-face (pos)
      (interactive "d")
@@ -106,7 +106,7 @@ All permutations equally likely."
 :commands keypression-mode
 :custom (keypression-use-child-frame t)
         (keypression-fade-out-delay 1.0)
-        (keypression-frame-justify 'keypression-left-fringe)
+        (keypression-frame-justify 'keypression-right-fringe)
         (keypression-cast-command-name t)
         (keypression-cast-coommand-name-format "%s  %s")
         (keypression-frame-background-mode 'white)
@@ -118,6 +118,10 @@ All permutations equally likely."
 (use-package undo-fu :after general
     :general (leader "uu" 'undo-fu-only-undo
                      "ur" 'undo-fu-only-redo)
+    :custom
+    (undo-limit         67108864) ;;  64mb.
+    (undo-strong-limit 100663296) ;;  96mb.
+    (undo-outer-limit 1006632960) ;; 960mb.
     :config
     (evil-define-key 'normal 'global (kbd "C-r") #'undo-fu-only-redo)
     (evil-define-key 'normal 'global "u" #'undo-fu-only-undo)
@@ -126,15 +130,18 @@ All permutations equally likely."
     (setq evil-undo-system 'undo-fu)
 )
 
-(use-package undo-fu-session :after undo-fu
+(use-package undohist :after undo-fu
+    :config (undohist-initialize))
+
+(use-package undo-fu-session :after undo-fu :disabled
     :functions undo-fu-session-global-mode 
     :config (undo-fu-session-global-mode))
 
 (use-package vundo :after general
     :general (leader "uv" 'vundo))
 
-(use-package server :straight nil
-    :config (unless (server-running-p) (server-start)))
+(use-package server :elpaca nil
+    :config (add-hook 'after-init-hook 'server-start t))
 
 (provide '+util)
 ;;; +util.el ends here

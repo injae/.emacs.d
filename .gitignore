@@ -1,8 +1,13 @@
 private/
 eln-cache/   
 straight/
+elpaca/
+elpa/
 var/
 .cache/
 projectile-bookmarks.eld
 .org-generic-id-locations
 tree-sitter/
+network-security.data
+history
+recentf

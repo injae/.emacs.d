@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package ruby-mode
+(use-package ruby-mode :elpaca nil :after exec-path-from-shell
 :mode "\\.rb\\'"
 :mode "Rakefile\\'"
 :mode "Gemfile\\'"
@@ -21,13 +21,13 @@
 )
 
 (use-package yari :after ruby-mode)
-
-(use-package rubocop :after ruby-mode
+ 
+(use-package rubocop :after (ruby-mode exec-path-from-shell) :disabled
 :ensure-system-package (rubocop . "gem install rubocop")
 :init (add-hook 'ruby-mode-hook 'rubocop-mode)
 )
 
-(use-package robe :after ruby-mode
+(use-package robe :after (ruby-mode exec-path-from-shell) :disabled
 :ensure-system-package (pry . "gem install pry pry-doc")
 :init (add-hook 'ruby-mode-hook 'robe-mode)
 )

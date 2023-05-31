@@ -20,9 +20,6 @@
     (setq kubernetes-redraw-frequency 3600)
 )
 
-;; If you want to pull in the Evil compatibility package.
-(use-package kubernetes-evil :after kubernetes)
-
 (use-package k8s-mode
 :hook (k8s-mode . yas-minor-mode)
 )

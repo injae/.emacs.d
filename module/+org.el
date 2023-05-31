@@ -16,8 +16,7 @@
 :config (setq org-startup-indented   nil)
 )
 
-(use-package org-superstar
-:after org
+(use-package org-superstar :after org
 :hook (org-mode . org-superstar-mode)
 :custom (org-superstar-special-todo-items t)
 ;:custom-face
@@ -28,18 +27,15 @@
 ;    (org-level-5 ((t (:inherit outline-5 :height 1.0))))
 )
 
-(use-package valign
-    :after org-mode
+(use-package valign :after org
     :hook (org-mode . valign-mode))
 
-(use-package orgtbl-aggregate)
+(use-package orgtbl-aggregate :after org)
 
-(use-package toc-org
-    :after org
+(use-package toc-org :after org
     :hook (org-mode . toc-org-mode))
 
-(use-package org-babel :no-require t :straight nil
-:after org
+(use-package org-babel :elpaca nil :no-require t :after org
 :config (org-babel-do-load-languages
             'org-babel-load-languages
             '((emacs-lisp . t)

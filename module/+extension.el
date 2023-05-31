@@ -3,18 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-
-;; spotify (smudge) setting token in private c
-(use-package smudge
-:commands (smudge-controller-next-track smudge-controller-previous-track)
-:general (leader "sn" 'smudge-controller-next-track
-                 "sp" 'smudge-controller-previous-track
-                 "ss" 'smudge-controller-toggle-play)
-:config (setq smudge-transport 'connect)
-)
-
-;; slack config in private token setting
-
 (use-package alert
 :commands (alert)
 :custom (alert-default-style 'notifier))
@@ -22,11 +10,10 @@
 (use-package page-break-lines :defer t)
 
 (use-package dashboard
-    :functions dashboard-setup-startup-hook
     :custom (
         (dashboard-banner-logo-title "Happy Hacking")
         (dashboard-startup-banner "~/.emacs.d/image/emacs_icon.png") ;banner image change
-        (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+        ;; (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
         (dashboard-set-heading-icons t)
         (dashboard-set-file-icons t)
         (dashboard-show-shortcuts nil)
@@ -37,8 +24,8 @@
                            (projects  . 5)
                            (agenda    . 5)))
         (dashboard-set-init-info t))
-    :config
-        (dashboard-setup-startup-hook)
+    :hook (emacs-startup . dashboard-open)
+    ;; :config (dashboard-setup-startup-hook)
 )
 
 ;; print file info
