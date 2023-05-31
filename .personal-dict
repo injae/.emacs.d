@@ -1,4 +1,4 @@
-personal_ws-1.1 en 771 
+personal_ws-1.1 en 785 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -127,6 +127,7 @@ Unary
 Unfree
 Unmarshal
 Unmarshaller
+Utc
 VIRTUALENVS
 Validator
 Vcpkg
@@ -180,6 +181,7 @@ autoremove
 aws
 awslogs
 awsvpc
+axum
 backend
 backtab
 balancer
@@ -202,6 +204,7 @@ cfg
 chan
 chatgpt
 chdir
+chrono
 ci
 cidrs
 cli
@@ -388,6 +391,7 @@ hangul
 haskell
 hc
 hcl
+hexists
 hfs
 hl
 hm
@@ -397,6 +401,7 @@ hotjoin
 hpa
 hpp
 href
+hset
 html
 htop
 http
@@ -491,6 +496,7 @@ middlewares
 minibuffer
 mk
 mkdir
+mkstream
 mmcalc
 mmlog
 mmlogic
@@ -611,6 +617,7 @@ recentf
 redis
 removeprefix
 repo
+repr
 req
 reqhandler
 reqmodifier
@@ -700,6 +707,7 @@ tls
 todo
 tokio
 toml
+tonumber
 toolchain
 touchbar
 traefik
@@ -724,6 +732,7 @@ unicode
 unmarshal
 unparam
 unsetopt
+untagged
 uri
 url
 userinfo
@@ -744,6 +753,7 @@ viewpage
 vip
 virtualenvs
 visualstar
+vmacs
 vpc
 vpn
 vterm
@@ -757,13 +767,17 @@ whl
 wsgi
 wsl
 www
+xgroup
 xoxb
+xrange
+xread
 yaml
 yapf
 yasnippet
 ymir
 yml
 ytop
+zadd
 zerop
 zicompinit
 zinit
