@@ -45,6 +45,12 @@
           consult-flyspell-always-check-buffer nil)
     (consult-flyspell-correct-function (lambda () (flyspell-correct-at-point) (consult-flyspell))))
 
+(use-package jinx :disabled
+    ;; https://github.com/spellcheck-ko/hunspell-dict-ko
+    :hook (emacs-startup . global-jinx-mode)
+    :general (leader "sf" #'jinx-correct)
+    )
+
 
 (provide '+flycheck)
 ;;; +flycheck.el ends here
