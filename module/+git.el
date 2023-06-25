@@ -46,5 +46,7 @@
 ;:hook (emacs-startup . global-blamer-mode)
 )
 
+(use-package git-timemachine)
+
 (provide '+git)
 ;;; +git.el ends here

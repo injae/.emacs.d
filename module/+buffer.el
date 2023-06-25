@@ -30,5 +30,9 @@
 ;; buffer diff
 (use-package vdiff)
 
+(use-package popwin :disabled
+    :config (popwin-mode 1)
+    )
+
 (provide '+buffer)
 ;;; +buffer.el ends here

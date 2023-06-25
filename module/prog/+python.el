@@ -17,8 +17,7 @@
                             (black . "pip install black")
                             ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
                                )
-    :init
-    (setq python-indent-offset 4)
+    :custom (python-indent-offset 4)
     ;; :config
     ;; (setq python-ts-mode-hook python-mode-hook)
     )
