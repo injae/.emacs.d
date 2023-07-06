@@ -40,7 +40,11 @@
     )
 
 (use-package lsp-pyright :after python
-    :hook (python-base-mode . (lambda () (require 'lsp-pyright) (require 'lsp-ruff-lsp) (lsp-deferred)))
+    :hook (python-base-mode .
+              (lambda ()
+                  (require 'lsp-pyright)
+                  (require 'lsp-ruff-lsp)
+                  (lsp-deferred)))
     )
 
 (use-package jinja2-mode)
