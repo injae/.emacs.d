@@ -1,8 +1,9 @@
-personal_ws-1.1 en 788 
+personal_ws-1.1 en 808 
 ABCDEFGHIJ
 Accu
 Adaptor
 Addr
+AnsibleCoreFiltersExtension
 Appender
 Asc
 Asm
@@ -94,6 +95,7 @@ Ord
 PASSTHROUGH
 PLISTS
 PPYTHONHASHSEED
+PROJECTD
 PWD
 PYTHONDONTWRITEBYTECODE
 PYTHONFAULTHANDLER
@@ -101,6 +103,7 @@ PYTHONHASHSEED
 PYTHONUNBUFFERED
 Param
 Params
+Pdf
 Printf
 Prix
 Probs
@@ -164,6 +167,7 @@ argv
 armv
 arn
 arrayable
+ascii
 asdf
 aseprite
 asm
@@ -189,10 +193,12 @@ balancer
 bifrost
 blueviolet
 bool
+boto
 bson
 buf
 bufio
 bugfix
+builtins
 calc
 capf
 ccls
@@ -215,6 +221,7 @@ cls
 cmake
 cmd
 cmp
+cncf
 cnt
 codec
 codecov
@@ -222,6 +229,7 @@ coef
 commenter
 compat
 compatibilities
+concat
 conf
 config
 const
@@ -280,6 +288,7 @@ dockerfile
 dolist
 dotenv
 downloader
+dsn
 dst
 dto
 du
@@ -314,6 +323,7 @@ env
 envar
 environ
 envrc
+envs
 envvar
 eq
 erdtree
@@ -343,6 +353,7 @@ filesystems
 flycheck
 flymake
 flyspell
+fmap
 fmt
 fn
 fo
@@ -442,6 +453,7 @@ iterable
 iterrows
 itertools
 jaeger
+joinpath
 jp
 json
 jsonencode
@@ -560,9 +572,12 @@ ord
 orderless
 os
 ostream
+paginator
 param
 parametrize
 params
+partyinfo
+pathlib
 pb
 pc
 peotry
@@ -581,9 +596,11 @@ popupinfo
 pos
 posframe
 poshandler
+posix
 pragma
 pre
 prec
+preload
 prev
 println
 procs
@@ -600,6 +617,7 @@ provisioner
 ptr
 pvc
 py
+pyarrow
 pycodestyle
 pydantic
 pydocstyle
@@ -623,6 +641,7 @@ repo
 repr
 req
 reqhandler
+reqloader
 reqmodifier
 reqs
 ret
@@ -665,6 +684,7 @@ spotify
 sql
 sqlite
 sqlmock
+sqrt
 src
 ss
 ssl
