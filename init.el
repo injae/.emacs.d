@@ -52,7 +52,7 @@
 ;;     ;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/straight/build/use-package"))
 ;;     (require 'use-package))
 
-(use-package use-package)
+;; (use-package use-package)
 ;; (use-package use-package-ensure-system-package)
 ;; (use-package general :elpaca (:host github :repo "noctuid/general.el"))
 

@@ -8,7 +8,6 @@
     :hook (emacs-startup . global-flycheck-mode)
     :config
     (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-
     ;; flycheck lsp and something
     (defvar-local my/flycheck-local-cache nil)
     (defun my/flycheck-checker-get (fn checker property)
@@ -18,8 +17,9 @@
     (add-hook 'lsp-managed-mode-hook
             (lambda ()
                 (when (derived-mode-p 'python-base-mode)
-                    (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-mypy)))))))
-                ))
+                    (setq my/flycheck-local-cache
+                        '((lsp . ((next-checkers . (python-mypy))))
+                             )))))
 )
 
 (use-package flycheck-package :after flycheck

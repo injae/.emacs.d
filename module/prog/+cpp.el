@@ -34,7 +34,7 @@
                  "hcr" (lambda () (eshell-command "cppm run  ")))
 )
 
-(use-package clang-format  
+(use-package clang-format :disabled
 :after  (c++-mode)
 :init   (add-hook 'c++-mode-hook 'clang-format)
 :general (leader "hccf" 'clang-format-regieon)

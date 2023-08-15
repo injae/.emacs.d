@@ -203,9 +203,7 @@
 ;;; input
 (use-package corfu
     :elpaca (corfu :files (:defaults "extensions/*")
-                  :includes (
-                    corfu-history
-                    corfu-popupinfo))
+                   :includes (corfu-history corfu-popupinfo))
     :after evil-collection
     :general
     (:keymaps 'corfu-map
@@ -287,9 +285,9 @@
 )
 
 
-(use-package cape-yasnippet :elpaca (:host github :repo "elken/cape-yasnippet")
+(use-package yasnippet-capf :elpaca (:host github :repo "elken/yasnippet-capf")
     :after (cape)
-    :config (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+    :config (add-to-list 'completion-at-point-functions #'yasnippet-capf)
     )
 
 (provide '+completion)
