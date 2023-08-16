@@ -131,7 +131,11 @@
     )
 
 (use-package indent-bars :elpaca (:host github :repo "jdtsmith/indent-bars")
-    :hook (prog-mode . indent-bars-mode)
+    :hook ((prog-mode . indent-bars-mode)
+           (yaml-mode . indent-bars-mode)
+           (toml-mode . indent-bars-mode)
+           (json-mode . indent-bars-mode)
+           (jsonian-mode . indent-bars-mode))
     :config
     (setq
         indent-bars-color '(highlight :face-bg t :blend 0.15)
