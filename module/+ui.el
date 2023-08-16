@@ -126,9 +126,24 @@
     :hook  (neotree-mode . hide-mode-line-mode)
 )
 
-(use-package highlight-indentation
+(use-package highlight-indentation :disabled
     :hook (prog-mode . highlight-indentation-mode)
     )
+
+(use-package indent-bars :elpaca (:host github :repo "jdtsmith/indent-bars")
+    :hook (prog-mode . indent-bars-mode)
+    :config
+    (setq
+        indent-bars-color '(highlight :face-bg t :blend 0.15)
+        indent-bars-pattern "."
+        indent-bars-width-frac 0.3
+        indent-bars-pad-frac 0.1
+        indent-bars-zigzag nil
+        indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
+        indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
+        indent-bars-display-on-blank-lines t)
+    )
+
 
 (use-package nyan-mode :disabled
     :custom (nyan-wavy-trail t)
