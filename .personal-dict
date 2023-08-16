@@ -1,4 +1,4 @@
-personal_ws-1.1 en 808 
+personal_ws-1.1 en 810 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -445,6 +445,7 @@ ip
 ipam
 isearch
 isinstance
+iso
 isort
 ispell
 istio
@@ -761,6 +762,7 @@ url
 userinfo
 usize
 usr
+utc
 utcnow
 utf
 util
