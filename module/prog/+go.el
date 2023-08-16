@@ -23,8 +23,8 @@
            (go-ts-mode . lsp-go-install-save-hooks)
            (go-ts-mode . go-formatting-hook))
     :config
-        (require 'dap-dlv-go)
         ;(add-hook 'before-save-hook 'gofmt-before-save)
+        (require 'dap-dlv-go)
 )
 
 (use-package dap-go :ensure dap-mode :after go-mode :disabled
@@ -38,7 +38,7 @@
 ;(advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
 
 (use-package flycheck-golangci-lint :after flycheck
-    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.0")
+    :ensure-system-package ((golangci-lint . "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2")
                             (gocritic . "go install github.com/go-critic/go-critic/cmd/gocritic@latest")
                             (revive . "go install github.com/mgechev/revive@latest")
                             (unparam . "go install mvdan.cc/unparam@latest")
