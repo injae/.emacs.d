@@ -1,4 +1,4 @@
-personal_ws-1.1 en 810 
+personal_ws-1.1 en 816 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -44,10 +44,12 @@ Fatalf
 Fifa
 Fprint
 Fprintf
+GOPATH
 GPP
 GetPlayerIDs
 Getter
 Gi
+Globals
 Goroutine
 Gosched
 GrandPrix
@@ -71,6 +73,7 @@ JSON
 KANIKO
 KRPC
 KST
+LBD
 LDFLAGS
 Laptime
 Laptimes
@@ -276,6 +279,7 @@ desc
 deserialize
 dev
 devshell
+df
 difft
 difftastic
 digga
@@ -481,6 +485,7 @@ len
 letsencrypt
 lfinal
 lhs
+libc
 libra
 lifecycle
 lineno
@@ -513,6 +518,7 @@ minibuffer
 mk
 mkdir
 mkstream
+mmap
 mmcalc
 mmlog
 mmlogic
