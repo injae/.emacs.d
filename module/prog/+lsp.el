@@ -88,11 +88,11 @@
         ;(lsp-ui-sideline-show-diagnostics t)
 )
 
-(use-package treemacs  :config (setq treemacs-resize-icons 22))
-(use-package treemacs-evil  :after (treemacs evil))
-(use-package treemacs-projectile  :after (treemacs projectile))
+(use-package treemacs :disabled :config (setq treemacs-resize-icons 22))
+(use-package treemacs-evil :disabled :after (treemacs evil))
+(use-package treemacs-projectile :disabled :after (treemacs projectile))
 
-(use-package lsp-treemacs
+(use-package lsp-treemacs :disabled
 :after (lsp-mode doom-modeline)
 :config ;(setq lsp-metals-treeview-enable t)
         ;(setq lsp-metals-treeview-show-when-views-received t)

@@ -43,7 +43,7 @@
         (doom-themes-neotree-config)
         (doom-themes-org-config)
         ;(setq doom-themes-treemacs-theme "doom-atom")
-        (doom-themes-treemacs-config)
+        ;(doom-themes-treemacs-config)
         ;(enable-theme 'doom-nord)
 )
 
