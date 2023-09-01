@@ -3,8 +3,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package dash
-    :config (dash-enable-font-lock))
+(use-package dash)
 (use-package f)
 (use-package s)
 
