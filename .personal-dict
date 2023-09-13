@@ -1,4 +1,4 @@
-personal_ws-1.1 en 816 
+personal_ws-1.1 en 818 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -295,6 +295,7 @@ downloader
 dsn
 dst
 dto
+dtype
 du
 dwim
 dyn
@@ -736,6 +737,7 @@ tl
 tls
 todo
 tokio
+tolist
 toml
 tonumber
 toolchain
