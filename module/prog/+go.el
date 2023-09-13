@@ -24,6 +24,7 @@
            (go-ts-mode . go-formatting-hook))
     :config
         ;(add-hook 'before-save-hook 'gofmt-before-save)
+        (setq indent-tabs-mode nil)
         (require 'dap-dlv-go)
 )
 

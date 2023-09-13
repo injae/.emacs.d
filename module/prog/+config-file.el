@@ -68,8 +68,19 @@
     )
 
 (use-package json-reformat
-:commands json-reformat-region
-)
+	:commands json-reformat-region)
+
+(use-package jq-mode
+	:commands jq-interactively)
+
+(use-package jq-ts-mode :after jq-mode
+	:config
+	(add-to-list
+		'treesit-language-source-alist
+		'(jq "https://github.com/nverno/tree-sitter-jq" nil nil nil))
+	)
+
+
 
 (use-package terraform-mode :after exec-path-from-shell
     :ensure-system-package (terraform-ls . "go install github.com/hashicorp/terraform-ls@latest")

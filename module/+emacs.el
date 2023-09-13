@@ -14,7 +14,7 @@
     :config
     (setq ad-redefinition-action 'accept)
     (setq max-lisp-eval-depth 10000)
-    ;;(setq debug-on-error t) ; debug option
+    (setq debug-on-error t) ; debug option
     ;; emacs gc setting
     (setq gc-cons-threshold (* 100 1000000)) ;; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024)) ;; 1mb

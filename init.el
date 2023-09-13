@@ -95,15 +95,15 @@
     ;; Emacs 기본설정
     (load-modules-with-list "~/.emacs.d/module/"
         '( ;; emacs modules
-             emacs font evil
-             git grep-util extension
-             project-manage completion
-	         window   buffer  ui
-             org terminal edit
-             flycheck search
-	         multi-mode util
-             run-command
-             ))
+            emacs font evil
+            git grep-util extension
+            project-manage completion
+            window   buffer  ui
+            org terminal edit
+            flycheck search
+            multi-mode util
+            run-command
+            ))
     ;; programming 설정
     (load-modules-with-list "~/.emacs.d/module/prog/"
         '( ;; programming modules
@@ -123,8 +123,9 @@
 ;; 개인 설정
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/private/"))
 (defvar private-config-file "~/.emacs.d/private/token.el")
-(when (file-exists-p private-config-file)
-      (load-file private-config-file))
+(when
+    (file-exists-p private-config-file)
+    (load-file private-config-file))
 
 (use-package filenotify :elpaca nil :after (exec-path-from-shell org)
     :ensure-system-package (watchexec . "cargo install watchexec-cli")

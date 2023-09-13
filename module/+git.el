@@ -46,6 +46,14 @@
 ;:hook (emacs-startup . global-blamer-mode)
 )
 
+(use-package difftastic
+    :config
+    (eval-after-load 'magit-diff
+        '(transient-append-suffix 'magit-diff '(-1 -1)
+        [("D" "Difftastic diff (dwim)" difftastic-magit-diff)
+            ("S" "Difftastic show" difftastic-magit-show)]))
+    )
+
 (use-package git-timemachine)
 
 (provide '+git)

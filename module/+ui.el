@@ -6,6 +6,11 @@
 
 (use-package all-the-icons)
 
+(use-package all-the-icons-nerd-fonts :elpaca (:host github :repo "mohkale/all-the-icons-nerd-fonts")
+    :after all-the-icons
+    :config (all-the-icons-nerd-fonts-prefer)
+    )
+
 (use-package all-the-icons-ibuffer
 :after all-the-icons
 :hook (ibuffer-mode . all-the-icons-ibuffer-mode)
@@ -40,11 +45,11 @@
 (use-package doom-themes
 :init (setq custom-safe-themes t)
 :config (load-theme   'doom-vibrant t)
-        (doom-themes-neotree-config)
-        (doom-themes-org-config)
-        ;(setq doom-themes-treemacs-theme "doom-atom")
-        ;(doom-themes-treemacs-config)
-        ;(enable-theme 'doom-nord)
+    (doom-themes-neotree-config)
+    (doom-themes-org-config)
+    ;(setq doom-themes-treemacs-theme "doom-atom")
+    (doom-themes-treemacs-config)
+    ;(enable-theme 'doom-nord)
 )
 
 (use-package nano-theme :disabled
@@ -100,7 +105,8 @@
 )
 
 (use-package rainbow-delimiters
-:hook ((prog-mode text-mode) . rainbow-delimiters-mode)
+	:hook ((prog-mode . rainbow-delimiters-mode)
+		   (text-mode . rainbow-delimiters-mode))
 )
 
 (use-package modern-fringes :disabled
@@ -141,11 +147,11 @@
         indent-bars-color '(highlight :face-bg t :blend 0.15)
         indent-bars-pattern "."
         indent-bars-width-frac 0.3
-        indent-bars-pad-frac 0.1
+        indent-bars-pad-frac 0.3
         indent-bars-zigzag nil
         indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
         indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
-        indent-bars-display-on-blank-lines t)
+        indent-bars-display-on-blank-lines nil)
     )
 
 
