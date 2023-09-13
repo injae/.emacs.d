@@ -34,5 +34,7 @@
     :config (popwin-mode 1)
     )
 
+(use-package burly)
+
 (provide '+buffer)
 ;;; +buffer.el ends here

@@ -177,6 +177,7 @@
 
 (use-package consult-projectile)
 (use-package consult-flycheck)
+;(use-package consult-jq)
 
 (use-package marginalia
     :functions marginalia-mode
@@ -222,7 +223,7 @@
         ([backtab] . corfu-previous))
     :custom
     (corfu-auto t)
-    (corfu-auto-prefix 2)
+    (corfu-auto-prefix 1)
     (corfu-auto-delay 0.25)
     (corfu-count 14)
     (corfu-scroll-margin 4)
@@ -243,7 +244,11 @@
 
 ;; Completion
 (use-package orderless
-    :custom (completion-styles '(orderless partial-completion basic)))
+    ;:custom (completion-styles '(orderless partial-completion basic))
+    :custom ((completion-styles '(orderless basic))
+             (completion-category-defaults nil)
+             (completion-category-overrides '((file (styles . (partial-completion))))))
+    )
 
 
 (use-package affe :after (consult orderless)
