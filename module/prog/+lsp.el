@@ -142,11 +142,19 @@
     (add-hook 'dap-stopped-hook 'my/show-debug-windows)
 )
 
-(use-package lsp-grammarly  :disabled
+(use-package lsp-grammarly :disabled
 :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
 )
 
-(use-package consult-lsp)
+(use-package consult-lsp
+    :after (lsp-mode consult)
+    :bind (:map lsp-mode-map
+            ([remap xref-find-apropos] . consult-lsp-symbols))
+    :general (leader
+                 "ls" 'consult-lsp-symbols
+                 "lf" 'consult-lsp-file-symbols
+                 "ld" 'consult-lsp-diagnostics)
+    )
 
 (use-package eglot :disabled
     :hook (

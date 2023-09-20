@@ -6,21 +6,19 @@
 (use-package go-mode
     :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                             (godef . "go install github.com/rogpeppe/godef@latest")
+                            (goimports . "go install golang.org/x/tools/cmd/goimports@latest")
                             (gofumpt . "go install mvdan.cc/gofumpt@latest"))
     :mode ("\\.go\\''" . go-mode)
     :preface
-    (defun go-formatting-hook () (setq format-all-formatters '("Go")))
+    (defun go-formatting-hook () (setq format-all-formatters '(("Go" gofmt goimports))))
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
         (add-hook 'before-save-hook #'lsp-organize-imports))
-
-
-
     :hook ((go-mode . (lambda () (lsp-deferred)))
-           (go-mode . lsp-go-install-save-hooks)
+           ;(go-mode . lsp-go-install-save-hooks)
            (go-mode . go-formatting-hook)
            (go-ts-mode . (lambda () (lsp-deferred)))
-           (go-ts-mode . lsp-go-install-save-hooks)
+           ;(go-ts-mode . lsp-go-install-save-hooks)
            (go-ts-mode . go-formatting-hook))
     :config
         ;(add-hook 'before-save-hook 'gofmt-before-save)
