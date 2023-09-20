@@ -21,18 +21,18 @@
 ;;; minibuffer
 (use-package vertico
     :elpaca (vertico :files (:defaults "extensions/*")
-                       :includes (
-                          vertico-indexed
-                          vertico-mouse
-                          vertico-quick
-                          vertico-directory
-                          vertico-repeat
-                          vertico-buffer
-                          vertico-multiform
-                          vertico-reverse
-                          vertico-flat
-                          vertico-grid
-                          vertico-unobtrusive))
+                     :includes (
+                        vertico-indexed
+                        vertico-mouse
+                        vertico-quick
+                        vertico-directory
+                        vertico-repeat
+                        vertico-buffer
+                        vertico-multiform
+                        vertico-reverse
+                        vertico-flat
+                        vertico-grid
+                        vertico-unobtrusive))
     :general (:keymaps 'vertico-map
              :state 'insert
              "<escape>" #'evil-normal-state)
