@@ -1,4 +1,4 @@
-personal_ws-1.1 en 818 
+personal_ws-1.1 en 824 
 ABCDEFGHIJ
 Accu
 Adaptor
@@ -162,6 +162,7 @@ apache
 apheleia
 api
 apiserver
+arange
 arg
 argc
 argparse
@@ -175,6 +176,7 @@ asdf
 aseprite
 asm
 ast
+astype
 async
 attr
 attrs
@@ -507,6 +509,7 @@ matchable
 matcher
 matchmob
 matchtime
+matplotlib
 maxdev
 mb
 mccabe
@@ -580,6 +583,7 @@ ord
 orderless
 os
 ostream
+otype
 paginator
 param
 parametrize
@@ -644,6 +648,7 @@ randint
 readme
 recentf
 redis
+remapper
 removeprefix
 repo
 repr
@@ -672,6 +677,7 @@ scaler
 schemas
 sdk
 sdl
+seaborn
 seoul
 sep
 serde
