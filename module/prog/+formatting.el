@@ -17,7 +17,6 @@
     (apheleia-global-mode +1)
     )
 
-
 ;;(use-package caser)
 
 (provide '+formatting)

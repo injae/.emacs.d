@@ -28,6 +28,7 @@
 (use-package flyspell :elpaca nil
     :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
                      "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
+
     :hook ((prog-mode . flyspell-mode)
            (text-mode . flyspell-mode))
     :custom (ispell-dictionary   "en_US")
@@ -53,10 +54,10 @@
 
 (use-package consult-flyspell :after (flyspell-correct consult)
     :custom
-    (consult-flyspell-select-function nil
-          consult-flyspell-set-point-after-word t
-          consult-flyspell-always-check-buffer nil)
-    (consult-flyspell-correct-function (lambda () (flyspell-correct-at-point) (consult-flyspell))))
+          (consult-flyspell-select-function      nil
+           consult-flyspell-set-point-after-word t
+           consult-flyspell-always-check-buffer  nil)
+          (consult-flyspell-correct-function (lambda () (flyspell-correct-at-point) (consult-flyspell))))
 
 (use-package jinx :disabled
     ;; https://github.com/spellcheck-ko/hunspell-dict-ko

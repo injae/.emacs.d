@@ -30,7 +30,7 @@
     (tooltip-mode -1)
     (xterm-mouse-mode)
 
-    ;(set-frame-parameter nil 'alpha 0.95)
+    (set-frame-parameter nil 'alpha 0.95)
     (set-variable 'cursor-type '(hbar . 10))
 
     ; no # ~ file
