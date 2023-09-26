@@ -4,8 +4,8 @@
 ;;; Code:
 
 (use-package python-mode :after exec-path-from-shell
-    :mode (("\\.py\\'" . python-mode)
-           ("\\.wsgi$" . python-mode))
+    :mode (("\\.py\\'" . python-ts-mode)
+           ("\\.wsgi$" . python-ts-mode))
     :preface
     (defun python-formatting-hook ()
         (setq format-all-formatters '(("Python" isort black))))
@@ -48,6 +48,12 @@
     )
 
 (use-package jinja2-mode)
+
+(use-package jupyter
+    :init
+    :config
+    )
+
 
 (provide '+python)
 ;;; +python.el ends here

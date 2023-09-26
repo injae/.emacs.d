@@ -13,7 +13,7 @@
 (use-package cov )
 ;(use-package coverlay  :disabled)
 
-(use-package codemetrics :elpaca (:host github :repo "jcs-elpa/codemetrics"))
+;; (use-package codemetrics :elpaca (:host github :repo "jcs-elpa/codemetrics"))
 
 (provide '+coverage)
 ;;; +coverage.el ends here

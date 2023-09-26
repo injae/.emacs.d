@@ -7,8 +7,10 @@
     :ensure-system-package ((gopls . "go install golang.org/x/tools/gopls@latest")
                             (godef . "go install github.com/rogpeppe/godef@latest")
                             (goimports . "go install golang.org/x/tools/cmd/goimports@latest")
-                            (gofumpt . "go install mvdan.cc/gofumpt@latest"))
-    :mode ("\\.go\\''" . go-mode)
+                            (gofumpt . "go install mvdan.cc/gofumpt@latest")
+                            (go-coverage . "go install github.com/gojekfarm/go-coverage@latest"))
+    :mode (("\\.go\\''"    . go-mode)
+           ("\\go.mod\\''" . go-mod-mode))
     :preface
     (defun go-formatting-hook () (setq format-all-formatters '(("Go" gofmt goimports))))
     (defun lsp-go-install-save-hooks ()
@@ -22,7 +24,6 @@
            (go-ts-mode . go-formatting-hook))
     :config
         ;(add-hook 'before-save-hook 'gofmt-before-save)
-        (setq indent-tabs-mode nil)
         (require 'dap-dlv-go)
 )
 

@@ -142,6 +142,16 @@
            (toml-mode . indent-bars-mode)
            (json-mode . indent-bars-mode)
            (jsonian-mode . indent-bars-mode))
+    :custom
+    ;; tree-sitter support
+    (indent-bars-treesit-support t)
+    (indent-bars-no-descend-string t)
+    (indent-bars-treesit-ignore-blank-lines-types '("module"))
+    (indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
+                        list list_comprehension
+                        dictionary dictionary_comprehension
+                        parenthesized_expression subscript)))
+    
     :config
     (setq
         indent-bars-color '(highlight :face-bg t :blend 0.15)
