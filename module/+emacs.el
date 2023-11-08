@@ -14,7 +14,7 @@
     :config
     (setq ad-redefinition-action 'accept)
     (setq max-lisp-eval-depth 10000)
-    (setq debug-on-error t) ; debug option
+    (setq debug-on-error nil) ; debug option
     ;; emacs gc setting
     (setq gc-cons-threshold (* 100 1000000)) ;; emacs speed up setting in 16GB RAM
     (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -30,7 +30,7 @@
     (tooltip-mode -1)
     (xterm-mouse-mode)
 
-    (set-frame-parameter nil 'alpha 0.95)
+    ;; (set-frame-parameter nil 'alpha 0.95)
     (set-variable 'cursor-type '(hbar . 10))
 
     ; no # ~ file

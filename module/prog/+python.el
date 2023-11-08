@@ -8,7 +8,7 @@
            ("\\.wsgi$" . python-ts-mode))
     :preface
     (defun python-formatting-hook ()
-        (setq format-all-formatters '(("Python" isort black))))
+        (setq format-all-formatters '(("Python" black))))
     :hook (python-base-mode . python-formatting-hook)
     :ensure-system-package ((pylint . "pip install pylint pylint-strict-informational")
                             (mypy   . "pip install mypy")

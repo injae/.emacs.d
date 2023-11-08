@@ -13,6 +13,23 @@
     (projectile-mode)
 )
 
+(use-package perspective :after projectile
+    :bind (("C-x b" . persp-switch-to-buffers)
+           ("C-x k" . persp-kill-buffer*))
+    :general (leader
+                "bs" '(persp-switch-to-buffer* :wk "switch buffer")
+                )
+    :custom
+    (persp-mode-prefix-key (kbd "C-c M-p"))
+    ;(persp-state-default-file (concat user-emacs-directory "var/persp-state"))
+    :init
+    (persp-mode)
+    :config
+    ;(add-hook 'kill-emacs-hook #'persp-state-save)
+    ;(persp-state-load persp-state-default-file)
+    )
+
+
 ; brew install coreutils fd poppler ffmpegthumbnailer mediainfo imagemagick
 (use-package dirvish
     :ensure-system-package ((fd . "brew install fd"))

@@ -27,5 +27,6 @@
                  "jw" '(avy-goto-char :wk "Jump to word"))
 )
 
+
 (provide '+search)
 ;;; +search.el ends here

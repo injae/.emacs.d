@@ -3,9 +3,13 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package format-all
+(use-package format-all :after exec-path-from-shell
     :hook ((prog-mode . format-all-mode)
            (format-all-mode . format-all-ensure-formatter))
+    ;:custom (format-all-formatters
+    ;            '(("Python"
+    ;                  ("ruff" "check" ".")
+    ;                  ("ruff" "format" "."))))
     )
 
 (use-package apheleia :after exec-path-from-shell :disabled

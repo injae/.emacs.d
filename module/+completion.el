@@ -84,12 +84,12 @@
 
 (use-package consult :after (projectile evil-collection)
     :general (leader
-                 "fp" '(consult-projectile-find-file   :wk "Search in Project")
-                 "fo" '(find-file-other-window         :wk "Open Other Window")
-                 "fG" '(consult-ripgrep                :wk "Grep in Project")
-                 "bs" '(consult-buffer                 :wk "Search Buffer")
-                 "bS" '(consult-project-switch         :wk "Search Buffer in Project")
-                 )
+                "fp" '(consult-projectile-find-file   :wk "Search in Project")
+                "fo" '(find-file-other-window         :wk "Open Other Window")
+                "fG" '(consult-ripgrep                :wk "Grep in Project")
+                ;"bs" '(consult-buffer                 :wk "Search Buffer")
+                "bS" '(consult-projectile             :wk "Search Buffer in Project")
+                )
     ;; Replace bindings. Lazily loaded due by `use-package'.
     :bind (;; C-c bindings (mode-specific-map)
             ("C-c M-x" . consult-mode-command)

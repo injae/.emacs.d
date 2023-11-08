@@ -3,6 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(setq flymake-mode nil)
+
 (use-package flycheck :after exec-path-from-shell
     :custom (flycheck-clang-language-standard "c++17")
     :hook (emacs-startup . global-flycheck-mode)
@@ -28,7 +30,6 @@
 (use-package flyspell :elpaca nil
     :general (leader "sk" '((lambda () (interactive) (ispell-change-dictionary "ko_KR") (flyspell-buffer)) :wk "Spell Dictionary Korean")
                      "se" '((lambda () (interactive) (ispell-change-dictionary "en_US") (flyspell-buffer)) :wk "Spell Dictionary English"))
-
     :hook ((prog-mode . flyspell-mode)
            (text-mode . flyspell-mode))
     :custom (ispell-dictionary   "en_US")

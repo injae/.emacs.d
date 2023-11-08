@@ -112,7 +112,7 @@
               coverage copilot tools
             ;; language support
               cpp lisp csharp
-              rust haskell python
+              rust python ;; haskell
               flutter web ruby
               jvm  go  nix lua
               config-file docker

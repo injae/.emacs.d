@@ -12,6 +12,5 @@
        (haskell-literate-mode . (lambda () (lsp))))
 )
 
-
 (provide '+haskell)
 ;;; +haskell.el ends here

@@ -37,6 +37,7 @@
     ;(lsp-mode)
     ;corfu + lsp pause bugfix
     (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+    (setq lsp-pyright-multi-root nil)
     (setq lsp-go-use-gofumpt t)
     (setq lsp-gopls-hover-kind "NoDocumentation")
     (lsp-register-custom-settings
