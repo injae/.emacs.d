@@ -116,7 +116,7 @@
               flutter web ruby
               jvm  go  nix lua
               config-file docker
-              formatting
+              formatting bazel
              ))
     )
 

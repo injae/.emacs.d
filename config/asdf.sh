@@ -29,3 +29,7 @@ asdf global tfenv latest
 asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
 asdf install terraform latest
 asdf global terraform latest
+
+asdf plugin-add bazel https://github.com/mrinalwadhwa/asdf-bazel.git
+asdf install bazel 6.2.1
+asdf global bazel 6.2.1
