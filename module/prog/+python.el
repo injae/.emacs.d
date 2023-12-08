@@ -15,7 +15,6 @@
                             (flake8 . "pip install flake8")
                             (isort . "pip install isort")
                             (black . "pip install black")
-                            ;; (pylsp  . "pip install python-lsp-server[all] && pip install pylsp-mypy python-lsp-black pylsp-rope python-lsp-ruff")
                                )
     :custom (python-indent-offset 4)
     ;; :config

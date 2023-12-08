@@ -3,21 +3,21 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package format-all :after exec-path-from-shell
+(use-package format-all :after exec-path-from-shell :disabled
     :hook ((prog-mode . format-all-mode)
-           (format-all-mode . format-all-ensure-formatter))
-    ;:custom (format-all-formatters
-    ;            '(("Python"
-    ;                  ("ruff" "check" ".")
-    ;                  ("ruff" "format" "."))))
+              (format-all-mode . format-all-ensure-formatter))
+                                        ;:custom (format-all-formatters
+                                        ;            '(("Python"
+                                        ;                  ("ruff" "check" ".")
+                                        ;                  ("ruff" "format" "."))))
     )
 
-(use-package apheleia :after exec-path-from-shell :disabled
+(use-package apheleia :after exec-path-from-shell
     :config
-    (setf (alist-get 'isort apheleia-formatter)
-        '("isort" "--stdout" "-"))
-    (setf (alist-get 'python-mode apheleia-mode-alist)
-        '(isort black))
+    ;; (setf (alist-get 'isort apheleia-formatter)
+    ;;     '("isort" "--stdout" "-"))
+    ;; (setf (alist-get 'python-mode apheleia-mode-alist)
+    ;;     '(isort black))
     (apheleia-global-mode +1)
     )
 

@@ -1,16 +1,24 @@
-export LANG=ko_KR.UTF-8 # emacs libvterm korea encoding fix
+
+#!/bin/zsh
+
+export LANG="en_US.UTF-8" 
 export LANGUAGE="ko_KR.UTF-8"
 
-#source "$HOME/.zinit/zinit.zsh"
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-#zicompinit
+zicompinit
+
+autoload -Uz compinit
+compinit
+
+autoload -U bashcompinit
+bashcompinit
+
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 ZSH_THEME="lambda"
-
 setopt promptsubst
 
 zinit light-mode for \
@@ -25,15 +33,10 @@ zinit snippet OMZP::command-not-found
 zinit snippet OMZP::colored-man-pages
 
 zinit ice as"completion"
-#zinit snippet OMZP::docker/_docker
+zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
-zinit ice blockf atpull'zinit creinstall -q .'
-
-#autoload compinit
-#compinit
-
-zinit light djui/alias-tips
 zinit light zsh-users/zsh-completions
+zinit light djui/alias-tips
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
 
@@ -48,34 +51,16 @@ zinit load agkozak/zsh-z
 
 eval "$(starship init zsh)"
 
-
-#export PYENV_ROOT="$HOME/.pyenv"
-#command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-#eval "$(pipenv --completion)"
-#alias python='python3'
-#alias pip='pip3'
-
-# neovim setting
-#export EDITOR=/usr/local/bin/nvim
-#alias vim='lvim'
-#alias vi='lvim'
-#alias vimdiff="lvim -d"
-#alias nvim='lvim'
-
-# direnv
-#eval "$(direnv hook zsh)"
-
-
 # emacs setting
 export EDITOR=emacsclient
+alias edit=emacsclient
 #export EDITOR=nvim
-export VISUAL=$EDITOR
+#export VISUAL=$EDITOR
 
 # emacs vterm setting
-export TERM=xterm-256color    
-unsetopt prompt_cr prompt_sp
+#export TERM=xterm-256color    
+#unsetopt prompt_cr prompt_sp
+
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%m:%2~\a" }
 
@@ -95,62 +80,42 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
 
-vterm_prompt_end() {
-
-    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
-
-}
-setopt PROMPT_SUBST
-PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
-#
-
-#vterm_cmd() {
-#    local vterm_elisp
-#    vterm_elisp=""
-#    while [ $# -gt 0 ]; do
-#        vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
-#        shift
-#    done
-#    vterm_printf "51;E$vterm_elisp"
-#}
-#========
-
 # zsh-iterm-touchbar setting
 TOUCHBAR_GIT_ENABLED=true
 YARN_ENABLED=true
 
-# Ruby setting
-# macos home-brew rbenv setting
-# rvm setting
-# macos don't use apple clang
 case "$OSTYPE" in
 darwin*)
-    # ...
+    # c/cpp compiler
+    alias clang=clang-17
+    alias clang++=clang++-17
+    alias gcc=gcc-13
+    alias g++=g++-13
 
+    # vm controller
+    alias vmrun="/Applications/VMWare\ Fusion.app/Contents/Library/vmrun"
+    alias vmsee="vmrun list"
+    alias vmstart="vmrun start ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm nogui"
+    alias vmstop="vmrun suspend ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm"
+
+    # ruby open-ssl fix
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-    alias clang=clang-13
-    alias clang++=clang++-13
-    alias gcc=gcc-11
-    alias g++=g++-11
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-    [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+    # llvm stable
+    export PATH="/usr/local/opt/llvm/bin:$PATH"
+    export LDFLAGS="-L/usr/local/opt/llvm/lib"
+
+    export PATH="/usr/local/opt/openjdk/bin:$PATH"
+    export PATH="/usr/local/sbin:$PATH"
+
+    export PATH=~/.local/bin:$PATH
 ;;
 linux*)
-    #alias clang=clang-13
-    #alias clang++=clang++-13
+    # alias clang=clang-13
+    # alias clang++=clang++-13
 
-    #export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
-    #export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
-    #export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
-    #export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PATH+:$PATH}";
-    #export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
-    #export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
-    #export NVM_DIR="$HOME/.nvm"
-    #[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-    #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-    . /opt/asdf-vm/asdf.sh
-    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+    # wsl vpn-kit start command
+    alias vpn-start="wsl.exe -d wsl-vpnkit --cd /app service wsl-vpnkit start"
 ;;
 dragonfly*|freebsd*|netbsd*|openbsd*)
     # ...
@@ -163,6 +128,7 @@ export CC=clang
 export CXX=clang++
 export AR=llvm-ar
 export RANLIB=llvm-ranlib
+
 alias CC=$CC
 alias CXX=$CXX
 alias cc=$CC
@@ -170,20 +136,59 @@ alias cc=$CC
 alias ld=$LD
 alias ar=$AR
 alias ranlib=$RANLIB
+
 # more fast system command , use rust base command
-alias ls='exa -g --time-style=long-iso'
-alias cat='bat'
-alias find='fd'
-alias grep='rg'
-alias ps='procs'
-alias top='ytop'
-#alias python='rustpython'
+if [ -x "$(command -v exa)" ]; then
+    alias ls='exa -g --time-style=long-iso'
+fi
+if [ -x "$(command -v bat)" ]; then
+    alias cat='bat'
+fi
+if [ -x "$(command -v fd)" ]; then
+    alias find='fd'
+fi
+if [ -x "$(command -v rg)" ]; then
+    alias grep='rg'
+fi
+if [ -x "$(command -v procs)" ]; then
+    alias ps='procs'
+fi
+if [ -x "$(command -v ytop)" ]; then
+    alias top='ytop'
+fi
+if [ -x "$(command -v et)" ]; then
+    alias tree='et -I'
+fi
+if [ -x "$(command -v mcfly)" ]; then
+    eval "$(mcfly init zsh)"
+fi
+
+alias ppytest='poetry run pytest'
+alias pr='poetry run python'
 
 # kuberneties setting
-#source "$(kubectl completion zsh)"
+# source "$(kubectl completion zsh)"
 
-alias vmrun='/Applications/VMWare\ Fusion.app/Contents/Library/vmrun'
-alias vmsee='vmrun list'
-alias vmstart='vmrun start ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm nogui'
-alias vmstop='vmrun suspend ~/Virtual\ Machines.localized/Windows\ 10\ x64.vmwarevm'
-alias vpn-start='wsl.exe -d wsl-vpnkit --cd /app service wsl-vpnkit start'
+export PATH="$PATH:$HOME/.ghcup/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/vcpkg"
+export PATH="$PATH:$HOME/.local/bin"
+
+export PATH="$PATH:$HOME/.cppm/bin"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$HOME/.cppm/local/lib/pkg-config:/usr/local/opt/libpq/lib/pkgconfig"
+# openjdk setting
+
+
+vterm_prompt_end() {
+    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+}
+setopt PROMPT_SUBST
+PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+eval "$(register-python-argcomplete pipx)"
+
+# rtx setting
+eval "$(rtx activate zsh)"
+export PATH="$PATH:$HOME/.local/share/rtx/shims"

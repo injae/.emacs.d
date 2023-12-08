@@ -3,6 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(use-package daemons)
+
 (use-package try :defer t)
 
 (use-package sudo-mode :elpaca nil :no-require t

@@ -5,7 +5,7 @@
 
 (setq flymake-mode nil)
 
-(use-package flycheck :after exec-path-from-shell
+(use-package flycheck :after (exec-path-from-shell projectile)
     :custom (flycheck-clang-language-standard "c++17")
     :hook (emacs-startup . global-flycheck-mode)
     :config

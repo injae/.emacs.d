@@ -3,11 +3,9 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package lsp-mode :elpaca (:host github :repo "emacs-lsp/lsp-mode")
-;; :after exec-path-from-shell
+(use-package lsp-mode ;:elpaca (:host github :repo "emacs-lsp/lsp-mode")
+;:after (exec-path-from-shell projectile)
 ;:commands (lsp lsp-deferred)
-:hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
-       (lsp-mode  . lsp-enable-which-key-integration))
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
                  "pp" '(xref-go-back                    :wk "lsp pop")
                  "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
@@ -15,9 +13,11 @@
                  "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
-        (lsp-enable-file-watchers nil)
+        (lsp-enable-file-watchers t)
+        (lsp-file-watch-threshold 10000)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
+        ;(lsp-auto-guess-root t)
         (lsp-response-timeout 25)
         (lsp-eldoc-render-all nil)
         (lsp-lens-enable t)
@@ -27,27 +27,47 @@
         (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-headerline-breadcrumb-enable-diagnostics nil)
         (lsp-completion-provider :none) ; with corfu
-
         ;(lsp-rust-analyzer-cargo-watch-command "clipy")
 :init
     (defun my/lsp-mode-setup-completion ()
         (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(orderless)))
+:hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
+       (lsp-mode            . lsp-enable-which-key-integration))
 :config
-    ;(lsp-mode)
-    ;corfu + lsp pause bugfix
-    (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+    ;;(lsp-mode)
+    ;;corfu + lsp pause bugfix
+    ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+    (dolist (dir '("[/\\\\]\\.ccls-cache\\'"
+                    "[/\\\\]\\.mypy_cache\\'"
+                    "[/\\\\]\\.pytest_cache\\'"
+                    "[/\\\\]\\.cache\\'"
+                    "[/\\\\]\\.clwb\\'"
+                    "[/\\\\]__pycache__\\'"
+                    "[/\\\\]bazel-bin\\'"
+                    "[/\\\\]bazel-code\\'"
+                    "[/\\\\]bazel-genfiles\\'"
+                    "[/\\\\]bazel-out\\'"
+                    "[/\\\\]bazel-testlogs\\'"
+                    "[/\\\\]third_party\\'"
+                    "[/\\\\]third-party\\'"
+                    "[/\\\\]buildtools\\'"
+                    "[/\\\\]out\\'"
+                    "[/\\\\]build\\'"
+                    ))
+        (push dir lsp-file-watch-ignored-directories))
+    ;; (add-to-list 'lsp-file-watch-ignored-directories "bazel-")
     (setq lsp-pyright-multi-root nil)
     (setq lsp-go-use-gofumpt t)
     (setq lsp-gopls-hover-kind "NoDocumentation")
     (lsp-register-custom-settings
         '(("gopls.staticcheck" t t)
           ("gopls.allExperiments" t t)
-          ("gopls.usePlaceholders" t t)
+          ;;("gopls.usePlaceholders" t t)
           ("rust-analyzer.cargo.runBuildScript" t t)
-          ;("pylsp.plugins.black.enabled" t t)
-          ;("pylsp.plugins.ruff.enabled" t t)
-          ;("pylsp.plugins.rope_autoimport.enabled" t t)
+          ;;("pylsp.plugins.black.enabled" t t)
+          ;;("pylsp.plugins.ruff.enabled" t t)
+          ;;("pylsp.plugins.rope_autoimport.enabled" t t)
           ))
 
     (setq lsp-go-analyses
@@ -62,7 +82,7 @@
             :new-connection (lsp-stdio-connection '("rnix-lsp"))
             :major-modes '(nix-mode)
             :server-id 'nix))
-   ;(setq lsp-go-gopls-placeholders nil)
+   (setq lsp-go-gopls-placeholders nil)
 )
 
 (use-package lsp-ui :elpaca (:host github :repo "emacs-lsp/lsp-ui")
@@ -90,17 +110,17 @@
 )
 
 (use-package treemacs :disabled :config (setq treemacs-resize-icons 22))
-(use-package treemacs-evil :disabled :after (treemacs evil))
-(use-package treemacs-projectile :disabled :after (treemacs projectile))
+(use-package treemacs-evil :after (treemacs evil))
+(use-package treemacs-projectile :after (treemacs projectile))
 
-(use-package lsp-treemacs :disabled
+(use-package lsp-treemacs
 :after (lsp-mode doom-modeline)
 :config ;(setq lsp-metals-treeview-enable t)
         ;(setq lsp-metals-treeview-show-when-views-received t)
         (lsp-treemacs-sync-mode 1)
 )
 
-(use-package dap-mode :elpaca (:host github :repo "emacs-lsp/dap-mode")
+(use-package dap-mode :disabled
 :after lsp-mode
 :commands (dap-debug)
 :general (leader "dd" 'dap-debug)

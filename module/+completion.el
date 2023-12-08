@@ -87,7 +87,7 @@
                 "fp" '(consult-projectile-find-file   :wk "Search in Project")
                 "fo" '(find-file-other-window         :wk "Open Other Window")
                 "fG" '(consult-ripgrep                :wk "Grep in Project")
-                ;"bs" '(consult-buffer                 :wk "Search Buffer")
+                "bs" '(consult-buffer                 :wk "Search Buffer")
                 "bS" '(consult-projectile             :wk "Search Buffer in Project")
                 )
     ;; Replace bindings. Lazily loaded due by `use-package'.
@@ -229,6 +229,7 @@
     (corfu-scroll-margin 4)
     (corfu-quit-no-match t)
     (corfu-preselect-first t)
+    (corfu-prescient-mode 1)
     (corfu-cycle t)
     (corfu-preselect 'prompt)
     :hook ((emacs-startup . global-corfu-mode)
@@ -284,6 +285,7 @@
     ;; Add `completion-at-point-functions', used by `completion-at-point'.
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-history)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
     :config
     (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map)

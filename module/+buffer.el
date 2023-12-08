@@ -20,7 +20,7 @@
 )
 
 ;; buffer log
-(use-package command-log-mode )
+(use-package command-log-mode)
 
 (use-package buffer-zoom :elpaca nil
 :general (leader "tu" 'text-scale-increase
@@ -30,11 +30,13 @@
 ;; buffer diff
 (use-package vdiff)
 
+(use-package ztree)
+
 (use-package popwin :disabled
     :config (popwin-mode 1)
     )
 
-(use-package burly)
+(use-package burly :disabled)
 
 (provide '+buffer)
 ;;; +buffer.el ends here

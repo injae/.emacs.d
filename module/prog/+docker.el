@@ -13,18 +13,26 @@
 :mode ("Dockerfile\\'" . dockerfile-mode)
 )
 
+(use-package docker-compose-mode)
+
 (use-package kubernetes
     :commands (kubernetes-overview)
     :config
     (setq kubernetes-poll-frequency 3600)
     (setq kubernetes-redraw-frequency 3600)
-)
+    )
 
-(use-package k8s-mode
-:hook (k8s-mode . yas-minor-mode)
-)
+(use-package kubernetes-evil :after (kubernetes evil))
 
-(use-package docker-compose-mode)
+(use-package kubel :after vterm
+    :commands (kubel)
+    :config (kubel-vterm-setup)
+    )
+(use-package kubel-evil :after (kubel evil))
+
+
+
+(use-package kubedoc)
 
 (provide '+docker)
 ;;; +docker.el ends here

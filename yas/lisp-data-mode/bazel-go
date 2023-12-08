@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: 
+# key: bazel-go
+# --
+
+;;; Directory Local Variables            -*- no-byte-compile: t -*-
+;;; For more information see (info "(emacs) Directory Variables")
+((go-mode
+  . ((eval
+      . (progn
+          (setq lsp-go-env
+                `((GOPACKAGESDRIVER . ,(concat (projectile-project-root) "$1/gopackagesdriver.sh"))
+                  (GOPACKAGESDRIVER_BAZEL_QUERY . "kind(go_*, //...)")))
+          (setq lsp-go-directory-filters ["-node_modules" "-bazel-bin" "-bazel-out" "-bazel-src"]))))))

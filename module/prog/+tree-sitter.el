@@ -38,6 +38,13 @@
 ;;     (add-hook 'tree-sitter-after-on-hook 'ts-fold-indicators-mode)
 ;; )
 
+(use-package treesit-auto :disabled
+    ;:custom (treesit-auto-install 'prompt)
+    :config
+    ;; (treesit-auto-add-to-auto-mode-alist 'all)
+    (global-treesit-auto-mode)
+    )
+
 (use-package treesit :elpaca nil
     :if (treesit-available-p)
     :config

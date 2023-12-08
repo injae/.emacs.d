@@ -8,7 +8,7 @@
     :ensure-system-package (rustup . "curl https://sh.rustup.rs -sSf | sh")
                            ;; (rust-analyzer . "rustup component add rust-analyzer")
     :mode ("\\.rs\\'" . rustic-mode)
-    :hook (rust-mode . lsp)
+    :hook (rust-mode . lsp-deferred)
     :general (leader "hrf" 'rust-format-buffer)
     :init (defun ij/rustic-mode-hook ()
               (when buffer-file-name (setq-local buffer-save-without-query t)))

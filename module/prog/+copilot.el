@@ -6,6 +6,7 @@
 (use-package copilot :elpaca (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
     :hook ((prog-mode . copilot-mode)
            (text-mode . copilot-mode))
+    :custom (copilot-indent-warning-suppress t)
     :preface
     ; (defun my/copilot-tab ()
     ;     "Tab command that will complet with copilot if a completion is available.

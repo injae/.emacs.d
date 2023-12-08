@@ -3,31 +3,36 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package projectile :after evil
+(use-package projectile :after (evil exec-path-from-shell)
 :config
-    (setq projectile-require-project-root nil)
-	(setq projectile-enable-caching t)
+    ;(setq projectile-require-project-root nil)
+	;;(setq projectile-enable-caching t)
 	(setq projectile-current-project-on-switch t)
-	(setq projectile-globally-ignored-directories (append '("^\\eln-cache$" "^\\.emacs.d/straight$") projectile-globally-ignored-directories))
+	(setq projectile-globally-ignored-directories
+        (append '("^\\eln-cache$" "^\\.emacs.d/straight$") projectile-globally-ignored-directories))
 	(evil-ex-define-cmd "kp" 'projectile-kill-buffers)
+    (projectile-register-project-type 'bazel '("WORKSPACE")
+                                    :project-file "WORKSPACE"
+                                    :compile "bazel build"
+                                    :test "bazel test"
+                                    :run "bazel run")
+    (add-hook 'projectile-before-switch-project-hook (lambda () (exec-path-from-shell-initialize)))
     (projectile-mode)
 )
 
-(use-package perspective :after projectile
-    :bind (("C-x b" . persp-switch-to-buffers)
-           ("C-x k" . persp-kill-buffer*))
-    :general (leader
-                "bs" '(persp-switch-to-buffer* :wk "switch buffer")
-                )
-    :custom
-    (persp-mode-prefix-key (kbd "C-c M-p"))
-    ;(persp-state-default-file (concat user-emacs-directory "var/persp-state"))
-    :init
-    (persp-mode)
-    :config
-    ;(add-hook 'kill-emacs-hook #'persp-state-save)
-    ;(persp-state-load persp-state-default-file)
-    )
+;; (use-package perspective :after projectile
+;;     :bind (("C-x b" . persp-switch-to-buffers)
+;;            ("C-x k" . persp-kill-buffer*))
+;;     ;:general (leader "bs" '(persp-switch-to-buffer* :wk "switch buffer"))
+;;     :custom
+;;     (persp-mode-prefix-key (kbd "C-c M-p"))
+;;     ;(persp-state-default-file (concat user-emacs-directory "var/persp-state"))
+;;     :init
+;;     (persp-mode)
+;;     :config
+;;     ;(add-hook 'kill-emacs-hook #'persp-state-save)
+;;     ;(persp-state-load persp-state-default-file)
+;;     )
 
 
 ; brew install coreutils fd poppler ffmpegthumbnailer mediainfo imagemagick

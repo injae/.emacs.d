@@ -1,8 +1,11 @@
-personal_ws-1.1 en 840 
+personal_ws-1.1 en 901 
 ABCDEFGHIJ
+ARGN
 Accu
+Ack
 Adaptor
 Addr
+Addrs
 AnsibleCoreFiltersExtension
 Appender
 Asc
@@ -11,11 +14,17 @@ Async
 Attr
 Avgs
 Awaitable
+BAZEL
+Backfill
+Backfills
 Btm
+CCACHE
 CLI
 CORSMiddleware
+CPM
 CSV
 CVXOPT
+CXX
 Celgo
 Cnt
 Comparer
@@ -32,7 +41,9 @@ Downloader
 Dto
 ECK
 ENTRYPOINT
+EOF
 Elo
+Enums
 Eq
 Equalf
 Errf
@@ -44,11 +55,17 @@ Fatalf
 Fifa
 Fprint
 Fprintf
+Frontend
+GOPACKAGESDRIVER
 GOPATH
+GOPRIVATE
 GPP
+GRPC
+Gameserver
 GetPlayerIDs
 Getter
 Gi
+Glicko
 Globals
 Goroutine
 Gosched
@@ -80,6 +97,8 @@ Laptimes
 Latencies
 Logf
 MANPATH
+MSVC
+Makefiles
 Mappable
 Marshaller
 Matcher
@@ -107,6 +126,9 @@ PYTHONUNBUFFERED
 Param
 Params
 Pdf
+PlackettLuce
+PlackettLuceModel
+PlackettLuceModelKey
 Preprocess
 Printf
 Prix
@@ -116,11 +138,13 @@ Ptr
 Qf
 Qn
 Qv
+RPATH
 RW
 Relabelings
 RwLock
 SPC
 STORAGECLASS
+STREQUAL
 Serdepp
 Sha
 Sprintf
@@ -129,9 +153,12 @@ Stddev
 Str
 TCP
 TODO
+TTL
 Tcp
 UG
+UNPARSED
 Unary
+Und
 Unfree
 Unmarshal
 Unmarshaller
@@ -187,6 +214,7 @@ attrs
 auth
 authinfo
 authlib
+authtypes
 autoimport
 autoload
 autoloads
@@ -200,10 +228,13 @@ axum
 backend
 backtab
 balancer
+bashrc
+bazel
 bifrost
 blueviolet
 bool
 boto
+bradleyTerryFullModel
 bson
 buf
 bufio
@@ -211,6 +242,7 @@ bugfix
 builtins
 calc
 capf
+ccache
 ccls
 cd
 cdr
@@ -263,6 +295,7 @@ csv
 ctx
 cvref
 cwd
+cxx
 dabbrev
 dao
 dap
@@ -294,6 +327,7 @@ difftastic
 digga
 dir
 dired
+direnv
 dirvish
 dlv
 dns
@@ -324,11 +358,16 @@ eln
 elo
 elpaca
 elsa
+elseif
 emacs
 emacsclient
 emb
+embarkserver
 emojify
+endforeach
+endfunction
 endif
+endmacro
 ensurepath
 ent
 entrypoint
@@ -375,6 +414,7 @@ formatter
 formatters
 freebsd
 fs
+fsnotify
 fu
 fullscreen
 func
@@ -410,6 +450,7 @@ gonum
 gotest
 grafana
 groupby
+grpc
 gunicorn
 gvm
 gzip
@@ -444,6 +485,7 @@ ifndef
 ignorecase
 iinjaeui
 impl
+importpath
 indexs
 ineffassign
 inferrer
@@ -484,11 +526,13 @@ keypression
 kiali
 kibana
 kmacro
+kong
 korean
 kr
 kub
 kube
 kubernetes
+kustomize
 kwargs
 langs
 laptime
@@ -508,6 +552,8 @@ livep
 ln
 localhost
 logitem
+logrus
+loki
 lsp
 lstrip
 lua
@@ -555,6 +601,7 @@ msg
 mut
 mutex
 mypy
+nameof
 namespace
 namespaces
 nano
@@ -586,9 +633,11 @@ nyan
 oauth
 ok
 omitempty
+oneof
 openbsd
 opensearch
 openshift
+openskill
 ord
 orderless
 orm
@@ -602,6 +651,8 @@ params
 partyinfo
 pathlib
 pb
+pbgac
+pbopenmatch
 pc
 peotry
 perl
@@ -611,6 +662,7 @@ pid
 pipx
 pixelsize
 pkgs
+plackettLuceModel
 plantuml
 playerIDs
 plt
@@ -641,6 +693,7 @@ protobuf
 protojson
 provisioner
 ptr
+pvalue
 pvc
 py
 pyarrow
@@ -661,6 +714,7 @@ quantile
 randint
 readme
 recentf
+recv
 redis
 remapper
 removeprefix
@@ -681,9 +735,12 @@ rnd
 rng
 rnix
 routable
+rpath
 rss
+rtx
 runtime
 rustup
+rx
 sagemaker
 sagemakerruntime
 savehist
@@ -706,6 +763,7 @@ sgml
 shortname
 sidcar
 singledispatch
+sirupsen
 smartparens
 sni
 softmax
@@ -715,6 +773,7 @@ sqlite
 sqlmock
 sqrt
 src
+srcs
 ss
 ssl
 starlette
@@ -729,6 +788,7 @@ str
 strconv
 stretchr
 strftime
+stringp
 struct
 structcheck
 stylecheck
@@ -768,6 +828,7 @@ transcompile
 treesit
 trueskill
 tt
+tx
 txt
 typeinfo
 typename

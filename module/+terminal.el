@@ -8,7 +8,7 @@
 ;:commands (vterm)
 ;:ensure-system-package ((zsh . "chsh -s $(which zsh)")
                         ;(zinit . "sh -c \"$(curl -fsSL https://git.io/zinit-install)\""))
-;:init   (setq vterm-always-compile-module t)
+:custom (vterm-always-compile-module t)
 :config
     ;(define-key vterm-mode-map (kbd "C-c C-c") 'vterm-send-C-c)
     ;(define-key vterm-mode-map (kbd "<C-return>") 'vterm-send-right)

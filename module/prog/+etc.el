@@ -3,8 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package direnv :config (direnv-mode))
-
 (use-package gdscript-mode  :disabled
 :hook   (gdscript-mode . lsp)
 :custom (gdscript-godot-executable "/usr/local/Caskroom/godot/3.2.2/Godot.app/Contents/MacOS/Godot")
