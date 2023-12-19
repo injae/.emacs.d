@@ -3,9 +3,9 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package lsp-mode ;:elpaca (:host github :repo "emacs-lsp/lsp-mode")
+(use-package lsp-mode
 ;:after (exec-path-from-shell projectile)
-;:commands (lsp lsp-deferred)
+:commands (lsp lsp-deferred)
 :general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
                  "pp" '(xref-go-back                    :wk "lsp pop")
                  "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
@@ -13,17 +13,17 @@
                  "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
-        (lsp-enable-file-watchers t)
+        (lsp-enable-file-watchers nil)
         (lsp-file-watch-threshold 10000)
         (lsp-enable-completion-at-point t)
         (lsp-prefer-flymake nil)
-        ;(lsp-auto-guess-root t)
+        (lsp-auto-guess-root t)
         (lsp-response-timeout 25)
         (lsp-eldoc-render-all nil)
         (lsp-lens-enable t)
         (lsp-enable-snippet t)
         (lsp-idle-delay 0.500)
-        (lsp-log-io nil)
+        (lsp-log-io t)
         (lsp-rust-analyzer-server-display-inlay-hints nil)
         (lsp-headerline-breadcrumb-enable-diagnostics nil)
         (lsp-completion-provider :none) ; with corfu
@@ -35,7 +35,7 @@
 :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
        (lsp-mode            . lsp-enable-which-key-integration))
 :config
-    ;;(lsp-mode)
+    ;(lsp-mode)
     ;;corfu + lsp pause bugfix
     ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
     (dolist (dir '("[/\\\\]\\.ccls-cache\\'"
@@ -56,7 +56,6 @@
                     "[/\\\\]build\\'"
                     ))
         (push dir lsp-file-watch-ignored-directories))
-    ;; (add-to-list 'lsp-file-watch-ignored-directories "bazel-")
     (setq lsp-pyright-multi-root nil)
     (setq lsp-go-use-gofumpt t)
     (setq lsp-gopls-hover-kind "NoDocumentation")
@@ -82,12 +81,11 @@
             :new-connection (lsp-stdio-connection '("rnix-lsp"))
             :major-modes '(nix-mode)
             :server-id 'nix))
-   (setq lsp-go-gopls-placeholders nil)
+    (setq lsp-go-gopls-placeholders nil)
 )
 
-(use-package lsp-ui :elpaca (:host github :repo "emacs-lsp/lsp-ui")
+(use-package lsp-ui :after lsp-mode
 :commands lsp-ui-mode
-:after  lsp-mode
 :general (leader ;"ld"  #'lsp-ui-doc-focus-frame
                  "lpr" #'lsp-ui-peek-find-references
                  "lpd" #'lsp-ui-peek-find-definitions
@@ -95,6 +93,7 @@
          (:keymaps 'lsp-ui-peek-mode-map
                  "k"   #'lsp-ui-peek--select-prev
                  "j"   #'lsp-ui-peek--select-next)
+
 :custom (scroll-margin 0)
         (lsp-headerline-breadcrumb-icons-enable t)
         (lsp-lens-enable nil)
@@ -113,7 +112,7 @@
 (use-package treemacs-evil :after (treemacs evil))
 (use-package treemacs-projectile :after (treemacs projectile))
 
-(use-package lsp-treemacs
+(use-package lsp-treemacs :disabled
 :after (lsp-mode doom-modeline)
 :config ;(setq lsp-metals-treeview-enable t)
         ;(setq lsp-metals-treeview-show-when-views-received t)
@@ -167,7 +166,7 @@
 :hook (text-mode . (lambda () (require 'lsp-grammarly) (lsp)))
 )
 
-(use-package consult-lsp
+(use-package consult-lsp :requires (lsp-mode consult)
     :after (lsp-mode consult)
     :bind (:map lsp-mode-map
             ([remap xref-find-apropos] . consult-lsp-symbols))
@@ -177,11 +176,15 @@
                  "ld" 'consult-lsp-diagnostics)
     )
 
-(use-package eglot :disabled
+(use-package eglot :after (exec-path-from-shell projectile)
+    :preface
+    (defun my/eglot-ensure ()
+            (exec-path-from-shell-initialize)
+            (eglot-ensure))
     :hook (
-        ;; (go-mode . eglot-ensure)
-        ;; (rust-mode . eglot-ensure)
-        (python-mode . eglot-ensure)
+          (rust-mode . my/eglot-ensure)
+          (go-mode   . my/eglot-ensure)
+        ;(python-mode . eglot-ensure)
         ;; (nix-mode . eglot-ensure)
         ;; (js-mode . eglot-ensure)
         ;; (js2-mode . eglot-ensure)
@@ -193,33 +196,44 @@
         ;; (yaml-mode . eglot-ensure)
         ;; (dockerfile-mode . eglot-ensure)
           )
+    :general (leader "hh" '(eglot-code-actions        :wk "wizard")
+                     "pp" '(xref-go-back              :wk "lsp pop")
+                     "fd" '(eglot-find-typeDefinition :wk "lsp define")
+                     ;;"ft" '(eglot-find-declaration    :wk "lsp type")
+                     "fi" '(eglot-find-implementation :wk "lsp impl")
+                     "fr" '(xref-find-references      :wk "lsp ref"))
     :config
-    (setq-default eglot-workspace-configuration
-        '((:pylsp . (:configurationSources ["flake8"]
-                        :plugins (
-                            :pycodestyle (:enabled :json-false)
-                            :mccabe (:enabled :json-false)
-                            :pyflakes (:enabled :json-false)
-                            :flake8 (:enabled :json-false
-                                     :maxLineLength 88)
-                            :ruff (:enabled t
-                                   :lineLength 88)
-                            ;:pydocstyle (:enabled t
-                            ;             :convention "numpy")
-                            :yapf (:enable t)
-                            :autopep8 (:enabled t)
-                            :rope_autoimport (:enabled t)
-                            :black (:enabled t
-                                    :line_length 88
-                                    :cache_config t))))))
+    ;(setq-default eglot-workspace-configuration
+    ;    '((:pylsp . (:configurationSources ["flake8"]
+    ;                    :plugins (
+    ;                        :pycodestyle (:enabled :json-false)
+    ;                        :mccabe (:enabled :json-false)
+    ;                        :pyflakes (:enabled :json-false)
+    ;                        :flake8 (:enabled :json-false
+    ;                                 :maxLineLength 88)
+    ;                        :ruff (:enabled t
+    ;                               :lineLength 88)
+    ;                        ;:pydocstyle (:enabled t
+    ;                        ;             :convention "numpy")
+    ;                        :yapf (:enable t)
+    ;                        :autopep8 (:enabled t)
+    ;                        :rope_autoimport (:enabled t)
+    ;                        :black (:enabled t
+    ;                                :line_length 88
+    ;                                :cache_config t))))))
     )
 
 (use-package flycheck-eglot :after (flycheck eglot)
-    :functions global-flycheck-eglot-mode
-    :config (global-flycheck-eglot-mode))
+    :functions (flycheck-eglot-mode)
+    :config (flycheck-eglot-mode)
+    )
 
 (use-package eldoc-box :after eglot
-    :hook (eglot-managed-mode . eldoc-box-hover-mode)
+    :hook (eglot-managed-mode . eldoc-box-hover-at-point-mode)
+          ;(eglot-managed-mode . eldoc-box-hover-mode)
+    :custom (eldoc-box-clear-with-C-g t)
+            (eldoc-box-offset 1)
+    :config (add-to-list 'eldoc-box-frame-parameters '(alpha . 0.80))
     )
 
 (use-package consult-eglot :after eglot)

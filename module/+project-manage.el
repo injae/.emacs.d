@@ -6,8 +6,8 @@
 (use-package projectile :after (evil exec-path-from-shell)
 :config
     ;(setq projectile-require-project-root nil)
-	;;(setq projectile-enable-caching t)
-	(setq projectile-current-project-on-switch t)
+	;(setq projectile-enable-caching t)
+	;(setq projectile-current-project-on-switch t)
 	(setq projectile-globally-ignored-directories
         (append '("^\\eln-cache$" "^\\.emacs.d/straight$") projectile-globally-ignored-directories))
 	(evil-ex-define-cmd "kp" 'projectile-kill-buffers)

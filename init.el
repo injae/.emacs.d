@@ -89,7 +89,7 @@
     :config (direnv-mode)
     )
 
-(use-package envrc
+(use-package envrc 
     :config (envrc-global-mode)
     )
 

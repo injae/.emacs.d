@@ -16,8 +16,8 @@
     (defun lsp-go-install-save-hooks ()
         (add-hook 'before-save-hook #'lsp-format-buffer)
         (add-hook 'before-save-hook #'lsp-organize-imports))
-    :hook ((go-mode . (lambda () (lsp-deferred)))
-           (go-ts-mode . (lambda () (lsp-deferred))))
+    ;:hook ((go-mode . (lambda () (lsp-deferred)))
+    ;       (go-ts-mode . (lambda () (lsp-deferred))))
            ;;(go-mode . go-formatting-hook)
            ;;(go-ts-mode . lsp-go-install-save-hooks)
            ;;(go-ts-mode . go-formatting-hook)
@@ -27,7 +27,7 @@
     ;; (require 'lsp-golangci-lint)
     )
 
-(use-package dap-go :ensure dap-mode :after go-mode :disabled
+(use-package dap-go :ensure dap-mode :after (go-mode lsp-mode) :disabled
     :config (dap-go-setup)
     )
     ;;(defvar-local flycheck-local-checkers nil)

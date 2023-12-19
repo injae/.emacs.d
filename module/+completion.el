@@ -77,8 +77,10 @@
 (use-package vertico-posframe
     :functions vertico-posframe-mode
     :hook (emacs-startup . vertico-posframe-mode)
-    :custom (vertico-posframe-poshandler #'posframe-poshandler-frame-top-center)
-            (vertico-posframe-parameters '((left-fringe . 8) (right-fringe . 8)))
+    :custom
+    (vertico-posframe-poshandler #'posframe-poshandler-frame-top-center)
+    (vertico-posframe-parameters
+        '((left-fringe . 8) (right-fringe . 8)))
 )
 
 

@@ -17,7 +17,7 @@
 ;      (add-hook 'objc-mode-hook 'cpp-mode)
 )
 
-(use-package ccls
+(use-package ccls :after lsp-mode :disabled
 :hook  ((c-mode c++-mode objc-mode cuda-mode c-mode-common) . (lambda () (require 'ccls) (lsp)))
 :config
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
