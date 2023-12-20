@@ -47,7 +47,6 @@
               "er"    '(restart-emacs :wk "Restart")
               "el"    '(reload-emacs :wk "Reload")
               "ot"    '(org-babel-tangle :wk "tangle config.org" )
-              "ff"    '(find-file :wk "Find File")
               "fu"    '(browse-url :wk "Browse url")
               "ep"    '(list-processes :wk "Process")
               "ef"    '((lambda ()(interactive) (find-file "~/.emacs.d/init.el")) :wk "configure file")
