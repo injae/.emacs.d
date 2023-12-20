@@ -1,4 +1,3 @@
-
 #!/bin/zsh
 
 export LANG="en_US.UTF-8" 
@@ -50,6 +49,9 @@ zinit load agkozak/zsh-z
 ### End of Zinit's installer chunk
 
 eval "$(starship init zsh)"
+
+# rtx setting
+eval "$(rtx activate zsh)"
 
 # emacs setting
 export EDITOR=emacsclient
@@ -188,7 +190,3 @@ PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 eval "$(register-python-argcomplete pipx)"
-
-# rtx setting
-eval "$(rtx activate zsh)"
-export PATH="$PATH:$HOME/.local/share/rtx/shims"
