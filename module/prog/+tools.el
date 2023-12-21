@@ -12,7 +12,7 @@
                         (dust  . "cargo install du-dust")
                         (ytop  . "cargo install ytop")
                         (mcfly . "cargo install mcfly")
-                        (et    . "cargo install erdtree")
+                        (erd   . "cargo install erdtree")
                         (cargo-install-update . "cargo install cargo-update"))
 )
 

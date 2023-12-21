@@ -37,7 +37,7 @@
 
 ; brew install coreutils fd poppler ffmpegthumbnailer mediainfo imagemagick
 (use-package dirvish
-    :ensure-system-package ((fd . "brew install fd"))
+    ;:ensure-system-package ((fd . "brew install fd"))
     :config (dirvish-override-dired-mode)
     )
 

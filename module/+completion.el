@@ -301,7 +301,7 @@
 
 (use-package fzf
     ;; brew install fzf
-    :general (leader "ff" '(fzf :wk "Find File"))
+    :general (leader "fF" '(fzf :wk "Find File"))
     :config
     (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
             fzf/executable "fzf"

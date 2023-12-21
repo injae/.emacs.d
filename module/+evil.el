@@ -48,6 +48,7 @@
               "el"    '(reload-emacs :wk "Reload")
               "ot"    '(org-babel-tangle :wk "tangle config.org" )
               "fu"    '(browse-url :wk "Browse url")
+              "ff"    '(find-file :wk "Find File")
               "ep"    '(list-processes :wk "Process")
               "ef"    '((lambda ()(interactive) (find-file "~/.emacs.d/init.el")) :wk "configure file")
               "wf"    '(toggle-frame-fullscreen :wk "Full Screen")
