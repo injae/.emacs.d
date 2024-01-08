@@ -1,16 +1,10 @@
-;;; +lsp.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +lsp.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
 (use-package lsp-mode
 ;:after (exec-path-from-shell projectile)
 :commands (lsp lsp-deferred)
-:general (leader "hh" '(lsp-execute-code-action         :wk "wizard")
-                 "pp" '(xref-go-back                    :wk "lsp pop")
-                 "fd" '(lsp-ui-peek-find-definitions    :wk "lsp define")
-                 "fi" '(lsp-ui-peek-find-implementation :wk "lsp impl")
-                 "fr" '(lsp-ui-peek-find-references     :wk "lsp ref"))
 :custom (lsp-inhibit-message t)
         (lsp-message-project-root-warning t)
         (lsp-enable-file-watchers nil)
@@ -196,12 +190,6 @@
         ;; (yaml-mode . eglot-ensure)
         ;; (dockerfile-mode . eglot-ensure)
           )
-    :general (leader "hh" '(eglot-code-actions        :wk "wizard")
-                     "pp" '(xref-go-back              :wk "lsp pop")
-                     "fd" '(eglot-find-typeDefinition :wk "lsp define")
-                     ;;"ft" '(eglot-find-declaration    :wk "lsp type")
-                     "fi" '(eglot-find-implementation :wk "lsp impl")
-                     "fr" '(xref-find-references      :wk "lsp ref"))
     :config
     ;(setq-default eglot-workspace-configuration
     ;    '((:pylsp . (:configurationSources ["flake8"]
@@ -240,3 +228,46 @@
 
 (provide '+lsp)
 ;;; +lsp.el ends here
+
+
+(use-package lsp-key-map :no-require t :elpaca nil :after (:any lsp-mode eglot)
+:preface
+    (defun lsp-key-mapper (lsp-func eglot-func)
+        (if (and (bound-and-true-p lsp-mode) (fboundp lsp-func))
+            (call-interactively lsp-func)
+            (if (and (bound-and-true-p eglot--managed-mode) (fboundp eglot-func))
+                (call-interactively eglot-func)
+            (message "No LSP client available for code actions"))))
+
+    (defun lsp-key-map-code-action ()
+        (interactive)
+        (lsp-key-mapper 'lsp-execute-code-action 'eglot-code-actions)
+        )
+
+    (defun lsp-key-map-find-definition ()
+        (interactive)
+        (lsp-key-mapper 'lsp-find-definition 'eglot-find-declaration)
+        )
+
+    (defun lsp-key-map-find-implementation ()
+        (interactive)
+        (lsp-key-mapper 'lsp-find-implementation 'eglot-find-implementation)
+        )
+
+    (defun lsp-key-map-find-references ()
+        (interactive)
+        (lsp-key-mapper 'lsp-find-references 'eglot-find-references)
+        )
+
+    (defun lsp-key-map-find-typeDefinition ()
+        (interactive)
+        (lsp-key-mapper 'lsp-find-typeDefinition 'eglot-find-typeDefinition)
+        )
+    
+:general (leader "hh" '(lsp-key-map-code-action         :wk "wizard")
+                 "pp" '(xref-go-back                    :wk "lsp pop")
+                 "fd" '(lsp-key-map-find-definition     :wk "lsp define")
+                 "fT" '(lsp-key-map-find-typeDefinition :wk "lsp type")
+                 "fi" '(lsp-key-map-find-implementation :wk "lsp impl")
+                 "fr" '(lsp-key-map-find-references     :wk "lsp ref"))
+    )

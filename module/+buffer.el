@@ -1,5 +1,4 @@
-;;; +buffer.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +buffer.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
