@@ -173,12 +173,12 @@
 (use-package eglot :after (exec-path-from-shell projectile)
     :preface
     (defun my/eglot-ensure ()
-            (exec-path-from-shell-initialize)
-            (eglot-ensure))
+        (exec-path-from-shell-initialize)
+        (eglot-ensure))
     :hook (
           (rust-mode . my/eglot-ensure)
           (go-mode   . my/eglot-ensure)
-        ;(python-mode . eglot-ensure)
+          (python-base-mode . my/eglot-ensure)
         ;; (nix-mode . eglot-ensure)
         ;; (js-mode . eglot-ensure)
         ;; (js2-mode . eglot-ensure)
@@ -191,24 +191,16 @@
         ;; (dockerfile-mode . eglot-ensure)
           )
     :config
-    ;(setq-default eglot-workspace-configuration
-    ;    '((:pylsp . (:configurationSources ["flake8"]
-    ;                    :plugins (
-    ;                        :pycodestyle (:enabled :json-false)
-    ;                        :mccabe (:enabled :json-false)
-    ;                        :pyflakes (:enabled :json-false)
-    ;                        :flake8 (:enabled :json-false
-    ;                                 :maxLineLength 88)
-    ;                        :ruff (:enabled t
-    ;                               :lineLength 88)
-    ;                        ;:pydocstyle (:enabled t
-    ;                        ;             :convention "numpy")
-    ;                        :yapf (:enable t)
-    ;                        :autopep8 (:enabled t)
-    ;                        :rope_autoimport (:enabled t)
-    ;                        :black (:enabled t
-    ;                                :line_length 88
-    ;                                :cache_config t))))))
+    (setq-default eglot-workspace-configuration
+        '(:pylsp
+             (:plugins
+                 (:mypy (:enabled t)
+                  :ruff (:enabled t)
+                  ;; :rope_autoimport (:enabled t (:code_actions: (:enabled: t)))
+                 ))
+          ;; :gopls
+          ;;     (:usePlaceholders t)
+        ))
     )
 
 (use-package flycheck-eglot :after (flycheck eglot)
@@ -224,11 +216,12 @@
     :config (add-to-list 'eldoc-box-frame-parameters '(alpha . 0.80))
     )
 
+(use-package eglot-x :elpaca (:host github :repo "nemethf/eglot-x")
+    :after eglot
+    :config (eglot-x-setup)
+    )
+
 (use-package consult-eglot :after eglot)
-
-(provide '+lsp)
-;;; +lsp.el ends here
-
 
 (use-package lsp-key-map :no-require t :elpaca nil :after (:any lsp-mode eglot)
 :preface
@@ -256,12 +249,17 @@
 
     (defun lsp-key-map-find-references ()
         (interactive)
-        (lsp-key-mapper 'lsp-find-references 'eglot-find-references)
+        (lsp-key-mapper 'lsp-find-references 'xref-find-references)
         )
 
     (defun lsp-key-map-find-typeDefinition ()
         (interactive)
         (lsp-key-mapper 'lsp-find-typeDefinition 'eglot-find-typeDefinition)
+        )
+
+    (defun lsp-key-map-rename ()
+        (interactive)
+        (lsp-key-mapper 'lsp-rename 'eglot-rename)
         )
     
 :general (leader "hh" '(lsp-key-map-code-action         :wk "wizard")
@@ -269,5 +267,11 @@
                  "fd" '(lsp-key-map-find-definition     :wk "lsp define")
                  "fT" '(lsp-key-map-find-typeDefinition :wk "lsp type")
                  "fi" '(lsp-key-map-find-implementation :wk "lsp impl")
-                 "fr" '(lsp-key-map-find-references     :wk "lsp ref"))
-    )
+                 "fr" '(lsp-key-map-find-references     :wk "lsp ref")
+                 "lr" '(lsp-key-map-rename              :wk "lsp rename")
+        )
+)
+
+
+(provide '+lsp)
+;;; +lsp.el ends here

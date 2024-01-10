@@ -76,7 +76,7 @@
     :hook (python-base-mode . poetry-tracking-mode)
     )
 
-(use-package lsp-pyright :after python
+(use-package lsp-pyright :after python :disabled
     :hook (python-base-mode .
               (lambda ()
                   (require 'lsp-pyright)
