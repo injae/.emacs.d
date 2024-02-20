@@ -190,17 +190,17 @@
         ;; (yaml-mode . eglot-ensure)
         ;; (dockerfile-mode . eglot-ensure)
           )
-    :config
-    (setq-default eglot-workspace-configuration
-        '(:pylsp
-             (:plugins
-                 (:mypy (:enabled t)
-                  :ruff (:enabled t)
-                  ;; :rope_autoimport (:enabled t (:code_actions: (:enabled: t)))
-                 ))
-          ;; :gopls
-          ;;     (:usePlaceholders t)
-        ))
+    ;;:config
+    ;;(setq-default eglot-workspace-configuration
+    ;;    '(:pylsp
+    ;;         (:plugins
+    ;;             (:mypy (:enabled t)
+    ;;              :ruff (:enabled t)
+    ;;              ;; :rope_autoimport (:enabled t (:code_actions: (:enabled: t)))
+    ;;             ))
+    ;;      ;; :gopls
+    ;;      ;;     (:usePlaceholders t)
+    ;;    ))
     )
 
 (use-package flycheck-eglot :after (flycheck eglot)
@@ -220,6 +220,13 @@
     :after eglot
     :config (eglot-x-setup)
     )
+
+;; need to install https://github.com/blahgeek/emacs-lsp-booster
+(use-package eglot-booster :elpaca (:host github :repo "jdtsmith/eglot-booster")
+    :after eglot
+    :config (eglot-booster-mode)
+    )
+
 
 (use-package consult-eglot :after eglot)
 

@@ -1,5 +1,4 @@
-;;; +formatting.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +formatting.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -20,6 +19,21 @@
     ;;     '(isort black))
     (apheleia-global-mode +1)
     )
+
+
+(use-package reformatter :after exec-path-from-shell :disabled
+  ;;:hook
+  ;;(python-ts-mode-hook . ruff-format-on-save-mode)
+  ;;:config
+  ;;(reformatter-define ruff-format
+  ;;      :program "ruff"
+  ;;      :args `("format" "--stdin-filename" ,buffer-file-name "-"))
+)
+
+(use-package ruff-format :after reformatter
+    :hook (python-base-mode . ruff-format-on-save-mode)
+    )
+
 
 ;;(use-package caser)
 

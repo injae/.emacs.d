@@ -1,5 +1,4 @@
-;;; +project-manage.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +project-manage.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -19,6 +18,19 @@
     (add-hook 'projectile-before-switch-project-hook (lambda () (exec-path-from-shell-initialize)))
     (projectile-mode)
 )
+
+(use-package projection :after (evil exec-path-from-shell)
+    :hook (after-init . global-projection-hook-mode)
+    :config (with-eval-after-load 'project (require 'projection))
+    )
+
+(use-package projection-multi :after projection
+    :init (define-key global-map "RET" #'projection-multi-compile)
+    )
+
+(use-package projection-multi-embark :after (projection-multi embark)
+    :config (projection-multi-embark-setup-command-map)
+    )
 
 ;; (use-package perspective :after projectile
 ;;     :bind (("C-x b" . persp-switch-to-buffers)

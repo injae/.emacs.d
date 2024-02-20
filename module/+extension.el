@@ -46,7 +46,7 @@
                     "https://www.reddit.com/r/emacs.rss"))
     )
 
-(use-package atomic-chrome
+(use-package atomic-chrome :disabled
     :config (atomic-chrome-start-server)
     )
 

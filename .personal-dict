@@ -1,4 +1,4 @@
-personal_ws-1.1 en 913 
+personal_ws-1.1 en 924 
 ABCDEFGHIJ
 ARGN
 Accu
@@ -172,8 +172,10 @@ Warhaven
 Webhook
 XBOX
 Xbox
+Xlsx
 aarch
 abcdefghij
+abstractmethod
 acc
 accu
 accumatch
@@ -208,6 +210,7 @@ asdf
 aseprite
 asm
 ast
+astimezone
 astype
 async
 asyncio
@@ -257,6 +260,7 @@ cfg
 chan
 chatgpt
 chdir
+checkable
 chrono
 ci
 cidrs
@@ -392,6 +396,7 @@ esquery
 esup
 et
 etags
+europe
 eval
 exa
 exe
@@ -408,6 +413,7 @@ fi
 filenotify
 filesystem
 filesystems
+fillvalue
 flycheck
 flymake
 flyspell
@@ -453,6 +459,7 @@ gomock
 gomodifytags
 gonum
 gotest
+gpp
 grafana
 groupby
 grpc
@@ -600,6 +607,7 @@ modeline
 modf
 mongo
 mongodb
+monorepo
 mooreung
 mpmath
 mrkdwn
@@ -778,6 +786,7 @@ sirupsen
 smartparens
 sni
 softmax
+splitlines
 spotify
 sql
 sqlite
@@ -856,6 +865,7 @@ umask
 uname
 unary
 unicode
+unittest
 unmarshal
 unparam
 unsetopt
@@ -896,6 +906,7 @@ wsgi
 wsl
 www
 xgroup
+xlsx
 xoxb
 xrange
 xread

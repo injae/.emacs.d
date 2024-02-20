@@ -1,5 +1,4 @@
-;;; +prog-search.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +prog-search.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 

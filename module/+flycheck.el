@@ -1,5 +1,4 @@
-;;; +flycheck.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +flycheck.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 

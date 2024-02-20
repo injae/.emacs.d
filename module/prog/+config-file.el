@@ -1,5 +1,4 @@
-;;; +config-file.el --- Summery
-;;; -*- lexical-binding: t; -*-
+;;; +config-file.el --- Summery -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -35,11 +34,11 @@
 )
 
 (use-package markdown-preview-mode  :defer t)
-(use-package gh-md   :defer t
+(use-package gh-md :defer t
 :general (leader "hmr" 'gh-md-render-buffer)
 )
 
-(use-package powershell )
+(use-package powershell)
 
 (use-package json-mode
     :mode  (("\\.json\\'"       . json-mode)
